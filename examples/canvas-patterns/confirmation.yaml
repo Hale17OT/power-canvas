@@ -1,0 +1,10 @@
+version: 0.2.0
+key: leaveEditor
+component: ConfirmationDialog
+props:
+  title: '"Discard unsaved changes?"'
+  description: '"Your saved record will stay unchanged."'
+  visible: confirmLeave
+  cancel: Set(confirmLeave, false)
+  confirm: ResetForm(InventoryForm); Set(confirmLeave, false); Set(editorOpen, false)
+  confirmLabel: Discard changes

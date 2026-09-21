@@ -1,0 +1,2794 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PowerCanvas — Technical and Product Feasibility</title><meta name="description" content="A comprehensive, source-linked feasibility study of AI-assisted Power Platform application generation. Research date 17 September 2026."><style>
+:root{color-scheme:light;--ink:#173146;--muted:#586b78;--accent:#076b79;--border:#d6e1e5;--paper:#fff;--bg:#eff3f4}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Georgia,'Times New Roman',serif}
+a{color:var(--accent);text-underline-offset:3px}a:hover{color:#004c58}a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid #dc9936;outline-offset:3px}
+.skip{position:fixed;top:-100px;left:12px;background:white;padding:12px;z-index:10}.skip:focus{top:12px}
+.shell{display:grid;grid-template-columns:280px minmax(0,1100px);max-width:1420px;margin:0 auto;min-height:100vh}.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:34px 24px;font:13px/1.5 system-ui,sans-serif}
+.brand{font-size:23px;font-weight:750;letter-spacing:-.5px;margin-bottom:4px}.kicker{text-transform:uppercase;letter-spacing:1.2px;font:700 11px/1.5 system-ui,sans-serif;color:var(--muted)}.sidebar nav{margin-top:24px}.sidebar nav a{display:block;padding:7px 0;text-decoration:none;color:var(--muted);border-bottom:1px solid #dde5e8}.sidebar nav a:hover{color:var(--accent)}
+.downloads{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 28px;font:13px system-ui,sans-serif}.downloads a{padding:7px 11px;border:1px solid var(--border);border-radius:5px;background:white;text-decoration:none}
+main{background:var(--paper);padding:54px 64px 80px;border-left:1px solid var(--border);min-width:0}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25;color:var(--ink);scroll-margin-top:30px}h1{font-size:40px;letter-spacing:-1.3px;margin:0 0 26px;max-width:820px}h2{font-size:27px;letter-spacing:-.5px;margin:64px 0 22px;padding-top:28px;border-top:2px solid var(--border)}h3{font-size:20px;margin:32px 0 14px}p{margin:0 0 18px}li{margin:7px 0}strong{font-weight:700}code{font:13px/1.6 Consolas,'Courier New',monospace;background:#edf3f5;border-radius:3px;padding:2px 5px;overflow-wrap:anywhere}pre{padding:20px 22px;background:#142b3b;color:#e4f0f4;border-radius:6px;overflow:auto;line-height:1.6}pre code{padding:0;background:none;color:inherit;overflow-wrap:normal}
+.table-wrap{overflow:auto;max-width:100%;margin:22px 0 27px;border:1px solid var(--border);border-radius:5px}table{border-collapse:collapse;width:100%;font:13px/1.55 system-ui,sans-serif}th{background:#e8f1f3;text-align:left;font-weight:700;color:#173e4b;vertical-align:top}th,td{padding:12px 14px;border-bottom:1px solid var(--border);min-width:130px;vertical-align:top}tbody tr:nth-child(even){background:#f6f9fa}tbody tr:last-child td{border-bottom:0}table code{font-size:12px}.table-wrap:has(th:nth-child(6)) table{min-width:950px}
+.architecture{font:14px/1.5 system-ui,sans-serif;background:#f1f7f8;padding:26px;border:1px solid #cee0e5;border-radius:8px;margin:25px 0}.diagram-input,.diagram-providers{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}.diagram-input span,.diagram-providers span{background:#fff;border:1px solid #aecad1;padding:10px 14px;border-radius:5px}.diagram-stage{max-width:630px;margin:auto;text-align:center;background:#fff;border:1px solid #aecad1;padding:12px;border-radius:5px}.emphasis{background:#0b6071;color:white;border:0;font-weight:700}.arrow{text-align:center;font-size:23px;line-height:1.5;color:#4d7f89}figcaption{font-size:12px;color:var(--muted);margin-top:20px;text-align:center}
+.footer{font:12px system-ui,sans-serif;color:var(--muted);padding-top:26px;margin-top:50px;border-top:1px solid var(--border)}button{font:13px system-ui,sans-serif;background:white;color:var(--accent);border:1px solid var(--border);padding:8px 12px;border-radius:5px;cursor:pointer}
+@media(max-width:1050px){.shell{grid-template-columns:230px minmax(0,1fr)}main{padding:38px 30px}.sidebar{padding:24px 18px}h1{font-size:34px}}
+@media(max-width:750px){.shell{display:block}.sidebar{position:relative;height:auto;padding:22px 24px}.sidebar nav{max-height:210px;overflow:auto;border:1px solid var(--border);padding:12px}.sidebar .downloads{margin-bottom:0}main{padding:32px 22px;border-left:0;border-top:1px solid var(--border)}h1{font-size:30px}h2{font-size:24px}body{font-size:16px}th,td{padding:10px;min-width:145px}}
+@media print{body{background:white;font-size:10pt;line-height:1.4}.shell{display:block}.sidebar,.downloads,button,.skip{display:none}main{padding:0;border:0}h1{font-size:26pt}h2{break-before:auto;font-size:18pt;margin-top:30px}h3{font-size:13pt}h1,h2,h3{break-after:avoid}pre{white-space:pre-wrap;background:#f2f2f2;color:#111}.table-wrap{overflow:visible;border:0}table,.table-wrap:has(th:nth-child(6)) table{min-width:0;font-size:8pt}th,td{min-width:0;padding:5px;overflow-wrap:anywhere}tr{break-inside:avoid}.architecture{break-inside:avoid}a{color:inherit}}
+</style></head><body><a class="skip" href="#report">Skip to report</a><div class="shell"><aside class="sidebar"><div class="brand">PowerCanvas</div><div class="kicker">Technical feasibility research</div><p style="margin:8px 0;color:var(--muted)">17 September 2026</p><div class="downloads"><a href="PowerCanvas-Feasibility-Report.md">Markdown</a><a href="Source-Index.html">Sources (137)</a></div><nav aria-label="Report contents"><a href="#executive-summary">Executive summary</a><a href="#1-research-method-and-confidence">1. Research method and confidence</a><a href="#2-discoveries-that-change-the-product-decision">2. Discoveries that change the product decision</a><a href="#3-platform-architecture-and-automation-boundaries">3. Platform architecture and automation boundaries</a><a href="#4-canvas-apps-deep-dive">4. Canvas Apps deep dive</a><a href="#5-power-fx-generation-and-analysis">5. Power Fx generation and analysis</a><a href="#6-model-driven-apps-deep-dive">6. Model-driven apps deep dive</a><a href="#7-dataverse-schema-and-security-deep-dive">7. Dataverse schema and security deep dive</a><a href="#8-dataverse-migrations">8. Dataverse migrations</a><a href="#9-power-automate-deep-dive">9. Power Automate deep dive</a><a href="#10-sharepoint-and-microsoft-graph-deep-dive">10. SharePoint and Microsoft Graph deep dive</a><a href="#11-power-pages-and-code-apps">11. Power Pages and code apps</a><a href="#12-existing-microsoft-tooling-wrap-versus-build">12. Existing Microsoft tooling: wrap versus build</a><a href="#13-alm-packaging-and-deployment">13. ALM, packaging and deployment</a><a href="#14-infrastructure-as-code-state-and-semantic-diffs">14. Infrastructure as code, state and semantic diffs</a><a href="#15-validation-static-analysis-and-testing">15. Validation, static analysis and testing</a><a href="#16-authentication-and-multi-tenant-strategy">16. Authentication and multi-tenant strategy</a><a href="#17-environment-configuration-licensing-and-governance">17. Environment configuration, licensing and governance</a><a href="#18-security-and-disaster-prevention">18. Security and disaster prevention</a><a href="#19-performance-and-throttling">19. Performance and throttling</a><a href="#20-existing-tools-and-competitor-analysis">20. Existing tools and competitor analysis</a><a href="#21-recommended-architecture-and-technology-stack">21. Recommended architecture and technology stack</a><a href="#22-proposed-powercanvas-intermediate-representation">22. Proposed PowerCanvas intermediate representation</a><a href="#23-ai-planning-and-modification-of-existing-solutions">23. AI planning and modification of existing solutions</a><a href="#24-plugins-templates-and-reusable-components">24. Plugins, templates and reusable components</a><a href="#25-git-local-development-and-reproducibility">25. Git, local development and reproducibility</a><a href="#26-proposed-project-structure-and-configuration">26. Proposed project structure and configuration</a><a href="#27-proposed-cli-experience">27. Proposed CLI experience</a><a href="#28-feasibility-matrix">28. Feasibility matrix</a><a href="#29-risk-matrix">29. Risk matrix</a><a href="#30-exact-v0-1-scope-and-roadmap">30. Exact v0.1 scope and roadmap</a><a href="#31-ten-critical-technical-experiments">31. Ten critical technical experiments</a><a href="#32-comparable-ecosystems-and-commercial-potential">32. Comparable ecosystems and commercial potential</a><a href="#33-final-answer-the-actual-technical-ceiling">33. Final answer: the actual technical ceiling</a><a href="#appendix-a-package-and-repository-evidence">Appendix A. Package and repository evidence</a><a href="#appendix-b-coverage-of-the-original-60-part-brief">Appendix B. Coverage of the original 60-part brief</a></nav></aside><main id="report"><div class="kicker" style="margin-bottom:14px">Research report · Proposed architecture · No implementation</div><h1 id="powercanvas-technical-and-product-feasibility">PowerCanvas: technical and product feasibility</h1>
+<p><strong>Research date: 17 September 2026</strong><br><strong>Decision: proceed with a bounded, supported automation product; do not promise universal, unattended application generation.</strong><br><strong>Scope: research and proposed design only. No PowerCanvas implementation or tenant changes were performed.</strong></p>
+<h2 id="executive-summary">Executive summary</h2>
+<p>PowerCanvas is technically viable as a developer tool that turns a reviewed application specification into a reproducible Power Platform project. Its strongest initial foundation is <strong>Dataverse schema, standard model-driven apps, solution lifecycle management, configuration validation, and controlled deployment</strong>. Add solution-aware cloud flows and SharePoint provisioning through explicit providers. Treat Canvas authoring as a separate, capability-gated workflow.</p>
+<p>The technical ceiling is higher than “Power Apps can only be built in a visual editor,” but lower than “every component can be compiled offline and deployed without setup.” Microsoft documents programmatic model-driven app creation and cloud-flow authoring. These provide concrete foundations, not merely evidence that an undocumented endpoint happens to work. <a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/create-manage-model-driven-apps-using-code">Model-driven app APIs</a>, <a href="https://learn.microsoft.com/en-us/power-automate/manage-flows-with-code">cloud flows through code</a>.</p>
+<p>Canvas has a particularly important new route: Microsoft now documents AI-assisted <code>.pa.yaml</code> authoring against a <strong>live Studio coauthoring session</strong>. It requires an existing saved app, an open Studio tab, and Studio-based data-source setup. This can substantially reduce manual screen construction; it does not establish a general headless compiler. <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/create-canvas-external-tools">Canvas external authoring, updated 1 September 2026</a>.</p>
+<p>The commercial case needs sharper differentiation than the original vision. Microsoft already offers an AI model-app builder, broad Power Platform development plugins, native Git integration, and infrastructure automation. PowerCanvas should compete on <strong>predictable changes across services, preservation of existing work, semantic diffs, reusable modules, security evidence, and recoverable deployments</strong>. Another prompt interface over PAC would have limited defensibility. <a href="https://github.com/microsoft/power-platform-skills">Microsoft development plugins</a>, <a href="https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/model-driven-app-external-tools">model app builder preview</a>.</p>
+<p>Recommended v0.1: a narrow complaint-management template that produces ordinary Dataverse tables, relationships, forms, views, navigation, and explicit roles; exports and promotes a managed solution; and proves the result with API and browser checks. AI should initially propose a specification. Deterministic code should own compilation and execution.</p>
+<h2 id="1-research-method-and-confidence">1. Research method and confidence</h2>
+<p>The attached 60-part brief governs this report. The unrelated construction CRM conversation was excluded following clarification.</p>
+<p>This study examines current Microsoft Learn documentation, Microsoft repositories, selected community repositories, package documentation, and comparable developer platforms. Repository metadata was retrieved directly from GitHub on the research date and saved in <code>repository-evidence.json</code>. A recent repository push is evidence of repository activity, <strong>not</strong> a guarantee of product support, a release, or a working feature.</p>
+<p>No live Power Platform tenant experiments were performed in this study. Consequently:</p>
+<ul>
+<li><strong>Documented fact</strong> means a cited source explicitly describes a capability or restriction.</li>
+<li><strong>Engineering assessment</strong> means a conclusion drawn from those documented interfaces.</li>
+<li><strong>Proposal</strong> means a PowerCanvas design recommendation, not an existing command or Microsoft feature.</li>
+<li><strong>Unverified</strong> means a claim requires an experiment before it becomes a product commitment.</li>
+</ul>
+<p>Support classifications used throughout:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Supported</td>
+<td>An official API, command, or expressly editable artifact supports the specific operation.</td>
+</tr>
+<tr>
+<td>Official preview</td>
+<td>Microsoft documents the route as preview; availability and contracts can change.</td>
+</tr>
+<tr>
+<td>Constrained official route</td>
+<td>Supported only under stated conditions, such as minor Git edits or an active Studio session.</td>
+</tr>
+<tr>
+<td>Semi-supported</td>
+<td>Report shorthand for an exposed artifact or implementation detail whose general authoring contract is not established. This is not a Microsoft support category.</td>
+</tr>
+<tr>
+<td>Unsupported</td>
+<td>Internal endpoints, explicitly unsupported edits, or retired tooling used as a production dependency.</td>
+</tr>
+<tr>
+<td>Community</td>
+<td>Describes who maintains a tool. Its individual operations can still call supported Microsoft APIs.</td>
+</tr>
+</tbody></table></div>
+<p>The report deliberately avoids a universal “90% automated” estimate. No controlled benchmark establishes such a percentage. Count completed acceptance criteria for a defined application and record manual interventions; component counts alone can hide the hardest work.</p>
+<h2 id="2-discoveries-that-change-the-product-decision">2. Discoveries that change the product decision</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Discovery</th>
+<th>Evidence and date</th>
+<th>Consequence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canvas <code>pack</code>/<code>unpack</code> are deprecated; connector-based <code>create</code> is GA.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/canvas">PAC Canvas reference</a>, checked 17 September 2026</td>
+<td>Do not build a new universal compiler around legacy packaging commands.</td>
+</tr>
+<tr>
+<td><code>.fx.yaml</code> is retired; extracted <code>.pa.yaml</code> is principally a review representation.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/power-apps-yaml">Canvas source formats</a>, updated 23 October 2025</td>
+<td>Keep format provenance and distinguish extraction from supported authoring.</td>
+</tr>
+<tr>
+<td>Canvas Git edits are restricted; apps with code components have a documented editing limitation.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/canvas-apps-git-integration">Canvas Git integration</a></td>
+<td>A successful text merge is not sufficient validation.</td>
+</tr>
+<tr>
+<td>Canvas has a live authoring MCP route.</td>
+<td><a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/canvas-apps/AGENTS.md">Canvas plugin architecture</a>, inspected 17 September 2026</td>
+<td>Investigate assisted creation early, with an explicit session dependency.</td>
+</tr>
+<tr>
+<td>Microsoft&#39;s model-app AI builder already uses an app specification and reviewed build plan.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/model-driven-app-external-tools">Model-app external authoring</a>, updated 28 August 2026</td>
+<td>IR plus AI alone is insufficient differentiation.</td>
+</tr>
+<tr>
+<td>Dataverse formula, calculated, and rollup expressions cannot officially be authored with code.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/specialized-columns">Specialized columns</a></td>
+<td>Import designer-authored components; do not advertise complete schema-expression generation.</td>
+</tr>
+<tr>
+<td>Test Engine is deprecated effective April 2026.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/important-changes-coming#deprecation-of-test-engine">Deprecation notice</a></td>
+<td>Prefer direct Playwright and Microsoft&#39;s newer samples.</td>
+</tr>
+<tr>
+<td>ALM Accelerator is deprecated and issues are no longer addressed.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/guidance/alm-accelerator/overview">ALM Accelerator status</a></td>
+<td>Study its patterns, but do not make it the foundation.</td>
+</tr>
+<tr>
+<td>PAC now documents <code>auth token</code>, specifically for the Power Platform API.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/auth">PAC authentication</a></td>
+<td>A blanket claim that PAC cannot expose a token is outdated; audience restrictions still matter.</td>
+</tr>
+<tr>
+<td>Code apps now have a dedicated npm CLI and solution deployment route.</td>
+<td><a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/reference/cli">Power Apps CLI</a>, updated 15 September 2026; <a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/alm">ALM</a></td>
+<td>Consider an optional code-app target for highly custom interfaces.</td>
+</tr>
+</tbody></table></div>
+<p>Where documentation conflicts, this report uses the most specific restriction and marks the remaining uncertainty. For example, a repository can show recent pushes while a product deprecation notice ends Microsoft maintenance. A README calling a skill “stable” does not override Microsoft Learn describing that feature as preview.</p>
+<h2 id="3-platform-architecture-and-automation-boundaries">3. Platform architecture and automation boundaries</h2>
+<p>Power Platform is a set of cooperating services. An environment is a deployment and governance boundary; Dataverse supplies the metadata and data foundation for solution-aware applications. It is not a local database that a CLI can reproduce by running arbitrary SQL.</p>
+<p>Solutions organize transportable components and dependency information. Unmanaged solutions are the development source; managed solutions introduce managed layers in downstream environments. They do not contain every piece of operational state. User identities, connector credentials, SharePoint content, external services, and many environment-specific bindings need separate handling. <a href="https://learn.microsoft.com/en-us/power-platform/alm/solution-concepts-alm">Solution concepts</a>.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Relevant representation</th>
+<th>Expected automation surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Environment</td>
+<td>Power Platform service resource, optionally with a Dataverse organization</td>
+<td>PAC admin and versioned management APIs</td>
+</tr>
+<tr>
+<td>Solution and publisher</td>
+<td>Dataverse solution records, component membership, exported ZIP</td>
+<td>Dataverse solution messages, PAC solution, build tools</td>
+</tr>
+<tr>
+<td>Dataverse schema</td>
+<td>Entity, attribute, choice, relationship, and key metadata</td>
+<td>Metadata Web API or .NET SDK</td>
+</tr>
+<tr>
+<td>Dataverse data</td>
+<td>Table rows with IDs, ownership, privileges, and business logic</td>
+<td>Dataverse data APIs; separate migration/seed operations</td>
+</tr>
+<tr>
+<td>Canvas app</td>
+<td>Service app record and <code>.msapp</code> package, with generated source files</td>
+<td>Studio, constrained Git authoring, live authoring MCP, solution transport</td>
+</tr>
+<tr>
+<td>Model-driven app</td>
+<td>AppModule plus component associations and sitemap</td>
+<td>AppModule APIs, documented XML, PAC model</td>
+</tr>
+<tr>
+<td>Forms/views/charts</td>
+<td>SystemForm/FormXml; SavedQuery/FetchXML/LayoutXML; visualization definitions</td>
+<td>Documented Dataverse APIs and supported customization XML</td>
+</tr>
+<tr>
+<td>Cloud flow</td>
+<td>Solution-aware Process/Workflow row with serialized definition and connection references</td>
+<td>Dataverse APIs, solution import/export; evaluate Microsoft&#39;s FlowAgent separately</td>
+</tr>
+<tr>
+<td>Power Pages</td>
+<td>Website configuration/data model plus templates, files, content and hosting configuration</td>
+<td>PAC pages, supported website ALM, dedicated admin configuration</td>
+</tr>
+<tr>
+<td>Custom connector</td>
+<td>API definition, connection parameters, policy/configuration assets</td>
+<td>PAC connector and custom connector tooling</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>Environment-specific authenticated connector instance</td>
+<td>Connector-dependent connection APIs or interactive consent</td>
+</tr>
+<tr>
+<td>Connection reference</td>
+<td>Solution component identifying the connection binding to use</td>
+<td>Dataverse/solution settings; does not carry reusable credentials</td>
+</tr>
+<tr>
+<td>Environment variable</td>
+<td>Definition plus default/current value records</td>
+<td>Solution definitions and target deployment settings</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>Dataverse roles/privileges, teams, business units, users and application users</td>
+<td>Dataverse security APIs plus target identity assignments</td>
+</tr>
+<tr>
+<td>SharePoint</td>
+<td>Separate sites, lists, libraries, fields, content and permissions</td>
+<td>Graph, SharePoint REST/CSOM, PnP adapters</td>
+</tr>
+</tbody></table></div>
+<p>The management API, Dataverse API, Microsoft Graph, SharePoint REST, and connector runtime APIs are separate surfaces. Their tokens, permissions, versions, throttles, and support rules cannot be treated as interchangeable. Microsoft now also exposes a .NET Power Platform management package; its existence does not turn PAC into a public embeddable SDK. <a href="https://learn.microsoft.com/en-us/rest/api/power-platform/">Power Platform API reference</a>.</p>
+<p><strong>Architecture implication:</strong> every operation needs a resource type, owner service, target environment, required identity, support classification, and completion condition. A single global “logged in” flag is inadequate.</p>
+<h2 id="4-canvas-apps-deep-dive">4. Canvas Apps deep dive</h2>
+<h3 id="4-1-what-the-files-mean">4.1 What the files mean</h3>
+<p>An <code>.msapp</code> is a packaged application, not a single YAML document. Studio includes source under <code>Src</code>, including an app file, screen files, and component files. Microsoft warns against treating the other internal JSON as stable source. The current source format has explicit control identity/version information and Power Fx property expressions. The brief&#39;s <code>Type: Label</code> example should be considered <strong>PowerCanvas&#39;s proposed high-level schema</strong>, not valid, complete native Canvas source. <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/power-apps-yaml">Canvas source format</a>.</p>
+<p>PowerCanvas should distinguish five routes:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Route</th>
+<th>What it establishes</th>
+<th>Product treatment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Export/download an existing app and inspect source</td>
+<td>Review, documentation, and source-level comparison</td>
+<td>Useful early read-only feature</td>
+</tr>
+<tr>
+<td>Package an existing valid app in a solution</td>
+<td>Repeatable transport of a known artifact</td>
+<td>Supported deployment feature</td>
+</tr>
+<tr>
+<td>Native Git integration</td>
+<td>Minor repository edits restored through the integration</td>
+<td>Constrained edit mode, with compatibility checks</td>
+</tr>
+<tr>
+<td>Canvas Authoring MCP</td>
+<td>Generate, validate, compile and synchronize YAML against a live coauthoring session</td>
+<td>Assisted authoring adapter, after a tenant experiment</td>
+</tr>
+<tr>
+<td>Legacy PASopa/experimental packers or internal package patching</td>
+<td>Historical or reverse-engineered construction</td>
+<td>Exclude from supported production mode</td>
+</tr>
+</tbody></table></div>
+<p>The legacy Language Tooling repository redirects to PowerApps-Tooling. Its notice explicitly says PASopa is unsupported and that <code>--processCanvasApps</code> uses that legacy tool. The repository also contains newer .NET tooling, so describing the entire repository as abandoned would be inaccurate. The correct distinction is between an active repository and its unsupported legacy path. <a href="https://github.com/microsoft/PowerApps-Tooling">PowerApps-Tooling notice</a>.</p>
+<h3 id="4-2-the-september-2026-authoring-route">4.2 The September 2026 authoring route</h3>
+<p>Microsoft&#39;s new workflow generates screen/control/formula YAML, validates it with the authoring service, and synchronizes changes into the existing app. Setup requires .NET 10 or later. The app must be saved and coauthoring enabled; the Studio tab must remain open. Required connectors and data sources are added through Studio&#39;s Data panel. <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/create-canvas-external-tools">Canvas external authoring</a>.</p>
+<p>The plugin exposes <code>compile_canvas</code> and <code>sync_canvas</code>; its documentation explicitly ties them to that running session. This is substantial evidence that externally generated source can become a working app through an official workflow. It is not evidence that PowerCanvas may invoke undocumented backend operations without the session, or that all tenants and all controls behave identically. <a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/canvas-apps/AGENTS.md">Canvas plugin architecture</a>.</p>
+<p>Recommended product behavior:</p>
+<ol>
+<li>Detect availability and establish a supported session.</li>
+<li>Synchronize the current application before editing.</li>
+<li>Discover actual control and data-source contracts.</li>
+<li>Generate a small set of changes from typed UI intent.</li>
+<li>Compile and interpret diagnostics through the documented tool.</li>
+<li>Preview and test the resulting application.</li>
+<li>Export a known-good solution artifact for later deployment.</li>
+</ol>
+<p>These are proposed orchestration steps. A standalone unattended SDK contract for PowerCanvas has not been verified. Keep the adapter replaceable and report “Studio session required” before making changes.</p>
+<h3 id="4-3-git-editing-is-a-different-contract">4.3 Git editing is a different contract</h3>
+<p>Native Git integration supports minor <code>.pa.yaml</code> edits. Microsoft advises against significant edits and states that direct editing is unavailable for apps containing code components because it can stop the app from running. This limits a general Git-to-Canvas compiler and affects PCF-heavy design systems. Do not silently route a failed live-authoring operation through repository mutation. <a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/canvas-apps-git-integration">Canvas Git constraints</a>.</p>
+<p>There is also a narrow GA generator: <code>pac canvas create</code> produces an app from an existing solution custom connector with a predefined interface. Microsoft still requires importing into Studio and manually adding the connector reference. This is useful as a connector exerciser, not a general responsive business-app generator. <a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/canvas">PAC Canvas create</a>.</p>
+<h3 id="4-4-can-a-high-level-ui-schema-work">4.4 Can a high-level UI schema work?</h3>
+<p><strong>Yes, as PowerCanvas&#39;s own compiler input.</strong> Its value is semantic consistency and testability. It does not remove the backend authoring restrictions.</p>
+<p>Proposed schema fragment:</p>
+<pre><code class="language-yaml">screens:
+  requests:
+    pattern: master-detail
+    data: complaints
+    list:
+      fields: [title, priority, assignedTo]
+      search: {field: title, mode: prefix}
+    detail:
+      mode: edit
+      fields: [title, description, priority, assignedTo]
+    states: [loading, empty, error, forbidden]
+    responsive: {compact: stacked, wide: split}
+</code></pre>
+<p>The compiler must resolve this into concrete control versions, properties, formulas, naming, binding metadata, and navigation. It must reject unsupported combinations instead of inventing properties. Keep separate Canvas, model-driven, and code-app backends; a gallery and a model-driven view do not share identical interaction or security semantics.</p>
+<h3 id="4-5-practical-ui-generation-scope">4.5 Practical UI generation scope</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>UI area</th>
+<th>Assessment</th>
+<th>Needed guardrail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Screens, navigation, labels, buttons</td>
+<td>Strong assisted-authoring candidate</td>
+<td>Stable names, navigation graph, runtime validation</td>
+</tr>
+<tr>
+<td>Containers and responsive layout</td>
+<td>Feasible with a bounded pattern library</td>
+<td>Explicit width/height, scrolling and compact-layout contracts</td>
+</tr>
+<tr>
+<td>Galleries and search/filter panels</td>
+<td>Feasible; query correctness dominates</td>
+<td>Connector-aware delegation checks and realistic datasets</td>
+</tr>
+<tr>
+<td>Forms and data cards</td>
+<td>Feasible but data-type dependent</td>
+<td>Required fields, lookup/choice types, attachments and error handling</td>
+</tr>
+<tr>
+<td>Modern controls</td>
+<td>Feasible, version sensitive</td>
+<td>Query actual control schema; pin tested versions</td>
+</tr>
+<tr>
+<td>Variables and collections</td>
+<td>Formula generation is practical</td>
+<td>Explicit state ownership, initialization, bounded collections</td>
+</tr>
+<tr>
+<td>Reusable components</td>
+<td>Feasible, with import and dependency considerations</td>
+<td>Component API/version contracts; distinguish Canvas components from PCF</td>
+</tr>
+<tr>
+<td>Modal, timeline, command-bar primitives</td>
+<td>Feasible only with validated interaction patterns</td>
+<td>Keyboard, focus, accessibility and layering verification</td>
+</tr>
+<tr>
+<td>Arbitrary pixel-perfect screen generation</td>
+<td>Technically possible in subsets; no quality guarantee</td>
+<td>Visual review and device-specific acceptance criteria</td>
+</tr>
+</tbody></table></div>
+<p>Modern controls follow Fluent 2, while modern themes centralize appearance. However, Microsoft introduced property and enum changes beginning in February 2026; generators that hard-code historical examples will age poorly. <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/overview-modern-controls">Modern controls</a>, <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-theming">theming</a>, <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-control-updates">2026 control updates</a>.</p>
+<p>A design system can improve consistency through spacing, typography, content density, status colors, responsive patterns, and carefully designed empty/error states. “Better than typical Power Apps” is a design hypothesis, not a researched performance fact. Measure task completion, readability, keyboard operation and visual consistency against a hand-built baseline.</p>
+<p>Accessibility is a real constraint: arbitrary composite controls and overlays cannot assume unrestricted keyboard or ARIA behavior. Do not make a visually attractive pseudo-button or modal the default without testing its semantics. <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/accessible-apps-limitations">Canvas accessibility limitations</a>.</p>
+<h3 id="4-6-local-development-ceiling">4.6 Local development ceiling</h3>
+<p>Local source editing, schema checks, formula analysis, previews of abstract layouts, and file watching are realistic. Live Canvas synchronization still relies on Microsoft&#39;s running authoring environment. A local HTML mockup is useful for design discussion but is not a faithful Canvas runtime or proof of delegation behavior.</p>
+<p>Treat <code>powercanvas dev</code> as an eventual orchestration command with explicitly different modes: local validation; remote development-environment synchronization; or assisted Canvas editing. Do not promise universal hot reload, local Dataverse, offline connector execution, or a local Power Automate cloud runtime.</p>
+<h2 id="5-power-fx-generation-and-analysis">5. Power Fx generation and analysis</h2>
+<p>Microsoft&#39;s open-source Power Fx repository exposes Core, Interpreter, Connectors, JSON, and LanguageServerProtocol packages. Its hosting samples demonstrate embedding the engine. This supports parser/type-checker and controlled evaluation use cases; it does not supply the entire Power Apps host. <a href="https://github.com/microsoft/Power-Fx">Power Fx repository</a>, <a href="https://github.com/microsoft/power-fx-host-samples">host samples</a>.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Feasibility</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Parse expressions</td>
+<td>High</td>
+<td>Pin engine version and locale assumptions</td>
+</tr>
+<tr>
+<td>Generate expressions</td>
+<td>High</td>
+<td>Prefer typed expression construction and escaped literals</td>
+</tr>
+<tr>
+<td>Validate names and types</td>
+<td>High for supplied symbols</td>
+<td>Canvas controls, record scopes and connector types require host context</td>
+</tr>
+<tr>
+<td>Format and lint</td>
+<td>Feasible engineering work</td>
+<td>Preserve comments/source positions; test parse round trips</td>
+</tr>
+<tr>
+<td>Run pure-expression tests</td>
+<td>High</td>
+<td>Explicit inputs, deterministic time/culture and supported functions</td>
+</tr>
+<tr>
+<td>Execute app behaviors locally</td>
+<td>Partial</td>
+<td>UI state and connector effects are not automatically available</td>
+</tr>
+<tr>
+<td>Prove all delegation behavior</td>
+<td>Not established</td>
+<td>Requires host and connector-specific capabilities</td>
+</tr>
+<tr>
+<td>Compile a full Canvas application</td>
+<td>Not provided by these packages</td>
+<td>Use the supported app authoring route</td>
+</tr>
+</tbody></table></div>
+<p><code>pac power-fx</code> currently supplies preview <code>repl</code> and <code>run</code> commands for interacting with Dataverse. It is not a documented complete offline Canvas linter and can perform data operations. Do not run untrusted generated formulas through it as though it were a harmless parser. <a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/power-fx">PAC Power Fx</a>.</p>
+<p>PowerCanvas can provide useful static rules for nested iteration, repeated query expressions, calls inside gallery-item rendering, hard-coded URLs/IDs, overly broad collections, and missing error handling. Classify findings as <strong>definite error</strong>, <strong>connector-specific warning</strong>, or <strong>performance heuristic</strong>. Repeated <code>LookUp</code> is a risk signal, not proof of N+1 requests after host optimizations.</p>
+<p>Delegation analysis must consider the data source, function, column types and expression context. Nondelegable expressions can process only a limited local subset, so a formula can appear correct in a small test and miss records in production. Build tests above that subset and compare results with a server query. <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/delegation-overview">Delegation overview</a>.</p>
+<h2 id="6-model-driven-apps-deep-dive">6. Model-driven apps deep dive</h2>
+<p>Model-driven applications are easier to generate reliably when their UX fits standard records, forms, views and navigation. Their schema-driven interface removes much of the layout work required for Canvas, while established APIs expose app composition.</p>
+<p>The official sequence is to create an AppModule, attach components through <code>AddAppComponents</code>, validate with <code>ValidateApp</code>, publish with <code>PublishXml</code>, and associate access roles. This is a supported route to programmatic app generation, although app validation is not a complete business-function test. <a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/create-manage-model-driven-apps-using-code">Model-driven app creation API</a>.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Generation route</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Standard forms</td>
+<td>SystemForm and FormXml; copy a valid form or generate a supported structure</td>
+<td>High feasibility; preserve IDs and dependencies</td>
+</tr>
+<tr>
+<td>Views</td>
+<td>SavedQuery with FetchXML and layout definitions</td>
+<td>High feasibility; validate column names and filters</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>Documented visualization definitions and solution transport</td>
+<td>Feasible; chart-type and field restrictions matter</td>
+</tr>
+<tr>
+<td>Dashboards</td>
+<td>Supported FormXml and component references</td>
+<td>Feasible; more composition and layout work</td>
+</tr>
+<tr>
+<td>App shell and sitemap</td>
+<td>AppModule APIs and supported sitemap editing</td>
+<td>Strong MVP candidate</td>
+</tr>
+<tr>
+<td>Classic command/ribbon customizations</td>
+<td>Supported RibbonDiffXml patterns</td>
+<td>Feasible, but versioned and dependency sensitive</td>
+</tr>
+<tr>
+<td>Modern commands</td>
+<td>Maker authoring and solution transport; further contract validation required</td>
+<td>Do not claim a universal raw-source compiler</td>
+</tr>
+<tr>
+<td>Business process flows</td>
+<td>Designer-authored definition; API lifecycle and instance operations</td>
+<td>Deploy templates; separate runtime control from definition generation</td>
+</tr>
+<tr>
+<td>Business rules</td>
+<td>Designer-authored rule components; solution transport</td>
+<td>Treat arbitrary rule compilation as unverified</td>
+</tr>
+<tr>
+<td>Custom pages</td>
+<td>Canvas-based authoring plus app integration</td>
+<td>Inherit relevant Canvas constraints</td>
+</tr>
+<tr>
+<td>Generative pages</td>
+<td>PAC model generation/upload tooling and Microsoft AI workflows</td>
+<td>Separate target; gate emerging capabilities</td>
+</tr>
+</tbody></table></div>
+<p>Microsoft expressly documents programmatic form creation and view customization. It also lists which portions of solution XML may be edited; the fact that other XML is visible does not authorize arbitrary rewriting. Use schema-aware edits within the supported portions. <a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/customize-entity-forms">Forms</a>, <a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/customize-entity-views">views</a>, <a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/when-edit-customization-file">supported XML edits</a>.</p>
+<p>The business-process-flow API documentation directs developers to the visual designer to define the process. Its APIs support activation, instances and stage progression. Similarly, a business rule being stored as a workflow category is insufficient evidence for a supported rule compiler. <a href="https://learn.microsoft.com/en-us/power-automate/developer/business-process-flows-code">Business process flows using code</a>, <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-create-business-rule">business rule authoring</a>.</p>
+<p>Microsoft&#39;s model-app plugin is an especially relevant design reference: it builds and edits an App Spec through a vendored headless SDK and can reconcile deployed artifacts. The SDK should be assessed as repository implementation code rather than assumed to be a stable public library. Investigate reuse at a pinned commit and retain a documented API fallback. <a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/model-apps/README.md">Model-app plugin</a>.</p>
+<h2 id="7-dataverse-schema-and-security-deep-dive">7. Dataverse schema and security deep dive</h2>
+<p>Dataverse can support a declarative schema provider for ordinary custom tables, columns, choices, relationships, keys and selected settings. Metadata APIs expose creation and updates, and <code>MSCRM.SolutionUniqueName</code> can associate supported newly created components with the intended solution. Schema creation should happen in a development/build environment before managed promotion. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/create-update-entity-definitions-using-web-api">Table definition APIs</a>.</p>
+<h3 id="proposed-supported-schema-scope">Proposed supported schema scope</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>What PowerCanvas can own</th>
+<th>Important distinction</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tables</td>
+<td>Publisher prefix, schema/logical names, primary name, ownership, selected flags</td>
+<td>Names and structural choices are not freely mutable</td>
+</tr>
+<tr>
+<td>Columns</td>
+<td>Text, multiline, numeric, currency, date/time, boolean, choice, lookup</td>
+<td>Data type, precision, format, time behavior and requiredness must be explicit</td>
+</tr>
+<tr>
+<td>Choices</td>
+<td>Stable integer values plus labels and translations</td>
+<td>Renaming a label must not silently renumber existing data</td>
+</tr>
+<tr>
+<td>Relationships</td>
+<td>One-to-many/many-to-one lookup; many-to-many metadata</td>
+<td>Specify cascade behavior; validate table eligibility</td>
+</tr>
+<tr>
+<td>Alternate keys</td>
+<td>Defined key metadata and asynchronous readiness checks</td>
+<td>Duplicates can prevent successful index creation</td>
+</tr>
+<tr>
+<td>Auditing</td>
+<td>Supported organization/table/column settings</td>
+<td>Enabling metadata does not define retention or eliminate storage costs</td>
+</tr>
+<tr>
+<td>Ownership</td>
+<td>User/team or organization ownership where supported</td>
+<td>Model access and reassignment behavior before creation</td>
+</tr>
+<tr>
+<td>Roles</td>
+<td>Role records and privilege/depth assignments</td>
+<td>Resolve actual privilege metadata; include Append and AppendTo requirements</td>
+</tr>
+<tr>
+<td>Business units/teams</td>
+<td>Target environment provisioning and mappings</td>
+<td>Operational identities are not portable role definitions</td>
+</tr>
+<tr>
+<td>Formula/calculated/rollup columns</td>
+<td>Carry designer-authored components through ALM</td>
+<td>Do not generate their expression definitions through unsupported code</td>
+</tr>
+</tbody></table></div>
+<p>Relationship APIs create lookup metadata as part of the relationship definition. They also expose eligibility checks and cascade configuration. This is enough for a deterministic provider, provided the IR captures those semantics. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/create-update-entity-relationships-using-web-api">Relationship APIs</a>.</p>
+<p>The decisive exception is specialized expressions: Microsoft states that formula/calculated/rollup definitions must be set with the Power Apps editor. Reading <code>FormulaDefinition</code>, or discovering its YAML/XAML shape, does not make writing it supported. The MVP should reject such authoring requests with a clear designer step or use a reviewed template component. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/specialized-columns">Specialized columns</a>.</p>
+<h3 id="security-is-part-of-the-generated-application">Security is part of the generated application</h3>
+<p>Define permissions by persona, table, action and access depth. Resolve them into platform privileges rather than granting an administrator role to make the application work. Dataverse roles are cumulative, and relationships can require multiple rights. A user may therefore pass the generated role test but retain broader access from another role. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-concepts">Security concepts</a>, <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-access-rights">access-right dependencies</a>, <a href="https://learn.microsoft.com/en-us/power-platform/admin/security-roles-privileges">cumulative privileges</a>.</p>
+<p>Model app access, Dataverse row access, field security, SharePoint permissions, and flow connection authority are separate checks. Hidden UI fields are not data protection. Use test personas to prove both allowed and denied operations, including direct API access where appropriate.</p>
+<p>Standard role templates can be resolved using stable template identities, while role instances and business-unit replicas vary across environments. Custom roles need publisher/solution-aware mappings and target discovery. Never map security using an unqualified display-name match. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-roles">Role templates</a>.</p>
+<p>Safe source-controlled material includes schema intent, supported component definitions, role privilege specifications, translations, reviewed seed fixtures, migration instructions and tests. Keep live business data, tokens, target connection credentials and personal identities out of ordinary project source.</p>
+<h2 id="8-dataverse-migrations">8. Dataverse migrations</h2>
+<p>The migration concept is viable, but its semantics differ from Prisma, Entity Framework, Flyway, Liquibase or Supabase SQL migrations. Dataverse evolution combines metadata operations, solution layers, dependency resolution, publishing, asynchronous work, data transformation and potentially external systems. It is not a sequence of arbitrary transactional DDL statements.</p>
+<p>Proposed migration classes:</p>
+<ol>
+<li><strong>Additive metadata:</strong> introduce a table, optional column, relationship or view.</li>
+<li><strong>Behavioral change:</strong> update a form, flow or permission, with regression checks.</li>
+<li><strong>Data transformation:</strong> backfill through APIs using resumable checkpoints.</li>
+<li><strong>Destructive evolution:</strong> retire and eventually remove a component through a reviewed upgrade.</li>
+</ol>
+<p>Adopt an expand/migrate/contract procedure. For a type change, introduce a replacement column, populate and verify it, move readers/writers, then remove the old column only after dependency and data-retention review. Never infer a rename from a deletion/addition pair without explicit intent.</p>
+<p>Managed solution <strong>updates</strong> and <strong>upgrades</strong> behave differently: updates do not remove obsolete components, while upgrades can remove components omitted from the new version, subject to dependencies. Uninstalling a managed solution can delete associated custom data. <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/update-solutions">Solution update and upgrade behavior</a>.</p>
+<p>A migration record should contain a stable ID, checksum, preconditions, action graph, affected resources, data-loss classification, completion evidence and a forward-recovery procedure. Record both source revision and solution version. Avoid promising a universal <code>down</code> migration: removed columns, sent notifications and external side effects may not be reversible.</p>
+<p>Use solution transport as the downstream schema authority. Applying the same schema through direct metadata writes in production and through managed imports creates competing ownership and unmanaged layers. Reserve direct operational APIs for explicitly separate data and environment tasks.</p>
+<h2 id="9-power-automate-deep-dive">9. Power Automate deep dive</h2>
+<h3 id="representation-and-supported-authoring">Representation and supported authoring</h3>
+<p>Microsoft documents cloud flows as Process/Workflow rows with category <code>5</code>; <code>clientdata</code> contains serialized JSON for the definition and connection references. The documented code route applies to solution-aware flows. It supports a practical compiler for a bounded set of triggers/actions. <a href="https://learn.microsoft.com/en-us/power-automate/manage-flows-with-code">Cloud flows through code</a>.</p>
+<p>The embedded definition resembles the Logic Apps workflow definition model, but a generic Logic Apps schema is not a complete Power Automate deployment contract. Connector operation IDs, parameters, dynamic metadata, authentication, connection references, ownership and service validation still matter.</p>
+<p>For an escalation flow, a useful IR must go beyond “notify manager.” It should define:</p>
+<ul>
+<li>The triggering table and event, filtering columns and trigger conditions.</li>
+<li>How the assigned manager is resolved and what happens if none exists.</li>
+<li>Stable action IDs, explicit dependencies and branch/scope structure.</li>
+<li>Typed inputs and outputs, expression references and null handling.</li>
+<li>An idempotency or deduplication strategy.</li>
+<li>Retry policy, timeout, concurrency and failure reporting.</li>
+<li>Connection references, owner identity and intended enablement state.</li>
+</ul>
+<p>Without those details, natural-language generation merely moves ambiguity into production.</p>
+<h3 id="recommended-compiler-approach">Recommended compiler approach</h3>
+<p>Start with a curated connector/action catalog: Dataverse trigger, retrieve/update row, condition, scope, recurrence, and one notification connector. Store tested operation metadata and sample artifacts. Resolve environment-specific values late. Validate the graph and expression references locally; then create the flow disabled in a test environment, bind connections, validate activation and run representative scenarios.</p>
+<p>Microsoft now publishes a Power Automate plugin powered by FlowAgent MCP. It advertises creation, surgical edits, run diagnostics, connection operations, scaffolding and validation. This makes it a serious competitor and potential adapter. Its bundled engine and authentication requirements must be assessed operation by operation; a Microsoft repository alone is not evidence that every underlying endpoint is a public third-party contract. Its “offline” description concerns the local engine packaging, not offline execution of cloud flows. <a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/power-automate/README.md">Power Automate plugin</a>.</p>
+<h3 id="reliability-and-authentication">Reliability and authentication</h3>
+<p>A connection reference identifies which authenticated connection a component uses. Binding it does not authenticate that connection. The identity enabling a flow must own or have permission to use the relevant connections; importing a valid flow can therefore succeed while activation fails. <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-connection-reference">Connection reference activation rules</a>.</p>
+<p>Connector support for service principals varies. OAuth consent, MFA, delegated-user authority, external tenant restrictions and connection repair can require human action. PowerCanvas must distinguish deployment identity, flow owner, connection owner and run identity.</p>
+<p>Premium service-principal-owned flows need a supported licensing arrangement. Current documentation includes Process/per-flow capacity, an appropriately licensed flow group, or a designated licensed user&#39;s entitlement. Do not repeat the outdated blanket claim that a Process license is always the only option. <a href="https://learn.microsoft.com/en-us/power-automate/service-principal-support">Service-principal flow support</a>, <a href="https://learn.microsoft.com/en-us/power-automate/assign-user-license-service-principal-flow">designated user licensing</a>.</p>
+<p>PowerCanvas should treat “artifact created,” “connections ready,” “flow enabled,” and “behavior verified” as separate milestones. Designer-editability is an additional round-trip acceptance criterion.</p>
+<h2 id="10-sharepoint-and-microsoft-graph-deep-dive">10. SharePoint and Microsoft Graph deep dive</h2>
+<p>SharePoint provisioning is highly automatable, but it lives outside the Power Platform solution boundary. Include it in the deployment graph as separately owned infrastructure, with its own state and recovery plan.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Resource/action</th>
+<th>Preferred route</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover sites, lists, users and groups</td>
+<td>Graph</td>
+<td>Requires appropriate directory/site permissions</td>
+</tr>
+<tr>
+<td>Create ordinary lists and columns</td>
+<td>Graph v1.0 where covered</td>
+<td>Validate requested field types and update restrictions</td>
+</tr>
+<tr>
+<td>Create document libraries</td>
+<td>List/library provisioning through supported Graph or SharePoint APIs</td>
+<td>Test the exact template and settings</td>
+</tr>
+<tr>
+<td>Files, folders and metadata</td>
+<td>Graph drive/list-item APIs</td>
+<td>Large uploads and metadata operations have different mechanics</td>
+</tr>
+<tr>
+<td>Modern communication or non-group team site</td>
+<td>SharePoint site-creation REST or PnP</td>
+<td>Tenant creation policy and elevated bootstrap permissions</td>
+</tr>
+<tr>
+<td>Microsoft 365 group-connected team site</td>
+<td>Graph group-backed provisioning or PnP</td>
+<td>Provisioning is asynchronous and creates additional resources</td>
+</tr>
+<tr>
+<td>Content types and site columns</td>
+<td>Graph where sufficient; SharePoint/PnP for richer operations</td>
+<td>Do not assume full feature parity</td>
+</tr>
+<tr>
+<td>Views, indexing, versioning and complex list settings</td>
+<td>SharePoint REST/CSOM or PnP</td>
+<td>More complete SharePoint-specific model</td>
+</tr>
+<tr>
+<td>Permission inheritance and SharePoint groups</td>
+<td>SharePoint/PnP; Graph for supported permission operations</td>
+<td>Site grants, file sharing and user permissions are distinct</td>
+</tr>
+</tbody></table></div>
+<p>Graph v1.0 explicitly supports creating lists with custom columns. A direct site-creation operation was found in <strong>Graph beta</strong>; this study did not establish a corresponding supported v1.0 route for that operation. Use documented SharePoint site APIs or group-based provisioning instead of assuming either “Graph cannot create sites” or “Graph beta is production-supported.” <a href="https://learn.microsoft.com/en-us/graph/api/list-create?view=graph-rest-1.0">Graph list creation</a>, <a href="https://learn.microsoft.com/en-us/graph/api/site-post-sites?view=graph-rest-beta">Graph beta site creation</a>, <a href="https://learn.microsoft.com/en-us/sharepoint/dev/apis/site-creation-rest">SharePoint site REST</a>.</p>
+<p>PnP PowerShell and PnP Core provide substantial coverage and can reduce development effort. Core transparently uses Graph and SharePoint APIs. They are community-maintained libraries without a Microsoft support SLA; validate the actual operation and pin dependencies. <a href="https://pnp.github.io/pnpcore/">PnP Core support</a>, <a href="https://pnp.github.io/powershell/cmdlets/New-PnPSite.html">PnP site creation</a>, <a href="https://pnp.github.io/pnpcore/using-the-sdk/configuring%20authentication.html">PnP authentication</a>.</p>
+<p>Use selected-resource permissions where sufficient. Consent to a Selected scope does not by itself grant access to every resource; resource-specific grants are part of the authorization model. Site creation needs a separate bootstrap capability because access to an existing selected site cannot authorize creating arbitrary new sites. <a href="https://learn.microsoft.com/en-us/graph/permissions-selected-overview">Selected permissions</a>.</p>
+<p>Do not use SharePoint ACS app-only authentication. Microsoft set its final retirement for 2 April 2026. Use Entra-based authentication and the credentials supported by the chosen API. <a href="https://learn.microsoft.com/en-us/sharepoint/dev/sp-add-ins/retirement-announcement-for-azure-acs">ACS retirement</a>.</p>
+<p>Graph also belongs in PowerCanvas for identity/group lookup, approved membership operations, OneDrive files and selected Teams integration. It should not be used as a substitute for Dataverse metadata or Power Platform environment APIs. Avoid broad directory-write permissions unless an explicitly requested module needs them.</p>
+<h2 id="11-power-pages-and-code-apps">11. Power Pages and code apps</h2>
+<p>Power Pages is a feasible later target for templated portals and code sites. PAC provides website list/download/upload, cloning, model migration, and code-site upload/download operations. Templates, JavaScript, CSS, Liquid and supported site configuration can be source controlled. Website provisioning, identity providers, domains, certificates and external-user access need dedicated lifecycle handling. <a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/pages">PAC pages</a>.</p>
+<p>Do not mistake the portal&#39;s <code>/_api</code> for a provisioning API. Microsoft restricts that API to supported data operations and explicitly excludes table metadata and portal configuration tables. Configure sites through the documented management and ALM routes. <a href="https://learn.microsoft.com/en-us/power-pages/configure/web-api-overview">Power Pages Web API restrictions</a>.</p>
+<p>Power Apps <strong>code apps</strong> deserve an additional target in the product strategy. They support framework-based development such as React/Vue, local code development and Power Platform hosting/connectors. End users need Power Apps Premium. Their limitations include no native Power Platform Git integration and no SharePoint forms integration; ordinary source Git remains a separate concern. <a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/overview">Code apps overview</a>.</p>
+<p>The newer <code>pa</code> CLI initializes, runs and publishes code apps. Its ALM route can place an app into a Dataverse solution. This offers a better fit for custom code-generated UI when Canvas-specific capabilities are not essential, but it is a different artifact type and must not be marketed as Canvas generation. <a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/npm-quickstart">Code-app quickstart</a>, <a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/alm">code-app ALM</a>.</p>
+<h2 id="12-existing-microsoft-tooling-wrap-versus-build">12. Existing Microsoft tooling: wrap versus build</h2>
+<h3 id="pac-command-coverage">PAC command coverage</h3>
+<p>This inventory covers the requested groups and important newer additions. Commands are documented interfaces; their exact options must be checked against the version selected for PowerCanvas.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Relevant functionality</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/auth"><code>pac auth</code></a></td>
+<td>Profiles, interactive/device sign-in, service principals, certificate/federated/managed-identity options, identity inspection</td>
+<td>Wrap PAC&#39;s own authentication; use a separate supported credential provider for direct APIs</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/env"><code>pac env</code></a></td>
+<td>Organization discovery, selection, identity and settings operations</td>
+<td>Prefer explicit target parameters and JSON where documented</td>
+</tr>
+<tr>
+<td><code>pac org</code></td>
+<td>Historical command name in older examples</td>
+<td>Use the current <code>env</code> reference as the baseline; do not promise alias compatibility without checking the installed CLI</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/solution"><code>pac solution</code></a></td>
+<td>Init/clone/sync, export/import, pack/unpack, component membership, settings generation, checker, versioning, publish/upgrade</td>
+<td>Primary packaging and ALM adapter</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/canvas"><code>pac canvas</code></a></td>
+<td>List/download, narrow connector generator, deprecated pack/unpack</td>
+<td>Use inspection and narrowly documented operations</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/modelbuilder"><code>pac modelbuilder</code></a></td>
+<td>Generates strongly typed Dataverse code from existing metadata</td>
+<td>Reuse for developer types; it does not generate the database schema</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/power-fx"><code>pac power-fx</code></a></td>
+<td>Preview expression REPL and script execution</td>
+<td>Optional expert tool, not the lint foundation</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/application"><code>pac application</code></a></td>
+<td>Lists/installs available Dataverse marketplace applications</td>
+<td>Dependency installation; not an arbitrary app generator</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/connector"><code>pac connector</code></a></td>
+<td>Create/update/download/list/delete custom connectors and related operations</td>
+<td>Wrap supported connector lifecycle</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/plugin"><code>pac plugin</code></a></td>
+<td>Dataverse plug-in project scaffolding and package operations</td>
+<td>Reuse if server-side extensions enter scope</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/package"><code>pac package</code></a></td>
+<td>Package projects, solutions/data/configuration and deployment</td>
+<td>Later complex installer support; unnecessary for the first simple solution</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/admin"><code>pac admin</code></a></td>
+<td>Environment lifecycle, backups/restores, service principals, settings and discovery</td>
+<td>Separate privileged provider; exclude destructive administration from default workflow</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/pcf"><code>pac pcf</code></a></td>
+<td>Code component initialization/versioning and development deployment</td>
+<td>Reuse PCF tooling and harness; build components independently</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/connection"><code>pac connection</code></a></td>
+<td>List/create/update/delete connection operations</td>
+<td>Connector-specific readiness checks remain necessary</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/model"><code>pac model</code></a></td>
+<td>App creation/listing, table discovery, generative-page type generation/upload/download</td>
+<td>Prefer these documented commands over custom equivalents when adequate</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/pages"><code>pac pages</code></a></td>
+<td>Website content and code-site lifecycle</td>
+<td>Later Power Pages provider</td>
+</tr>
+<tr>
+<td><code>pac pipeline</code></td>
+<td>Native deployment pipeline integration</td>
+<td>Integrate with an existing enterprise pipeline rather than forcing replacement</td>
+</tr>
+<tr>
+<td>New management groups</td>
+<td>Environment management, governance, licensing, resource queries and others, many marked preview</td>
+<td>Capability-gate each operation; avoid freezing an obsolete inventory</td>
+</tr>
+</tbody></table></div>
+<p>The command-group index was updated on 11 September 2026. It includes substantially more than the brief&#39;s original list. Treat this as a moving platform surface with tested adapters, not a one-time shell wrapper. <a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/">Current PAC index</a>.</p>
+<h3 id="is-pac-suitable-for-orchestration">Is PAC suitable for orchestration?</h3>
+<p><strong>Yes, with a versioned adapter.</strong> Documented JSON output exists for operations such as <code>env who</code>, <code>solution list</code> and several admin commands. It is not a demonstrated universal output contract for every command. Read exit codes, use structured files where provided, retain sanitized diagnostics, and follow long-running operation status. Do not parse decorative console tables as the main state API.</p>
+<p>Proposed wrapper requirements:</p>
+<ul>
+<li>Resolve and verify the intended executable; pin a tested version and distribution.</li>
+<li>Invoke with an argument array, never shell-interpolate user prompts.</li>
+<li>Set tenant/environment explicitly and verify identity before writes.</li>
+<li>Separate progress output from machine-readable results.</li>
+<li>Enforce timeouts while distinguishing timeout from server-side failure.</li>
+<li>Serialize commands that mutate shared authentication selection.</li>
+<li>Redact tokens, connection payloads and sensitive errors.</li>
+<li>Run compatibility probes when upgrading PAC; do not auto-update production runners mid-release.</li>
+</ul>
+<p>PAC is distributed in several forms, with platform differences. For cross-platform usage, verify the selected .NET-tool capabilities on Windows, macOS and Linux rather than assuming Windows-only package features work everywhere. <a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction">PAC installation</a>.</p>
+<p>Use the Dataverse .NET SDK, Web API, Graph SDKs, Power Fx libraries, and Power Platform management SDK where they expose the required public contract. Do not reflect into PAC&#39;s private assemblies. Standard process invocation is a reasonable dependency model; bundling or redistributing Microsoft binaries needs a separate license review before release. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/work-with-data">Dataverse SDK choice</a>, <a href="https://learn.microsoft.com/en-us/rest/api/power-platform/">management API and SDK</a>.</p>
+<h2 id="13-alm-packaging-and-deployment">13. ALM, packaging and deployment</h2>
+<p>The proposed <code>powercanvas deploy production</code> workflow is feasible once target prerequisites exist. It should coordinate the following phases:</p>
+<ol>
+<li><strong>Resolve:</strong> load immutable artifact, target configuration, intended identity and release policy.</li>
+<li><strong>Preflight:</strong> verify privileges, dependencies, connector availability, bindings and migration risk.</li>
+<li><strong>Validate:</strong> run local structural checks, supported platform checks and relevant tests.</li>
+<li><strong>Prepare:</strong> verify a usable recovery point where required; provision separately owned external resources.</li>
+<li><strong>Import:</strong> import the managed solution with target deployment settings and monitor completion.</li>
+<li><strong>Configure:</strong> finish target-specific assignments, reference bindings and approved data operations.</li>
+<li><strong>Activate:</strong> enable flows only when dependencies and connection authority are ready.</li>
+<li><strong>Verify:</strong> run identity-specific smoke tests and record component/solution versions.</li>
+</ol>
+<p>Deployment settings can prepopulate environment variables and connection-reference bindings, eliminating interactive import prompts for those values. They do not create valid OAuth consent or replace connection ownership checks. Generate settings from the actual solution and validate them against the target. <a href="https://learn.microsoft.com/en-us/power-platform/alm/conn-ref-env-variables-build-tools">Deployment settings</a>.</p>
+<p>Power Platform Build Tools and GitHub Actions already automate much of solution export, build, checks and deployment. Build Tools version 2 is PAC-based. PowerCanvas&#39;s value is the coherent project/plan/configuration layer above these primitives and coordination with SharePoint and other resources. <a href="https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools">Azure DevOps Build Tools</a>, <a href="https://github.com/microsoft/powerplatform-actions">GitHub Actions repository</a>.</p>
+<p>Prefer creating a valid managed artifact through the supported solution build/export path. Do not assume that flipping an unmanaged ZIP&#39;s flag produces an equivalent managed build. For metadata generated from intent, first materialize and validate it in an isolated development/build environment, then export through the platform. Existing valid source projects can use the supported pack/build workflow.</p>
+<p>Promote the same artifact through Test/UAT and Production; vary only declared target configuration. Record SHA-256, solution version, source commit, generator versions and validation results. An identical build need not produce a byte-identical server export; compare normalized semantic content as well as the hash of the specific artifact promoted.</p>
+<p>Native pipelines support staged deployment, integrations and redeploying a prior solution version when configured. That is useful recovery, but it is not a guarantee that deleted data or external side effects are restored. <a href="https://learn.microsoft.com/en-us/power-platform/alm/pipelines">Power Platform pipelines</a>.</p>
+<h2 id="14-infrastructure-as-code-state-and-semantic-diffs">14. Infrastructure as code, state and semantic diffs</h2>
+<h3 id="a-bounded-declarative-model-is-realistic">A bounded declarative model is realistic</h3>
+<p>PowerCanvas can compare desired application intent with observed platform metadata and produce a plan. It cannot safely infer that every resource absent from a project should be deleted. Applications share tables, connections, roles and libraries; unmanaged layers and service-generated metadata complicate ownership.</p>
+<p>Use a three-way comparison: <strong>desired specification</strong>, <strong>last applied ownership/baseline</strong>, and <strong>current observed state</strong>. A resource can be created, updated, adopted, left unmanaged, or marked as conflicting. Importing an existing app into PowerCanvas should start read-only and require explicit adoption of the fields or components it may manage.</p>
+<p>Proposed ownership rules:</p>
+<ul>
+<li>Own selected properties, not automatically the entire environment.</li>
+<li>Keep native artifacts for components the IR cannot fully represent.</li>
+<li>Preserve unknown fields and opaque components during round trips.</li>
+<li>Identify objects with stable logical names and recorded target IDs.</li>
+<li>Show dependency-driven changes and destructive operations separately.</li>
+<li>Re-read immediately before applying a saved plan and reject stale assumptions.</li>
+</ul>
+<p>Microsoft already has a Terraform provider for environments and other Power Platform resources. Use it for infrastructure already well covered rather than maintaining a competing provider for every admin operation. PowerCanvas can consume its outputs. <a href="https://github.com/microsoft/terraform-provider-power-platform">Microsoft Terraform provider</a>.</p>
+<h3 id="state-storage-recommendation">State storage recommendation</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Benefits</th>
+<th>Limitations</th>
+<th>Recommended use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Local state</td>
+<td>Simple, offline-readable</td>
+<td>Poor collaboration and locking</td>
+<td>Single-developer prototype</td>
+</tr>
+<tr>
+<td>Git only</td>
+<td>Reviewable desired state and history</td>
+<td>Unsafe place for secrets; weak runtime locking and journals</td>
+<td>Source and immutable manifests, not live shared state</td>
+</tr>
+<tr>
+<td>Azure Blob</td>
+<td>Versioning, access controls, leases for coordination</td>
+<td>Azure setup and operational ownership</td>
+<td>Preferred team-state backend if building state management</td>
+</tr>
+<tr>
+<td>Dataverse state table</td>
+<td>Co-located with deployment resources</td>
+<td>Circular bootstrap, licensing and environment-restore coupling</td>
+<td>Optional later backend, outside the application&#39;s managed solution</td>
+</tr>
+<tr>
+<td>Live introspection only</td>
+<td>Fresh observed metadata</td>
+<td>Cannot reliably infer ownership, intent or completed migration history</td>
+<td>Necessary input, insufficient alone</td>
+</tr>
+<tr>
+<td>Existing Terraform/Pulumi backend</td>
+<td>Mature state workflows</td>
+<td>Only applies to resources managed by that engine</td>
+<td>Prefer reuse for infrastructure provider scope</td>
+</tr>
+</tbody></table></div>
+<p>Terraform&#39;s state associates configuration with real resources and retains metadata needed for planning; its plan can be saved for application. Borrow these concepts, while recognizing Power Platform&#39;s shared components and asynchronous service operations. <a href="https://developer.hashicorp.com/terraform/language/state">Terraform state</a>, <a href="https://developer.hashicorp.com/terraform/cli/commands/plan">saved plans</a>.</p>
+<p>State should contain IDs, ownership, hashes, versions, operation checkpoints and drift evidence. Store credentials elsewhere. If a service returns a secret in a resource payload, filter it before state persistence. Remote state and backups still need encryption and tightly controlled access.</p>
+<h3 id="semantic-diff-feasibility">Semantic diff feasibility</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Useful diff</th>
+<th>Limit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tables/columns/relationships</td>
+<td>Adds, property changes, cascade changes, key changes</td>
+<td>Normalize defaults, labels and environment-specific identifiers</td>
+</tr>
+<tr>
+<td>Security roles</td>
+<td>Privilege/action/depth changes</td>
+<td>Effective user access also depends on all roles, teams and sharing</td>
+</tr>
+<tr>
+<td>Forms/views</td>
+<td>Tabs, sections, fields, order, FetchXML filters</td>
+<td>Preserve meaningful IDs and order; avoid destructive normalization</td>
+</tr>
+<tr>
+<td>Flows</td>
+<td>Trigger/action/condition/dependency changes</td>
+<td>Connector metadata and expression semantics need interpretation</td>
+</tr>
+<tr>
+<td>Canvas</td>
+<td>Screens/controls/properties/formulas from supported source</td>
+<td>Visible source may be incomplete; binary equality is unhelpful</td>
+</tr>
+<tr>
+<td>Environment configuration</td>
+<td>Declared settings and binding references</td>
+<td>Hidden or inaccessible settings must remain “unknown”</td>
+</tr>
+<tr>
+<td>SharePoint</td>
+<td>Lists, fields, views and selected settings/permissions</td>
+<td>Operational content and external grants are separate</td>
+</tr>
+</tbody></table></div>
+<p><code>powercanvas diff dev production</code> should compare equivalent layers or release artifacts plus configuration. Comparing a dev unmanaged layer directly with production&#39;s effective managed stack can produce misleading differences. Return unresolved comparisons explicitly instead of reporting “no drift.”</p>
+<h2 id="15-validation-static-analysis-and-testing">15. Validation, static analysis and testing</h2>
+<p>Use layered validation with separate evidence, not one green badge:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Examples</th>
+<th>What success does not prove</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Specification</td>
+<td>Required properties, unique IDs, supported types, reference resolution</td>
+<td>Platform acceptance</td>
+</tr>
+<tr>
+<td>Static semantic checks</td>
+<td>Formula parse/types with known symbols, query patterns, flow dependency graph</td>
+<td>Runtime data behavior</td>
+</tr>
+<tr>
+<td>Target preflight</td>
+<td>Permissions, configuration, connections, dependencies, DLP visibility</td>
+<td>Successful execution under every user</td>
+</tr>
+<tr>
+<td>Platform checks</td>
+<td>Solution Checker, ValidateApp, supported authoring diagnostics</td>
+<td>End-to-end business correctness</td>
+</tr>
+<tr>
+<td>Deployment verification</td>
+<td>Imported version, published components, enabled flows</td>
+<td>Correct user access and integrations</td>
+</tr>
+<tr>
+<td>API integration tests</td>
+<td>CRUD, lookup association, invalid-input rejection, denied access</td>
+<td>Visual usability</td>
+</tr>
+<tr>
+<td>Browser tests</td>
+<td>Main user journeys, errors, navigation, responsive layouts</td>
+<td>Arbitrary unseen requirements</td>
+</tr>
+<tr>
+<td>Flow behavior tests</td>
+<td>Trigger, branch, timeout, retry, duplicate-event handling</td>
+<td>Every external service failure mode</td>
+</tr>
+</tbody></table></div>
+<p>Solution Checker is an appropriate integration, with its documented component coverage and rule output. Keep results tied to a specific artifact and ruleset; do not treat it as a universal flow, license, security or UI verifier. <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/use-powerapps-checker">Solution Checker</a>.</p>
+<p>Important static-analysis nuances:</p>
+<ul>
+<li>Circular business relationships can be valid. Report problematic dependency or cascade cycles, not every graph cycle.</li>
+<li>Flag a missing target column when a parsed reference proves it; mark dynamically constructed references as uncertain.</li>
+<li>Hard-coded URLs, IDs and email addresses are portability risks, but some are intentional constants.</li>
+<li>Flow depth, connector count and fan-out are useful cost/performance signals; actual request volume depends on runtime data and retries.</li>
+<li>Licensing checks should identify requirements and unresolved entitlement evidence, not issue a blanket compliance certificate.</li>
+</ul>
+<p><strong>Testing recommendation:</strong> use direct Playwright with Microsoft&#39;s Power Platform Page Object Model samples. They provide Canvas/model-driven/generative-page abstractions, reusable authentication state and CI patterns. The sample toolkit is a starting point to adapt and pin, not proof that every custom control works automatically. <a href="https://learn.microsoft.com/en-us/power-platform/developer/playwright-samples/overview">Power Platform Playwright samples</a>.</p>
+<p>Test Engine should not be a new dependency because Microsoft deprecated it in April 2026. Its repository was still reachable and showed recent push activity during this research; the explicit deprecation notice takes precedence. EasyRepro remains useful context for older Dynamics test suites, but repository metadata showed its most recent push in October 2024. <a href="https://learn.microsoft.com/en-us/power-platform/important-changes-coming#deprecation-of-test-engine">Test Engine deprecation</a>, <a href="https://github.com/microsoft/EasyRepro">EasyRepro</a>.</p>
+<p>Use dedicated test identities, short-lived protected browser state, and policy-compatible sign-in. API authentication with a service principal does not automatically supply an interactive user&#39;s browser session. Run security tests as low-privilege personas rather than only as the deployment administrator.</p>
+<h2 id="16-authentication-and-multi-tenant-strategy">16. Authentication and multi-tenant strategy</h2>
+<h3 id="credential-architecture">Credential architecture</h3>
+<p>Use a credential broker with explicit tenant, cloud, account/application and resource audience. For interactive use, prefer browser sign-in through supported Microsoft identity libraries; offer device code where tenant policy permits. For CI, prefer workload federation or managed identity where the target operation supports them, then certificates. Client secrets are a fallback, never project configuration.</p>
+<p>PAC supports named profiles and several unattended methods. It also documents <code>pac auth token</code>, which returns a <strong>Power Platform API</strong> token. It is reasonable to evaluate that explicit command for that audience. Do not scrape PAC&#39;s internal cache or assume its token works for Dataverse, Graph or SharePoint. Use the correct credential acquisition route per service. <a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/auth">PAC auth</a>.</p>
+<p>MSAL&#39;s supported persistence extensions provide a better foundation than a custom plaintext token file. Node extensions and .NET extensions support protected cross-platform persistence. Keep tenant/account separation in cache keys and fail clearly when secure persistence is unavailable; an ephemeral session is preferable to silently falling back to unprotected storage. <a href="https://learn.microsoft.com/en-us/entra/identity-platform/msal-node-extensions">MSAL Node extensions</a>, <a href="https://learn.microsoft.com/en-us/entra/msal/dotnet/how-to/token-cache-serialization">.NET token persistence</a>.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Identity/authorization considerations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dataverse</td>
+<td>Environment URL/audience, application-user presence, appropriate security role</td>
+</tr>
+<tr>
+<td>Power Platform administration</td>
+<td>Management permissions and API-specific roles/registration</td>
+</tr>
+<tr>
+<td>Microsoft Graph</td>
+<td>Delegated/application permissions and consent; directory scopes only when required</td>
+</tr>
+<tr>
+<td>SharePoint</td>
+<td>SharePoint resource audience and supported Entra app-only/delegated method</td>
+</tr>
+<tr>
+<td>Connectors</td>
+<td>Connector-specific identity, consent, ownership and sharing</td>
+</tr>
+<tr>
+<td>Canvas authoring</td>
+<td>Supported local authoring authentication plus live Studio session</td>
+</tr>
+<tr>
+<td>Browser tests</td>
+<td>An actual permitted test-user session and relevant app access</td>
+</tr>
+</tbody></table></div>
+<p>Legacy Power Platform admin service-principal registration can imply very broad administration. Do not confuse that mechanism with an ordinary least-privilege Dataverse application user or newer scoped management permissions. Isolate tenant bootstrap/admin work from routine application deployment. <a href="https://learn.microsoft.com/en-us/power-platform/admin/powerplatform-api-create-service-principal">Admin service-principal model</a>.</p>
+<h3 id="multi-tenant-profiles">Multi-tenant profiles</h3>
+<p>Store a nonsecret profile containing alias, tenant ID, cloud, allowed environments and preferred authentication mechanism. Bind project environments to immutable IDs; display names are for people. A profile switch must show both tenant and environment before a mutation, and each operation should capture the resolved target rather than consult a mutable global default halfway through.</p>
+<p>Proposed commands:</p>
+<pre><code class="language-text">powercanvas auth add client-a
+powercanvas auth add client-b
+powercanvas auth list
+powercanvas env use client-a/dev
+powercanvas doctor --env client-a/dev
+</code></pre>
+<p>Use separate deployment identities and state namespaces per client. Lock or isolate PAC profile selection during parallel work. In CI, select one explicit target for the job and reject accidental tenant mismatches. Support national-cloud endpoints as separately tested capability profiles, not a string replacement on commercial URLs.</p>
+<h2 id="17-environment-configuration-licensing-and-governance">17. Environment configuration, licensing and governance</h2>
+<p>Environment discovery and administration are technically feasible through PAC and Power Platform management APIs. Creation/provisioning is asynchronous and subject to permissions, capacity, geography and tenant policy. Default language, currency, region and environment type are architectural inputs, not harmless afterthoughts. <a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/admin">PAC admin</a>.</p>
+<p>Environment variable definitions belong with solution intent; current values belong to target configuration. Secret variables should reference an approved secret store where supported. A committed <code>.env</code> file is not an adequate replacement. Distinguish a missing value from an intentionally empty value. <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables">Environment variables</a>.</p>
+<h3 id="licensing-implications">Licensing implications</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Architecture</th>
+<th>Likely licensing consideration</th>
+<th>What the CLI should report</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canvas + SharePoint + standard connectors</td>
+<td>Existing Microsoft 365 rights may cover qualifying use</td>
+<td>Verify actual plan and connector classification</td>
+</tr>
+<tr>
+<td>Full Dataverse/model-driven application</td>
+<td>Premium Power Apps or applicable Dynamics rights</td>
+<td>Required app/data entitlements and target-user checks</td>
+</tr>
+<tr>
+<td>SQL or custom connectors</td>
+<td>Premium connector requirements are likely</td>
+<td>Flag before architecture approval</td>
+</tr>
+<tr>
+<td>Standalone premium cloud flows</td>
+<td>Power Automate entitlement depends on flow and execution model</td>
+<td>Separate flow licensing from app licensing</td>
+</tr>
+<tr>
+<td>Service-principal-owned flows</td>
+<td>Explicit supported licensing arrangement</td>
+<td>Owner, connection authority and licensing source</td>
+</tr>
+<tr>
+<td>Power Pages</td>
+<td>Authenticated/anonymous capacity and site licensing</td>
+<td>External-user volume assumptions and capacity model</td>
+</tr>
+<tr>
+<td>Code apps</td>
+<td>Power Apps Premium for users</td>
+<td>State this when offering the alternative UI target</td>
+</tr>
+<tr>
+<td>Developer environment</td>
+<td>Development/test rights and limited capacity</td>
+<td>Do not imply production entitlement</td>
+</tr>
+</tbody></table></div>
+<p>The licensing model changes and has exceptions. The CLI can maintain a versioned rule catalog and show evidence from current guidance, but cannot infer every contractual right from the API or installed licenses. Treat missing evidence as “needs review,” not “compliant.” <a href="https://learn.microsoft.com/en-us/power-platform/admin/powerapps-flow-licensing-faq">Power Platform licensing FAQ</a>, <a href="https://learn.microsoft.com/en-us/power-platform/admin/power-automate-licensing/faqs">Power Automate FAQ</a>, <a href="https://learn.microsoft.com/en-us/power-platform/developer/plan">Developer Plan</a>.</p>
+<p>DLP can prevent a connector combination even when every connection is valid. Policies classify connectors, restrict combinations and can impose further endpoint/action constraints. Governance also includes environment creation restrictions, managed-environment rules, sharing limits, Conditional Access and service-principal permissions. A preflight check with insufficient admin visibility must report the gap. <a href="https://learn.microsoft.com/en-us/power-platform/admin/dlp-connector-classification">Connector classification</a>, <a href="https://learn.microsoft.com/en-us/power-platform/admin/prevent-data-loss">data policies</a>.</p>
+<p>Custom connectors are feasible reusable artifacts, but require both API definition/configuration and a functioning backend. The documented OpenAPI import route requires Swagger/OpenAPI 2.0 and rejects 3.0. PowerCanvas may offer a conversion step only with explicit loss/compatibility validation; it should not accept any OpenAPI document and promise a working connector. <a href="https://learn.microsoft.com/en-us/connectors/custom-connectors/define-openapi-definition">Custom connector definition requirements</a>.</p>
+<h2 id="18-security-and-disaster-prevention">18. Security and disaster prevention</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Secure default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Credential leakage</td>
+<td>OS-protected cache, redacted logs, no tokens in prompts, state or Git</td>
+</tr>
+<tr>
+<td>Wrong tenant/environment</td>
+<td>Immutable target IDs, identity verification, environment protection</td>
+</tr>
+<tr>
+<td>Excessively privileged app</td>
+<td>Separate bootstrap, deployment and runtime identities; minimal roles</td>
+</tr>
+<tr>
+<td>Malicious template/plugin</td>
+<td>Pinned versions/digests, provenance, declared capabilities and explicit installation</td>
+</tr>
+<tr>
+<td>Prompt injection in existing app metadata</td>
+<td>Treat retrieved names, descriptions and files as data; constrain AI output to a validated schema</td>
+</tr>
+<tr>
+<td>AI-generated exfiltration or damaging actions</td>
+<td>Connector/action allowlists, destination review and deterministic policy checks</td>
+</tr>
+<tr>
+<td>Hidden destructive migration</td>
+<td>Explicit data-loss classification and saved-plan approval</td>
+</tr>
+<tr>
+<td>Compromised release runner</td>
+<td>Federated short-lived credentials, protected release environment and audit trail</td>
+</tr>
+<tr>
+<td>Private data sent to an AI provider</td>
+<td>Metadata-only context by default; explicit opt-in for sample/business data</td>
+</tr>
+<tr>
+<td>Plugin process with full access</td>
+<td>Process isolation plus OS/container controls where needed; process boundaries alone are not a sandbox</td>
+</tr>
+</tbody></table></div>
+<p>Production apply should require an approved, target-bound plan, a protected execution identity, verified artifact hash and fresh preconditions. Add a lock, a durable operation journal, bounded retries, and postcondition checks. A <code>--yes</code> flag should mean consent to a reviewed plan, not permission to bypass every protection.</p>
+<p>Recovery must be designed per operation:</p>
+<ul>
+<li>Reimport/redeploy a previously tested artifact for supported metadata rollback, subject to version/layer constraints.</li>
+<li>Prefer forward fixes for failed data migrations with resumable checkpoints.</li>
+<li>Use environment backups for appropriate environment-wide recovery, with documented restore restrictions.</li>
+<li>Recover SharePoint and external systems with their own procedures.</li>
+<li>Never claim a solution export is a backup of all business data or connector credentials.</li>
+</ul>
+<p>Microsoft&#39;s backup documentation restricts restore targets and regions and describes post-restore connection repair. Canvas app identifiers can also differ after restore. A recovery plan must therefore include rebinding and smoke testing, not merely requesting a restore. <a href="https://learn.microsoft.com/en-us/power-platform/admin/backup-restore-environments">Backup and restore restrictions</a>.</p>
+<p>An imported solution, a SharePoint library and a sent email do not share one transaction. Use a staged deployment with compensating actions where safe, and manual recovery instructions for irreversible effects. Do not promise atomic rollback across the platform.</p>
+<h2 id="19-performance-and-throttling">19. Performance and throttling</h2>
+<p>Dataverse distinguishes service-protection throttles from licensed request entitlements. Documented protection dimensions include request count, combined execution time and concurrent requests; the usual published values include 6,000 requests and 1,200 seconds of execution in a five-minute window, plus a concurrency threshold of 52 or higher. They are not a throughput promise for every operation or tenant. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/api-limits">Dataverse service protection</a>, <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/api-limits-overview">limit categories</a>.</p>
+<p>Implement an independent queue per service/tenant/environment/identity. Honor <code>Retry-After</code>, add jitter where appropriate, reduce concurrency on throttling and use checkpointed retries. Retry reads and demonstrably idempotent writes; reconcile a timed-out create before attempting it again. Store server operation IDs for long-running imports and provisioning.</p>
+<p>Graph batches do not exempt individual requests from throttling. SharePoint uses its own resource and application limits. Power Automate has flow-specific limits, concurrency and connector behavior. Keep these separate in telemetry and preflight estimates. <a href="https://learn.microsoft.com/en-us/graph/throttling">Graph throttling</a>, <a href="https://learn.microsoft.com/en-us/sharepoint/dev/general-development/how-to-avoid-getting-throttled-or-blocked-in-sharepoint-online">SharePoint throttling</a>, <a href="https://learn.microsoft.com/en-us/power-automate/limits-and-config">flow limits</a>.</p>
+<p>Cache metadata with version-aware invalidation and request only required fields. Batch compatible reads and data operations, but keep dependency-sensitive schema creation ordered. Optimize round trips and unnecessary exports before optimizing implementation-language speed.</p>
+<h2 id="20-existing-tools-and-competitor-analysis">20. Existing tools and competitor analysis</h2>
+<p>Activity below is a snapshot, not a maintenance guarantee. “Recent” means repository push activity observed in 2026. Some repositories contain multiple languages; the table describes the implementation relevant to this decision. Tool feature claims come from the linked project documentation and have not been benchmarked in this study.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Tool/project</th>
+<th>Architecture and language</th>
+<th>Activity/support</th>
+<th>Strengths and useful patterns</th>
+<th>Gap or reason not to build directly on it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/">PAC</a></td>
+<td>Microsoft CLI and service adapters</td>
+<td>Current official tooling</td>
+<td>Broad lifecycle primitives and ecosystem standard</td>
+<td>Does not supply PowerCanvas&#39;s complete owned desired-state model</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/power-platform-skills">Power Platform Skills</a></td>
+<td>JavaScript/TypeScript scripts, skills, MCP engines, PAC integration</td>
+<td>Recent, Microsoft; individual features vary in maturity</td>
+<td>Natural-language authoring, specs, validation and existing-solution edits</td>
+<td>Strong direct overlap; evolving contracts and service prerequisites</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/model-apps/README.md">Model-app plugin</a></td>
+<td>App Spec plus vendored headless SDK, Node</td>
+<td>Recent; Learn calls builder preview</td>
+<td>Existing proof of spec-to-app architecture</td>
+<td>Do not adopt internal SDK as a stable public API without evaluation</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/power-automate/README.md">FlowAgent plugin</a></td>
+<td>Local Node MCP bundle and cloud service operations</td>
+<td>Recent, Microsoft repository</td>
+<td>Flow editing and diagnostics</td>
+<td>Validate support per underlying operation and version</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/terraform-provider-power-platform">Terraform Power Platform provider</a></td>
+<td>Go, Terraform provider framework</td>
+<td>Recent, Microsoft; selected resources preview</td>
+<td>Environment/admin desired state and drift model</td>
+<td>Not a universal business-app UI compiler</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rpothin/pulumi-powerplatform">Pulumi Power Platform</a></td>
+<td>Native Python provider using management SDK and experimental provider framework</td>
+<td>Recent, community</td>
+<td>Programmable environment/governance resources</td>
+<td>README lists incomplete import/retry work; not simply Microsoft&#39;s Terraform provider bridged to Pulumi</td>
+</tr>
+<tr>
+<td><a href="https://github.com/pnp/cli-microsoft365">CLI for Microsoft 365</a></td>
+<td>TypeScript, cross-platform command surface</td>
+<td>Recent, community/PnP</td>
+<td>Microsoft 365/SharePoint coverage and scriptable UX</td>
+<td>Audit per-command APIs; not a full app compiler</td>
+</tr>
+<tr>
+<td><a href="https://github.com/pnp/powershell">PnP PowerShell</a></td>
+<td>PowerShell interface with C# implementation</td>
+<td>Recent, community</td>
+<td>Extensive SharePoint provisioning</td>
+<td>Runtime/dependency footprint; no Microsoft support SLA for the library</td>
+</tr>
+<tr>
+<td><a href="https://github.com/pnp/pnpcore">PnP Core SDK</a></td>
+<td>.NET object model over Graph/SharePoint</td>
+<td>Recent, community</td>
+<td>Rich provider implementation foundation</td>
+<td>Additional abstraction and version compatibility work</td>
+</tr>
+<tr>
+<td><a href="https://github.com/MscrmTools/XrmToolBox">XrmToolBox</a></td>
+<td>C# desktop host with plugins</td>
+<td>Recent, community</td>
+<td>Broad practical Dataverse administration and customization</td>
+<td>GUI-first; plugin support/licenses vary; host GPL-3.0</td>
+</tr>
+<tr>
+<td><a href="https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools">DLaB tools</a></td>
+<td>C# plugins and generation logic</td>
+<td>Recent, community</td>
+<td>Early-bound generation and reusable logic organization</td>
+<td>Extract reusable logic only under applicable licenses; GUI workflow is not CLI architecture</td>
+</tr>
+<tr>
+<td><a href="https://github.com/context-and-oss/XrmDefinitelyTyped">XrmDefinitelyTyped</a></td>
+<td>Typed client-code generation, F#/TypeScript-related code</td>
+<td>Recent, community</td>
+<td>Generates TypeScript declarations from existing metadata</td>
+<td>Generates developer types, not application schema or UX</td>
+</tr>
+<tr>
+<td><a href="https://github.com/scottdurow/SparkleXrm/tree/master/spkl">spkl within SparkleXrm</a></td>
+<td>C# task/deployment tooling</td>
+<td>Repository last push August 2024</td>
+<td>Simple project-oriented deployment patterns</td>
+<td>Older stack; test compatibility before reuse</td>
+</tr>
+<tr>
+<td><a href="https://github.com/WaelHamze/xrm-ci-framework">xRM CI Framework</a></td>
+<td>C#/PowerShell and CI integration</td>
+<td>Last push January 2026</td>
+<td>Solution build/deployment automation</td>
+<td>Existing ALM competitor; does not settle Canvas generation</td>
+</tr>
+<tr>
+<td><a href="https://github.com/context-and-oss/Daxif">Daxif</a></td>
+<td>F# automation library</td>
+<td>Last push February 2025</td>
+<td>Scriptable xRM lifecycle operations</td>
+<td>Smaller ecosystem; license and current compatibility need review</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/PowerApps-Tooling">PowerApps-Tooling</a></td>
+<td>C# package/source utilities</td>
+<td>Recent repository; legacy PASopa unsupported</td>
+<td>Format knowledge and modern source tooling</td>
+<td>Unsupported historical packing path must not underpin production</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/Power-Fx">Power Fx</a></td>
+<td>C# engine and packages</td>
+<td>Recent, Microsoft open source</td>
+<td>Parsing, checking, interpretation and language tooling</td>
+<td>Requires host context; not a full app runtime</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/developer/playwright-samples/overview">Power Platform Playwright samples</a></td>
+<td>TypeScript, Node, page objects</td>
+<td>Current Microsoft replacement guidance</td>
+<td>Browser testing patterns across app types</td>
+<td>Adapt and test against actual tenant/custom controls</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/PowerApps-TestEngine">Test Engine</a> / <a href="https://github.com/microsoft/EasyRepro">EasyRepro</a></td>
+<td>C#, Playwright wrapper / Dynamics UI automation</td>
+<td>Test Engine deprecated; EasyRepro older activity</td>
+<td>Migration references for existing suites</td>
+<td>Poor default for a new long-term test engine</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/power-platform/guidance/alm-accelerator/overview">ALM Accelerator</a></td>
+<td>Power Platform app plus pipeline assets</td>
+<td>Deprecated</td>
+<td>Lessons in maker-facing release workflows</td>
+<td>No new features or issue maintenance</td>
+</tr>
+</tbody></table></div>
+<p>The official repository metadata snapshot is preserved alongside this report. “Not archived” must not be interpreted as “recommended”: Test Engine and PASopa demonstrate why support notices matter more than repository visibility.</p>
+<h3 id="xrmtoolbox-what-it-proves">XrmToolBox: what it proves</h3>
+<p>The plugin catalog includes metadata inspection/documentation, bulk attribute tooling, form/view tools, FetchXML Builder, solution management, role comparison, early-bound generation and ribbon customization. These demonstrate considerable practical automation coverage, but each plugin&#39;s internals still need a support and licensing assessment. A GUI plugin working against one tenant does not establish safe unattended deployment across tenants. <a href="https://www.xrmtoolbox.com/plugins/">XrmToolBox catalog</a>.</p>
+<p>Candidate patterns to study:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Useful lesson for PowerCanvas</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Metadata Browser / Metadata Document Generator</td>
+<td>Query and normalize schema; generate human-readable reference material</td>
+</tr>
+<tr>
+<td>Bulk Attribute Creator / Attribute Manager</td>
+<td>Validate batch changes and separate creation from migration</td>
+</tr>
+<tr>
+<td>FetchXML Builder / View Designer</td>
+<td>Use structural query models rather than string concatenation</td>
+</tr>
+<tr>
+<td>Form and ribbon tools</td>
+<td>Preserve component identity and apply supported XML edits</td>
+</tr>
+<tr>
+<td>Solution tools and comparers</td>
+<td>Show dependency and layer information with changes</td>
+</tr>
+<tr>
+<td>Role Comparator / security tools</td>
+<td>Explain privilege deltas rather than comparing role names</td>
+</tr>
+<tr>
+<td>Early Bound Generator</td>
+<td>Separate reusable generator logic from UI shell</td>
+</tr>
+</tbody></table></div>
+<p>Treat the catalog names as investigation candidates, not an endorsement of every plugin&#39;s current release. The host&#39;s license is separate from plugin licenses; do not copy code wholesale into a proprietary CLI.</p>
+<h3 id="the-strongest-competitor-is-microsoft-itself">The strongest competitor is Microsoft itself</h3>
+<p>Plans in Power Apps already describes an end-to-end solution from business requirements, including data and application components. Native Git integration now documents Azure DevOps and GitHub, so “Power Platform lacks Git” is no longer a valid differentiator. These capabilities do not prove perfect output, but they materially reduce the novelty of the original concept. <a href="https://learn.microsoft.com/en-us/power-apps/maker/plan-designer/plan-designer">Plans overview</a>, <a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/connecting-to-git">Git provider integration</a>.</p>
+<p>This research did not establish a commercially supported third-party product that covers the entire proposed scope through a documented universal compiler. That is a bounded search result, not proof of an empty market. Existing free tools and Microsoft-native features are sufficient substitutes for many individual tasks.</p>
+<p>Potential differentiation to validate with users: retaining manual customizations during AI edits; explaining cross-service dependencies; proving least-privilege behavior; making repeat deployments predictable; diagnosing partial failure; and producing one auditable project specification across Dataverse, flows and SharePoint.</p>
+<h2 id="21-recommended-architecture-and-technology-stack">21. Recommended architecture and technology stack</h2>
+<h3 id="system-architecture">System architecture</h3>
+<figure class="architecture" aria-labelledby="architecture-caption">
+  <div class="diagram-input"><span>CLI / coding agent</span><span>Optional AI planner</span></div>
+  <div class="arrow" aria-hidden="true">↓</div>
+  <div class="diagram-stage">Typed specification and capability checks</div>
+  <div class="arrow" aria-hidden="true">↓</div>
+  <div class="diagram-stage">Observed state + semantic diff + dependency plan</div>
+  <div class="arrow" aria-hidden="true">↓</div>
+  <div class="diagram-stage emphasis">Reviewed, target-bound execution plan</div>
+  <div class="arrow" aria-hidden="true">↓</div>
+  <div class="diagram-stage">Credential broker · Execution coordinator · Journal</div>
+  <div class="arrow" aria-hidden="true">↓</div>
+  <div class="diagram-providers"><span>PAC / solutions</span><span>Dataverse / apps</span><span>Flows</span><span>SharePoint / Graph</span><span>Canvas session</span><span>Tests / docs</span></div>
+  <div class="arrow" aria-hidden="true">↓</div>
+  <div class="diagram-stage">Verified results, drift evidence and recovery record</div>
+  <figcaption id="architecture-caption">Proposed architecture. Providers retain their own support and identity boundaries.</figcaption>
+</figure>
+<p>Keep the core independent of an AI vendor and independent of any one deployment surface. Each provider should implement conceptual operations such as <code>discover</code>, <code>validate</code>, <code>plan</code>, <code>apply</code>, <code>observe</code>, <code>export</code> and <code>verify</code>, with a versioned capability manifest. A provider may return “manual prerequisite” or “unsupported,” rather than fabricating a generic resource operation.</p>
+<p>Separate the <strong>planner</strong> from the <strong>executor</strong>. Plans should include before/after summaries, dependencies, required identity, support class, irreversible effects, expected completion and verification actions. The executor handles retry, locking and checkpointing; the AI model should not decide to ignore an error and continue with an improvised command.</p>
+<h3 id="language-comparison">Language comparison</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Advantages for this product</th>
+<th>Costs</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TypeScript / Node</td>
+<td>Strong CLI UX, JSON/YAML tooling, Playwright, code apps, PCF and current Microsoft AI-plugin ecosystem</td>
+<td>Runtime/package supply chain; Power Fx engine requires interop</td>
+<td>Best command/project layer for the proposed product</td>
+</tr>
+<tr>
+<td>C# / .NET</td>
+<td>Mature Dataverse SDK, native Power Fx libraries, PnP Core, Microsoft identity libraries</td>
+<td>Additional runtime/distribution considerations; Node remains useful for UI tests and app assets</td>
+<td>Best Microsoft-domain worker; viable all-.NET alternative</td>
+</tr>
+<tr>
+<td>Rust</td>
+<td>Strong binaries, type system and terminal libraries</td>
+<td>More custom Microsoft integration; cannot eliminate .NET/Node dependencies elsewhere</td>
+<td>Not justified for v0.1</td>
+</tr>
+<tr>
+<td>Go</td>
+<td>Good distribution and concurrency; Microsoft&#39;s Terraform provider provides relevant precedent</td>
+<td>Less direct access to Power Fx/.NET libraries; new code for domain APIs</td>
+<td>Good if product becomes primarily infrastructure administration</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>Excellent automation and AI/data ecosystem; official Dataverse SDK now exists</td>
+<td>Distribution and app frontend/testing integration; Power Fx still needs another runtime</td>
+<td>Valid prototype/provider option, weaker fit for the whole CLI</td>
+</tr>
+</tbody></table></div>
+<p>Evidence for the language decision is integration concentration: Microsoft recommends ServiceClient for .NET Dataverse applications, publishes Power Fx as .NET packages, and now publishes a Python Dataverse SDK. New Power Apps code-app tooling and the recommended browser-test stack use Node/TypeScript. No language is disqualified because it cannot call HTTP. <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/work-with-data">Dataverse client guidance</a>, <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/sdk-python/overview">Python SDK</a>, <a href="https://github.com/microsoft/Power-Fx">Power Fx packages</a>.</p>
+<p><strong>Recommended combination:</strong> TypeScript CLI/core and a small, versioned .NET worker for Power Fx and selected SDK-heavy operations. Communicate through structured JSON over standard input/output. Use public REST APIs directly for simple operations. Do not split every provider into another service. If a .NET-skilled team prefers a single-language v0.1, .NET plus Spectre.Console is a defensible alternative; measure development and distribution costs before committing to two runtimes.</p>
+<h3 id="cli-libraries">CLI libraries</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Library family</th>
+<th>Good use</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://github.com/tj/commander.js">Commander</a></td>
+<td>Simple command parsing</td>
+<td>Lowest-complexity v0.1 option</td>
+</tr>
+<tr>
+<td><a href="https://oclif.io/docs/introduction/">oclif</a></td>
+<td>Large command trees, command discovery and plugins</td>
+<td>Choose if a public plugin ecosystem is an early commitment</td>
+</tr>
+<tr>
+<td><a href="https://github.com/bombshell-dev/clack">Clack</a> / <a href="https://github.com/SBoudrias/Inquirer.js">Inquirer</a></td>
+<td>Interactive guided setup and selections</td>
+<td>Choose one; keep equivalent flags for CI</td>
+</tr>
+<tr>
+<td><a href="https://github.com/chalk/chalk">Chalk</a></td>
+<td>Terminal styling</td>
+<td>Respect no-color and noninteractive output</td>
+</tr>
+<tr>
+<td><a href="https://github.com/vadimdemedes/ink">Ink</a></td>
+<td>React-based rich terminal screens</td>
+<td>Later; unnecessary for a reliable first command surface</td>
+</tr>
+<tr>
+<td><a href="https://spectreconsole.net/">Spectre.Console</a></td>
+<td>.NET prompts/tables/progress</td>
+<td>Strong all-.NET UX alternative</td>
+</tr>
+<tr>
+<td><a href="https://docs.rs/clap/latest/clap/">Clap</a>, <a href="https://github.com/console-rs/dialoguer">Dialoguer</a>, <a href="https://github.com/console-rs/indicatif">Indicatif</a></td>
+<td>Rust parsing/prompts/progress</td>
+<td>Capable UX does not outweigh integration cost here</td>
+</tr>
+<tr>
+<td><a href="https://typer.tiangolo.com/">Typer</a>, <a href="https://click.palletsprojects.com/en/stable/">Click</a>, <a href="https://rich.readthedocs.io/en/stable/introduction.html">Rich</a></td>
+<td>Python commands and output</td>
+<td>Good scripting/provider tools</td>
+</tr>
+</tbody></table></div>
+<p>Prefer a maintained JSON Schema validator and YAML parser, explicit HTTP clients with retry policies, a real XML parser/canonicalizer, and Playwright. Use lockfiles, dependency scanning and signed/checksummed release artifacts. Do not select a library by spinner appearance before defining error handling and machine output.</p>
+<h2 id="22-proposed-powercanvas-intermediate-representation">22. Proposed PowerCanvas intermediate representation</h2>
+<p>The intermediate representation (IR) should describe application intent precisely enough for deterministic compilation while preserving each platform&#39;s actual constraints. A single generic <code>resource</code> dictionary is too weak; a copy of every Microsoft payload is too coupled to service versions. Use typed, versioned domain resources, native assets where necessary, and explicit ownership boundaries.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>IR concept</th>
+<th>Required information</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project</td>
+<td>Schema version, publisher, solution identity, supported target types</td>
+<td>Stable naming and compatibility</td>
+</tr>
+<tr>
+<td>Resource identity</td>
+<td>Stable project ID, logical/schema name, target ID mapping</td>
+<td>Renames and display labels must not create duplicate resources</td>
+</tr>
+<tr>
+<td>Dataverse resource</td>
+<td>Supported column kinds, choice values, ownership, relationships, auditing, keys</td>
+<td>Compile to real metadata with validated constraints</td>
+</tr>
+<tr>
+<td>Application</td>
+<td>App type, navigation, forms/views or bounded screen/layout primitives</td>
+<td>Model-driven, Canvas and code apps need different compilers</td>
+</tr>
+<tr>
+<td>Workflow</td>
+<td>Typed trigger, actions, expressions, branches, retry/concurrency policy, connection references</td>
+<td>Check inputs, outputs and side effects before generating flow JSON</td>
+</tr>
+<tr>
+<td>Security intent</td>
+<td>Personas, table privileges, depth, field restrictions, target identity bindings</td>
+<td>Avoid translating “manager” into administrator permissions</td>
+</tr>
+<tr>
+<td>External resource</td>
+<td>Provider, site/list/library identity, ownership and target bindings</td>
+<td>SharePoint is outside solution ZIP transport</td>
+</tr>
+<tr>
+<td>Dependency</td>
+<td>Typed reference, required provider capability, completion predicate</td>
+<td>Creation order alone does not prove readiness</td>
+</tr>
+<tr>
+<td>Native asset</td>
+<td>Format, producer/version, hash, support classification, ownership</td>
+<td>Preserve accepted components that PowerCanvas cannot regenerate</td>
+</tr>
+<tr>
+<td>Lifecycle</td>
+<td>Create/update capabilities, immutable fields, deletion policy, migration hooks</td>
+<td>Never silently replace a populated table</td>
+</tr>
+<tr>
+<td>Acceptance criterion</td>
+<td>Observable outcome, actor, fixture and test method</td>
+<td>Make generated behavior testable</td>
+</tr>
+</tbody></table></div>
+<p>Keep four distinct records: <strong>desired specification</strong>, <strong>normalized observed snapshot</strong>, <strong>ownership/state mapping</strong>, and <strong>execution plan/journal</strong>. Observations contain timestamps and versions; plans contain operation IDs and preconditions. Do not write runtime tokens or row data into the desired specification.</p>
+<p>An example semantic workflow node could say <code>dataverse.rowCreated(tableRef: complaint)</code> followed by a typed comparison against the stable choice value for High, followed by a registered email action. It must also specify how to find the requester and manager, what to do when either is missing, which identity sends the email, and how to avoid duplicate notifications. A phrase such as <code>notify_manager</code> is incomplete until these decisions are resolved.</p>
+<p>The compilation sequence should be:</p>
+<ol>
+<li>Parse and migrate the project schema; reject unknown required fields.</li>
+<li>Resolve modules, names, types, references and provider versions.</li>
+<li>Check feature support, environment policy, identity and licensing assumptions.</li>
+<li>Generate native artifacts or documented API operations deterministically.</li>
+<li>Compare desired and observed owned properties; calculate dependencies and hazards.</li>
+<li>Produce a target-bound plan with a hash, expiration and preconditions.</li>
+<li>Execute, journal and verify each stage; record unresolved manual prerequisites.</li>
+</ol>
+<p>Raw Power Fx and native flow expressions need dedicated typed fields and validation. Treat them as executable application behavior. Do not pretend all formulas can be represented by a tiny expression language. Conversely, raw JSON/XML escape hatches must carry support warnings, preservation rules and tests; they should not grant unrestricted write access to undocumented endpoints.</p>
+<p>Use stable option values for choices and stable component identities for forms/controls where the authoring surface supports them. Preserve presentation order where meaningful. Canonicalize insignificant ordering, generated timestamps and environment-specific IDs only after understanding their semantics. An overaggressive normalizer can hide real drift.</p>
+<h2 id="23-ai-planning-and-modification-of-existing-solutions">23. AI planning and modification of existing solutions</h2>
+<h3 id="planning-architecture">Planning architecture</h3>
+<p>AI is useful for requirements decomposition, choosing an approved template, proposing schema and navigation, drafting formulas, explaining diffs, and generating test cases. It should output a schema-constrained proposal and unresolved decisions. It should not receive production tokens or invent shell commands to bypass failed validation.</p>
+<p>The planner needs explicit application context: audience and access model; expected records and growth; internal versus external users; approval and notification rules; document ownership; audit/retention needs; offline/mobile requirements; available licenses; permitted connectors; and existing systems. These inputs determine Dataverse versus SharePoint, model-driven versus Canvas/code app, and whether a requirement is feasible under tenant policy. Missing information should become a question or declared assumption, not a concealed default.</p>
+<p>Recommended loop: <strong>requirements → capability-aware design → typed IR → deterministic checks → reviewed diff → execution → measured acceptance tests</strong>. Allow an AI repair proposal after failure, but require it to pass the same planner. Keep model, prompt/template, capability-catalog and tool versions in the generation record. Rebuilding an accepted specification must not require asking the model to invent it again.</p>
+<p>For workflow generation, constrained IR is safer than unconstrained raw JSON because supported action types, parameter types, references, secrets and side effects can be checked before emission. This is an engineering assessment, not proof that constrained output is correct. Connector behavior, authorization and business semantics still require live tests.</p>
+<h3 id="existing-applications-require-preservation-not-regeneration">Existing applications require preservation, not regeneration</h3>
+<p>Suppose the developer asks: “Add a Priority field to complaints and show it in the main view.” PowerCanvas should discover the owned table/view, compare current metadata with its last accepted snapshot, propose one choice column with stable values, and patch the selected view. It should identify downstream forms, filters and flows that reference the table without gratuitously rewriting them.</p>
+<p>Use a three-way comparison: <strong>last accepted source</strong>, <strong>current source</strong>, and <strong>current environment</strong>. Changes to the same owned property become conflicts. Changes to unowned native assets are preserved and surfaced. Unknown components remain opaque and transportable where possible; they must not be deleted merely because the IR cannot understand them.</p>
+<p>Adopting an existing project should begin in read-only mode. Produce an inventory and support map, then let the developer explicitly adopt selected resources or properties. An existing production environment should not become fully managed by PowerCanvas because a discovery command ran. A managed component whose owning solution cannot be edited needs a different extension/layer strategy, not forced replacement.</p>
+<h3 id="ai-security-and-evaluation">AI security and evaluation</h3>
+<p>Treat imported descriptions, code comments, connector responses and templates as untrusted data. They may contain prompt injection. Give the model only relevant, redacted metadata; separate instructions from retrieved content; enforce tool permissions in the executor. Validate generated URLs, external calls and privilege requests. A correctly typed expression can still exfiltrate data or send unwanted notifications.</p>
+<p>Build an evaluation set of representative applications and change requests. Measure valid-spec rate, successful deployment, functional acceptance, privilege violations, preservation of manual edits, manual interventions, runtime defects, time and cost. Include negative cases: ambiguous ownership, missing connections, conflicting changes, unsupported controls and a request requiring prohibited connectors. No success percentage is justified until this benchmark exists.</p>
+<h2 id="24-plugins-templates-and-reusable-components">24. Plugins, templates and reusable components</h2>
+<p>A provider plugin should declare its API version, resource kinds, supported operations, platform/API versions, credential audiences, permissions, side effects, and validation/diff/export capabilities. Use a structured protocol and explicit errors. Keep core authentication and deployment journaling outside plugins. Prefer narrow brokered operations over handing every plugin a general-purpose token.</p>
+<p>A Node subprocess is not a security sandbox. An untrusted package can read files or open network connections unless the operating environment actually restricts it. Separate first-party trusted providers from third-party plugins; pin versions and hashes, inspect provenance, disable install-time scripts where feasible, and support enterprise allowlists. Signed artifacts establish origin, not harmless behavior. Sandboxed execution with restricted network/file access is a later product capability requiring its own security work.</p>
+<p>Templates should be versioned packages of IR, native solution assets, test fixtures, deployment prerequisites, licenses, migrations and documentation. The useful initial catalog is small: complaint handling, leave requests, onboarding or asset tracking. Procurement, inventory, service desk, RFQ/quotation, project management, document approval and CRM are plausible later templates, but each introduces domain semantics that generic CRUD scaffolding does not solve.</p>
+<p>An “approval module,” for example, needs more than a screen and a flow: request/decision schema, who may approve, delegation/escalation, duplicate-event handling, history, notifications, timeouts and tests. Template upgrades must preserve user changes and expose migration steps. A public marketplace before upgrade semantics would magnify maintenance problems.</p>
+<p>A component marketplace is technically plausible using combinations of managed solutions, PCF controls, Canvas components, IR modules and SharePoint provisioning definitions. These have different packaging and licensing boundaries. Declare dependency versions, publisher prefixes, environment prerequisites and uninstall effects. Never advertise one-click installation if OAuth consent, premium entitlements or tenant policy requires setup.</p>
+<p><strong>Sequence:</strong> first-party modules → private organization registry → carefully reviewed third-party packages. Monetizable governance features can follow; arbitrary community code execution should not be a prerequisite for v0.1.</p>
+<h2 id="25-git-local-development-and-reproducibility">25. Git, local development and reproducibility</h2>
+<p>There are two legitimate source strategies: traditional exported/unpacked solution assets, and Power Platform&#39;s native Git representation. Choose and document one per project or component workflow. Their files and component arrangements are not interchangeable. Native Git supports Azure DevOps and GitHub and has environment/solution binding constraints; it does not eliminate environment-specific deployment configuration. <a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/overview">Native Git overview</a>, <a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/connecting-to-git">connection and binding guidance</a>.</p>
+<p>PowerCanvas should version the desired IR, native assets it cannot generate, provider/tool lockfile, migration declarations, tests and nonsecret environment configuration. Store immutable release artifacts and verification reports in an artifact repository or release store. Ignore token caches, runtime state containing sensitive metadata, browser authentication storage, transient logs and generated working directories. A release manifest should identify source commit, tool versions, source/artifact hashes, dependencies and deployment-settings hash.</p>
+<p>The development cycle can be local edit → fast validation → plan → apply to an isolated developer environment → acceptance tests → capture accepted native changes → review. A watch command should debounce files and validate immediately; automatic mutation should be opt-in, bounded to a developer environment, and paused on drift. Canvas live synchronization additionally depends on the authoring session described earlier.</p>
+<p>“Reproducible” should mean an equivalent verified application built with declared prerequisites and stable identities, not necessarily byte-identical exported ZIPs. Service-generated IDs, timestamps and platform updates can alter bytes. Use semantic comparison and a release hash for the artifact actually promoted. Preserve the same managed artifact through UAT and production.</p>
+<p>There is no documented full local emulator for the combined Dataverse, Canvas, connector and flow runtime established by this research. Offline schema/formula checks and mocked adapters are valuable, but they cannot prove runtime permissions, delegation, DLP behavior or connector authentication. Budget for real developer/test environments and test identities.</p>
+<p>Documentation generation is a strong early feature. From the IR and observed snapshot, generate Markdown/HTML schema references, Mermaid relationship graphs, app navigation, flow dependency diagrams, a role/privilege matrix, environment bindings and release notes. Label diagrams <strong>desired</strong> or <strong>observed at a stated time</strong>. A generated architecture diagram must not imply that undeployed components exist. Exclude credentials and redact tenant/user identifiers where appropriate.</p>
+<h2 id="26-proposed-project-structure-and-configuration">26. Proposed project structure and configuration</h2>
+<p>The following structure and configuration are <strong>design examples</strong>, not an implemented CLI or an existing Microsoft schema. The complete example illustrates later providers as well as v0.1. The first release should reject unsupported sections with an actionable capability error rather than silently ignoring them.</p>
+<pre><code class="language-text">complaint-management/
+├── powercanvas.yaml
+├── powercanvas.lock.json
+├── apps/
+│   └── complaint-desk/app.yaml
+├── dataverse/
+│   ├── tables/
+│   ├── relationships/
+│   ├── forms/
+│   ├── views/
+│   └── security/
+├── flows/
+│   └── complaint-notification.yaml
+├── sharepoint/
+│   └── documents.yaml
+├── native/
+│   ├── solution-source/
+│   └── asset-provenance.json
+├── environments/
+│   ├── dev.yaml
+│   ├── uat.yaml
+│   └── production.yaml
+├── migrations/
+├── tests/
+│   ├── api/
+│   ├── browser/
+│   └── fixtures/
+├── docs/
+├── ai/
+│   ├── requirements.md
+│   └── decisions.md
+└── .powercanvas/                 # ignored local observations/plans/journal
+</code></pre>
+<p>An illustrative <code>powercanvas.yaml</code>:</p>
+<pre><code class="language-yaml">apiVersion: powercanvas.dev/v1alpha1
+project:
+  name: complaint-management
+
+solution:
+  uniqueName: pf_ComplaintManagement
+  displayName: Complaint Management
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerCanvasExamples
+    prefix: pf
+    optionValuePrefix: 73142
+
+environment:
+  default: dev
+  profiles:
+    dev: environments/dev.yaml
+    uat: environments/uat.yaml
+    production: environments/production.yaml
+
+dataverse:
+  tables:
+    complaint:
+      schemaName: pf_Complaint
+      displayName: Complaint
+      ownership: userOrTeam
+      primaryName: title
+      auditing: true
+      columns:
+        title:
+          schemaName: pf_Title
+          type: text
+          maxLength: 200
+          required: application
+        description:
+          schemaName: pf_Description
+          type: multilineText
+          maxLength: 4000
+        priority:
+          schemaName: pf_Priority
+          type: choice
+          choices:
+            - { label: Low, value: 731420000 }
+            - { label: Normal, value: 731420001 }
+            - { label: High, value: 731420002 }
+          default: 731420001
+        requesterEmail:
+          schemaName: pf_RequesterEmail
+          type: email
+          maxLength: 320
+  relationships: []
+
+apps:
+  complaintDesk:
+    type: modelDriven
+    uniqueName: pf_ComplaintDesk
+    tables: [complaint]
+    forms:
+      complaintMain:
+        table: complaint
+        fields: [title, priority, description, requesterEmail]
+    views:
+      complaints:
+        table: complaint
+        columns: [title, priority, createdon]
+        orderBy: [{ column: createdon, direction: descending }]
+    navigation:
+      - { group: Work, table: complaint }
+
+flows:
+  complaintNotification:
+    source: flows/complaint-notification.yaml
+    enabledAfterVerification: true
+
+sharepoint:
+  documents:
+    source: sharepoint/documents.yaml
+    siteBinding: complaintDocumentsSite
+    lifecycle: retain
+
+connectors:
+  references:
+    dataverse:
+      connector: shared_commondataserviceforapps
+      binding: dataverseConnection
+    mail:
+      connector: shared_office365
+      binding: notificationsConnection
+
+security:
+  roles:
+    complaintAgent:
+      displayName: Complaint Agent
+      source: dataverse/security/complaint-agent.yaml
+  appAccess:
+    complaintDesk: [complaintAgent]
+  assignmentsFromEnvironment: true
+
+deployment:
+  developmentMode: unmanaged
+  releaseMode: managed
+  protectedEnvironments: [production]
+  deletionPolicy: block
+  checks: [schema, references, privileges, solutionChecker]
+  smokeTests: tests/browser/complaint.spec.ts
+  environmentVariables:
+    documentsSiteUrl:
+      schemaName: pf_DocumentsSiteUrl
+      type: text
+      required: true
+</code></pre>
+<p>The omitted referenced files contain the full role privileges, flow semantics and SharePoint definition; this is a readable configuration example, not a complete deployable package. <code>required: application</code> must be explained as application-required behavior and must not be advertised as a universal database constraint. <code>createdon</code> is a known platform column. Auditing also requires applicable environment configuration. A reference to a connector does not create an authenticated connection.</p>
+<p>An environment profile should contain nonsecret bindings:</p>
+<pre><code class="language-yaml">tenantId: &quot;&lt;tenant-guid&gt;&quot;
+environmentId: &quot;&lt;environment-guid&gt;&quot;
+dataverseUrl: &quot;https://&lt;organization&gt;.crm.dynamics.com&quot;
+authProfile: consulting-dev
+bindings:
+  dataverseConnection: &quot;&lt;existing-connection-resource-id&gt;&quot;
+  notificationsConnection: &quot;&lt;existing-connection-resource-id&gt;&quot;
+  complaintDocumentsSite: &quot;&lt;existing-site-id&gt;&quot;
+variables:
+  documentsSiteUrl: &quot;https://&lt;tenant&gt;.sharepoint.com/sites/complaints&quot;
+roleAssignments:
+  complaintAgent:
+    teams: [&quot;&lt;target-team-id&gt;&quot;]
+</code></pre>
+<p>Secrets belong in a credential provider or approved vault reference, never directly in either YAML file. Environment IDs and URLs are not passwords, but they can still be sensitive organizational metadata. Validate tenant, environment and organization identity together before any write.</p>
+<h2 id="27-proposed-cli-experience">27. Proposed CLI experience</h2>
+<p>Every command below is a <strong>proposed PowerCanvas command</strong>, not a tool installed or executed during this research. Reserve <code>apply</code> for reviewed resource plans and <code>deploy</code> for promoting release artifacts. Avoid a vague <code>push</code> command that might mean source synchronization, schema mutation or production deployment.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Intended behavior</th>
+<th>Earliest scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>powercanvas init --template complaint-management</code></td>
+<td>Generate a small project with declared prerequisites</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas doctor</code></td>
+<td>Inspect versions, authentication, target permissions and provider availability</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas auth add client-a</code></td>
+<td>Add a tenant-bound identity profile</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas env list</code> / <code>env use dev</code></td>
+<td>Discover/select target; never silently switch tenant</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas validate --offline</code></td>
+<td>Validate schema, references and supported static rules</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas validate --env dev</code></td>
+<td>Add permission, dependency and configuration checks</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas plan --env dev --out plan.json</code></td>
+<td>Read-only comparison and operation plan</td>
+<td>v0.1, supported subset</td>
+</tr>
+<tr>
+<td><code>powercanvas apply --plan plan.json</code></td>
+<td>Recheck preconditions and execute that target-bound plan</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas build --env dev</code></td>
+<td>Export, check and package an immutable release artifact</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas deploy uat --artifact release.zip</code></td>
+<td>Import, bind supported settings and verify</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas diff dev uat</code></td>
+<td>Semantic comparison with explicit coverage/unknowns</td>
+<td>v0.1, schema subset</td>
+</tr>
+<tr>
+<td><code>powercanvas test --env uat</code></td>
+<td>Run configured API/browser acceptance checks</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><code>powercanvas docs</code></td>
+<td>Produce desired/observed documentation</td>
+<td>v0.1, basic</td>
+</tr>
+<tr>
+<td><code>powercanvas capture --env dev</code></td>
+<td>Capture and review accepted native changes</td>
+<td>v0.2</td>
+</tr>
+<tr>
+<td><code>powercanvas add flow --template notification</code></td>
+<td>Add a supported module specification</td>
+<td>v0.2</td>
+</tr>
+<tr>
+<td><code>powercanvas generate app &quot;...&quot; --draft</code></td>
+<td>AI proposal, assumptions and questions; no remote writes</td>
+<td>v0.2</td>
+</tr>
+<tr>
+<td><code>powercanvas adopt --env dev</code></td>
+<td>Import selected existing components into owned scope</td>
+<td>v0.5</td>
+</tr>
+<tr>
+<td><code>powercanvas watch --env dev</code></td>
+<td>Validate local changes; optional scoped sync</td>
+<td>v0.5</td>
+</tr>
+<tr>
+<td><code>powercanvas migration create add-priority</code></td>
+<td>Scaffold an explicit metadata/data migration plan</td>
+<td>v0.5</td>
+</tr>
+<tr>
+<td><code>powercanvas canvas connect</code></td>
+<td>Attach to an eligible live Studio authoring session</td>
+<td>Experimental until proven</td>
+</tr>
+</tbody></table></div>
+<p>Interactive initialization can ask for app type, data source, template and notifications. Choices must be capability-aware. v0.1 should offer its supported model-driven/Dataverse path and clearly explain when another choice is unavailable. Do not present Canvas as equally reliable simply to make the menu look complete.</p>
+<p>Illustrative successful planning output:</p>
+<pre><code class="language-text">$ powercanvas plan --env dev --out .powercanvas/dev-plan.json
+Target  consulting-dev / tenant &lt;id&gt; / environment &lt;id&gt;
+Scope   pf_ComplaintManagement — owned components only
+
++ Table       pf_Complaint
++ Columns     Title, Description, Priority, RequesterEmail
++ Form        Complaint Main
++ View        Complaints
++ App         Complaint Desk
++ Role        Complaint Agent
+
+Support       Documented Dataverse and model-driven APIs
+Destructive   None
+Prerequisites Resolved for the model-driven core
+Plan saved    Bound to this target, source hash and observed metadata
+Next          powercanvas apply --plan .powercanvas/dev-plan.json
+</code></pre>
+<p>Illustrative deployment blocker for the later notification module:</p>
+<pre><code class="language-text">$ powercanvas deploy uat --artifact releases/complaints-0.2.0.zip
+Preflight blocked; no import started.
+
+PF-CONNECTION-002  notificationsConnection has no target binding.
+Required action   Create/authorize an eligible mail connection in UAT,
+                  grant the flow owner access, and add its binding.
+
+Imported: 0   Enabled flows: 0   Verification: not run
+</code></pre>
+<p>A real deployment can also fail after import; the CLI must then report exactly which stages succeeded and which remain unresolved. Never print “deployed successfully” merely because solution import returned success.</p>
+<p>Provide consistent <code>--json</code>, <code>--non-interactive</code>, <code>--no-color</code>, explicit target flags and stable error codes. Send structured result data to stdout and progress to stderr. Shell completion, accessible prompts, concise progress stages, contextual command suggestions and terminal-width-aware tables improve daily use. In CI, missing configuration must fail with a clear remediation rather than wait at a prompt. A production policy can require a previously approved artifact/plan; it should not rely solely on typing “yes.”</p>
+<h2 id="28-feasibility-matrix">28. Feasibility matrix</h2>
+<p>These are engineering assessments for a maintained, scoped product. <strong>High reliability</strong> means a stable documented contract and a plausible deterministic implementation, not an experimentally measured success rate. All rows assume correct permissions and tenant prerequisites. Detailed evidence is in the component sections above.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Feasibility</th>
+<th>Official API / support boundary</th>
+<th>Difficulty</th>
+<th>Expected reliability</th>
+<th>MVP candidate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dataverse ordinary tables/columns</td>
+<td>High</td>
+<td>Supported metadata Web API/SDK</td>
+<td>Medium</td>
+<td>High within supported types</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Dataverse lookups and relationships</td>
+<td>High</td>
+<td>Supported; eligibility and cascade constraints</td>
+<td>Medium</td>
+<td>High with dependency checks</td>
+<td>Yes, 1:N first</td>
+</tr>
+<tr>
+<td>Choices and alternate keys</td>
+<td>High</td>
+<td>Supported; key activation asynchronous</td>
+<td>Medium</td>
+<td>High after readiness checks</td>
+<td>Choices yes; keys narrowly</td>
+</tr>
+<tr>
+<td>Formula/calculated/rollup expression authoring</td>
+<td>Limited</td>
+<td>Code-defined formulas explicitly unsupported; designer-authored transport viable</td>
+<td>High</td>
+<td>Low for raw generation</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Security roles</td>
+<td>High, bounded</td>
+<td>Supported role/privilege APIs; environment-specific assignments</td>
+<td>High</td>
+<td>Medium until persona tests</td>
+<td>Yes, explicit limited roles</td>
+</tr>
+<tr>
+<td>Standard model-driven app</td>
+<td>High</td>
+<td>Supported AppModule operations and component associations</td>
+<td>Medium</td>
+<td>High for standard layouts</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Model-driven forms</td>
+<td>High, bounded</td>
+<td>Supported FormXml/customization routes</td>
+<td>Medium–high</td>
+<td>Medium–high with round-trip tests</td>
+<td>Yes, standard main form</td>
+</tr>
+<tr>
+<td>Views</td>
+<td>High</td>
+<td>SavedQuery, FetchXML/LayoutXML</td>
+<td>Medium</td>
+<td>High for bounded queries</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Charts/dashboards</td>
+<td>Feasible</td>
+<td>Documented component/XML surfaces; more variants</td>
+<td>High</td>
+<td>Medium</td>
+<td>Later</td>
+</tr>
+<tr>
+<td>Business rules/process definitions</td>
+<td>Partial</td>
+<td>Designer authoring; some lifecycle/instance APIs, no universal supported compiler established</td>
+<td>High</td>
+<td>Medium for transported templates</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Canvas source inspection/diff</td>
+<td>High</td>
+<td>Official source/export; interpretation has format limits</td>
+<td>Medium</td>
+<td>Medium–high</td>
+<td>Read-only later</td>
+</tr>
+<tr>
+<td>Canvas generation in live Studio session</td>
+<td>Feasible with prerequisites</td>
+<td>Constrained official external-authoring route</td>
+<td>High</td>
+<td>Unmeasured; session dependent</td>
+<td>Experiment only</td>
+</tr>
+<tr>
+<td>Arbitrary Canvas generation offline</td>
+<td>Poor supported basis</td>
+<td>No documented general headless compiler; legacy packing deprecated</td>
+<td>Very high</td>
+<td>Low as product promise</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Canvas UI from layout primitives</td>
+<td>Feasible subset</td>
+<td>Compile through allowed authoring surface; control/version limits</td>
+<td>High</td>
+<td>Medium after visual/runtime tests</td>
+<td>Later</td>
+</tr>
+<tr>
+<td>Power Fx source generation</td>
+<td>High for known patterns</td>
+<td>Open engine/language tooling; host-specific semantics</td>
+<td>Medium–high</td>
+<td>Medium–high for bounded formulas</td>
+<td>Basic checks only</td>
+</tr>
+<tr>
+<td>Complete Canvas formula/delegation proof offline</td>
+<td>Not established</td>
+<td>Public engine is not the full Canvas/connector host</td>
+<td>Very high</td>
+<td>Low</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Solution-aware cloud-flow generation</td>
+<td>High for selected patterns</td>
+<td>Supported Dataverse flow APIs and solution transport</td>
+<td>High</td>
+<td>Medium; connections/runtime dominate</td>
+<td>v0.2</td>
+</tr>
+<tr>
+<td>Arbitrary connector action generation</td>
+<td>Partial</td>
+<td>Connector-specific schemas, permissions and licensing</td>
+<td>Very high</td>
+<td>Variable</td>
+<td>No</td>
+</tr>
+<tr>
+<td>SharePoint lists and basic fields</td>
+<td>High</td>
+<td>Graph v1.0 and SharePoint REST</td>
+<td>Medium</td>
+<td>High with type restrictions</td>
+<td>v0.2</td>
+</tr>
+<tr>
+<td>SharePoint document libraries/metadata</td>
+<td>High</td>
+<td>Graph plus SharePoint REST/PnP for broader settings</td>
+<td>Medium–high</td>
+<td>Medium–high</td>
+<td>v0.2</td>
+</tr>
+<tr>
+<td>SharePoint site provisioning</td>
+<td>High for supported routes</td>
+<td>SharePoint APIs; direct Graph site-create endpoint is beta</td>
+<td>High</td>
+<td>Medium, asynchronous/tenant policy</td>
+<td>Later</td>
+</tr>
+<tr>
+<td>Solution pack/export/import</td>
+<td>High</td>
+<td>PAC, Dataverse, build tools/actions</td>
+<td>Medium</td>
+<td>High after dependency checks</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Environment variables</td>
+<td>High</td>
+<td>Supported solution components/deployment settings</td>
+<td>Low–medium</td>
+<td>High; secrets need separate handling</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Connection references</td>
+<td>High for transport/binding</td>
+<td>Supported settings; authentication is separate</td>
+<td>Medium–high</td>
+<td>Medium until runtime checked</td>
+<td>Validate/bind existing only</td>
+</tr>
+<tr>
+<td>Universal unattended connection consent</td>
+<td>Not feasible</td>
+<td>Depends on connector/authentication policy and owner</td>
+<td>Very high</td>
+<td>Low</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Custom connectors</td>
+<td>Feasible</td>
+<td>Supported definition/tooling; documented format limits</td>
+<td>High</td>
+<td>Medium after external API tests</td>
+<td>Later</td>
+</tr>
+<tr>
+<td>Power Pages assets</td>
+<td>Feasible subset</td>
+<td>PAC pages and supported site ALM; portal Web API is not configuration API</td>
+<td>High</td>
+<td>Medium</td>
+<td>Later</td>
+</tr>
+<tr>
+<td>Code apps</td>
+<td>Strong source-oriented option</td>
+<td>Official code-app CLI and solution ALM</td>
+<td>Medium–high</td>
+<td>Unmeasured here; test actual rollout</td>
+<td>Optional later target</td>
+</tr>
+<tr>
+<td>Automated tests</td>
+<td>High, scoped</td>
+<td>API tests, direct Playwright and current Microsoft samples</td>
+<td>High</td>
+<td>Medium; auth/UI drift</td>
+<td>Yes, small suite</td>
+</tr>
+<tr>
+<td>AI generation</td>
+<td>Feasible for approved templates</td>
+<td>AI proposal plus deterministic supported providers</td>
+<td>High</td>
+<td>Unmeasured until benchmark</td>
+<td>Draft assistant later</td>
+</tr>
+<tr>
+<td>Infrastructure-as-code</td>
+<td>High for an owned subset</td>
+<td>APIs differ; no universal transaction/provider contract</td>
+<td>High</td>
+<td>Medium–high with state/locking</td>
+<td>Narrow v0.1</td>
+</tr>
+<tr>
+<td>Environment semantic diff</td>
+<td>High for schema; partial for apps</td>
+<td>Read/export surfaces; layer/source coverage limits</td>
+<td>High</td>
+<td>Medium–high with coverage report</td>
+<td>Schema only</td>
+</tr>
+<tr>
+<td>Environment creation/admin</td>
+<td>Feasible</td>
+<td>PAC and versioned management APIs; some previews</td>
+<td>High</td>
+<td>Medium, privileges/capacity</td>
+<td>Discovery only</td>
+</tr>
+<tr>
+<td>Cross-service rollback</td>
+<td>Limited</td>
+<td>Service-specific recovery; no atomic global rollback</td>
+<td>Very high</td>
+<td>Low for universal undo</td>
+<td>Journal/forward fix only</td>
+</tr>
+<tr>
+<td>Documentation/architecture diagrams</td>
+<td>High</td>
+<td>Derived from IR and supported read APIs</td>
+<td>Low–medium</td>
+<td>High for inventoried scope</td>
+<td>Basic version</td>
+</tr>
+</tbody></table></div>
+<h2 id="29-risk-matrix">29. Risk matrix</h2>
+<p>Probability refers to encountering the issue across real customer projects, not a measured statistical likelihood. Impact is the consequence without mitigation.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Probability</th>
+<th>Impact</th>
+<th>Mitigation and release gate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Internal formats or authoring tools change</td>
+<td>High</td>
+<td>High</td>
+<td>Public contracts first; versioned adapters; compatibility fixtures; unsupported routes excluded from stable releases</td>
+</tr>
+<tr>
+<td>Canvas source/control incompatibility</td>
+<td>High</td>
+<td>High</td>
+<td>Pin templates/control versions; compile/sync validation; open/play/save/export tests; preserve original app</td>
+</tr>
+<tr>
+<td>Undocumented endpoint becomes essential</td>
+<td>Medium</td>
+<td>High</td>
+<td>Label unsupported dependency; isolate experimental provider; require a supported alternative before core adoption</td>
+</tr>
+<tr>
+<td>Connector authorization or owner mismatch</td>
+<td>High</td>
+<td>High</td>
+<td>Preflight identities/connections; explicit target binding; verify runtime action with intended owner</td>
+</tr>
+<tr>
+<td>Licensing or entitlement mismatch</td>
+<td>High</td>
+<td>High</td>
+<td>Declare connector/app requirements; tenant-specific entitlement review; avoid automatic legal conclusions</td>
+</tr>
+<tr>
+<td>DLP/environment restrictions</td>
+<td>High</td>
+<td>High</td>
+<td>Discover policy where permitted; fail with exact blocked connector/action; never bypass controls</td>
+</tr>
+<tr>
+<td>Solution dependency/layer conflict</td>
+<td>High</td>
+<td>High</td>
+<td>Dependency graph, clean-environment import, layer inspection and managed-release discipline</td>
+</tr>
+<tr>
+<td>Tenant/cloud/region differences</td>
+<td>High</td>
+<td>High</td>
+<td>Capability probes, cloud-aware endpoints and compatibility matrix; never hard-code one tenant</td>
+</tr>
+<tr>
+<td>Throttling or asynchronous operations</td>
+<td>High</td>
+<td>Medium–high</td>
+<td>Bounded concurrency, server retry hints, jitter, checkpoints and readiness polling</td>
+</tr>
+<tr>
+<td>Wrong tenant or environment</td>
+<td>Medium</td>
+<td>Critical</td>
+<td>Tenant/environment/organization binding, protected production targets, target-bound plans and independent identity checks</td>
+</tr>
+<tr>
+<td>Destructive schema migration</td>
+<td>Medium</td>
+<td>Critical</td>
+<td>Block implicit deletion/replacement; explicit migration and recovery rehearsal; verify backup scope</td>
+</tr>
+<tr>
+<td>Partial deployment and duplicate side effects</td>
+<td>High</td>
+<td>High</td>
+<td>Idempotent operations, journal, resume verification; disable new flows until dependencies pass</td>
+</tr>
+<tr>
+<td>Human edits overwritten by AI/generator</td>
+<td>High</td>
+<td>High</td>
+<td>Ownership at property/component level, three-way merge, conflicts and opaque asset preservation</td>
+</tr>
+<tr>
+<td>Credential disclosure or malicious plugin</td>
+<td>Medium</td>
+<td>Critical</td>
+<td>Credential broker, secure caches, redaction, least privilege, plugin trust controls and dependency review</td>
+</tr>
+<tr>
+<td>AI creates unsafe or incorrect behavior</td>
+<td>High</td>
+<td>High</td>
+<td>Restricted IR, deterministic policy checks, negative tests, human-reviewed business semantics</td>
+</tr>
+<tr>
+<td>Test suite passes only as administrator</td>
+<td>High</td>
+<td>High</td>
+<td>Separate personas; verify denied operations and data boundaries with real limited accounts</td>
+</tr>
+<tr>
+<td>Tool/runtime/version mismatch</td>
+<td>High</td>
+<td>Medium–high</td>
+<td>Lockfile, doctor command, explicit supported combinations, multi-OS CI</td>
+</tr>
+<tr>
+<td>Microsoft absorbs product features</td>
+<td>High</td>
+<td>High commercially</td>
+<td>Build around reliability/maintenance gaps; benchmark against Microsoft tools each milestone</td>
+</tr>
+<tr>
+<td>Scope exceeds maintainable team capacity</td>
+<td>High</td>
+<td>High</td>
+<td>One application type/template first; evidence-gated providers; publish explicit support matrix</td>
+</tr>
+</tbody></table></div>
+<p>The dominant technical risk is not generating files. It is maintaining correct behavior when an application crosses identity, solution layers, connectors, policy and service boundaries. The dominant product risk is shipping a broad but fragile wrapper while Microsoft improves the same creation workflows.</p>
+<h2 id="30-exact-v0-1-scope-and-roadmap">30. Exact v0.1 scope and roadmap</h2>
+<h3 id="v0-1-a-supported-model-driven-application-factory">v0.1: a supported model-driven application factory</h3>
+<p>Target one internal complaint-management application in an existing commercial-cloud Dataverse developer/sandbox environment. Provisioning the tenant/environment, buying licenses and granting administrator consent are prerequisites. Support one publisher and one owned unmanaged development solution, promoted as a managed artifact to an existing UAT environment.</p>
+<p>Include:</p>
+<ol>
+<li><strong>Project and identity:</strong> template scaffolding, versioned schema, tool lockfile, protected credential storage, tenant-bound profiles, explicit target selection and a diagnostic command. Interactive developer authentication and one tested federated CI route should be supported; other methods can be declared unsupported initially.</li>
+<li><strong>Dataverse subset:</strong> text, multiline text, numeric, Boolean, date/time and choice columns; primary name; explicit user/team ownership; basic 1:N lookups; a bounded alternate-key path only after its readiness test passes. Support additive changes and documented mutable properties. Block implicit renames, type conversions and deletes.</li>
+<li><strong>Application:</strong> standard model-driven main form, one or two views, simple navigation and app publication. Define a small role template with explicit privileges, bind app access, and verify using a limited user. Do not include business-rule/BPF generation, custom commands or arbitrary dashboards.</li>
+<li><strong>Plan and state:</strong> semantic schema diff, owned resource mapping, local protected state and an operation journal. Enforce one writer per project/target. CI serializes deployment and stores state/artifacts in access-controlled persistent storage. Multiwriter remote coordination belongs in a later release.</li>
+<li><strong>ALM:</strong> PAC export/pack/import, solution checking, managed UAT promotion, environment-variable settings and validation of existing connection references where present. Record exact artifacts, import results and unresolved stages.</li>
+<li><strong>Verification and documentation:</strong> reference/schema checks, a limited static-rule set, API schema/CRUD tests, a browser create-edit-search scenario, and a positive/negative permission test. Generate a concise data dictionary and deployment report.</li>
+</ol>
+<p><strong>Explicitly excluded:</strong> generating cloud flows, Canvas apps, SharePoint sites, Power Pages or custom connectors; arbitrary AI writes; full migration/rollback engine; public marketplace; broad environment administration; universal existing-solution adoption. The configuration schema may reserve future extensions, but v0.1 must not claim to execute them.</p>
+<p>Basic connection-reference handling is useful ALM infrastructure, not a promise that v0.1 generates flows. Likewise, checking formula syntax is a development aid, not a Canvas compiler.</p>
+<p><strong>Release criteria:</strong> reproduce the same functional app in two clean test environments; repeat an apply with no unintended changes; detect an out-of-band schema edit; fail cleanly on insufficient privilege and wrong-tenant configuration; resume a deliberately interrupted deployment; and prove that a restricted user can perform only the expected operations. Record all manual steps. These are proposed gates, not completed tests.</p>
+<h3 id="roadmap-by-evidence-not-calendar-promises">Roadmap by evidence, not calendar promises</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Product scope</th>
+<th>Entry/exit evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v0.1</td>
+<td>Supported Dataverse/model-driven core and managed deployment</td>
+<td>Experiments 1, 2, 5, 7, 8 and core of 10 pass for declared scope</td>
+</tr>
+<tr>
+<td>v0.2</td>
+<td>A few solution-aware flow templates; SharePoint lists/libraries in existing sites; capture native edits; AI draft specification</td>
+<td>Experiments 4 and 9 pass; connection setup and consent are explicit; no destructive sync</td>
+</tr>
+<tr>
+<td>v0.5</td>
+<td>Existing-project adoption for a supported subset; remote locking/state; richer semantic diff; explicit migrations; private reusable modules; optional code-app target</td>
+<td>Preservation/conflict benchmark passes; interrupted migration and team concurrency tested</td>
+</tr>
+<tr>
+<td>v1.0</td>
+<td>Published compatibility/support policy; production-grade provider contracts; repeatable upgrades; mature recovery records; enterprise identity/policy integration</td>
+<td>Independent real projects and upgrades succeed under least privilege; operational support process proven</td>
+</tr>
+<tr>
+<td>Longer term</td>
+<td>Rich Canvas layout library via supported route, broader app/template targets, private/public component ecosystem, AI-assisted maintenance and cross-service diagnostics</td>
+<td>Live authoring and source round-trip experiments demonstrate stability; demand justifies maintenance</td>
+</tr>
+</tbody></table></div>
+<p>Investigate Canvas authoring early as a separate experiment because it affects the long-term ceiling. Do not make v0.1 depend on that experiment succeeding. If live authoring proves reliable, offer an explicitly session-based preview before any general availability commitment. If headless authoring remains unsupported, retain that boundary in the product positioning.</p>
+<h2 id="31-ten-critical-technical-experiments">31. Ten critical technical experiments</h2>
+<p>These are proposed proof-of-concept experiments. <strong>None was executed against a tenant during this research.</strong> Run in disposable test environments with synthetic data and record tool/API versions, regions, identities, exact manual steps, timings and failure evidence. Do not declare success from an HTTP status or generated ZIP alone.</p>
+<h3 id="1-dataverse-metadata-generation-and-safe-additive-change">1. Dataverse metadata generation and safe additive change</h3>
+<p><strong>Hypothesis:</strong> an owned, ordinary schema can be created and incrementally reconciled through documented metadata APIs.</p>
+<p><strong>Implementation:</strong> create a publisher/solution, Complaint and Category tables, choices, primary columns, a lookup and an alternate key. Add each component to the intended solution, wait for asynchronous readiness and publish. Run again, then change a display label and add a column. Test a prohibited type change and a populated-column deletion request.</p>
+<p><strong>Expected result:</strong> metadata and CRUD match the specification; repeat application is a semantic no-op; label changes preserve identity; unsafe operations are blocked before mutation.</p>
+<p><strong>Invalidation:</strong> core supported types require hidden endpoints, generated identity is unstable, or the reconciler cannot distinguish a safe update from data-destructive replacement. Narrow the supported types if only a specific type fails.</p>
+<h3 id="2-model-driven-app-form-view-and-role-generation">2. Model-driven app, form, view and role generation</h3>
+<p><strong>Hypothesis:</strong> a useful standard app can be built through documented AppModule, form/view and security operations without manual app design.</p>
+<p><strong>Implementation:</strong> generate the main form, filtered view, navigation and app-component associations for experiment 1; validate and publish; bind an explicit role. Use a limited test user to create, view and edit records, and a second persona to test denied access. Compare against Microsoft&#39;s current model-app builder on the same requirements.</p>
+<p><strong>Expected result:</strong> the app opens and works without designer repair; intended users see only authorized records; PowerCanvas&#39;s repeatability or diff/recovery behavior provides a concrete benefit over the Microsoft baseline.</p>
+<p><strong>Invalidation:</strong> ordinary generated forms/navigation need repeated manual repair, or permissions cannot be proven without giving broad administrative rights. If Microsoft&#39;s tool already meets the use case, reconsider building a separate authoring layer.</p>
+<h3 id="3-canvas-generation-through-the-current-supported-authoring-route">3. Canvas generation through the current supported authoring route</h3>
+<p><strong>Hypothesis:</strong> a bounded layout IR can produce a functional, attractive Canvas app through Microsoft&#39;s live authoring workflow.</p>
+<p><strong>Implementation:</strong> create/save a blank app, enable required coauthoring, keep Studio open and add approved data sources manually. Use the official authoring tooling to compile/sync generated screens containing navigation, responsive containers, gallery/form, modern controls and representative Power Fx. Play, save, close/reopen, export and compare the result. Include a manual UI edit before a second synchronization. Record bootstrap and repair time separately.</p>
+<p><strong>Expected result:</strong> controls render and interact correctly at selected phone/tablet/desktop sizes; formulas work; accessible keyboard paths pass; manual edits are preserved or explicitly conflicted. Closing Studio yields a clear prerequisite failure.</p>
+<p><strong>Invalidation:</strong> accepted source cannot survive save/reopen, ordinary supported controls need recurring undocumented patches, or manual edits are silently lost. This experiment cannot validate a zero-Studio promise because the route itself requires Studio. Do not substitute deprecated packing merely to claim success.</p>
+<h3 id="4-solution-aware-cloud-flow-from-a-typed-specification">4. Solution-aware cloud flow from a typed specification</h3>
+<p><strong>Hypothesis:</strong> a small typed flow can be generated, transported and activated using documented APIs plus authorized connections.</p>
+<p><strong>Implementation:</strong> emit a Dataverse row-created trigger, High-priority condition, one controlled notification and a record update. Create the solution-aware workflow/clientdata through the documented route. Use existing target connections and connection references; export/import to UAT; enable under the intended owner. Test absent connections, owner mismatch, duplicate events and a failing notification action.</p>
+<p><strong>Expected result:</strong> one eligible event produces the expected result; low-priority records do not notify; failure and retry behavior are visible; deployment detects missing authorization rather than declaring readiness.</p>
+<p><strong>Invalidation:</strong> the chosen connector requires undocumented per-flow authoring behavior or repeat imports invalidate references. Narrow the connector catalog if the core flow contract remains viable.</p>
+<h3 id="5-source-round-trip-drift-and-manual-edit-preservation">5. Source round-trip, drift and manual-edit preservation</h3>
+<p><strong>Hypothesis:</strong> an owned subset can round-trip through source and environment without losing accepted customization.</p>
+<p><strong>Implementation:</strong> test conventional solution export/unpack separately from native Git integration. Commit a baseline; make one source change and one designer change; capture/diff/reconcile. Introduce a conflicting edit to the same form field. Repeat export without changes and compare normalized results. Preserve a component unknown to the IR.</p>
+<p><strong>Expected result:</strong> no spurious destructive diff; stable identities; both nonconflicting changes survive; conflicts are explicit; unknown assets remain intact. Record which Canvas edits are allowed by the chosen route.</p>
+<p><strong>Invalidation:</strong> routine round-trips reorder or replace meaningful components, silently overwrite user work, or make no-op detection unreliable. Reduce management granularity rather than claim ownership of the entire app.</p>
+<h3 id="6-power-fx-and-static-analysis-accuracy">6. Power Fx and static-analysis accuracy</h3>
+<p><strong>Hypothesis:</strong> host-aware local checks can catch meaningful errors while clearly separating proven errors from heuristic warnings.</p>
+<p><strong>Implementation:</strong> use the official engine with symbol/type fixtures derived from test metadata. Evaluate pure functions with known inputs; check deliberately broken references and types. Add delegation/N+1/ForAll rules and compare their findings with actual app behavior on datasets above the app&#39;s retrieval limit. Include valid formulas that should not be flagged and unsupported host functions.</p>
+<p><strong>Expected result:</strong> syntax/type errors are reproducible; pure tests pass; heuristics report evidence and uncertainty; unknown host context is surfaced. Produce a small precision/recall report for the chosen rule corpus.</p>
+<p><strong>Invalidation:</strong> the tool claims full validation while silently accepting unknown symbols or ignoring connector behavior. Restrict it to established checks until the host model improves.</p>
+<h3 id="7-clean-environment-managed-deployment">7. Clean-environment managed deployment</h3>
+<p><strong>Hypothesis:</strong> the generated app and declared prerequisites are sufficient to deploy to a clean target through a repeatable release pipeline.</p>
+<p><strong>Implementation:</strong> export/check one release artifact; deploy it to two clean target environments using explicit variable and connection bindings. Run schema, browser and persona tests. Repeat the deployment, then remove a required dependency and test preflight. Verify no unmanaged customization is introduced downstream.</p>
+<p><strong>Expected result:</strong> both targets meet the same acceptance criteria; artifact hashes are identical across promotion; repeat deployment is safe; dependency/configuration errors are actionable.</p>
+<p><strong>Invalidation:</strong> undocumented manual component creation is routinely required, source-environment IDs leak into behavior, or successful import cannot be distinguished from a usable application.</p>
+<h3 id="8-authentication-tenant-isolation-and-ci">8. Authentication, tenant isolation and CI</h3>
+<p><strong>Hypothesis:</strong> PowerCanvas can operate securely across two tenants and unattended CI without scraping another tool&#39;s private token store.</p>
+<p><strong>Implementation:</strong> exercise supported interactive authentication on Windows, macOS and Linux; add two tenant-bound profiles; use one federated CI identity. Request correct audiences for Dataverse, management API, Graph and SharePoint. Switch profiles, revoke consent and expire tokens. Intentionally pair a profile with the wrong environment. Inspect logs, project files and artifacts for tokens/secrets.</p>
+<p><strong>Expected result:</strong> wrong-target writes fail before execution; revoked/expired credentials produce bounded recovery; CI uses declared permissions; no secret appears in logs/source; supported credential caching works on each declared OS.</p>
+<p><strong>Invalidation:</strong> a core path needs plaintext reusable secrets, private-cache extraction, or a broad tenant-admin role that cannot be reduced for its purpose. Scope permissions separately before rejecting all app-only automation.</p>
+<h3 id="9-sharepoint-provisioning-and-permission-boundary">9. SharePoint provisioning and permission boundary</h3>
+<p><strong>Hypothesis:</strong> a document module can be provisioned idempotently in an existing site using supported APIs and scoped access.</p>
+<p><strong>Implementation:</strong> create a library, metadata fields, view and supported content-type/settings changes using Graph where sufficient and SharePoint REST/PnP where necessary. Verify resource-specific permissions, repeat execution, change a supported field property, test access denial and throttling. Separately evaluate site creation as an optional administrative capability.</p>
+<p><strong>Expected result:</strong> no duplicate lists/fields, no lost documents, correct view/settings and no access outside the granted site scope; throttled operations resume using server guidance.</p>
+<p><strong>Invalidation:</strong> required settings need unsupported endpoints, broad permissions cannot be justified, or repeated application damages user content. Retain the useful subset and defer site administration.</p>
+<h3 id="10-failure-recovery-destructive-change-prevention-and-upgrade">10. Failure recovery, destructive-change prevention and upgrade</h3>
+<p><strong>Hypothesis:</strong> deployment can be safely stopped, resumed or forward-fixed without pretending there is one global rollback transaction.</p>
+<p><strong>Implementation:</strong> interrupt after metadata creation, after solution import and before flow activation. Retry using the operation journal. Change target metadata after a plan is created. Attempt a managed upgrade that removes a populated custom column in a disposable environment; verify the preflight block. Rehearse a real environment restore and separately document SharePoint/external-system recovery.</p>
+<p><strong>Expected result:</strong> stale plans are rejected; no duplicate resources or notifications; partial status is accurate; destructive operations need an explicit migration/recovery path; restore limitations and lost external side effects are documented.</p>
+<p><strong>Invalidation:</strong> resume repeats irreversible side effects, a generic “rollback” deletes data, or journal/state cannot establish what happened. Do not ship production deployment until this is corrected for the supported scope.</p>
+<h2 id="32-comparable-ecosystems-and-commercial-potential">32. Comparable ecosystems and commercial potential</h2>
+<h3 id="what-to-borrow-and-what-does-not-transfer">What to borrow, and what does not transfer</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Ecosystem</th>
+<th>Useful precedent</th>
+<th>PowerCanvas adaptation and limit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://developer.salesforce.com/docs/platform/pkg2-dev/guide/pd-dev-hub-intro.html">Salesforce DX / scratch orgs</a></td>
+<td>Source-driven development, isolated temporary orgs, package/test workflows</td>
+<td>Use isolated Power Platform dev/test environments and declared configuration; do not assume identical scratch-org lifecycle or universal metadata source tracking</td>
+</tr>
+<tr>
+<td><a href="https://developer.salesforce.com/docs/platform/code-builder/guide/codebuilder-dev-models.html">Salesforce development models</a></td>
+<td>Explicit distinction between org and package development</td>
+<td>Make ownership, managed releases and environment customization boundaries explicit</td>
+</tr>
+<tr>
+<td><a href="https://supabase.com/docs/guides/local-development/database-migrations">Supabase migrations</a></td>
+<td>Repeatable migrations, local reset and seed-driven tests</td>
+<td>Borrow migration history and test fixtures; Dataverse does not expose equivalent arbitrary SQL migrations or a complete local stack</td>
+</tr>
+<tr>
+<td><a href="https://firebase.google.com/docs/cli">Firebase CLI</a></td>
+<td>Guided initialization, project aliases, configuration and scoped deploy</td>
+<td>Make setup discoverable and targets unmistakable; do not hide tenant/identity boundaries behind an alias</td>
+</tr>
+<tr>
+<td><a href="https://developer.hashicorp.com/terraform/language/state">Terraform state</a> and <a href="https://developer.hashicorp.com/terraform/cli/commands/plan">plan</a></td>
+<td>Resource identity, ownership/state and reviewable differences</td>
+<td>Maintain owned mappings and inspect observed state; represent uncertainty, manual prerequisites and solution layers</td>
+</tr>
+<tr>
+<td><a href="https://www.pulumi.com/docs/iac/concepts/resources/">Pulumi resources</a></td>
+<td>Reusable infrastructure abstractions in programming languages</td>
+<td>Allow reusable modules to emit constrained IR; control evaluation side effects and preserve deterministic plans</td>
+</tr>
+<tr>
+<td><a href="https://docs.aws.amazon.com/cdk/v2/guide/home.html">AWS CDK</a></td>
+<td>High-level constructs synthesized into a lower-level deployment representation</td>
+<td>Compile business modules into typed IR/native artifacts; Power Platform lacks a single equivalent deployment engine covering all services</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview">Bicep</a></td>
+<td>Concise typed declarations, modules and server-backed deployment semantics</td>
+<td>Borrow schema ergonomics; do not assume PowerCanvas can avoid ownership state just because ARM manages Bicep&#39;s resource state</td>
+</tr>
+<tr>
+<td><a href="https://www.serverless.com/framework/docs">Serverless Framework</a></td>
+<td>Project conventions, stages and provider-oriented deployment</td>
+<td>Provide coherent defaults and target configuration while making service-specific behavior visible</td>
+</tr>
+</tbody></table></div>
+<p>The broad lesson is to simplify the developer&#39;s decisions without erasing the platform&#39;s operational model. A pleasant command is valuable when it reliably assembles supported operations and explains failures. It is dangerous when it implies stronger atomicity, portability or validation than those operations provide.</p>
+<h3 id="credible-audience-and-differentiation">Credible audience and differentiation</h3>
+<p>The most credible early users are Power Platform consultants, Microsoft partners and internal platform teams delivering repeated Dataverse applications across environments. Individual developers may adopt scaffolding and diagnostics, but enterprise teams are more likely to value reproducible deployment, reviewable permissions, upgrade safety and audit evidence. Agencies working across tenants particularly need explicit identity isolation and reusable project patterns.</p>
+<p>This is a product hypothesis supported by the existence of the surrounding tooling ecosystem, <strong>not market validation</strong>. The study contains no customer interviews, willingness-to-pay evidence, addressable-market calculation or forecast. Validate demand by asking teams to compare a real maintenance/deployment task using their current tools, Microsoft&#39;s current authoring plugins and a narrow PowerCanvas prototype.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Existing alternative</th>
+<th>What PowerCanvas would need to add</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PAC CLI</td>
+<td>A project model, semantic plan, ownership, coherent errors and verified application outcomes</td>
+</tr>
+<tr>
+<td>Build Tools / GitHub Actions</td>
+<td>Cross-service configuration and diagnostics without replacing working CI primitives</td>
+</tr>
+<tr>
+<td>XrmToolBox</td>
+<td>Repeatable unattended workflows and source review for selected tasks; not every GUI feature</td>
+</tr>
+<tr>
+<td>Power Platform pipelines</td>
+<td>Preparation, drift detection and external-resource coordination around supported promotion</td>
+</tr>
+<tr>
+<td>Copilot / Plans / external authoring plugins</td>
+<td>Reliable modification, preservation, tests and auditable release behavior beyond initial generation</td>
+</tr>
+<tr>
+<td>Power Apps Studio</td>
+<td>A complementary developer workflow; keep Studio where it remains the supported authoring/runtime surface</td>
+</tr>
+</tbody></table></div>
+<p>An open-source core is credible for project parsing, providers, local planning, diagnostics and basic generation. Paid enterprise features could include governed remote state, private registries, organizational policies, compatibility assurance and deployment evidence. Hosted AI is optional; organizations may require their own model endpoint or no model use. A cloud product that stores tokens and deployment authority introduces a separate security and operations burden, so it should not be required for initial usefulness.</p>
+<p>Keep <strong>PowerCanvas</strong> as the research placeholder. No naming, trademark or domain availability conclusion is made.</p>
+<h2 id="33-final-answer-the-actual-technical-ceiling">33. Final answer: the actual technical ceiling</h2>
+<p><strong>Yes, PowerCanvas could let a developer describe a bounded business application and produce a high-quality, functional solution with substantially less manual authoring.</strong> The supported foundation is strongest for Dataverse and standard model-driven applications, with selected cloud flows, SharePoint resources and deployment configuration. Natural language can initiate that process, but quality comes from reviewed requirements, approved patterns, deterministic compilation and runtime acceptance tests.</p>
+<p>The same evidence does <strong>not</strong> establish a universal, unattended compiler for every Power Platform component. Minimal manual work is a reasonable target for well-understood templates with prepared identities/connections; zero setup, zero Studio and arbitrary requirements are not a justified promise.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Requested category</th>
+<th>Technical answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Possible today through officially supported APIs</strong></td>
+<td>Ordinary Dataverse metadata; standard model-driven application components; explicit security configuration; solution-aware cloud-flow creation within documented contracts; much SharePoint provisioning; variables/references; solution packaging and deployment. Official support applies to each specific operation, not automatically to every property a generator can invent.</td>
+</tr>
+<tr>
+<td><strong>Possible but difficult</strong></td>
+<td>Safe incremental modification, three-way merge, semantic diff, role correctness, connector activation, cross-tenant operation, migrations, dependency/layer resolution, robust tests and recovery after partial failure. These are substantial engineering projects built around supported surfaces.</td>
+</tr>
+<tr>
+<td><strong>Possible through source generation</strong></td>
+<td>PowerCanvas IR, Power Fx, supported form/view/XML assets, bounded flow definitions, custom-connector definitions, PCF/code-app source and eligible Canvas authoring source. Generating valid text does not by itself establish an importable or functional app.</td>
+</tr>
+<tr>
+<td><strong>Requires Power Apps Studio or another Power Apps designer</strong></td>
+<td>The documented Canvas external-authoring workflow needs a saved app, an open coauthoring session and Studio data-source setup. Unsupported Canvas edits may need designer correction. Defining specialized Dataverse formulas requires Power Apps editors; business-rule/BPF definition generation should rely on designer-authored assets until a supported authoring contract is proven. Connector consent and tenant configuration may require their own interactive setup surfaces.</td>
+</tr>
+<tr>
+<td><strong>Requires unsupported techniques if insisted upon</strong></td>
+<td>Treating deprecated Canvas pack/unpack or legacy PASopa as a guaranteed universal compiler; modifying unsupported internal app JSON; replaying private maker endpoints; creating specialized formulas through undocumented payloads. None is required for the recommended MVP.</td>
+</tr>
+<tr>
+<td><strong>Currently impractical as a reliable general promise</strong></td>
+<td>Arbitrary natural language to any complete production-ready Power Platform system with no human decisions, no tenant setup, no Studio dependency, no live testing and automatic global rollback. Full offline runtime parity and static proof of every permission/delegation/connector behavior are also not established.</td>
+</tr>
+</tbody></table></div>
+<p>For the example complaint application, the practical ceiling is a generated schema and standard app, a tested notification/escalation module, a document library, explicit role definitions and a repeatable deployment project. A prepared tenant can reduce manual work substantially. A polished custom Canvas interface adds session-based authoring and design verification. Specialized formulas or bespoke process logic may require designer-authored components that PowerCanvas transports and preserves.</p>
+<p>The product should therefore sell <strong>predictable application delivery and maintenance</strong>, measured by acceptance criteria and manual interventions. The recommended decision is to proceed to the ten experiments, then build the narrow v0.1 only if the supported core and preservation/recovery tests pass. This research establishes the interfaces and boundaries; it does not claim those experiments have already succeeded.</p>
+<h2 id="appendix-a-package-and-repository-evidence">Appendix A. Package and repository evidence</h2>
+<p>The ecosystem search included GitHub, npm and NuGet as well as Microsoft Learn. Packages expose reusable building blocks, but publication in a registry does not make an internal tool library a supported embedding API.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Package/source</th>
+<th>Observation checked 17 September 2026</th>
+<th>Relevance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://www.nuget.org/packages/Microsoft.PowerApps.CLI">Microsoft.PowerApps.CLI</a></td>
+<td>Registry lists 2.12.2, published 11 September 2026</td>
+<td>Pin a tested PAC distribution; do not infer uniform JSON output from its version</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Microsoft.PowerPlatform.Dataverse.Client/">Microsoft.PowerPlatform.Dataverse.Client</a></td>
+<td>Official ServiceClient package; registry lists 1.2.27</td>
+<td>Supported .NET client foundation</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Microsoft.PowerFx.Core/">Microsoft.PowerFx.Core</a></td>
+<td>Public language engine package</td>
+<td>Pin compatible Core/Interpreter/LSP-related packages; host behavior remains separate</td>
+</tr>
+<tr>
+<td><a href="https://www.npmjs.com/package/%40microsoft/power-apps-cli?activeTab=versions">@microsoft/power-apps-cli</a></td>
+<td>Official code-app CLI package</td>
+<td>Distinct from PAC; match commands to its installed version</td>
+</tr>
+<tr>
+<td><a href="https://www.npmjs.com/package/%40pnp/cli-microsoft365?activeTab=versions">@pnp/cli-microsoft365</a></td>
+<td>Published community Microsoft 365 CLI</td>
+<td>Existing broad automation dependency candidate</td>
+</tr>
+</tbody></table></div>
+<p>Repository activity/license observations are supplied separately in <a href="repository-evidence.json">repository-evidence.json</a>. They are a dated discovery snapshot, not a security or license audit. Refer to section 20 for functional comparisons and support limitations. Registry version observations are not a recommendation to upgrade without compatibility tests.</p>
+<p>All technical conclusions use direct source links near the relevant claims. The accompanying <a href="Source-Index.html">source index</a> lists the unique external references for convenient review. The date above is the research/access date; only entries with an explicitly stated update or release date claim that source publication date. Recheck fast-moving authoring, CLI, testing and licensing sources before development decisions.</p>
+<h2 id="appendix-b-coverage-of-the-original-60-part-brief">Appendix B. Coverage of the original 60-part brief</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Brief topic</th>
+<th>Report sections</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Platform architecture</td>
+<td>3, 6–11, 16–17</td>
+</tr>
+<tr>
+<td>2. Microsoft tooling / PAC</td>
+<td>12, 20–21, Appendix A</td>
+</tr>
+<tr>
+<td>3. Build tools and ALM</td>
+<td>13, 25, 27</td>
+</tr>
+<tr>
+<td>4. Canvas generation</td>
+<td>2, 4, 31 experiment 3</td>
+</tr>
+<tr>
+<td>5. Canvas UI generation</td>
+<td>4, 28</td>
+</tr>
+<tr>
+<td>6. Power Fx</td>
+<td>5, 15, 31 experiment 6</td>
+</tr>
+<tr>
+<td>7. Model-driven generation</td>
+<td>6, 31 experiment 2</td>
+</tr>
+<tr>
+<td>8. Dataverse schema</td>
+<td>7, 26, 31 experiment 1</td>
+</tr>
+<tr>
+<td>9. Dataverse migrations</td>
+<td>8, 14, 31 experiment 10</td>
+</tr>
+<tr>
+<td>10. Cloud-flow generation</td>
+<td>9, 31 experiment 4</td>
+</tr>
+<tr>
+<td>11. AI-generated workflows</td>
+<td>9, 22–23</td>
+</tr>
+<tr>
+<td>12. SharePoint automation</td>
+<td>10, 31 experiment 9</td>
+</tr>
+<tr>
+<td>13. Authentication</td>
+<td>16, 18, 31 experiment 8</td>
+</tr>
+<tr>
+<td>14. Multitenant support</td>
+<td>16, 27, 31 experiment 8</td>
+</tr>
+<tr>
+<td>15. Environment management</td>
+<td>12, 17</td>
+</tr>
+<tr>
+<td>16. Complete solution generation</td>
+<td>3, 22, 26, 33</td>
+</tr>
+<tr>
+<td>17. Declarative infrastructure</td>
+<td>14, 22, 32</td>
+</tr>
+<tr>
+<td>18. State management</td>
+<td>14, 22, 30</td>
+</tr>
+<tr>
+<td>19. Solution diffing</td>
+<td>14, 23, 25</td>
+</tr>
+<tr>
+<td>20. Validation</td>
+<td>15, 22, 28</td>
+</tr>
+<tr>
+<td>21. Static analysis</td>
+<td>5, 15, 31 experiment 6</td>
+</tr>
+<tr>
+<td>22. Testing</td>
+<td>2, 15, 31</td>
+</tr>
+<tr>
+<td>23. AI architecture</td>
+<td>21–23</td>
+</tr>
+<tr>
+<td>24. AI planning agent</td>
+<td>23</td>
+</tr>
+<tr>
+<td>25. AI modification</td>
+<td>23, 31 experiment 5</td>
+</tr>
+<tr>
+<td>26. Git integration</td>
+<td>13, 25</td>
+</tr>
+<tr>
+<td>27. Similar projects</td>
+<td>20, 32, Appendix A</td>
+</tr>
+<tr>
+<td>28. XrmToolBox</td>
+<td>20</td>
+</tr>
+<tr>
+<td>29. Community tools</td>
+<td>10, 20–21</td>
+</tr>
+<tr>
+<td>30. Graph</td>
+<td>10, 16</td>
+</tr>
+<tr>
+<td>31. Plugin architecture</td>
+<td>21, 24</td>
+</tr>
+<tr>
+<td>32. Templates</td>
+<td>24, 30</td>
+</tr>
+<tr>
+<td>33. Component marketplace</td>
+<td>24</td>
+</tr>
+<tr>
+<td>34. CLI UX</td>
+<td>21, 27</td>
+</tr>
+<tr>
+<td>35. Implementation language</td>
+<td>21</td>
+</tr>
+<tr>
+<td>36. Local development</td>
+<td>25, 27</td>
+</tr>
+<tr>
+<td>37. Reverse engineering/support classes</td>
+<td>1, 4, 6–7, 28, 33</td>
+</tr>
+<tr>
+<td>38. Licensing</td>
+<td>9, 11, 17</td>
+</tr>
+<tr>
+<td>39. Governance</td>
+<td>17–18, 29</td>
+</tr>
+<tr>
+<td>40. Security</td>
+<td>7, 16, 18, 23–24</td>
+</tr>
+<tr>
+<td>41. Disaster prevention</td>
+<td>8, 13, 18, 31 experiment 10</td>
+</tr>
+<tr>
+<td>42. Performance</td>
+<td>5, 19</td>
+</tr>
+<tr>
+<td>43. Documentation generation</td>
+<td>25</td>
+</tr>
+<tr>
+<td>44. Architecture visualization</td>
+<td>21, 25</td>
+</tr>
+<tr>
+<td>45. Project scaffolding</td>
+<td>26–27</td>
+</tr>
+<tr>
+<td>46. Configuration schema</td>
+<td>22, 26</td>
+</tr>
+<tr>
+<td>47. MVP</td>
+<td>30</td>
+</tr>
+<tr>
+<td>48. Roadmap</td>
+<td>30</td>
+</tr>
+<tr>
+<td>49. Feasibility matrix</td>
+<td>28</td>
+</tr>
+<tr>
+<td>50. Risk matrix</td>
+<td>29</td>
+</tr>
+<tr>
+<td>51. Technical architecture</td>
+<td>21–25</td>
+</tr>
+<tr>
+<td>52. IR</td>
+<td>22</td>
+</tr>
+<tr>
+<td>53. CLI commands</td>
+<td>27</td>
+</tr>
+<tr>
+<td>54. Developer experience</td>
+<td>25–27</td>
+</tr>
+<tr>
+<td>55. Comparable ecosystems</td>
+<td>32</td>
+</tr>
+<tr>
+<td>56. Differentiation</td>
+<td>Executive summary, 20, 32</td>
+</tr>
+<tr>
+<td>57. Commercial potential</td>
+<td>32</td>
+</tr>
+<tr>
+<td>58. Naming</td>
+<td>32</td>
+</tr>
+<tr>
+<td>59. Sources and currency</td>
+<td>1–2, citations throughout, Appendix A, source index</td>
+</tr>
+<tr>
+<td>60. Required report and final technical ceiling</td>
+<td>Entire report, especially 28–33</td>
+</tr>
+</tbody></table></div>
+<div class="footer">PowerCanvas feasibility study · 17 September 2026 · 137 unique cited sources · Research and design proposals only.</div></main></div></body></html>

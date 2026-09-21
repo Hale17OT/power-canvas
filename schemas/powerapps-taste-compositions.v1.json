@@ -1,0 +1,2030 @@
+[
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "AnalyticalOverview",
+    "purpose": "Decide where attention is needed using scoped evidence",
+    "modes": [
+      "analyze"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "AnalyticalOverview",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "AnalyticalOverview",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "AnalyticalOverview",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "primaryAction": "Inspect a comparison",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "ChartCard",
+      "PageHeader"
+    ],
+    "slots": [
+      "metrics",
+      "body"
+    ],
+    "requiredSlots": [
+      "metrics",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Inspect a comparison",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "metrics",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "MetricDrilldown",
+    "purpose": "Inspect records contributing to a selected measure",
+    "modes": [
+      "analyze"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "MetricDrilldown",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "MetricDrilldown",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "MetricDrilldown",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "primaryAction": "Return to overview",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "DataTable",
+      "DetailPanel"
+    ],
+    "slots": [
+      "body"
+    ],
+    "requiredSlots": [
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Return to overview",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "Dashboard",
+    "purpose": "Decide the next operational action",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Dashboard",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Dashboard",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Open work queue",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "KpiCard",
+      "ChartCard"
+    ],
+    "slots": [
+      "metrics",
+      "body"
+    ],
+    "requiredSlots": [
+      "metrics",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Open work queue",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "metrics",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "RecordList",
+    "purpose": "Find and select a record",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "RecordList",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "RecordList",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "New record",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "SearchBox",
+      "DataTable"
+    ],
+    "slots": [
+      "filters",
+      "body"
+    ],
+    "requiredSlots": [
+      "filters",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "New record",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "filters",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "RecordDetail",
+    "purpose": "Understand and edit a selected record",
+    "modes": [
+      "review"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "RecordDetail",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "RecordDetail",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileRecord",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Edit",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "DetailPanel",
+      "FormSection"
+    ],
+    "slots": [
+      "body"
+    ],
+    "requiredSlots": [
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Edit",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "RecordDetailWithTimeline",
+    "purpose": "Review facts alongside real history",
+    "modes": [
+      "review"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "RecordDetailWithTimeline",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "RecordDetailWithTimeline",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileRecord",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Edit",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "DetailPanel",
+      "ActivityTimeline"
+    ],
+    "slots": [
+      "body",
+      "context"
+    ],
+    "requiredSlots": [
+      "body",
+      "context"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Edit",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "body",
+      "context",
+      "feedback"
+    ],
+    "layout": "responsive split",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "WorkQueue",
+    "purpose": "Triage and process frequent work",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "WorkQueue",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "WorkQueue",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "New record",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "SearchBox",
+      "FilterBar",
+      "DataTable",
+      "DetailPanel"
+    ],
+    "slots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "requiredSlots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "New record",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "filters",
+      "body",
+      "context",
+      "feedback"
+    ],
+    "layout": "responsive split",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "ApprovalQueue",
+    "purpose": "Review evidence before a decision",
+    "modes": [
+      "approve"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "ApprovalQueue",
+      "informationOrder": [
+        "record identity",
+        "decision context",
+        "supporting evidence",
+        "reason",
+        "decision"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "ApprovalQueue",
+      "informationOrder": [
+        "record identity",
+        "decision context",
+        "supporting evidence",
+        "reason",
+        "decision"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileApproval",
+      "informationOrder": [
+        "record identity",
+        "decision context",
+        "supporting evidence",
+        "reason",
+        "decision"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Review decision",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "DataTable",
+      "DetailPanel",
+      "ConfirmationDialog"
+    ],
+    "slots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "requiredSlots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Review decision",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "filters",
+      "body",
+      "context",
+      "feedback"
+    ],
+    "layout": "responsive split",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "DocumentWorkspace",
+    "purpose": "Locate documents and inspect metadata",
+    "modes": [
+      "review"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "DocumentWorkspace",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "DocumentWorkspace",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileRecord",
+      "informationOrder": [
+        "record identity",
+        "summary",
+        "chronology",
+        "related actions"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Add document",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "SearchBox",
+      "DataTable",
+      "DetailPanel"
+    ],
+    "slots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "requiredSlots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Add document",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "filters",
+      "body",
+      "context",
+      "feedback"
+    ],
+    "layout": "responsive split",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "Wizard",
+    "purpose": "Complete a bounded sequence with review",
+    "modes": [
+      "enter"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Wizard",
+      "informationOrder": [
+        "record identity",
+        "progress",
+        "current fields",
+        "validation",
+        "review and save"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Wizard",
+      "informationOrder": [
+        "record identity",
+        "progress",
+        "current fields",
+        "validation",
+        "review and save"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskForm",
+      "informationOrder": [
+        "record identity",
+        "progress",
+        "current fields",
+        "validation",
+        "review and save"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Next",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "Stepper",
+      "FormSection",
+      "EditDialog"
+    ],
+    "slots": [
+      "progress",
+      "body"
+    ],
+    "requiredSlots": [
+      "progress",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Next",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "progress",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "Settings",
+    "purpose": "Change personal preferences safely",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Settings",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Settings",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Save preferences",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "Tabs",
+      "FormSection"
+    ],
+    "slots": [
+      "sections",
+      "body"
+    ],
+    "requiredSlots": [
+      "sections",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Save preferences",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "sections",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "Administration",
+    "purpose": "Inspect configuration and perform scoped changes",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Administration",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Administration",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "New configuration",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "Tabs",
+      "DataTable",
+      "DetailPanel"
+    ],
+    "slots": [
+      "sections",
+      "filters",
+      "body"
+    ],
+    "requiredSlots": [
+      "sections",
+      "filters",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "New configuration",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "sections",
+      "filters",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "ReportingDashboard",
+    "purpose": "Compare measures to support a decision",
+    "modes": [
+      "analyze"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "ReportingDashboard",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "ReportingDashboard",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "ReportingDashboard",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "primaryAction": "View details",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "FilterBar",
+      "KpiCard",
+      "ChartCard"
+    ],
+    "slots": [
+      "filters",
+      "metrics",
+      "body"
+    ],
+    "requiredSlots": [
+      "filters",
+      "metrics",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "View details",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "filters",
+      "metrics",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "UserManagement",
+    "purpose": "Inspect membership and scoped access",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "UserManagement",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "UserManagement",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Add member",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "SearchBox",
+      "DataTable",
+      "DetailPanel"
+    ],
+    "slots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "requiredSlots": [
+      "filters",
+      "body",
+      "context"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Add member",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "filters",
+      "body",
+      "context",
+      "feedback"
+    ],
+    "layout": "responsive split",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "Configuration",
+    "purpose": "Edit grouped system configuration",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Configuration",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "Configuration",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Save configuration",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "Tabs",
+      "FormSection",
+      "ConfirmationDialog"
+    ],
+    "slots": [
+      "sections",
+      "body"
+    ],
+    "requiredSlots": [
+      "sections",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Save configuration",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "sections",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  },
+  {
+    "applicationScope": "within-application",
+    "requiresNewApplication": false,
+    "name": "SearchResults",
+    "purpose": "Find relevant records and refine a query",
+    "modes": [
+      "operate"
+    ],
+    "desktopStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "SearchResults",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "adjacent detail",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "simultaneous",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "tabletStrategy": {
+      "scope": "within-application",
+      "approach": "responsive-adaptation",
+      "composition": "SearchResults",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "stable destinations",
+      "persistentControls": [
+        "navigation"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "local command group",
+      "detailPresentation": "context below list",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "sequential reflow",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "review before explicit commit",
+      "reason": "Available space supports preserving the current job and information hierarchy through responsive adaptation."
+    },
+    "mobileStrategy": {
+      "scope": "within-application",
+      "approach": "device-specific-composition",
+      "composition": "MobileTaskFlow",
+      "informationOrder": [
+        "record identity",
+        "priority",
+        "next action",
+        "secondary metadata"
+      ],
+      "navigation": "list → record → task; explicit back",
+      "persistentControls": [
+        "record identity",
+        "task actions"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "fixed footer outside the scroll body with bottom inset",
+      "detailPresentation": "dedicated full-height surface; task form replaces the surface",
+      "commandVisibility": "only current-task commands; background disabled during edit",
+      "listDetailRelationship": "mutually exclusive surfaces with stable selected identity",
+      "backBehavior": "record returns to list; editor cancel checks unsaved changes before return",
+      "formBehavior": "single column; scroll fields independently; persistent review/save; explicit discard",
+      "reason": "Simultaneous queue and record context creates excessive travel; completing one task at a time preserves identity and reachable actions."
+    },
+    "primaryAction": "Open result",
+    "secondaryActions": [
+      "Refresh",
+      "Cancel or return"
+    ],
+    "recommendedComponents": [
+      "SearchBox",
+      "FilterBar",
+      "DataTable",
+      "EmptyState"
+    ],
+    "slots": [
+      "filters",
+      "body"
+    ],
+    "requiredSlots": [
+      "filters",
+      "body"
+    ],
+    "optionalSlots": [],
+    "actionHierarchy": [
+      "Open result",
+      "contextual inspection",
+      "safe return"
+    ],
+    "informationHierarchy": [
+      "PageHeader",
+      "primary action",
+      "filters",
+      "body",
+      "feedback"
+    ],
+    "layout": "vertical flow",
+    "responsiveBehavior": "Context follows body below 1100; filters wrap below 640.",
+    "mobileBehavior": "Single column, touch targets, bottom navigation; keep actions available.",
+    "emptyState": "Explain why no records match and offer a useful next action",
+    "loadingState": "Label busy region and disable duplicate actions",
+    "errorState": "Preserve input and expose retry",
+    "execution": "Native slot composition; host supplies validated data/action formulas"
+  }
+]

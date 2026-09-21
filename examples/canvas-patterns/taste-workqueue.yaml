@@ -1,0 +1,34 @@
+key: sampleQueue
+composition: WorkQueue
+title: Service requests
+subtitle: Review the queue and keep the next action clear
+primaryAction:
+  label: New request
+  action: Set(showCreate, true)
+slots:
+  filters:
+    - key: search
+      component: SearchBox
+      props:
+        label: Search requests
+  body:
+    - key: records
+      component: DataTable
+      props:
+        label: Requests
+        items: Filter(Requests, StartsWith(Title, sampleQueue_search.Value))
+        title: ThisItem.Title
+        subtitle: ThisItem.Reference
+        badge: ThisItem.Status
+        onSelect: Set(selectedRequest, ThisItem)
+  context:
+    - key: details
+      component: DetailPanel
+      props:
+        title: selectedRequest.Title
+        subtitle: selectedRequest.Description
+states:
+  empty: IsEmpty(Requests)
+  loading: requestLoading
+  error: requestError
+  retry: Refresh(Requests)

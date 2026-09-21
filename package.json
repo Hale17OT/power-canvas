@@ -1,0 +1,45 @@
+{
+  "name": "powercanvas",
+  "version": "0.1.0-dev.1",
+  "private": true,
+  "description": "Deterministic Power Platform project validation and safe delivery foundation",
+  "type": "module",
+  "bin": {
+    "powercanvas": "dist/cli/index.js",
+    "powerforge": "dist/cli/index.js"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests scripts",
+    "test": "npm run build && vitest run",
+    "test:live": "npm run build && node scripts/live-check.mjs",
+    "check": "npm run lint && npm run typecheck && npm test",
+    "powercanvas": "node dist/cli/index.js",
+    "schema": "npm run build && node scripts/schema.mjs",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
+    "build:pcf": "npm --prefix pcf/Timeline run build"
+  },
+  "dependencies": {
+    "@azure/msal-node": "6.0.1",
+    "@azure/msal-node-extensions": "5.5.1",
+    "commander": "15.0.0",
+    "xmlbuilder2": "4.0.3",
+    "yaml": "2.9.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.20.3",
+    "esbuild": "0.28.2",
+    "eslint": "10.10.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.70.0",
+    "vitest": "5.0.1"
+  }
+}

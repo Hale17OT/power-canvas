@@ -1,0 +1,7 @@
+version: 0.2.0
+key: inventoryMetric
+component: KpiCard
+props:
+  label: '"Available inventory"'
+  value: 'Text(availableCount, "0")'
+  caption: '"Updated from the connected inventory source"'

@@ -1,0 +1,7 @@
+.powercanvas-timeline{--surface:#fff;--ink:#152530;--muted:#465b68;--brand:#145c4f;box-sizing:border-box;background:var(--surface);color:var(--ink);font:16px/1.5 "Segoe UI",sans-serif;padding:16px;overflow:auto;max-height:100%}
+.powercanvas-timeline[data-theme=dark]{--surface:#152530;--ink:#f4f7f8;--muted:#c1cdd4;--brand:#80dcc4}
+.powercanvas-timeline h2{font-size:22px;margin:0 0 20px}.powercanvas-timeline ol{list-style:none;margin:0;padding:0 0 0 12px;border-left:2px solid var(--brand)}
+.powercanvas-timeline li{padding:0 0 24px 16px;overflow-wrap:anywhere}.powercanvas-timeline p{margin:8px 0;color:var(--muted)}
+.powercanvas-timeline button{font:inherit;font-weight:600;min-height:44px;text-align:left;background:transparent;color:var(--ink);border:1px solid transparent;border-radius:8px;padding:8px;max-width:100%;cursor:pointer}
+.powercanvas-timeline button:hover,.powercanvas-timeline button[aria-pressed=true]{border-color:var(--brand)}.powercanvas-timeline button:focus-visible{outline:3px solid var(--brand);outline-offset:3px}.powercanvas-timeline button:disabled{cursor:default;opacity:.65}
+@media(forced-colors:active){.powercanvas-timeline button:focus-visible{outline-color:Highlight}.powercanvas-timeline ol{border-color:CanvasText}}

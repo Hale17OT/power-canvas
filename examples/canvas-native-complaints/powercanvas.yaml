@@ -1,0 +1,281 @@
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: 808f5ed9-73aa-4cd5-9d0f-480fd984b04e
+  name: default-environment-experiment
+solution:
+  uniqueName: pfx_PowerForgeExperiment
+  displayName: PowerCanvas Experiment
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerForgeExperimentPublisher
+    prefix: pfx
+    optionValuePrefix: 73142
+dataverse:
+  tables:
+    complaint:
+      schemaName: pfx_ExperimentComplaint
+      displayName: Complaint
+      pluralName: Complaints
+      ownership: userOrTeam
+      primaryName: title
+      auditing: true
+      columns:
+        title:
+          schemaName: pfx_ExperimentTitle
+          displayName: Title
+          type: text
+          maxLength: 200
+          required: application
+        description:
+          schemaName: pfx_ExperimentDescription
+          displayName: Description
+          type: multilineText
+          maxLength: 4000
+        priority:
+          schemaName: pfx_ExperimentPriority
+          displayName: Priority
+          type: choice
+          choices:
+            - label: Low
+              value: 731420000
+            - label: Normal
+              value: 731420001
+            - label: High
+              value: 731420002
+          default: 731420001
+        resolutionNotes:
+          schemaName: pfx_ExperimentResolutionNotes
+          displayName: Resolution Notes
+          type: multilineText
+          maxLength: 4000
+    category:
+      schemaName: pfx_ExperimentCategory
+      displayName: Category
+      pluralName: Categories
+      ownership: organization
+      primaryName: name
+      columns:
+        name:
+          schemaName: pfx_ExperimentName
+          displayName: Name
+          type: text
+          maxLength: 100
+          required: application
+  relationships:
+    complaintCategory:
+      schemaName: pfx_ExperimentCategory_Complaint
+      fromTable: complaint
+      toTable: category
+      lookup:
+        key: category
+        schemaName: pfx_ExperimentCategory
+        displayName: Category
+      cascade:
+        delete: restrict
+        assign: none
+        share: none
+        unshare: none
+        reparent: none
+        merge: none
+apps:
+  complaintDesk:
+    type: modelDriven
+    uniqueName: pfx_ExperimentComplaintManagement
+    displayName: Complaint Management
+    tables:
+      - complaint
+      - category
+    forms:
+      complaintMain:
+        displayName: PowerCanvas Experiment Complaint Main
+        table: complaint
+        fields:
+          - title
+          - priority
+          - category
+          - description
+          - resolutionNotes
+        reveal:
+          fields:
+            - description
+            - resolutionNotes
+      categoryMain:
+        displayName: PowerCanvas Experiment Category Main
+        table: category
+        fields:
+          - name
+    views:
+      activeComplaints:
+        displayName: PowerCanvas Experiment Active Complaints
+        table: complaint
+        columns:
+          - title
+          - priority
+          - category
+          - createdon
+        activeOnly: true
+        orderBy:
+          - column: createdon
+            direction: descending
+      categories:
+        displayName: PowerCanvas Experiment Categories
+        table: category
+        columns:
+          - name
+        orderBy:
+          - column: name
+            direction: ascending
+    navigation:
+      - group: Work
+        table: complaint
+      - group: Work
+        table: category
+security:
+  roles:
+    complaintAgent:
+      displayName: PowerCanvas Experiment Complaint Agent
+      tables:
+        complaint:
+          read: user
+          create: user
+          write: user
+          append: user
+        category:
+          read: organization
+          appendTo: organization
+  appAccess:
+    complaintDesk:
+      - complaintAgent
+canvasApps:
+  complaintPortal:
+    type: canvas
+    application:
+      requiresNewApplication: false
+      existingAppId: 11111111-1111-4111-8111-111111111111
+    uniqueName: pfx_PowerForgeCanvasDS1
+    displayName: PowerCanvas • Complaint desk
+    taste:
+      memory:
+        product: design/complaintPortal/PRODUCT.md
+        design: design/complaintPortal/DESIGN.md
+      personality: dense-operations
+      dials:
+        designVariance: 2
+        visualDensity: 8
+        brandExpression: 3
+        componentComplexity: 7
+        motionIntensity: 0
+      reducedMotion: true
+      intent:
+        audience: Complaint agents using a desktop queue and occasional mobile review
+        workflow: Find a complaint, inspect priority and history, edit, review and save with a reason
+        frequency: daily
+        purpose: operations
+        primaryAction: New complaint; edit the selected record
+        secondaryInformation: Description, resolution notes and timestamp history stay in the detail panel
+        rationale: Repeated triage benefits from compact rows and quiet chrome; mobile keeps larger targets and all editing steps
+    theme:
+      mode: light
+      density: compact
+      brand:
+        primary: '#4F46A5'
+      radius: soft
+    shell:
+      pattern: sidebar
+      navigation:
+        - screen: dashboard
+          label: Overview
+        - screen: complaints
+          label: Complaints
+    screens:
+      dashboard:
+        pattern: dashboard
+        title: Workspace overview
+        subtitle: Start with a complaint. Reveal details when you need them.
+        cards:
+          - key: browse
+            label: Browse
+            value: "01"
+            supportingText: Search and select a complaint
+          - key: review
+            label: Review
+            value: "02"
+            supportingText: Show details when you need them
+          - key: resolve
+            label: Update
+            value: "03"
+            supportingText: Save edits to Dataverse
+      complaints:
+        pattern: masterDetail
+        title: All complaints
+        source: complaint
+        columns:
+          - title
+          - priority
+        search:
+          field: title
+          label: Find a complaint
+        detail:
+          reasonField: resolutionNotes
+          fields:
+            - title
+            - priority
+            - description
+            - resolutionNotes
+          revealFields:
+            - description
+            - resolutionNotes
+
+resources:
+  flows:
+    complaintChangeContract:
+      logicalName: pfx_ExperimentComplaintChangeContract
+      displayName: PowerCanvas Experiment Complaint change contract
+      description: Validates an explicit test-safe change contract and returns an acknowledgement. Does not persist an audit or send notifications.
+      flowType: instant
+      trigger: {type: powerAppsV2}
+      activationPolicy: manual
+      inputs:
+        - {name: complaintId, shape: {type: guid}}
+        - {name: changeReason, shape: {type: string}}
+        - {name: changeSummary, shape: {type: string}}
+      outputs:
+        - {name: accepted, shape: {type: boolean}}
+        - {name: message, shape: {type: string}}
+      actions:
+        - name: ValidateContract
+          use: data.compose
+          value:
+            op: and
+            args:
+              - {op: not, args: [{op: empty, args: [{op: input, name: changeReason}]}]}
+              - {op: not, args: [{op: empty, args: [{op: input, name: changeSummary}]}]}
+        - name: ContractMessage
+          use: data.compose
+          value:
+            op: concat
+            args:
+              - {op: literal, shape: {type: string}, value: 'Validation only; no records saved. Summary: '}
+              - {op: input, name: changeSummary}
+        - name: Respond
+          use: powerApps.respond
+          fields:
+            accepted: {op: output, name: ValidateContract}
+            message: {op: output, name: ContractMessage}
+  canvasBindings:
+    - app: complaintPortal
+      flow: complaintChangeContract
+      alias: ComplaintChangeContract
+      command:
+        name: complaint_contract
+        parent: pf_ds2_complaints_detail
+        label: Automation check
+        description: Test the automation contract. This does not save changes or send notifications.
+        arguments:
+          complaintId: {type: guid, formula: "pf_ds2_complaints_selected.'Complaint'"}
+        fields:
+          - {input: changeReason, label: Test change reason}
+          - {input: changeSummary, label: Test change summary}
+        messageOutput: message
+        successOutput: accepted
+        disabled: "pf_ds2_complaints_editor || IsBlank(pf_ds2_complaints_selected.'Complaint')"

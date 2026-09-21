@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <control namespace="PowerCanvas" constructor="Timeline" version="0.1.0" display-name-key="PowerCanvas Timeline" description-key="Bounded accessible activity timeline" control-type="standard">
+    <external-service-usage enabled="false" />
+    <property name="eventsJson" display-name-key="Activity JSON" description-key="At most 200 UTC events; see PowerCanvas timeline contract" of-type="Multiple" usage="bound" required="true" />
+    <property name="theme" display-name-key="Theme" description-key="light or dark" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="selectedEventId" display-name-key="Selected event" description-key="Stable event identity selected by the user" of-type="SingleLine.Text" usage="output" />
+    <resources><code path="index.ts" order="1"/><css path="css/Timeline.css" order="1"/></resources>
+  </control>
+</manifest>

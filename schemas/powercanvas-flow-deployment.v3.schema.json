@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "environmentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflowAuthorizations": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "environmentId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "configurationHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "definitionHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "invokers": {
+            "type": "string",
+            "minLength": 10
+          },
+          "connectionOwnership": {
+            "type": "string",
+            "minLength": 10
+          },
+          "businessAuthorization": {
+            "type": "string",
+            "minLength": 10
+          },
+          "approvers": {
+            "type": "string",
+            "minLength": 10
+          }
+        },
+        "required": [
+          "environmentId",
+          "configurationHash",
+          "definitionHash",
+          "invokers",
+          "connectionOwnership",
+          "businessAuthorization"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "flowUpdateConcurrency": {
+      "type": "string",
+      "enum": [
+        "etag",
+        "verifiedSource"
+      ]
+    },
+    "connections": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "connectionId": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "authorizationVerified": {
+            "type": "boolean"
+          },
+          "connector": {
+            "type": "string",
+            "enum": [
+              "shared_commondataserviceforapps",
+              "shared_sharepointonline",
+              "shared_office365",
+              "shared_approvals",
+              "shared_wordonlinebusiness"
+            ]
+          },
+          "environmentId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "principalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+          },
+          "authorizationEvidence": {
+            "type": "string",
+            "minLength": 10
+          }
+        },
+        "required": [
+          "connectionId",
+          "authorizationVerified"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "environmentValues": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/__schema0"
+      }
+    }
+  },
+  "required": [
+    "environmentId"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "__schema0": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/__schema0"
+          }
+        }
+      ]
+    }
+  }
+}

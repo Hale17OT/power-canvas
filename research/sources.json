@@ -1,0 +1,550 @@
+[
+  {
+    "label": "Model-driven app APIs",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/create-manage-model-driven-apps-using-code"
+  },
+  {
+    "label": "cloud flows through code",
+    "url": "https://learn.microsoft.com/en-us/power-automate/manage-flows-with-code"
+  },
+  {
+    "label": "Canvas external authoring, updated 1 September 2026",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/create-canvas-external-tools"
+  },
+  {
+    "label": "Microsoft development plugins",
+    "url": "https://github.com/microsoft/power-platform-skills"
+  },
+  {
+    "label": "model app builder preview",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/model-driven-app-external-tools"
+  },
+  {
+    "label": "PAC Canvas reference",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/canvas"
+  },
+  {
+    "label": "Canvas source formats",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/power-apps-yaml"
+  },
+  {
+    "label": "Canvas Git integration",
+    "url": "https://learn.microsoft.com/en-us/power-platform/alm/git-integration/canvas-apps-git-integration"
+  },
+  {
+    "label": "Canvas plugin architecture",
+    "url": "https://github.com/microsoft/power-platform-skills/blob/main/plugins/canvas-apps/AGENTS.md"
+  },
+  {
+    "label": "Specialized columns",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/specialized-columns"
+  },
+  {
+    "label": "Deprecation notice",
+    "url": "https://learn.microsoft.com/en-us/power-platform/important-changes-coming#deprecation-of-test-engine"
+  },
+  {
+    "label": "ALM Accelerator status",
+    "url": "https://learn.microsoft.com/en-us/power-platform/guidance/alm-accelerator/overview"
+  },
+  {
+    "label": "PAC authentication",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/auth"
+  },
+  {
+    "label": "Power Apps CLI",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/code-apps/reference/cli"
+  },
+  {
+    "label": "ALM",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/alm"
+  },
+  {
+    "label": "Solution concepts",
+    "url": "https://learn.microsoft.com/en-us/power-platform/alm/solution-concepts-alm"
+  },
+  {
+    "label": "Power Platform API reference",
+    "url": "https://learn.microsoft.com/en-us/rest/api/power-platform/"
+  },
+  {
+    "label": "PowerApps-Tooling notice",
+    "url": "https://github.com/microsoft/PowerApps-Tooling"
+  },
+  {
+    "label": "Modern controls",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/overview-modern-controls"
+  },
+  {
+    "label": "theming",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-theming"
+  },
+  {
+    "label": "2026 control updates",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-control-updates"
+  },
+  {
+    "label": "Canvas accessibility limitations",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/accessible-apps-limitations"
+  },
+  {
+    "label": "Power Fx repository",
+    "url": "https://github.com/microsoft/Power-Fx"
+  },
+  {
+    "label": "host samples",
+    "url": "https://github.com/microsoft/power-fx-host-samples"
+  },
+  {
+    "label": "PAC Power Fx",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/power-fx"
+  },
+  {
+    "label": "Delegation overview",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/delegation-overview"
+  },
+  {
+    "label": "Forms",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/customize-entity-forms"
+  },
+  {
+    "label": "views",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/customize-entity-views"
+  },
+  {
+    "label": "supported XML edits",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/when-edit-customization-file"
+  },
+  {
+    "label": "Business process flows using code",
+    "url": "https://learn.microsoft.com/en-us/power-automate/developer/business-process-flows-code"
+  },
+  {
+    "label": "business rule authoring",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-create-business-rule"
+  },
+  {
+    "label": "Model-app plugin",
+    "url": "https://github.com/microsoft/power-platform-skills/blob/main/plugins/model-apps/README.md"
+  },
+  {
+    "label": "Table definition APIs",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/create-update-entity-definitions-using-web-api"
+  },
+  {
+    "label": "Relationship APIs",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/create-update-entity-relationships-using-web-api"
+  },
+  {
+    "label": "Security concepts",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-concepts"
+  },
+  {
+    "label": "access-right dependencies",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-access-rights"
+  },
+  {
+    "label": "cumulative privileges",
+    "url": "https://learn.microsoft.com/en-us/power-platform/admin/security-roles-privileges"
+  },
+  {
+    "label": "Role templates",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-roles"
+  },
+  {
+    "label": "Solution update and upgrade behavior",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/data-platform/update-solutions"
+  },
+  {
+    "label": "Power Automate plugin",
+    "url": "https://github.com/microsoft/power-platform-skills/blob/main/plugins/power-automate/README.md"
+  },
+  {
+    "label": "Connection reference activation rules",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-connection-reference"
+  },
+  {
+    "label": "Service-principal flow support",
+    "url": "https://learn.microsoft.com/en-us/power-automate/service-principal-support"
+  },
+  {
+    "label": "designated user licensing",
+    "url": "https://learn.microsoft.com/en-us/power-automate/assign-user-license-service-principal-flow"
+  },
+  {
+    "label": "Graph list creation",
+    "url": "https://learn.microsoft.com/en-us/graph/api/list-create?view=graph-rest-1.0"
+  },
+  {
+    "label": "Graph beta site creation",
+    "url": "https://learn.microsoft.com/en-us/graph/api/site-post-sites?view=graph-rest-beta"
+  },
+  {
+    "label": "SharePoint site REST",
+    "url": "https://learn.microsoft.com/en-us/sharepoint/dev/apis/site-creation-rest"
+  },
+  {
+    "label": "PnP Core support",
+    "url": "https://pnp.github.io/pnpcore/"
+  },
+  {
+    "label": "PnP site creation",
+    "url": "https://pnp.github.io/powershell/cmdlets/New-PnPSite.html"
+  },
+  {
+    "label": "PnP authentication",
+    "url": "https://pnp.github.io/pnpcore/using-the-sdk/configuring%20authentication.html"
+  },
+  {
+    "label": "Selected permissions",
+    "url": "https://learn.microsoft.com/en-us/graph/permissions-selected-overview"
+  },
+  {
+    "label": "ACS retirement",
+    "url": "https://learn.microsoft.com/en-us/sharepoint/dev/sp-add-ins/retirement-announcement-for-azure-acs"
+  },
+  {
+    "label": "PAC pages",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/pages"
+  },
+  {
+    "label": "Power Pages Web API restrictions",
+    "url": "https://learn.microsoft.com/en-us/power-pages/configure/web-api-overview"
+  },
+  {
+    "label": "Code apps overview",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/code-apps/overview"
+  },
+  {
+    "label": "Code-app quickstart",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/npm-quickstart"
+  },
+  {
+    "label": "`pac env`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/env"
+  },
+  {
+    "label": "`pac solution`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/solution"
+  },
+  {
+    "label": "`pac modelbuilder`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/modelbuilder"
+  },
+  {
+    "label": "`pac application`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/application"
+  },
+  {
+    "label": "`pac connector`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/connector"
+  },
+  {
+    "label": "`pac plugin`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/plugin"
+  },
+  {
+    "label": "`pac package`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/package"
+  },
+  {
+    "label": "`pac admin`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/admin"
+  },
+  {
+    "label": "`pac pcf`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/pcf"
+  },
+  {
+    "label": "`pac connection`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/connection"
+  },
+  {
+    "label": "`pac model`",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/model"
+  },
+  {
+    "label": "Current PAC index",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/"
+  },
+  {
+    "label": "PAC installation",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction"
+  },
+  {
+    "label": "Dataverse SDK choice",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/work-with-data"
+  },
+  {
+    "label": "Deployment settings",
+    "url": "https://learn.microsoft.com/en-us/power-platform/alm/conn-ref-env-variables-build-tools"
+  },
+  {
+    "label": "Azure DevOps Build Tools",
+    "url": "https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools"
+  },
+  {
+    "label": "GitHub Actions repository",
+    "url": "https://github.com/microsoft/powerplatform-actions"
+  },
+  {
+    "label": "Power Platform pipelines",
+    "url": "https://learn.microsoft.com/en-us/power-platform/alm/pipelines"
+  },
+  {
+    "label": "Microsoft Terraform provider",
+    "url": "https://github.com/microsoft/terraform-provider-power-platform"
+  },
+  {
+    "label": "Terraform state",
+    "url": "https://developer.hashicorp.com/terraform/language/state"
+  },
+  {
+    "label": "saved plans",
+    "url": "https://developer.hashicorp.com/terraform/cli/commands/plan"
+  },
+  {
+    "label": "Solution Checker",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/data-platform/use-powerapps-checker"
+  },
+  {
+    "label": "Power Platform Playwright samples",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/playwright-samples/overview"
+  },
+  {
+    "label": "EasyRepro",
+    "url": "https://github.com/microsoft/EasyRepro"
+  },
+  {
+    "label": "MSAL Node extensions",
+    "url": "https://learn.microsoft.com/en-us/entra/identity-platform/msal-node-extensions"
+  },
+  {
+    "label": ".NET token persistence",
+    "url": "https://learn.microsoft.com/en-us/entra/msal/dotnet/how-to/token-cache-serialization"
+  },
+  {
+    "label": "Admin service-principal model",
+    "url": "https://learn.microsoft.com/en-us/power-platform/admin/powerplatform-api-create-service-principal"
+  },
+  {
+    "label": "Environment variables",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables"
+  },
+  {
+    "label": "Power Platform licensing FAQ",
+    "url": "https://learn.microsoft.com/en-us/power-platform/admin/powerapps-flow-licensing-faq"
+  },
+  {
+    "label": "Power Automate FAQ",
+    "url": "https://learn.microsoft.com/en-us/power-platform/admin/power-automate-licensing/faqs"
+  },
+  {
+    "label": "Developer Plan",
+    "url": "https://learn.microsoft.com/en-us/power-platform/developer/plan"
+  },
+  {
+    "label": "Connector classification",
+    "url": "https://learn.microsoft.com/en-us/power-platform/admin/dlp-connector-classification"
+  },
+  {
+    "label": "data policies",
+    "url": "https://learn.microsoft.com/en-us/power-platform/admin/prevent-data-loss"
+  },
+  {
+    "label": "Custom connector definition requirements",
+    "url": "https://learn.microsoft.com/en-us/connectors/custom-connectors/define-openapi-definition"
+  },
+  {
+    "label": "Backup and restore restrictions",
+    "url": "https://learn.microsoft.com/en-us/power-platform/admin/backup-restore-environments"
+  },
+  {
+    "label": "Dataverse service protection",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/api-limits"
+  },
+  {
+    "label": "limit categories",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/data-platform/api-limits-overview"
+  },
+  {
+    "label": "Graph throttling",
+    "url": "https://learn.microsoft.com/en-us/graph/throttling"
+  },
+  {
+    "label": "SharePoint throttling",
+    "url": "https://learn.microsoft.com/en-us/sharepoint/dev/general-development/how-to-avoid-getting-throttled-or-blocked-in-sharepoint-online"
+  },
+  {
+    "label": "flow limits",
+    "url": "https://learn.microsoft.com/en-us/power-automate/limits-and-config"
+  },
+  {
+    "label": "Pulumi Power Platform",
+    "url": "https://github.com/rpothin/pulumi-powerplatform"
+  },
+  {
+    "label": "CLI for Microsoft 365",
+    "url": "https://github.com/pnp/cli-microsoft365"
+  },
+  {
+    "label": "PnP PowerShell",
+    "url": "https://github.com/pnp/powershell"
+  },
+  {
+    "label": "PnP Core SDK",
+    "url": "https://github.com/pnp/pnpcore"
+  },
+  {
+    "label": "XrmToolBox",
+    "url": "https://github.com/MscrmTools/XrmToolBox"
+  },
+  {
+    "label": "DLaB tools",
+    "url": "https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools"
+  },
+  {
+    "label": "XrmDefinitelyTyped",
+    "url": "https://github.com/context-and-oss/XrmDefinitelyTyped"
+  },
+  {
+    "label": "spkl within SparkleXrm",
+    "url": "https://github.com/scottdurow/SparkleXrm/tree/master/spkl"
+  },
+  {
+    "label": "xRM CI Framework",
+    "url": "https://github.com/WaelHamze/xrm-ci-framework"
+  },
+  {
+    "label": "Daxif",
+    "url": "https://github.com/context-and-oss/Daxif"
+  },
+  {
+    "label": "Test Engine",
+    "url": "https://github.com/microsoft/PowerApps-TestEngine"
+  },
+  {
+    "label": "XrmToolBox catalog",
+    "url": "https://www.xrmtoolbox.com/plugins/"
+  },
+  {
+    "label": "Plans overview",
+    "url": "https://learn.microsoft.com/en-us/power-apps/maker/plan-designer/plan-designer"
+  },
+  {
+    "label": "Git provider integration",
+    "url": "https://learn.microsoft.com/en-us/power-platform/alm/git-integration/connecting-to-git"
+  },
+  {
+    "label": "Python SDK",
+    "url": "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/sdk-python/overview"
+  },
+  {
+    "label": "Commander",
+    "url": "https://github.com/tj/commander.js"
+  },
+  {
+    "label": "oclif",
+    "url": "https://oclif.io/docs/introduction/"
+  },
+  {
+    "label": "Clack",
+    "url": "https://github.com/bombshell-dev/clack"
+  },
+  {
+    "label": "Inquirer",
+    "url": "https://github.com/SBoudrias/Inquirer.js"
+  },
+  {
+    "label": "Chalk",
+    "url": "https://github.com/chalk/chalk"
+  },
+  {
+    "label": "Ink",
+    "url": "https://github.com/vadimdemedes/ink"
+  },
+  {
+    "label": "Spectre.Console",
+    "url": "https://spectreconsole.net/"
+  },
+  {
+    "label": "Clap",
+    "url": "https://docs.rs/clap/latest/clap/"
+  },
+  {
+    "label": "Dialoguer",
+    "url": "https://github.com/console-rs/dialoguer"
+  },
+  {
+    "label": "Indicatif",
+    "url": "https://github.com/console-rs/indicatif"
+  },
+  {
+    "label": "Typer",
+    "url": "https://typer.tiangolo.com/"
+  },
+  {
+    "label": "Click",
+    "url": "https://click.palletsprojects.com/en/stable/"
+  },
+  {
+    "label": "Rich",
+    "url": "https://rich.readthedocs.io/en/stable/introduction.html"
+  },
+  {
+    "label": "Native Git overview",
+    "url": "https://learn.microsoft.com/en-us/power-platform/alm/git-integration/overview"
+  },
+  {
+    "label": "Salesforce DX / scratch orgs",
+    "url": "https://developer.salesforce.com/docs/platform/pkg2-dev/guide/pd-dev-hub-intro.html"
+  },
+  {
+    "label": "Salesforce development models",
+    "url": "https://developer.salesforce.com/docs/platform/code-builder/guide/codebuilder-dev-models.html"
+  },
+  {
+    "label": "Supabase migrations",
+    "url": "https://supabase.com/docs/guides/local-development/database-migrations"
+  },
+  {
+    "label": "Firebase CLI",
+    "url": "https://firebase.google.com/docs/cli"
+  },
+  {
+    "label": "Pulumi resources",
+    "url": "https://www.pulumi.com/docs/iac/concepts/resources/"
+  },
+  {
+    "label": "AWS CDK",
+    "url": "https://docs.aws.amazon.com/cdk/v2/guide/home.html"
+  },
+  {
+    "label": "Bicep",
+    "url": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview"
+  },
+  {
+    "label": "Serverless Framework",
+    "url": "https://www.serverless.com/framework/docs"
+  },
+  {
+    "label": "Microsoft.PowerApps.CLI",
+    "url": "https://www.nuget.org/packages/Microsoft.PowerApps.CLI"
+  },
+  {
+    "label": "Microsoft.PowerPlatform.Dataverse.Client",
+    "url": "https://www.nuget.org/packages/Microsoft.PowerPlatform.Dataverse.Client/"
+  },
+  {
+    "label": "Microsoft.PowerFx.Core",
+    "url": "https://www.nuget.org/packages/Microsoft.PowerFx.Core/"
+  },
+  {
+    "label": "@microsoft/power-apps-cli",
+    "url": "https://www.npmjs.com/package/%40microsoft/power-apps-cli?activeTab=versions"
+  },
+  {
+    "label": "@pnp/cli-microsoft365",
+    "url": "https://www.npmjs.com/package/%40pnp/cli-microsoft365?activeTab=versions"
+  }
+]

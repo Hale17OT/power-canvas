@@ -1,0 +1,126 @@
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: 93956ae0-de24-40a1-aa91-1ea309af9b62
+  name: canvas-complaints
+solution:
+  uniqueName: pfx_PowerForgeCanvasLab
+  displayName: PowerCanvas Canvas Lab
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerCanvasExamples
+    prefix: pfx
+    optionValuePrefix: 73142
+dataverse:
+  tables:
+    complaint:
+      schemaName: pfx_ExperimentComplaint
+      displayName: Complaint
+      pluralName: Complaints
+      ownership: userOrTeam
+      primaryName: title
+      columns:
+        title:
+          schemaName: pfx_ExperimentTitle
+          displayName: Title
+          type: text
+          maxLength: 200
+          required: application
+        description:
+          schemaName: pfx_ExperimentDescription
+          displayName: Description
+          type: multilineText
+          maxLength: 4000
+        priority:
+          schemaName: pfx_ExperimentPriority
+          displayName: Priority
+          type: choice
+          choices:
+            - { label: Low, value: 731420000 }
+            - { label: Normal, value: 731420001 }
+            - { label: High, value: 731420002 }
+          default: 731420001
+canvasApps:
+  complaintPortal:
+    type: canvas
+    uniqueName: pfx_PowerCanvasComplaintPortal
+    displayName: Complaint workspace
+    componentPolicy: experimental
+    theme:
+      mode: light
+      density: comfortable
+      brand: { primary: '#145C4F' }
+      font: Segoe UI
+      radius: soft
+    shell:
+      pattern: sidebar
+      navigation:
+        - { screen: dashboard, label: Overview }
+        - { screen: complaints, label: Complaints }
+        - { screen: components, label: Components }
+    screens:
+      dashboard:
+        pattern: dashboard
+        title: A clearer view of every complaint.
+        subtitle: A consistent workspace for service teams, built from PFDS components.
+        cards:
+          - { key: open, label: Open complaints, value: '24', supportingText: Illustrative dashboard metric }
+          - { key: response, label: First response, value: '2.4h', supportingText: Illustrative dashboard metric }
+          - { key: resolved, label: Resolved this week, value: '18', supportingText: Illustrative dashboard metric }
+      complaints:
+        pattern: list
+        title: Complaints
+        source: complaint
+        columns: [title, priority, description]
+        search: { field: title, label: Find a complaint }
+        pageSize: 25
+      components:
+        pattern: custom
+        title: Component workbench
+        content:
+          - key: composition
+            component: Row
+            props: { gap: lg }
+            children:
+              - key: actions
+                component: Card
+                props: { title: Actions and status }
+                children:
+                  - key: status
+                    component: Badge
+                    props: { label: Ready for review, tone: success }
+                  - key: open
+                    component: Button
+                    props: { label: Open complaints, onSelect: { type: navigate, screen: complaints } }
+                  - key: disabled
+                    component: Button
+                    props: { label: Unavailable action, disabled: true, variant: secondary, onSelect: { type: navigate, screen: complaints } }
+              - key: inputs
+                component: Card
+                props: { title: Bounded input controls }
+                children:
+                  - key: priority
+                    component: Dropdown
+                    props: { label: Example priority, options: [Low, Normal, High], default: Normal }
+                  - key: notes
+                    component: Column
+                    props: { gap: sm }
+                    children:
+                      - key: preview
+                        component: Badge
+                        props: { label: Experimental component contract }
+          - key: states
+            component: Stack
+            props: { gap: md }
+            children:
+              - key: loading
+                component: LoadingState
+                props: { label: Loading complaint data }
+              - key: empty
+                component: EmptyState
+                props: { title: Nothing here yet, description: New complaints will appear here. }
+              - key: error
+                component: ErrorState
+                props: { title: Connection interrupted, description: Try again when the service returns., retry: { type: refresh, source: complaint } }
+              - key: forbidden
+                component: ErrorState
+                props: { title: Access is restricted, description: Request access from your administrator., kind: forbidden }

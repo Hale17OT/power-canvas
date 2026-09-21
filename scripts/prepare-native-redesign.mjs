@@ -1,0 +1,22 @@
+// Explicit UI-only structural migration. Ordinary synchronization still blocks removal.
+import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import process from 'node:process';
+import { parse, stringify } from 'yaml';
+import { hashJson } from '../dist/core/json.js';
+const [receiptDir, currentDir, desiredDir, outDir] = process.argv.slice(2, 6).map(p => resolve(p));
+const files = async directory => Object.fromEntries(await Promise.all((await readdir(directory)).filter(n => n.endsWith('.pa.yaml') && n !== '_EditorState.pa.yaml').sort().map(async n => [n, parse(await readFile(resolve(directory, n), 'utf8'))])));
+const receipt = await files(receiptDir); const current = await files(currentDir); const desired = await files(desiredDir);
+if (hashJson(receipt) !== hashJson(current)) throw new Error('App changed since the verified receipt. Review and preserve those edits before redesign.');
+if (Object.keys(receipt).join() !== Object.keys(desired).join()) throw new Error('This migration cannot remove, add or rename screens.');
+const controls = tree => { const names = []; const visit = t => { if (!t || typeof t !== 'object') return; for (const [k, v] of Object.entries(t)) { if (v?.Control) { if (!k.startsWith('pf_')) throw new Error('Unowned control in UI replacement'); names.push(k); } visit(v); } }; visit(tree); if (new Set(names).size !== names.length) throw new Error('Duplicate controls'); return names; };
+const before = controls(receipt); const after = controls(desired);
+const manifest = JSON.parse(await readFile(resolve(desiredDir, 'native-manifest.json'), 'utf8'));
+const ownership = JSON.parse(await readFile(process.argv[6] ?? 'experiments/canvas-authoring/evidence/app-created.json', 'utf8'));
+if (manifest.appId !== ownership.playerAppId || manifest.solution !== 'pfx_PowerForgeExperiment' || ownership.solution !== manifest.solution || !ownership.members.some(m => m.objectid === manifest.appId && m.componenttype === 300) || !ownership.apps.some(a => a.canvasappid === manifest.appId && !a.ismanaged && a.displayname.startsWith('pfx_PowerCanvas'))) throw new Error('Redesign requires a recorded owned experiment app and solution membership.');
+const plan = { kind: 'explicit-owned-ui-redesign', authorization: 'User requested scoped UI refinement of this existing owned application inside the experiment solution', environmentType: 'Default', nonDisposable: true, appId: manifest.appId, expectedRemoteHash: hashJson(current), nativeHash: hashJson(desired), retainedControls: after.filter(n => before.includes(n)), replacedControls: before.filter(n => !after.includes(n)), addedControls: after.filter(n => !before.includes(n)), dataSourceDeletes: 0, backup: receiptDir, manuallyPreserved: ['Dashboard subtitle incorporated into project specification'], review: ['SubmitForm with LastSubmit and OnFailure', 'Choice values remain typed', 'Cancel and discard never write', 'Navigation blocked during editing', 'Reason appended only to owned Resolution Notes on explicit save'] };
+await mkdir(outDir, { recursive: true });
+for (const [name, value] of Object.entries(desired)) await writeFile(resolve(outDir, name), stringify(value, { lineWidth: 0 }), { flag: 'wx' });
+await writeFile(resolve(outDir, 'redesign-plan.json'), JSON.stringify(plan, null, 2), { flag: 'wx' });
+await writeFile(resolve(outDir, 'native-manifest.json'), JSON.stringify({ ...manifest, expectedRemoteHash: plan.expectedRemoteHash }, null, 2), { flag: 'wx' });
+console.log(JSON.stringify({ executable: true, appId: plan.appId, replacedControls: plan.replacedControls.length, addedControls: plan.addedControls.length, dataSourceDeletes: 0 }));

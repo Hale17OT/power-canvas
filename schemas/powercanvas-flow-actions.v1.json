@@ -1,0 +1,214 @@
+[
+  {
+    "name": "data.compose",
+    "operation": "Compose",
+    "requiredParameters": [
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "value",
+    "outputTypes": "value",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "data.parseJson",
+    "operation": "ParseJson",
+    "requiredParameters": [
+      "value",
+      "shape"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "string",
+    "outputTypes": "declared schema",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "data.select",
+    "operation": "Select",
+    "requiredParameters": [
+      "from",
+      "fields"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "array",
+    "outputTypes": "array of projected object",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "data.filterArray",
+    "operation": "Query",
+    "requiredParameters": [
+      "from",
+      "condition"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "array + boolean",
+    "outputTypes": "same array",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "control.condition",
+    "operation": "If",
+    "requiredParameters": [
+      "condition",
+      "actions"
+    ],
+    "optionalParameters": [
+      "otherwise"
+    ],
+    "inputTypes": "boolean",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "control.applyToEach",
+    "operation": "Foreach",
+    "requiredParameters": [
+      "from",
+      "maxItems",
+      "actions"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "bounded array",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "variables.initialize",
+    "operation": "InitializeVariable",
+    "requiredParameters": [
+      "variable",
+      "shape",
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "declared value",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "variables.set",
+    "operation": "SetVariable",
+    "requiredParameters": [
+      "variable",
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "same variable type",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "variables.append",
+    "operation": "AppendToArrayVariable",
+    "requiredParameters": [
+      "variable",
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "array element",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "powerApps.respond",
+    "operation": "Response",
+    "requiredParameters": [
+      "fields"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "declared outputs",
+    "outputTypes": "Power Apps response",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "dataverse.getRow",
+    "operation": "GetItem",
+    "requiredParameters": [
+      "connection",
+      "table",
+      "id",
+      "select",
+      "shape"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "guid + selected fields",
+    "outputTypes": "declared record",
+    "connector": "shared_commondataserviceforapps",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "dataverse.listRows",
+    "operation": "ListRecords",
+    "requiredParameters": [
+      "connection",
+      "table",
+      "select",
+      "top",
+      "shape"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "bounded selected fields",
+    "outputTypes": "value array",
+    "connector": "shared_commondataserviceforapps",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  }
+]

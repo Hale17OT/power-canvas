@@ -1,0 +1,1026 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "device": {
+      "default": "desktop",
+      "type": "string",
+      "enum": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ]
+    },
+    "rendered": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "primaryActionInViewport": {
+            "type": "boolean"
+          },
+          "simultaneousListAndDetail": {
+            "type": "boolean"
+          },
+          "visibleFieldCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "desktopChromeInTask": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "state",
+          "primaryActionInViewport",
+          "simultaneousListAndDetail",
+          "visibleFieldCount",
+          "desktopChromeInTask"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "sourceHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "product": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "users": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "jobs": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "frequency": {
+          "type": "string",
+          "enum": [
+            "occasional",
+            "daily",
+            "continuous"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "operations",
+            "executive",
+            "approval",
+            "document-review",
+            "inspection",
+            "configuration",
+            "exploration"
+          ]
+        },
+        "devices": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "desktop",
+              "tablet",
+              "mobile"
+            ]
+          }
+        },
+        "criticalInformation": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "accessibility": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "constraints": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "name",
+        "users",
+        "jobs",
+        "frequency",
+        "purpose",
+        "devices",
+        "criticalInformation",
+        "accessibility",
+        "constraints"
+      ],
+      "additionalProperties": false
+    },
+    "design": {
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "object",
+          "properties": {
+            "desktop": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "default": "within-application",
+                  "type": "string",
+                  "const": "within-application"
+                },
+                "recordPresentation": {
+                  "type": "string",
+                  "enum": [
+                    "stacked",
+                    "focus-or-split"
+                  ]
+                },
+                "approach": {
+                  "type": "string",
+                  "enum": [
+                    "responsive-adaptation",
+                    "device-specific-composition"
+                  ]
+                },
+                "composition": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "informationOrder": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "navigation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "persistentControls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "contextualControls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "actionPlacement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "detailPresentation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "commandVisibility": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "listDetailRelationship": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "backBehavior": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "formBehavior": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 20
+                }
+              },
+              "required": [
+                "approach",
+                "composition",
+                "informationOrder",
+                "navigation",
+                "persistentControls",
+                "contextualControls",
+                "actionPlacement",
+                "detailPresentation",
+                "commandVisibility",
+                "listDetailRelationship",
+                "backBehavior",
+                "formBehavior",
+                "reason"
+              ],
+              "additionalProperties": false
+            },
+            "tablet": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "default": "within-application",
+                  "type": "string",
+                  "const": "within-application"
+                },
+                "recordPresentation": {
+                  "type": "string",
+                  "enum": [
+                    "stacked",
+                    "focus-or-split"
+                  ]
+                },
+                "approach": {
+                  "type": "string",
+                  "enum": [
+                    "responsive-adaptation",
+                    "device-specific-composition"
+                  ]
+                },
+                "composition": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "informationOrder": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "navigation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "persistentControls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "contextualControls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "actionPlacement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "detailPresentation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "commandVisibility": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "listDetailRelationship": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "backBehavior": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "formBehavior": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 20
+                }
+              },
+              "required": [
+                "approach",
+                "composition",
+                "informationOrder",
+                "navigation",
+                "persistentControls",
+                "contextualControls",
+                "actionPlacement",
+                "detailPresentation",
+                "commandVisibility",
+                "listDetailRelationship",
+                "backBehavior",
+                "formBehavior",
+                "reason"
+              ],
+              "additionalProperties": false
+            },
+            "mobile": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "default": "within-application",
+                  "type": "string",
+                  "const": "within-application"
+                },
+                "recordPresentation": {
+                  "type": "string",
+                  "enum": [
+                    "stacked",
+                    "focus-or-split"
+                  ]
+                },
+                "approach": {
+                  "type": "string",
+                  "enum": [
+                    "responsive-adaptation",
+                    "device-specific-composition"
+                  ]
+                },
+                "composition": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "informationOrder": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "navigation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "persistentControls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "contextualControls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "actionPlacement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "detailPresentation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "commandVisibility": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "listDetailRelationship": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "backBehavior": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "formBehavior": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 20
+                }
+              },
+              "required": [
+                "approach",
+                "composition",
+                "informationOrder",
+                "navigation",
+                "persistentControls",
+                "contextualControls",
+                "actionPlacement",
+                "detailPresentation",
+                "commandVisibility",
+                "listDetailRelationship",
+                "backBehavior",
+                "formBehavior",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "desktop",
+            "tablet",
+            "mobile"
+          ],
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "const": "2.0"
+        },
+        "personality": {
+          "type": "string",
+          "enum": [
+            "fluent-enterprise",
+            "clean-saas",
+            "dense-operations",
+            "executive-dashboard",
+            "minimal-workspace"
+          ]
+        },
+        "primary": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]+$"
+            },
+            "source": {
+              "type": "string"
+            },
+            "atmosphere": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "visualCharacter": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "density": {
+              "type": "object",
+              "properties": {
+                "level": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "level",
+                "notes"
+              ],
+              "additionalProperties": false
+            },
+            "color": {
+              "type": "object",
+              "properties": {
+                "strategy": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "roles": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "semanticRoles": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "strategy",
+                "roles",
+                "semanticRoles"
+              ],
+              "additionalProperties": false
+            },
+            "typography": {
+              "type": "object",
+              "properties": {
+                "hierarchy": {
+                  "minItems": 3,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "role": {
+                        "type": "string"
+                      },
+                      "token": {
+                        "type": "string",
+                        "pattern": "^PF_"
+                      },
+                      "size": {
+                        "type": "number",
+                        "minimum": 12,
+                        "maximum": 64
+                      }
+                    },
+                    "required": [
+                      "role",
+                      "token",
+                      "size"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "philosophy": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "hierarchy",
+                "philosophy"
+              ],
+              "additionalProperties": false
+            },
+            "spacing": {
+              "type": "object",
+              "properties": {
+                "scale": {
+                  "minItems": 2,
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "philosophy": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "scale",
+                "philosophy"
+              ],
+              "additionalProperties": false
+            },
+            "radius": {
+              "type": "object",
+              "properties": {
+                "scale": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "philosophy": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "scale",
+                "philosophy"
+              ],
+              "additionalProperties": false
+            },
+            "surfaces": {
+              "type": "object",
+              "properties": {
+                "strategy": {
+                  "type": "string",
+                  "enum": [
+                    "flat",
+                    "layered",
+                    "reading",
+                    "focused"
+                  ]
+                }
+              },
+              "required": [
+                "strategy"
+              ],
+              "additionalProperties": false
+            },
+            "borders": {
+              "type": "object",
+              "properties": {
+                "strategy": {
+                  "type": "string",
+                  "enum": [
+                    "hairline",
+                    "sectionless"
+                  ]
+                }
+              },
+              "required": [
+                "strategy"
+              ],
+              "additionalProperties": false
+            },
+            "elevation": {
+              "type": "object",
+              "properties": {
+                "strategy": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "overlay-only"
+                  ]
+                }
+              },
+              "required": [
+                "strategy"
+              ],
+              "additionalProperties": false
+            },
+            "navigation": {
+              "type": "object",
+              "properties": {
+                "characteristics": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "characteristics"
+              ],
+              "additionalProperties": false
+            },
+            "components": {
+              "type": "object",
+              "properties": {
+                "treatments": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "treatments"
+              ],
+              "additionalProperties": false
+            },
+            "layout": {
+              "type": "object",
+              "properties": {
+                "principles": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "principles"
+              ],
+              "additionalProperties": false
+            },
+            "responsive": {
+              "type": "object",
+              "properties": {
+                "principles": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "principles"
+              ],
+              "additionalProperties": false
+            },
+            "dos": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "donts": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "powerAppsAdaptation": {
+              "type": "object",
+              "properties": {
+                "supported": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "translated": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "unsupported": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "supported",
+                "translated",
+                "unsupported"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "atmosphere",
+            "visualCharacter",
+            "density",
+            "color",
+            "typography",
+            "spacing",
+            "radius",
+            "surfaces",
+            "borders",
+            "elevation",
+            "navigation",
+            "components",
+            "layout",
+            "responsive",
+            "dos",
+            "donts",
+            "powerAppsAdaptation"
+          ],
+          "additionalProperties": false
+        },
+        "secondaryTraits": {
+          "default": [],
+          "maxItems": 3,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "traits": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "operate",
+              "review",
+              "analyze",
+              "configure",
+              "enter",
+              "approve",
+              "explore"
+            ]
+          }
+        },
+        "exceptions": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "control": {
+                "type": "string",
+                "minLength": 1
+              },
+              "property": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 20
+              }
+            },
+            "required": [
+              "rule",
+              "control",
+              "property",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "version",
+        "personality",
+        "primary",
+        "traits",
+        "modes"
+      ],
+      "additionalProperties": false
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+    },
+    "screenshots": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "width": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "height": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "state",
+          "path",
+          "sha256",
+          "width",
+          "height"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "strengths": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "priority": {
+            "type": "string",
+            "enum": [
+              "P0",
+              "P1",
+              "P2",
+              "P3"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "task",
+              "hierarchy",
+              "layout",
+              "typography",
+              "surfaces",
+              "actions",
+              "color",
+              "responsive",
+              "polish"
+            ]
+          },
+          "state": {
+            "type": "string"
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 10
+          },
+          "consequence": {
+            "type": "string",
+            "minLength": 10
+          },
+          "recommendation": {
+            "type": "string",
+            "minLength": 10
+          },
+          "focus": {
+            "type": "string",
+            "enum": [
+              "layout",
+              "typeset",
+              "distill",
+              "color",
+              "polish",
+              "bolder",
+              "quieter"
+            ]
+          }
+        },
+        "required": [
+          "priority",
+          "category",
+          "state",
+          "observation",
+          "consequence",
+          "recommendation",
+          "focus"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "notRecommended": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "sourceHash",
+    "product",
+    "design",
+    "reviewer",
+    "reviewedAt",
+    "screenshots",
+    "strengths",
+    "findings",
+    "notRecommended"
+  ],
+  "additionalProperties": false
+}

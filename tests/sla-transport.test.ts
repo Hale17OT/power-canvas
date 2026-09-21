@@ -1,0 +1,21 @@
+import { expect, it, vi } from 'vitest';
+import { DataverseHttp } from '../src/dataverse/http.js';
+import { planSla, applySla } from '../src/sla/apply.js';
+import type { SlaPolicy } from '../src/sla/rules.js';
+const policy: SlaPolicy = { apiVersion: 'powercanvas.sla/v1alpha1', name: 'pfx_ComplaintSla', version: 1, clock: 'elapsedUtcHours', hours: { low: 72, normal: 24, high: 4 } };
+const binding = { table: 'pfx_experimentcomplaints', recordId: '55555555-5555-4555-8555-555555555555', createdField: 'createdon', priorityField: 'pfx_experimentpriority', stateField: 'pfx_experimentslastate', priorityValues: { low: 1, normal: 2, high: 3 } };
+it('blocks stale plans and concurrent edits before writes, and never retries an ETag conflict', async () => {
+  let row = { '@odata.etag': 'W/"1"', createdon: '2026-09-01T00:00:00Z', pfx_experimentpriority: 3, pfx_experimentslastate: null };
+  const transport = vi.fn<typeof fetch>(async (_url, options) => options?.method === 'PATCH' ? new Response('{}', { status: 412 }) : new Response(JSON.stringify(row), { status: 200 }));
+  const http = new DataverseHttp('https://test.crm.dynamics.com/api/data/v9.2/', { token: async () => 'synthetic' }, transport);
+  const plan = await planSla(http, binding, policy, new Date().toISOString());
+  await expect(applySla(http, { ...plan, evaluatedAt: '2020-01-01T00:00:00Z' }, policy)).rejects.toThrow('stale');
+  row = { ...row, '@odata.etag': 'W/"2"' };
+  await expect(applySla(http, plan, policy)).rejects.toThrow('changed');
+  expect(transport.mock.calls.filter(c => c[1]?.method === 'PATCH')).toHaveLength(0);
+  const fresh = await planSla(http, binding, policy, new Date().toISOString());
+  await expect(applySla(http, fresh, policy)).rejects.toThrow('(412)');
+  const writes = transport.mock.calls.filter(c => c[1]?.method === 'PATCH'); expect(writes).toHaveLength(1);
+  expect(writes[0]![1]!.headers).toMatchObject({ 'If-Match': 'W/"2"' });
+  await expect(planSla(http, { ...binding, table: 'accounts' }, policy, new Date().toISOString())).rejects.toThrow('isolated');
+});

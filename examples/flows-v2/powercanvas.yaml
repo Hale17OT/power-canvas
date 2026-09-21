@@ -1,0 +1,452 @@
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: 2dd7e4c7-d7ec-4fbc-a245-61b2cdfb5a28
+  name: flow-v2-connector-examples
+solution:
+  uniqueName: pfx_PowerForgeExperiment
+  displayName: PowerCanvas Experiment
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerForgeExperimentPublisher
+    prefix: pfx
+    optionValuePrefix: 73142
+dataverse:
+  tables: {}
+resources:
+  connectionReferences:
+    dv:
+      logicalName: pfx_ExperimentV2Dataverse
+      displayName: PowerCanvas V2 Dataverse
+      connector: shared_commondataserviceforapps
+      allowCreate: true
+    sp:
+      logicalName: pfx_ExperimentV2SharePoint
+      displayName: PowerCanvas V2 SharePoint
+      connector: shared_sharepointonline
+      allowCreate: true
+    outlook:
+      logicalName: pfx_ExperimentV2Outlook
+      displayName: PowerCanvas V2 Outlook
+      connector: shared_office365
+      allowCreate: true
+  environmentVariables:
+    site:
+      logicalName: pfx_ExperimentV2site
+      displayName: PowerCanvas V2 site
+      type: text
+    list:
+      logicalName: pfx_ExperimentV2list
+      displayName: PowerCanvas V2 list
+      type: text
+    mailbox:
+      logicalName: pfx_ExperimentV2mailbox
+      displayName: PowerCanvas V2 mailbox
+      type: text
+      format: email
+  flowDataSources:
+    categories:
+      connector: shared_commondataserviceforapps
+      table: pfx_experimentcategories
+      kind: table
+      logicalName: pfx_experimentcategory
+      columns:
+        createdby:
+          shape:
+            type: recordRef
+          required: false
+          readable: true
+          create: false
+          update: false
+        createdbyname:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: false
+          update: false
+        createdbyyominame:
+          shape:
+            type: string
+          required: true
+          readable: true
+          create: false
+          update: false
+        createdon:
+          shape:
+            type: datetime
+          required: false
+          readable: true
+          create: false
+          update: false
+        createdonbehalfby:
+          shape:
+            type: recordRef
+          required: false
+          readable: true
+          create: false
+          update: false
+        createdonbehalfbyname:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: false
+          update: false
+        createdonbehalfbyyominame:
+          shape:
+            type: string
+          required: true
+          readable: true
+          create: false
+          update: false
+        importsequencenumber:
+          shape:
+            type: integer
+          required: false
+          readable: true
+          create: true
+          update: false
+        modifiedby:
+          shape:
+            type: recordRef
+          required: false
+          readable: true
+          create: false
+          update: false
+        modifiedbyname:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: false
+          update: false
+        modifiedbyyominame:
+          shape:
+            type: string
+          required: true
+          readable: true
+          create: false
+          update: false
+        modifiedon:
+          shape:
+            type: datetime
+          required: false
+          readable: true
+          create: false
+          update: false
+        modifiedonbehalfby:
+          shape:
+            type: recordRef
+          required: false
+          readable: true
+          create: false
+          update: false
+        modifiedonbehalfbyname:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: false
+          update: false
+        modifiedonbehalfbyyominame:
+          shape:
+            type: string
+          required: true
+          readable: true
+          create: false
+          update: false
+        organizationid:
+          shape:
+            type: recordRef
+          required: false
+          readable: true
+          create: false
+          update: false
+        organizationidname:
+          shape:
+            type: string
+          required: true
+          readable: true
+          create: false
+          update: false
+        overriddencreatedon:
+          shape:
+            type: datetime
+          required: false
+          readable: true
+          create: true
+          update: false
+        pfx_experimentcategoryid:
+          shape:
+            type: guid
+          required: false
+          readable: true
+          create: true
+          update: false
+        pfx_experimentname:
+          shape:
+            type: string
+          required: true
+          readable: true
+          create: true
+          update: true
+        statecode:
+          shape:
+            type: integer
+          required: true
+          readable: true
+          create: false
+          update: true
+          choices:
+            - 0
+            - 1
+        statuscode:
+          shape:
+            type: integer
+          required: false
+          readable: true
+          create: true
+          update: true
+          choices:
+            - 1
+            - 2
+        timezoneruleversionnumber:
+          shape:
+            type: integer
+          required: false
+          readable: true
+          create: true
+          update: true
+        utcconversiontimezonecode:
+          shape:
+            type: integer
+          required: false
+          readable: true
+          create: true
+          update: true
+        versionnumber:
+          shape:
+            type: integer
+          required: false
+          readable: true
+          create: false
+          update: false
+    list:
+      connector: shared_sharepointonline
+      table: PowerCanvasTest
+      kind: list
+      columns:
+        Title:
+          shape:
+            type: string
+          required: true
+          readable: true
+          create: true
+          update: true
+        ID:
+          shape:
+            type: integer
+          required: false
+          readable: true
+          create: false
+          update: false
+  executionPolicy:
+    allowRead: true
+    allowInternalWrite: false
+    allowExternalWrite: false
+    allowDestructive: false
+  flows:
+    dataverseRead:
+      logicalName: pfx_ExperimentV2DataverseRead
+      displayName: PowerCanvas V2 DataverseRead
+      description: Compile fixture; disabled deployment only. No safe execution target or authenticated connection is configured.
+      flowType: scheduled
+      trigger:
+        type: recurrence
+        frequency: Day
+        interval: 1
+        startTime: 2030-01-01T00:00:00Z
+      actions:
+        - name: Read
+          use: dataverse.listRows
+          connection: dv
+          table: pfx_experimentcategories
+          metadata: categories
+          select:
+            - pfx_experimentcategoryid
+            - pfx_experimentname
+          top: 1
+      connectionReferences:
+        - dv
+      environmentVariables: []
+      runPolicy:
+        mode: readOnly
+    dataverseWrite:
+      logicalName: pfx_ExperimentV2DataverseWrite
+      displayName: PowerCanvas V2 DataverseWrite
+      description: Compile fixture; disabled deployment only. No safe execution target or authenticated connection is configured.
+      flowType: scheduled
+      trigger:
+        type: recurrence
+        frequency: Day
+        interval: 1
+        startTime: 2030-01-01T00:00:00Z
+      actions:
+        - name: Add
+          use: dataverse.addRow
+          connection: dv
+          table: pfx_experimentcategories
+          metadata: categories
+          fields:
+            pfx_experimentname:
+              op: literal
+              value: PowerCanvas compile-only example
+              shape:
+                type: string
+        - name: Update
+          use: dataverse.updateRow
+          connection: dv
+          table: pfx_experimentcategories
+          metadata: categories
+          id:
+            op: output
+            name: Add
+            path:
+              - pfx_experimentcategoryid
+          fields:
+            pfx_experimentname:
+              op: literal
+              value: PowerCanvas compile-only updated example
+              shape:
+                type: string
+          idempotency:
+            mode: targetIdentity
+            rationale: Only update the identity returned by this invocation; creation still needs deduplication.
+      connectionReferences:
+        - dv
+      environmentVariables: []
+      runPolicy:
+        mode: controlledWrite
+    dataverseEvent:
+      logicalName: pfx_ExperimentV2DataverseEvent
+      displayName: PowerCanvas V2 DataverseEvent
+      description: Compile fixture; disabled deployment only. No safe execution target or authenticated connection is configured.
+      flowType: automated
+      trigger:
+        type: dataverse
+        connection: dv
+        table: pfx_experimentcategories
+        metadata: categories
+        changeType: rowModified
+        scope: user
+        selectColumns:
+          - pfx_experimentname
+      actions:
+        - name: Observed
+          use: data.compose
+          value:
+            op: literal
+            value: Event received
+            shape:
+              type: string
+      connectionReferences:
+        - dv
+      environmentVariables: []
+      runPolicy:
+        mode: readOnly
+    sharepointRead:
+      logicalName: pfx_ExperimentV2SharePointRead
+      displayName: PowerCanvas V2 SharePointRead
+      description: Compile fixture; disabled deployment only. No safe execution target or authenticated connection is configured.
+      flowType: scheduled
+      trigger:
+        type: recurrence
+        frequency: Day
+        interval: 1
+        startTime: 2030-01-01T00:00:00Z
+      actions:
+        - name: Read
+          use: sharepoint.getItems
+          connection: sp
+          site:
+            op: environment
+            name: site
+          list:
+            op: environment
+            name: list
+          metadata: list
+          top: 5
+      connectionReferences:
+        - sp
+      environmentVariables:
+        - site
+        - list
+      runPolicy:
+        mode: readOnly
+    sharepointWrite:
+      logicalName: pfx_ExperimentV2SharePointWrite
+      displayName: PowerCanvas V2 SharePointWrite
+      description: Compile fixture; disabled deployment only. No safe execution target or authenticated connection is configured.
+      flowType: scheduled
+      trigger:
+        type: recurrence
+        frequency: Day
+        interval: 1
+        startTime: 2030-01-01T00:00:00Z
+      actions:
+        - name: Create
+          use: sharepoint.createItem
+          connection: sp
+          site:
+            op: environment
+            name: site
+          list:
+            op: environment
+            name: list
+          metadata: list
+          fields:
+            Title:
+              op: literal
+              value: PowerCanvas compile-only example
+              shape:
+                type: string
+      connectionReferences:
+        - sp
+      environmentVariables:
+        - site
+        - list
+      runPolicy:
+        mode: controlledWrite
+    outlookSend:
+      logicalName: pfx_ExperimentV2OutlookSend
+      displayName: PowerCanvas V2 OutlookSend
+      description: Compile fixture; disabled deployment only. No safe execution target or authenticated connection is configured.
+      flowType: scheduled
+      trigger:
+        type: recurrence
+        frequency: Day
+        interval: 1
+        startTime: 2030-01-01T00:00:00Z
+      actions:
+        - name: Send
+          use: outlook.sendEmail
+          connection: outlook
+          to:
+            - op: environment
+              name: mailbox
+          subject:
+            op: literal
+            value: PowerCanvas compile-only proof
+            shape:
+              type: string
+          body:
+            op: literal
+            value: No email is sent by compilation or deployment.
+            shape:
+              type: string
+      connectionReferences:
+        - outlook
+      environmentVariables:
+        - mailbox
+      runPolicy:
+        mode: controlledWrite

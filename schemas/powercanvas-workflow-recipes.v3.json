@@ -1,0 +1,373 @@
+[
+  {
+    "name": "approval",
+    "purpose": "Request a decision and explicitly handle its lifecycle",
+    "supportedTriggers": [
+      "powerAppsV2",
+      "manual",
+      "dataverse",
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "approvals"
+    ],
+    "requiredInputs": [
+      "request",
+      "mode",
+      "timeoutHours"
+    ],
+    "optionalInputs": [
+      "persist",
+      "onApproved",
+      "onRejected",
+      "onUnknown"
+    ],
+    "generatedActions": [
+      "approvals.create",
+      "approvals.wait",
+      "approvals.startAndWait",
+      "approvals.responses",
+      "approvals.result",
+      "control.scope",
+      "control.condition",
+      "control.terminate"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Create returns immediately; createAndWait/startAndWait have explicit bounded timeouts",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [
+      "creation identity or scoped normalized approval result"
+    ],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "notification",
+    "purpose": "Communicate a business event through Outlook",
+    "supportedTriggers": [
+      "powerAppsV2",
+      "manual",
+      "dataverse",
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "outlook"
+    ],
+    "requiredInputs": [
+      "send",
+      "idempotencyIntent",
+      "errorBehavior"
+    ],
+    "optionalInputs": [
+      "when"
+    ],
+    "generatedActions": [
+      "control.condition",
+      "outlook.sendEmail"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "documentGeneration",
+    "purpose": "Populate an external Word template and save requested artifacts",
+    "supportedTriggers": [
+      "powerAppsV2",
+      "manual",
+      "dataverse",
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "word",
+      "sharepoint"
+    ],
+    "requiredInputs": [
+      "connection",
+      "template",
+      "fields",
+      "output.conflict"
+    ],
+    "optionalInputs": [
+      "pdf"
+    ],
+    "generatedActions": [
+      "word.populateTemplate",
+      "sharepoint.createFile",
+      "control.delay",
+      "word.convertToPdf",
+      "data.object"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [
+      "fileName",
+      "fileIdentifier",
+      "location",
+      "pdfIdentifier and pdfLocation only when requested"
+    ],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "auditLog",
+    "purpose": "Append an explicitly mapped application history entry",
+    "supportedTriggers": [
+      "powerAppsV2",
+      "manual",
+      "dataverse",
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "dataverse or sharepoint"
+    ],
+    "requiredInputs": [
+      "destination",
+      "columns",
+      "entry"
+    ],
+    "optionalInputs": [],
+    "generatedActions": [
+      "dataverse.addRow or sharepoint.createItem"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [
+      "destination row"
+    ],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "reminder",
+    "purpose": "Scan a bounded due-record set and notify eligible recipients",
+    "supportedTriggers": [
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "dataverse or sharepoint",
+      "outlook"
+    ],
+    "requiredInputs": [
+      "query.top",
+      "maxItems",
+      "eligibility",
+      "notification"
+    ],
+    "optionalInputs": [],
+    "generatedActions": [
+      "dataverse.listRows or sharepoint.getItems",
+      "control.applyToEach",
+      "control.condition",
+      "outlook.sendEmail"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "escalation",
+    "purpose": "Notify eligible overdue records and optionally update internal state",
+    "supportedTriggers": [
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "dataverse or sharepoint",
+      "outlook"
+    ],
+    "requiredInputs": [
+      "query.top",
+      "maxItems",
+      "eligibility",
+      "notification"
+    ],
+    "optionalInputs": [
+      "update"
+    ],
+    "generatedActions": [
+      "dataverse.listRows or sharepoint.getItems",
+      "control.applyToEach",
+      "control.condition",
+      "outlook.sendEmail",
+      "dataverse.updateRow"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "fileRouting",
+    "purpose": "Copy content to a new uniquely named SharePoint file",
+    "supportedTriggers": [
+      "powerAppsV2",
+      "manual",
+      "dataverse",
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "sharepoint"
+    ],
+    "requiredInputs": [
+      "read",
+      "when",
+      "output.conflict"
+    ],
+    "optionalInputs": [
+      "update"
+    ],
+    "generatedActions": [
+      "sharepoint.getFileContent",
+      "control.condition",
+      "sharepoint.createFile",
+      "sharepoint.updateFileProperties"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [
+      "scoped target file metadata"
+    ],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "postSaveAutomation",
+    "purpose": "Run secondary automation after the primary business commit",
+    "supportedTriggers": [
+      "powerAppsV2",
+      "manual",
+      "dataverse"
+    ],
+    "requiredConnectors": [
+      "composed dependencies"
+    ],
+    "requiredInputs": [
+      "commit",
+      "steps"
+    ],
+    "optionalInputs": [],
+    "generatedActions": [
+      "typed expansion of composed stages"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [
+      "composed stage outputs"
+    ],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  },
+  {
+    "name": "childWorkflow",
+    "purpose": "Invoke a typed reusable workflow in the same solution",
+    "supportedTriggers": [
+      "powerAppsV2",
+      "manual",
+      "dataverse",
+      "recurrence"
+    ],
+    "requiredConnectors": [
+      "transitive child dependencies"
+    ],
+    "requiredInputs": [
+      "flow",
+      "arguments"
+    ],
+    "optionalInputs": [],
+    "generatedActions": [
+      "flows.invoke"
+    ],
+    "generatedFlows": "One enclosing flow per workflowRecipes resource; child references resolve to separately declared solution flows",
+    "risk": "Propagated from every primitive and transitive child",
+    "longRunningBehavior": "Transitive waits are propagated; parent waits for child",
+    "idempotencyRequirements": "Explicit intent; optional atomic Dataverse primary-key ledger",
+    "environmentDependencies": "Declared references and external-resource manifest",
+    "outputs": [
+      "exact declared child response"
+    ],
+    "testingRequirements": [
+      "schema",
+      "types",
+      "effects",
+      "graph",
+      "lifecycle",
+      "controlled runtime when configured"
+    ]
+  }
+]

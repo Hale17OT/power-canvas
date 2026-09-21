@@ -1,0 +1,30 @@
+/* global structuredClone */
+// Scoped source refresh of previously generated flow commands; exact command formulas and all other behavior are guarded.
+import {readFile,readdir,mkdir,writeFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import process from 'node:process';
+import {parse,stringify} from 'yaml';
+import {loadProject} from '../dist/config/load.js';
+import {nativeBindingsSchema} from '../dist/canvas/native-types.js';
+import {composeFlowCommands} from '../dist/flows/native.js';
+import {controls,dependencies} from '../dist/canvas/taste/audit.js';
+import {hashJson} from '../dist/core/json.js';
+const [directory,bindingFile,beforeDir,priorDir,outDir]=process.argv.slice(2);
+const {project}=await loadProject(directory),bindings=nativeBindingsSchema.parse(JSON.parse(await readFile(bindingFile,'utf8')));
+const read=async d=>Object.fromEntries(await Promise.all((await readdir(d)).filter(n=>n.endsWith('.pa.yaml')&&!n.startsWith('_')).sort().map(async n=>[n,parse(await readFile(resolve(d,n),'utf8'))])));
+const before=await read(beforeDir),prior=await read(priorDir),next=structuredClone(before);
+const previousManifest=JSON.parse(await readFile(resolve(priorDir,'native-manifest.json'),'utf8'));
+if(previousManifest.appId!==bindings.appId||previousManifest.nativeHash!==hashJson(prior))throw Error('Previous generated receipt mismatch');
+const app=Object.entries(project.canvasApps).find(([,a])=>a.application?.existingAppId===bindings.appId)?.[0];if(!app)throw Error('Unknown existing app');
+const prefixes=project.resources.canvasBindings.filter(b=>b.app===app&&b.command).map(b=>'pf_flow_'+b.command.name);
+const isFlow=name=>prefixes.some(p=>name===p||name.startsWith(p+'_'));
+const currentDependencies=new Map(dependencies(before).map(d=>[d.control+'.'+d.property,d.formula]));
+for(const d of dependencies(prior).filter(d=>isFlow(d.control)&&d.behavioral))if(currentDependencies.get(d.control+'.'+d.property)!==d.formula&&!(d.property==='Value'&&d.formula==='=""'&&!currentDependencies.has(d.control+'.'+d.property)))throw Error('Existing generated flow command changed outside its receipt');
+for(const n of controls(next))if(n.node.Children)n.node.Children=n.node.Children.filter(c=>!prefixes.includes(Object.keys(c)[0]));
+const contracts=composeFlowCommands(project,app,bindings,next);
+const after=new Map(dependencies(next).map(d=>[d.control+'.'+d.property,d]));
+const protectedProps=dependencies(before).filter(d=>!isFlow(d.control)&&d.behavioral);
+if(protectedProps.some(d=>after.get(d.control+'.'+d.property)?.formula!==d.formula||after.get(d.control+'.'+d.property)?.parent!==d.parent))throw Error('Existing application behavior changed');
+await mkdir(outDir,{recursive:true});for(const [name,value]of Object.entries(next))await writeFile(resolve(outDir,name),stringify(value,{lineWidth:0}),{flag:'wx'});
+const manifest={appId:bindings.appId,solution:bindings.solution,environmentId:bindings.environmentId,expectedRemoteHash:hashJson(before),nativeHash:hashJson(next),flowContracts:contracts,preservedExistingProperties:protectedProps.length,authorization:'Scoped refinement of generated flow command only'};
+await writeFile(resolve(outDir,'native-manifest.json'),JSON.stringify(manifest,null,2),{flag:'wx'});console.log(JSON.stringify({appId:bindings.appId,preservedExistingProperties:protectedProps.length,nativeHash:manifest.nativeHash,remoteWrites:0}));

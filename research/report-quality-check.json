@@ -1,0 +1,19 @@
+{
+  "powercanvas-feasibility-report.html": {
+    "headings": 78,
+    "tables": 30,
+    "links": 211,
+    "ids": 80
+  },
+  "Source-Index.html": {
+    "headings": 1,
+    "tables": 0,
+    "links": 138,
+    "ids": 0
+  },
+  "checks": {
+    "experiments": 10,
+    "issues": [],
+    "visual_browser_review": "Not performed: browser tool blocks local-file URLs."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "mode": {
+      "default": "light",
+      "type": "string",
+      "enum": [
+        "light",
+        "dark"
+      ]
+    },
+    "density": {
+      "default": "comfortable",
+      "type": "string",
+      "enum": [
+        "comfortable",
+        "compact"
+      ]
+    },
+    "brand": {
+      "default": {
+        "primary": "#145C4F"
+      },
+      "type": "object",
+      "properties": {
+        "primary": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        }
+      },
+      "required": [
+        "primary"
+      ],
+      "additionalProperties": false
+    },
+    "font": {
+      "default": "Segoe UI",
+      "type": "string",
+      "enum": [
+        "Segoe UI",
+        "Arial"
+      ]
+    },
+    "radius": {
+      "default": "soft",
+      "type": "string",
+      "enum": [
+        "square",
+        "soft",
+        "rounded"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

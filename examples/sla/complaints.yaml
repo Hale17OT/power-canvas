@@ -1,0 +1,8 @@
+apiVersion: powercanvas.sla/v1alpha1
+name: pfx_ComplaintSla
+version: 1
+clock: elapsedUtcHours
+hours:
+  low: 72
+  normal: 24
+  high: 4

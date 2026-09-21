@@ -1,0 +1,8 @@
+name: DataTable
+requiredCapabilities:
+  - mixed-row-template
+modernCapabilities:
+  - read-only-columns
+compositionCapabilities:
+  - mixed-row-template
+allowPCF: false

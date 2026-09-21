@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "modes": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "personalityCompatibility": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deviceStrategy": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "appropriateUseCases": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inappropriateUseCases": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "implementationType": {
+      "type": "string",
+      "enum": [
+        "modern",
+        "composition",
+        "pcf",
+        "planned"
+      ]
+    },
+    "nativeControls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "canvasComponents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "optionalPCF": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {}
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "responsiveRules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "accessibilityRules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "themeTokens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "compositionRules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "classicReason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "purpose",
+    "appropriateUseCases",
+    "inappropriateUseCases",
+    "implementationType",
+    "nativeControls",
+    "canvasComponents",
+    "optionalPCF",
+    "inputs",
+    "outputs",
+    "variants",
+    "states",
+    "responsiveRules",
+    "accessibilityRules",
+    "themeTokens",
+    "dependencies",
+    "compositionRules"
+  ],
+  "additionalProperties": false
+}

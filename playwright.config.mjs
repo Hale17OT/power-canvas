@@ -1,0 +1,2 @@
+import { defineConfig } from '@playwright/test';
+export default defineConfig({ testDir: './tests/browser', testMatch: '*.spec.mjs', fullyParallel: true, workers: 2, reporter: [['list'], ['html', { outputFolder: 'output/visual/report', open: 'never' }]], outputDir: 'output/visual/results', snapshotPathTemplate: '{testDir}/baselines/{arg}{ext}', use: { browserName: 'chromium', headless: true, locale: 'en-US', timezoneId: 'UTC', colorScheme: 'light', reducedMotion: 'reduce' }, expect: { toHaveScreenshot: { animations: 'disabled', maxDiffPixelRatio: 0.001 } } });

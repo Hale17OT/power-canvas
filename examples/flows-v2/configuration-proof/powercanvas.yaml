@@ -1,0 +1,44 @@
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: 276f391c-c9d7-49dc-a96b-f87cfa66bf28
+  name: flow-v2-configuration-proof
+solution:
+  uniqueName: pfx_PowerForgeExperiment
+  displayName: PowerCanvas Experiment
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerForgeExperimentPublisher
+    prefix: pfx
+    optionValuePrefix: 73142
+dataverse:
+  tables: {}
+resources:
+  environmentVariables:
+    threshold:
+      logicalName: pfx_ExperimentV2Threshold
+      displayName: PowerCanvas V2 test threshold
+      type: number
+    label:
+      logicalName: pfx_ExperimentV2ConfigLabel
+      displayName: PowerCanvas V2 configuration label
+      type: text
+  flows:
+    configurationCheck:
+      logicalName: pfx_ExperimentV2ConfigurationCheck
+      displayName: PowerCanvas Experiment V2 configuration check
+      description: Isolated disabled configuration proof. No connector actions, business writes, emails, or Canvas attachment.
+      flowType: instant
+      trigger:
+        type: powerAppsV2
+      environmentVariables: [threshold, label]
+      outputs:
+        - name: threshold
+          shape: { type: number }
+        - name: label
+          shape: { type: string }
+      actions:
+        - name: Respond
+          use: powerApps.respond
+          fields:
+            threshold: { op: environment, name: threshold }
+            label: { op: environment, name: label }

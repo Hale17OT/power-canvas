@@ -1,0 +1,116 @@
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: 81b7a3f7-6a48-4be1-9e23-71eab2a5a152
+  name: complaint-management
+solution:
+  uniqueName: pf_ComplaintManagement
+  displayName: Complaint Management
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerCanvasExamples
+    prefix: pf
+    optionValuePrefix: 73142
+dataverse:
+  tables:
+    complaint:
+      schemaName: pf_Complaint
+      displayName: Complaint
+      pluralName: Complaints
+      ownership: userOrTeam
+      primaryName: title
+      auditing: true
+      columns:
+        title:
+          schemaName: pf_Title
+          displayName: Title
+          type: text
+          maxLength: 200
+          required: application
+        description:
+          schemaName: pf_Description
+          displayName: Description
+          type: multilineText
+          maxLength: 4000
+        priority:
+          schemaName: pf_Priority
+          displayName: Priority
+          type: choice
+          choices:
+            - { label: Low, value: 731420000 }
+            - { label: Normal, value: 731420001 }
+            - { label: High, value: 731420002 }
+          default: 731420001
+    category:
+      schemaName: pf_Category
+      displayName: Category
+      pluralName: Categories
+      ownership: organization
+      primaryName: name
+      columns:
+        name:
+          schemaName: pf_Name
+          displayName: Name
+          type: text
+          maxLength: 100
+          required: application
+  relationships:
+    complaintCategory:
+      schemaName: pf_Category_Complaint
+      fromTable: complaint
+      toTable: category
+      lookup:
+        key: category
+        schemaName: pf_Category
+        displayName: Category
+      cascade:
+        delete: restrict
+        assign: none
+        share: none
+        unshare: none
+        reparent: none
+        merge: none
+apps:
+  complaintDesk:
+    type: modelDriven
+    uniqueName: pf_ComplaintDesk
+    displayName: Complaint Management
+    tables: [complaint, category]
+    forms:
+      complaintMain:
+        displayName: Complaint Main
+        table: complaint
+        fields: [title, priority, category, description]
+      categoryMain:
+        displayName: Category Main
+        table: category
+        fields: [name]
+    views:
+      activeComplaints:
+        displayName: Active Complaints
+        table: complaint
+        columns: [title, priority, category, createdon]
+        activeOnly: true
+        orderBy: [{ column: createdon, direction: descending }]
+      categories:
+        displayName: Categories
+        table: category
+        columns: [name]
+        orderBy: [{ column: name, direction: ascending }]
+    navigation:
+      - { group: Work, table: complaint }
+      - { group: Work, table: category }
+security:
+  roles:
+    complaintAgent:
+      displayName: Complaint Agent
+      tables:
+        complaint:
+          read: user
+          create: user
+          write: user
+          append: user
+        category:
+          read: organization
+          appendTo: organization
+  appAccess:
+    complaintDesk: [complaintAgent]

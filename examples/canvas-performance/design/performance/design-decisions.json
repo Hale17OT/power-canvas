@@ -1,0 +1,98 @@
+{
+  "mode": "analyze",
+  "personality": "executive-dashboard",
+  "composition": "AnalyticalOverview",
+  "deviceStrategies": {
+    "desktop": {
+      "approach": "responsive-adaptation",
+      "composition": "AnalyticalOverview",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "tablet": {
+      "approach": "responsive-adaptation",
+      "composition": "AnalyticalOverview",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    },
+    "mobile": {
+      "approach": "responsive-adaptation",
+      "composition": "AnalyticalOverview",
+      "informationOrder": [
+        "decision question",
+        "lead measure",
+        "comparisons",
+        "drilldown",
+        "data limitations"
+      ],
+      "navigation": "overview → measure drilldown; return to overview",
+      "persistentControls": [
+        "data scope",
+        "return from drilldown"
+      ],
+      "contextualControls": [
+        "filters",
+        "secondary metadata",
+        "record commands"
+      ],
+      "actionPlacement": "comparison-adjacent drilldown",
+      "detailPresentation": "measure evidence replaces overview",
+      "commandVisibility": "one dominant contextual command",
+      "listDetailRelationship": "aggregate then evidence; no work queue",
+      "backBehavior": "return to previous context without changing data",
+      "formBehavior": "read-only inspection; no business editing",
+      "reason": "The comparison and drilldown job stays the same across devices, so reading order can reflow without introducing a separate work queue."
+    }
+  },
+  "actionHierarchy": "inspect and explore",
+  "density": 2,
+  "surface": "layered",
+  "navigation": "spacious destinations",
+  "typography": "large measure, compact labels",
+  "variants": [
+    "comparisons",
+    "standard-status"
+  ],
+  "informationExposure": "lead measure and comparisons",
+  "reason": "occasional executive work on desktop: One lead measure, then supporting comparisons"
+}

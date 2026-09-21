@@ -1,0 +1,1162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PFDS native pattern request",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "PageHeader"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "subtitle": {
+              "default": "\"\"",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "KpiCard"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "caption": {
+              "default": "\"\"",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "label",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "Sidebar"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "items": {
+              "minItems": 1,
+              "maxItems": 6,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "icon": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "action": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "selected": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "label",
+                  "icon",
+                  "action",
+                  "selected"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "disabled": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title",
+            "items"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "CommandBar"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "actions": {
+              "minItems": 1,
+              "maxItems": 5,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "action": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "icon": {
+                    "type": "string"
+                  },
+                  "primary": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "label",
+                  "action"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "actions"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "FilterBar"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "options": {
+              "minItems": 1,
+              "maxItems": 12,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "variable": {
+              "type": "string",
+              "pattern": "^[a-z][a-zA-Z0-9_]*$"
+            },
+            "onChange": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "disabled": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "label",
+            "options",
+            "variable"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "SearchBox"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "disabled": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "StatusBadge"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "tone": {
+              "default": "'BadgeCanvas.ThemeColor'.Subtle",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "treatment": {
+              "default": "standard",
+              "type": "string",
+              "enum": [
+                "standard",
+                "quiet"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "UserAvatar"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "name": {
+              "default": "User().FullName",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "DataTable"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "subtitle": {
+              "default": "\"\"",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "badge": {
+              "default": "\"\"",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "badgeTone": {
+              "default": "'BadgeCanvas.ThemeColor'.Subtle",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "onSelect": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "selected": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "height": {
+              "default": "420",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "disabled": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "label",
+            "items",
+            "title",
+            "onSelect"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "ActivityTimeline"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "label": {
+              "default": "Activity timeline",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "empty": {
+              "default": "No recorded activity yet",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "items"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "ConfirmationDialog"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "visible": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "confirm": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "cancel": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "confirmLabel": {
+              "default": "Confirm",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "title",
+            "description",
+            "visible",
+            "confirm",
+            "cancel"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "MobileBottomActions"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "MobileTaskForm"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "EditDialog"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "visible": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title",
+            "description",
+            "visible"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "FormSection"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "subtitle": {
+              "default": "\"\"",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "EmptyState"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "visible": {
+              "default": "true",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title",
+            "description"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "LoadingState"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "label": {
+              "default": "Loading records",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "visible": {
+              "default": "true",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "ErrorState"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "visible": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "retry": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title",
+            "description",
+            "visible",
+            "retry"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "Tabs"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "items": {
+              "minItems": 2,
+              "maxItems": 6,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "onChange": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "selected": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "label",
+            "items",
+            "onChange"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "Stepper"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "steps": {
+              "minItems": 2,
+              "maxItems": 6,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "current": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "steps",
+            "current"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "ChartCard"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "description": {
+              "default": "\"\"",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "maximum": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title",
+            "items",
+            "maximum"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "component",
+        "props"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.2.0",
+          "default": "0.2.0"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_]*$",
+          "maxLength": 80
+        },
+        "component": {
+          "const": "DetailPanel"
+        },
+        "props": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "subtitle": {
+              "default": "\"\"",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "title"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

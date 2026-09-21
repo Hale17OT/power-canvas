@@ -1,0 +1,15 @@
+{
+  "mode": "operate",
+  "personality": "dense-operations",
+  "composition": "WorkQueue",
+  "density": 8,
+  "surface": "flat",
+  "navigation": "compact rail",
+  "typography": "strong stable hierarchy",
+  "variants": [
+    "dense-table",
+    "quiet-status"
+  ],
+  "informationExposure": "primary data with progressive detail",
+  "reason": "daily operations work on desktop: Record identity before commands; urgency before totals"
+}

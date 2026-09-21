@@ -1,0 +1,108 @@
+# Dependencies and build products
+node_modules/
+pcf/*/node_modules/
+dist/
+pcf/*/out/
+pcf/*/obj/
+coverage/
+*.tsbuildinfo
+
+# Local configuration and protected authentication state
+.env
+.env.*
+!.env.example
+.powerforge/
+.powercanvas/
+playwright/.auth/
+.playwright-mcp/
+*.pem
+*.pfx
+*.key
+*.p12
+*.p7b
+*.jks
+*.keystore
+.azure/
+.msal/
+.auth/
+*.local.json
+*.local.yaml
+*.local.yml
+*.local.toml
+auth-state*.json
+storage-state*.json
+storageState*.json
+*.har
+*.dmp
+*.dump
+
+# Logs and local test output
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+test-results/
+playwright-report/
+blob-report/
+
+# Reproducible generated output
+output/
+artifacts/
+.tmp/
+tmp/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Runtime evidence and solution exports; source fixtures remain under tests/fixtures
+experiments/*/
+!experiments/README.md
+*.zip
+!tests/fixtures/**/*.zip
+
+# OS/editor state
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Keep deliberate source-controlled binary fixtures explicit if added later.
+*.msapp
+!tests/fixtures/**/*.msapp
+
+# Signed-in tenant captures are private evidence, not portable visual baselines.
+# Keep synthetic Playwright baselines directly in tests/browser/baselines tracked.
+/tests/browser/baselines/native-*/
+
+# Historical one-environment probes/recovery scripts: retain locally only.
+/scripts/archive-experiment2.mjs
+/scripts/check-native-flow-contract.mjs
+/scripts/check-native-preview.mjs
+/scripts/check-native-single-app.mjs
+/scripts/check-native-v3.mjs
+/scripts/check-performance-native.mjs
+/scripts/deploy-tvmaze.mjs
+/scripts/execute-experiment2-repair.mjs
+/scripts/inspect-canvas-app.mjs
+/scripts/inspect-command-context.mjs
+/scripts/inspect-command-members.mjs
+/scripts/inspect-continuation.mjs
+/scripts/inspect-experiment3-command.mjs
+/scripts/inspect-experiment3.mjs
+/scripts/inspect-extension-resources.mjs
+/scripts/native-readback.mjs
+/scripts/prepare-native-example.mjs
+/scripts/publish-command-context.mjs
+/scripts/recover-experiment2-publication.mjs
+/scripts/recover-experiment3-client.mjs
+/scripts/run-sla.mjs
+
+# Machine-specific research rendering helper (the report remains public).
+/research/build-report.mjs

@@ -1,0 +1,2439 @@
+Screens:
+  pf_screen_complaints:
+    Properties:
+      Fill: =PF_canvas
+      OnVisible: =If(IsBlank(pf_ds2_complaints_filter), Set(pf_ds2_complaints_filter, "All")); Set(pf_ds2_complaints_loading, true); Set(pf_ds2_complaints_loadError, ""); IfError(Refresh('Complaints'), Set(pf_ds2_complaints_loadError, FirstError.Message)); Set(pf_ds2_complaints_loading, false)
+    Children:
+      - pf_ds2_complaints_root:
+          Control: GroupContainer
+          Properties:
+            Width: =Parent.Width
+            LayoutMinWidth: =0
+            LayoutMinHeight: =0
+            FillPortions: =0
+            AlignInContainer: =AlignInContainer.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutGap: =0
+            DropShadow: =DropShadow.None
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Height: =Parent.Height - If(PF_mobile, 64, 0)
+          Children:
+            - pf_ds2_complaints_sidebar:
+                Control: GroupContainer
+                Properties:
+                  Width: =PF_navWidth
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =0
+                  AlignInContainer: =AlignInContainer.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutGap: =PF_gap
+                  DropShadow: =DropShadow.None
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  Height: =Parent.Height
+                  Fill: =PF_rail
+                  PaddingLeft: =PF_spaceInset
+                  PaddingRight: =PF_spaceInset
+                  PaddingTop: =PF_spaceInset
+                  PaddingBottom: =PF_spaceMd
+                  Visible: =!PF_mobile
+                Children:
+                  - pf_ds2_complaints_sidebar_brand:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="PowerCanvas"
+                        AccessibleLabel: ="PowerCanvas"
+                        Color: =PF_railText
+                        Size: =PF_typeBrand
+                        Height: =64
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        FontWeight: =FontWeight.Semibold
+                        Visible: =!PF_tablet
+                  - pf_ds2_complaints_sidebar_section:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="WORKSPACE"
+                        AccessibleLabel: ="WORKSPACE"
+                        Color: =PF_railMuted
+                        Size: =PF_typeEyebrow
+                        Height: =28
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        Visible: =!PF_tablet
+                  - pf_ds2_complaints_sidebar_item0:
+                      Control: Button
+                      Properties:
+                        Icon: ="Home"
+                        Layout: =If(PF_tablet, 'ButtonCanvas.Layout'.IconOnly, 'ButtonCanvas.Layout'.IconBefore)
+                        Text: =If(PF_tablet, "", "Overview")
+                        AccessibleLabel: ="Overview"
+                        OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Navigate(Screen1, PF_navigationTransition))
+                        Height: =44
+                        Width: =Parent.Width - 24
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Center
+                        Appearance: ='ButtonCanvas.Appearance'.Transparent
+                        FontSize: =PF_typeBody
+                        FontWeight: =FontWeight.Semibold
+                        FontColor: =PF_railText
+                        BasePaletteColor: =PF_brand
+                        BorderRadius: =PF_radius
+                        Align: =Align.Left
+                        DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                  - pf_ds2_complaints_sidebar_item1:
+                      Control: Button
+                      Properties:
+                        Icon: ="Document"
+                        Layout: =If(PF_tablet, 'ButtonCanvas.Layout'.IconOnly, 'ButtonCanvas.Layout'.IconBefore)
+                        Text: =If(PF_tablet, "", "Complaints")
+                        AccessibleLabel: ="Complaints"
+                        OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Navigate(pf_screen_complaints, PF_navigationTransition))
+                        Height: =44
+                        Width: =Parent.Width - 24
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Center
+                        Appearance: ='ButtonCanvas.Appearance'.Primary
+                        FontSize: =PF_typeBody
+                        FontWeight: =FontWeight.Semibold
+                        FontColor: =PF_railText
+                        BasePaletteColor: =PF_brand
+                        BorderRadius: =PF_radius
+                        Align: =Align.Left
+                        DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                  - pf_ds2_complaints_sidebar_spacer:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =1
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =0
+                      Children: []
+                      Variant: AutoLayout
+                  - pf_ds2_complaints_sidebar_foot:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="POWERCANVAS / WORKSPACE"
+                        AccessibleLabel: ="POWERCANVAS / WORKSPACE"
+                        Color: =PF_railMuted
+                        Size: =PF_typeCaption
+                        Height: =24
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        Visible: =!PF_tablet
+                Variant: AutoLayout
+            - pf_ds2_complaints_main:
+                Control: GroupContainer
+                Properties:
+                  Width: =Parent.Width - PF_navWidth
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =1
+                  AlignInContainer: =AlignInContainer.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutGap: =0
+                  DropShadow: =DropShadow.None
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  Height: =Parent.Height
+                Children:
+                  - pf_ds2_complaints_header:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =PF_headerHeight
+                        Fill: =PF_surface
+                        PaddingLeft: =PF_pagePadding
+                        PaddingRight: =PF_pagePadding
+                      Children:
+                        - pf_ds2_complaints_workspaceName:
+                            Control: ModernText
+                            Properties:
+                              Width: =100
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =1
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: ="PowerCanvas • Complaint desk"
+                              AccessibleLabel: ="PowerCanvas • Complaint desk"
+                              Color: =PF_text
+                              Size: =PF_typeBody
+                              Height: =36
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              FontWeight: =FontWeight.Semibold
+                        - pf_ds2_complaints_theme:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: ="Theme"
+                              AccessibleLabel: ="Theme"
+                              OnSelect: =Set(pf_dark, !PF_dark)
+                              Height: =PF_controlHeight
+                              Width: =88
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_text
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                              DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                        - pf_ds2_complaints_avatar:
+                            Control: Avatar
+                            Properties:
+                              Name: =User().FullName
+                              AccessibleLabel: =User().FullName
+                              Badge: ='Avatar.Badge'.None
+                              Width: =32
+                              Height: =32
+                              BasePaletteColor: =PF_brand
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              AlignInContainer: =AlignInContainer.Center
+                      Variant: AutoLayout
+                  - pf_ds2_complaints_content:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =1
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =0
+                        PaddingLeft: =PF_pagePadding
+                        PaddingRight: =PF_pagePadding
+                        PaddingTop: =PF_spaceLg
+                        PaddingBottom: =PF_spaceLg
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                      Children:
+                        - pf_ds2_complaints_pageHeader:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =If(PF_mobile, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =PF_gap
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              Height: =If(PF_mobile, 132, 88)
+                            Children:
+                              - pf_ds2_complaints_pageTitle:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =200
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =1
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_spaceXs
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    Height: =80
+                                  Children:
+                                    - pf_ds2_complaints_pageTitle_title:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="All complaints"
+                                          AccessibleLabel: ="All complaints"
+                                          Color: =PF_text
+                                          Size: =PF_typeTitle
+                                          Height: =36
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_complaints_pageTitle_subtitle:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Find, review and update records with confidence."
+                                          AccessibleLabel: ="Find, review and update records with confidence."
+                                          Color: =PF_muted
+                                          Size: =PF_typeBody
+                                          Height: =32
+                                          AutoHeight: =true
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                  Variant: AutoLayout
+                              - pf_ds2_complaints_pageActions:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, 284)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutGap: =PF_gap
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    Height: =Max(40, PF_controlHeight)
+                                    LayoutJustifyContent: =LayoutJustifyContent.End
+                                  Children:
+                                    - pf_ds2_complaints_refresh:
+                                        Control: Button
+                                        Properties:
+                                          Icon: ="ArrowClockwise"
+                                          Layout: ='ButtonCanvas.Layout'.IconBefore
+                                          Text: ="Refresh"
+                                          AccessibleLabel: ="Refresh"
+                                          OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Set(pf_ds2_complaints_loading, true); Set(pf_ds2_complaints_loadError, ""); IfError(Refresh('Complaints'), Set(pf_ds2_complaints_loadError, FirstError.Message)); Set(pf_ds2_complaints_loading, false))
+                                          Height: =PF_controlHeight
+                                          Width: =112
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: ='ButtonCanvas.Appearance'.Secondary
+                                          FontSize: =PF_typeBody
+                                          FontWeight: =FontWeight.Semibold
+                                          FontColor: =PF_text
+                                          BasePaletteColor: =PF_brand
+                                          BorderRadius: =PF_radius
+                                          DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                    - pf_ds2_complaints_new:
+                                        Control: Button
+                                        Properties:
+                                          Icon: ="Add"
+                                          Layout: ='ButtonCanvas.Layout'.IconBefore
+                                          Text: ="New complaint"
+                                          AccessibleLabel: ="New complaint"
+                                          OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), NewForm(pf_ds2_complaints_form); Set(pf_ds2_complaints_step, 1); Set(pf_ds2_complaints_editor, true); Set(pf_ds2_complaints_receipt, false); Reset(pf_ds2_complaints_reason); SetFocus(pf_ds2_complaints_cancel))
+                                          Height: =PF_controlHeight
+                                          Width: =156
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: ='ButtonCanvas.Appearance'.Primary
+                                          FontSize: =PF_typeBody
+                                          FontWeight: =FontWeight.Semibold
+                                          FontColor: =PF_onBrand
+                                          BasePaletteColor: =PF_brand
+                                          BorderRadius: =PF_radius
+                                          DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                  Variant: AutoLayout
+                            Variant: AutoLayout
+                        - pf_ds2_complaints_toolbar:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutGap: =PF_spaceSm
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              Height: =If(PF_mobile, 152, If(PF_tablet, 88, 44))
+                              LayoutWrap: =true
+                            Children:
+                              - pf_ds2_complaints_search:
+                                  Control: TextInput
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, 280)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    AccessibleLabel: ="Find a complaint"
+                                    Placeholder: ="Find a complaint"
+                                    Value: =""
+                                    Height: =PF_controlHeight
+                                    FontSize: =PF_typeBody
+                                    FontColor: =PF_text
+                                    Fill: =PF_subtle
+                                    BorderRadius: =PF_radius
+                                    Appearance: ='TextInputCanvas.Appearance'.FilledLighter
+                                    Type: ='TextInputCanvas.Type'.Search
+                                    TriggerOutput: ='TextInputCanvas.TriggerOutput'.Delayed
+                                    DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                    OnChange: =Set(pf_ds2_complaints_selected, Blank()); Set(pf_ds2_complaints_reveal, false)
+                              - pf_ds2_complaints_filters:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =308
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutGap: =PF_spaceXs
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    Height: =Max(40, PF_controlHeight)
+                                  Children:
+                                    - pf_ds2_complaints_filters_0:
+                                        Control: Button
+                                        Properties:
+                                          Icon: =""
+                                          Layout: ='ButtonCanvas.Layout'.TextOnly
+                                          Text: ="All"
+                                          AccessibleLabel: '="Priority: All"'
+                                          OnSelect: =Set(pf_ds2_complaints_filter, "All"); Set(pf_ds2_complaints_selected, Blank()); Set(pf_ds2_complaints_reveal, false)
+                                          Height: =PF_controlHeight
+                                          Width: =64
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =If(Coalesce(pf_ds2_complaints_filter, "All") = "All", 'ButtonCanvas.Appearance'.Primary, 'ButtonCanvas.Appearance'.Subtle)
+                                          FontSize: =PF_typeBody
+                                          FontWeight: =FontWeight.Semibold
+                                          FontColor: =If(Coalesce(pf_ds2_complaints_filter, "All") = "All", PF_onBrand, PF_text)
+                                          BasePaletteColor: =PF_brand
+                                          BorderRadius: =PF_radius
+                                          DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                    - pf_ds2_complaints_filters_1:
+                                        Control: Button
+                                        Properties:
+                                          Icon: =""
+                                          Layout: ='ButtonCanvas.Layout'.TextOnly
+                                          Text: ="Low"
+                                          AccessibleLabel: '="Priority: Low"'
+                                          OnSelect: =Set(pf_ds2_complaints_filter, "Low"); Set(pf_ds2_complaints_selected, Blank()); Set(pf_ds2_complaints_reveal, false)
+                                          Height: =PF_controlHeight
+                                          Width: =64
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =If(Coalesce(pf_ds2_complaints_filter, "All") = "Low", 'ButtonCanvas.Appearance'.Primary, 'ButtonCanvas.Appearance'.Subtle)
+                                          FontSize: =PF_typeBody
+                                          FontWeight: =FontWeight.Semibold
+                                          FontColor: =If(Coalesce(pf_ds2_complaints_filter, "All") = "Low", PF_onBrand, PF_text)
+                                          BasePaletteColor: =PF_brand
+                                          BorderRadius: =PF_radius
+                                          DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                    - pf_ds2_complaints_filters_2:
+                                        Control: Button
+                                        Properties:
+                                          Icon: =""
+                                          Layout: ='ButtonCanvas.Layout'.TextOnly
+                                          Text: ="Normal"
+                                          AccessibleLabel: '="Priority: Normal"'
+                                          OnSelect: =Set(pf_ds2_complaints_filter, "Normal"); Set(pf_ds2_complaints_selected, Blank()); Set(pf_ds2_complaints_reveal, false)
+                                          Height: =PF_controlHeight
+                                          Width: =72
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =If(Coalesce(pf_ds2_complaints_filter, "All") = "Normal", 'ButtonCanvas.Appearance'.Primary, 'ButtonCanvas.Appearance'.Subtle)
+                                          FontSize: =PF_typeBody
+                                          FontWeight: =FontWeight.Semibold
+                                          FontColor: =If(Coalesce(pf_ds2_complaints_filter, "All") = "Normal", PF_onBrand, PF_text)
+                                          BasePaletteColor: =PF_brand
+                                          BorderRadius: =PF_radius
+                                          DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                    - pf_ds2_complaints_filters_3:
+                                        Control: Button
+                                        Properties:
+                                          Icon: =""
+                                          Layout: ='ButtonCanvas.Layout'.TextOnly
+                                          Text: ="High"
+                                          AccessibleLabel: '="Priority: High"'
+                                          OnSelect: =Set(pf_ds2_complaints_filter, "High"); Set(pf_ds2_complaints_selected, Blank()); Set(pf_ds2_complaints_reveal, false)
+                                          Height: =PF_controlHeight
+                                          Width: =64
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =If(Coalesce(pf_ds2_complaints_filter, "All") = "High", 'ButtonCanvas.Appearance'.Primary, 'ButtonCanvas.Appearance'.Subtle)
+                                          FontSize: =PF_typeBody
+                                          FontWeight: =FontWeight.Semibold
+                                          FontColor: =If(Coalesce(pf_ds2_complaints_filter, "All") = "High", PF_onBrand, PF_text)
+                                          BasePaletteColor: =PF_brand
+                                          BorderRadius: =PF_radius
+                                          DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                  Variant: AutoLayout
+                              - pf_ds2_complaints_sort:
+                                  Control: Button
+                                  Properties:
+                                    Icon: ="ArrowSort"
+                                    Layout: ='ButtonCanvas.Layout'.IconBefore
+                                    Text: =If(pf_ds2_complaints_descending, "Title Z–A", "Title A–Z")
+                                    AccessibleLabel: =If(pf_ds2_complaints_descending, "Title Z–A", "Title A–Z")
+                                    OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Set(pf_ds2_complaints_descending, !pf_ds2_complaints_descending))
+                                    Height: =PF_controlHeight
+                                    Width: =112
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Appearance: ='ButtonCanvas.Appearance'.Secondary
+                                    FontSize: =PF_typeBody
+                                    FontWeight: =FontWeight.Semibold
+                                    FontColor: =PF_text
+                                    BasePaletteColor: =PF_brand
+                                    BorderRadius: =PF_radius
+                                    DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                              - pf_ds2_complaints_reset:
+                                  Control: Button
+                                  Properties:
+                                    Icon: =""
+                                    Layout: ='ButtonCanvas.Layout'.TextOnly
+                                    Text: ="Reset"
+                                    AccessibleLabel: ="Reset"
+                                    OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Reset(pf_ds2_complaints_search); Set(pf_ds2_complaints_filter, "All"); Set(pf_ds2_complaints_descending, false))
+                                    Height: =PF_controlHeight
+                                    Width: =72
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Appearance: ='ButtonCanvas.Appearance'.Subtle
+                                    FontSize: =PF_typeBody
+                                    FontWeight: =FontWeight.Semibold
+                                    FontColor: =PF_text
+                                    BasePaletteColor: =PF_brand
+                                    BorderRadius: =PF_radius
+                                    DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                            Variant: AutoLayout
+                        - pf_ds2_complaints_loadingState:
+                            Control: Spinner
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Label: ="Loading complaints"
+                              AccessibleLabel: ="Loading complaints"
+                              Height: =72
+                              SpinnerSize: ='Spinner.SpinnerSize'.Small
+                              FontSize: =PF_typeBody
+                              FontColor: =PF_muted
+                              BasePaletteColor: =PF_brand
+                              Visible: =pf_ds2_complaints_loading
+                        - pf_ds2_complaints_errorState:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutGap: =PF_gap
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =PF_radius
+                              RadiusTopRight: =PF_radius
+                              RadiusBottomLeft: =PF_radius
+                              RadiusBottomRight: =PF_radius
+                              Fill: =PF_surface
+                              PaddingLeft: =PF_spaceLg
+                              PaddingRight: =PF_spaceLg
+                              PaddingTop: =PF_spaceLg
+                              PaddingBottom: =PF_spaceLg
+                              Height: =156
+                              Visible: =!IsBlank(pf_ds2_complaints_loadError)
+                            Children:
+                              - pf_ds2_complaints_errorState_title:
+                                  Control: ModernText
+                                  Properties:
+                                    Width: =Parent.Width
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Text: ="Unable to load records"
+                                    AccessibleLabel: ="Unable to load records"
+                                    Color: =PF_danger
+                                    Size: =PF_typeBody
+                                    Height: =24
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    FontWeight: =FontWeight.Semibold
+                              - pf_ds2_complaints_errorState_description:
+                                  Control: ModernText
+                                  Properties:
+                                    Width: =Parent.Width
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Text: =pf_ds2_complaints_loadError
+                                    AccessibleLabel: =pf_ds2_complaints_loadError
+                                    Color: =PF_muted
+                                    Size: =PF_typeBody
+                                    Height: =48
+                                    AutoHeight: =true
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                              - pf_ds2_complaints_errorState_retry:
+                                  Control: Button
+                                  Properties:
+                                    Icon: =""
+                                    Layout: ='ButtonCanvas.Layout'.TextOnly
+                                    Text: ="Try again"
+                                    AccessibleLabel: ="Try again"
+                                    OnSelect: =Set(pf_ds2_complaints_loading, true); Set(pf_ds2_complaints_loadError, ""); IfError(Refresh('Complaints'), Set(pf_ds2_complaints_loadError, FirstError.Message)); Set(pf_ds2_complaints_loading, false)
+                                    Height: =PF_controlHeight
+                                    Width: =120
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Appearance: ='ButtonCanvas.Appearance'.Secondary
+                                    FontSize: =PF_typeBody
+                                    FontWeight: =FontWeight.Semibold
+                                    FontColor: =PF_text
+                                    BasePaletteColor: =PF_brand
+                                    BorderRadius: =PF_radius
+                            Variant: AutoLayout
+                        - pf_ds2_complaints_success:
+                            Control: Badge
+                            Properties:
+                              Content: ="Changes saved"
+                              AccessibleLabel: ="Changes saved"
+                              ThemeColor: ='BadgeCanvas.ThemeColor'.Success
+                              Shape: ='BadgeCanvas.Shape'.Rounded
+                              Appearance: ='BadgeCanvas.Appearance'.Tint
+                              Height: =24
+                              Width: =144
+                              FontSize: =PF_typeCaption
+                              BasePaletteColor: =PF_brand
+                              AlignInContainer: =AlignInContainer.Center
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              Visible: =pf_ds2_complaints_receipt
+                        - pf_ds2_complaints_body:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =If(PF_wide, LayoutDirection.Horizontal, LayoutDirection.Vertical)
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutGap: =PF_gap
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              Height: =If(PF_wide, Max(380, App.Height - 280), If(PF_mobile, 360, 420) + If((IsBlank(pf_ds2_complaints_selected.'Complaint') || IsEmpty(SortByColumns(Filter('Complaints', StartsWith('Title', pf_ds2_complaints_search.Value) && (pf_ds2_complaints_filter = "All" || IsBlank(pf_ds2_complaints_filter) || 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = pf_ds2_complaints_filter).Value)), "pfx_experimenttitle", If(pf_ds2_complaints_descending, SortOrder.Descending, SortOrder.Ascending)))), 0, 576))
+                            Children:
+                              - pf_ds2_complaints_tablePanel:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =Parent.Width
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =1
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =0
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    Fill: =PF_surface
+                                    Height: =If(PF_mobile, 360, Max(380, App.Height - 280))
+                                  Children:
+                                    - pf_ds2_complaints_tableHeader:
+                                        Control: GroupContainer
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          LayoutDirection: =LayoutDirection.Horizontal
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutGap: =PF_gap
+                                          DropShadow: =DropShadow.None
+                                          RadiusTopLeft: =0
+                                          RadiusTopRight: =0
+                                          RadiusBottomLeft: =0
+                                          RadiusBottomRight: =0
+                                          Height: =36
+                                          PaddingLeft: =PF_spaceMd
+                                          PaddingRight: =PF_spaceMd
+                                          Fill: =PF_subtle
+                                        Children:
+                                          - pf_ds2_complaints_tableTitle:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =1
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: ="COMPLAINT"
+                                                AccessibleLabel: ="COMPLAINT"
+                                                Color: =PF_muted
+                                                Size: =PF_typeEyebrow
+                                                Height: =24
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                          - pf_ds2_complaints_priorityHeader:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =100
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.End
+                                                Text: ="PRIORITY"
+                                                AccessibleLabel: ="PRIORITY"
+                                                Color: =PF_muted
+                                                Size: =PF_typeEyebrow
+                                                Height: =24
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                        Variant: AutoLayout
+                                    - pf_ds2_complaints_list:
+                                        Control: Gallery
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          AccessibleLabel: ="All complaints"
+                                          Items: =SortByColumns(Filter('Complaints', StartsWith('Title', pf_ds2_complaints_search.Value) && (pf_ds2_complaints_filter = "All" || IsBlank(pf_ds2_complaints_filter) || 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = pf_ds2_complaints_filter).Value)), "pfx_experimenttitle", If(pf_ds2_complaints_descending, SortOrder.Descending, SortOrder.Ascending))
+                                          Height: =Max(180, Parent.Height - 72)
+                                          TemplateSize: =PF_rowHeight
+                                          TemplatePadding: =0
+                                          TabIndex: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, -1, 0)
+                                          LoadingSpinner: =LoadingSpinner.Data
+                                          TemplateFill: =If(ThisItem.'Complaint' = pf_ds2_complaints_selected.'Complaint', PF_selected, PF_surface)
+                                          Visible: =!IsEmpty(SortByColumns(Filter('Complaints', StartsWith('Title', pf_ds2_complaints_search.Value) && (pf_ds2_complaints_filter = "All" || IsBlank(pf_ds2_complaints_filter) || 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = pf_ds2_complaints_filter).Value)), "pfx_experimenttitle", If(pf_ds2_complaints_descending, SortOrder.Descending, SortOrder.Ascending)))
+                                        Children:
+                                          - pf_ds2_complaints_list_row:
+                                              Control: GroupContainer
+                                              Properties:
+                                                Width: =Parent.TemplateWidth - 24
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutGap: =PF_gap
+                                                DropShadow: =DropShadow.None
+                                                RadiusTopLeft: =0
+                                                RadiusTopRight: =0
+                                                RadiusBottomLeft: =0
+                                                RadiusBottomRight: =0
+                                                Height: =PF_rowHeight
+                                                PaddingLeft: =PF_spaceInset
+                                                PaddingRight: =PF_spaceInset
+                                              Children:
+                                                - pf_ds2_complaints_list_identity:
+                                                    Control: GroupContainer
+                                                    Properties:
+                                                      Width: =Parent.Width - 120
+                                                      LayoutMinWidth: =0
+                                                      LayoutMinHeight: =0
+                                                      FillPortions: =1
+                                                      AlignInContainer: =AlignInContainer.Stretch
+                                                      LayoutDirection: =LayoutDirection.Vertical
+                                                      LayoutAlignItems: =LayoutAlignItems.Stretch
+                                                      LayoutGap: =0
+                                                      DropShadow: =DropShadow.None
+                                                      RadiusTopLeft: =0
+                                                      RadiusTopRight: =0
+                                                      RadiusBottomLeft: =0
+                                                      RadiusBottomRight: =0
+                                                      Height: =PF_rowHeight - 12
+                                                      LayoutJustifyContent: =LayoutJustifyContent.Center
+                                                    Children:
+                                                      - pf_ds2_complaints_list_select:
+                                                          Control: Button
+                                                          Properties:
+                                                            Icon: =""
+                                                            Layout: ='ButtonCanvas.Layout'.TextOnly
+                                                            Text: =If(PF_mobile && Len(ThisItem.'Title') > 42, Left(ThisItem.'Title', 42) & "…", ThisItem.'Title')
+                                                            AccessibleLabel: ="View " & ThisItem.'Title'
+                                                            OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Set(pf_ds2_complaints_selected, ThisItem); Set(pf_ds2_complaints_reveal, false); Set(pf_ds2_complaints_tab, "Details"); ResetForm(pf_ds2_complaints_form); ViewForm(pf_ds2_complaints_form); Set(pf_ds2_complaints_receipt, false))
+                                                            Height: =If(PF_mobile, 52, 32)
+                                                            Width: =Parent.Width
+                                                            LayoutMinWidth: =0
+                                                            LayoutMinHeight: =0
+                                                            FillPortions: =0
+                                                            AlignInContainer: =AlignInContainer.Center
+                                                            Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                            FontSize: =PF_typeBody
+                                                            FontWeight: =FontWeight.Semibold
+                                                            FontColor: =PF_text
+                                                            BasePaletteColor: =PF_brand
+                                                            BorderRadius: =PF_radius
+                                                            Align: =Align.Left
+                                                            DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                                      - pf_ds2_complaints_list_metadata:
+                                                          Control: ModernText
+                                                          Properties:
+                                                            Width: =Parent.Width
+                                                            LayoutMinWidth: =0
+                                                            LayoutMinHeight: =0
+                                                            FillPortions: =0
+                                                            AlignInContainer: =AlignInContainer.Stretch
+                                                            Text: ="Created " & Text(ThisItem.'Created On', "dd mmm yyyy")
+                                                            AccessibleLabel: ="Created " & Text(ThisItem.'Created On', "dd mmm yyyy")
+                                                            Color: =PF_muted
+                                                            Size: =PF_typeCaption
+                                                            Height: =If(PF_showMetadata, 22, 0)
+                                                            AutoHeight: =false
+                                                            Font: =PF_font
+                                                            PaddingLeft: =PF_spaceInset
+                                                            PaddingRight: =0
+                                                            PaddingTop: =0
+                                                            PaddingBottom: =0
+                                                    Variant: AutoLayout
+                                                - pf_ds2_complaints_list_status:
+                                                    Control: Badge
+                                                    Properties:
+                                                      Content: =Text(ThisItem.'Priority')
+                                                      AccessibleLabel: =Text(ThisItem.'Priority')
+                                                      ThemeColor: =If(Text(ThisItem.'Priority') = "High", 'BadgeCanvas.ThemeColor'.Danger, 'BadgeCanvas.ThemeColor'.Subtle)
+                                                      Shape: ='BadgeCanvas.Shape'.Rounded
+                                                      Appearance: ='BadgeCanvas.Appearance'.Tint
+                                                      Height: =24
+                                                      Width: =88
+                                                      FontSize: =PF_typeCaption
+                                                      BasePaletteColor: =PF_brand
+                                                      AlignInContainer: =AlignInContainer.Center
+                                                      LayoutMinWidth: =0
+                                                      LayoutMinHeight: =0
+                                              Variant: AutoLayout
+                                        Variant: Vertical
+                                    - pf_ds2_complaints_empty:
+                                        Control: GroupContainer
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutAlignItems: =LayoutAlignItems.Stretch
+                                          LayoutGap: =PF_gap
+                                          DropShadow: =DropShadow.None
+                                          RadiusTopLeft: =0
+                                          RadiusTopRight: =0
+                                          RadiusBottomLeft: =0
+                                          RadiusBottomRight: =0
+                                          Height: =Parent.Height - 36
+                                          LayoutJustifyContent: =LayoutJustifyContent.Center
+                                          Visible: =IsEmpty(SortByColumns(Filter('Complaints', StartsWith('Title', pf_ds2_complaints_search.Value) && (pf_ds2_complaints_filter = "All" || IsBlank(pf_ds2_complaints_filter) || 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = pf_ds2_complaints_filter).Value)), "pfx_experimenttitle", If(pf_ds2_complaints_descending, SortOrder.Descending, SortOrder.Ascending))) && !pf_ds2_complaints_loading && IsBlank(pf_ds2_complaints_loadError)
+                                          PaddingLeft: =PF_spaceLg
+                                          PaddingRight: =PF_spaceLg
+                                        Children:
+                                          - pf_ds2_complaints_empty_title:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: ="No matching records"
+                                                AccessibleLabel: ="No matching records"
+                                                Color: =PF_text
+                                                Size: =PF_typeBody
+                                                Height: =32
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                FontWeight: =FontWeight.Semibold
+                                                Align: =Align.Center
+                                          - pf_ds2_complaints_empty_description:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: ="Try another search or reset your filters."
+                                                AccessibleLabel: ="Try another search or reset your filters."
+                                                Color: =PF_muted
+                                                Size: =PF_typeBody
+                                                Height: =60
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                Align: =Align.Center
+                                        Variant: AutoLayout
+                                    - pf_ds2_complaints_tableFoot:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: =Text(pf_ds2_complaints_list.AllItemsCount) & " loaded · Select a record to view details"
+                                          AccessibleLabel: =Text(pf_ds2_complaints_list.AllItemsCount) & " loaded · Select a record to view details"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =28
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =PF_spaceMd
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          Visible: =!IsEmpty(SortByColumns(Filter('Complaints', StartsWith('Title', pf_ds2_complaints_search.Value) && (pf_ds2_complaints_filter = "All" || IsBlank(pf_ds2_complaints_filter) || 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = pf_ds2_complaints_filter).Value)), "pfx_experimenttitle", If(pf_ds2_complaints_descending, SortOrder.Descending, SortOrder.Ascending)))
+                                  Variant: AutoLayout
+                              - pf_ds2_complaints_detail:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_wide, PF_detailWidth, Parent.Width)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_gap
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =PF_radius
+                                    RadiusTopRight: =PF_radius
+                                    RadiusBottomLeft: =PF_radius
+                                    RadiusBottomRight: =PF_radius
+                                    Fill: =PF_surface
+                                    PaddingLeft: =PF_spaceLg
+                                    PaddingRight: =PF_spaceLg
+                                    PaddingTop: =PF_spaceLg
+                                    PaddingBottom: =PF_spaceLg
+                                    Height: =If(PF_wide, Max(380, App.Height - 280), 560)
+                                    Visible: =!(IsBlank(pf_ds2_complaints_selected.'Complaint') || IsEmpty(SortByColumns(Filter('Complaints', StartsWith('Title', pf_ds2_complaints_search.Value) && (pf_ds2_complaints_filter = "All" || IsBlank(pf_ds2_complaints_filter) || 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = pf_ds2_complaints_filter).Value)), "pfx_experimenttitle", If(pf_ds2_complaints_descending, SortOrder.Descending, SortOrder.Ascending))))
+                                    LayoutOverflowY: =LayoutOverflow.Scroll
+                                  Children:
+                                    - pf_ds2_complaints_detail_title:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Record details"
+                                          AccessibleLabel: ="Record details"
+                                          Color: =PF_text
+                                          Size: =PF_typeSection
+                                          Height: =28
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_complaints_detail_subtitle:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Review the record before making changes."
+                                          AccessibleLabel: ="Review the record before making changes."
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =32
+                                          AutoHeight: =true
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                    - pf_ds2_complaints_detailCommand:
+                                        Control: GroupContainer
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          LayoutDirection: =LayoutDirection.Horizontal
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutGap: =PF_gap
+                                          DropShadow: =DropShadow.None
+                                          RadiusTopLeft: =0
+                                          RadiusTopRight: =0
+                                          RadiusBottomLeft: =0
+                                          RadiusBottomRight: =0
+                                          Height: =PF_controlHeight
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                        Children:
+                                          - pf_ds2_complaints_priority:
+                                              Control: Badge
+                                              Properties:
+                                                Content: =Text(pf_ds2_complaints_selected.'Priority')
+                                                AccessibleLabel: =Text(pf_ds2_complaints_selected.'Priority')
+                                                ThemeColor: =If(Text(pf_ds2_complaints_selected.'Priority') = "High", 'BadgeCanvas.ThemeColor'.Danger, 'BadgeCanvas.ThemeColor'.Subtle)
+                                                Shape: ='BadgeCanvas.Shape'.Rounded
+                                                Appearance: ='BadgeCanvas.Appearance'.Tint
+                                                Height: =24
+                                                Width: =88
+                                                FontSize: =PF_typeCaption
+                                                BasePaletteColor: =PF_brand
+                                                AlignInContainer: =AlignInContainer.Center
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                          - pf_ds2_complaints_edit:
+                                              Control: Button
+                                              Properties:
+                                                Icon: ="Edit"
+                                                Layout: ='ButtonCanvas.Layout'.IconBefore
+                                                Text: ="Edit"
+                                                AccessibleLabel: ="Edit"
+                                                OnSelect: =EditForm(pf_ds2_complaints_form); Set(pf_ds2_complaints_step, 1); Set(pf_ds2_complaints_editor, true); Set(pf_ds2_complaints_receipt, false); Reset(pf_ds2_complaints_reason); SetFocus(pf_ds2_complaints_cancel)
+                                                Height: =PF_controlHeight
+                                                Width: =88
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Center
+                                                Appearance: ='ButtonCanvas.Appearance'.Primary
+                                                FontSize: =PF_typeBody
+                                                FontWeight: =FontWeight.Semibold
+                                                FontColor: =PF_onBrand
+                                                BasePaletteColor: =PF_brand
+                                                BorderRadius: =PF_radius
+                                                DisplayMode: =If((IsBlank(pf_ds2_complaints_selected.'Complaint') || IsEmpty(SortByColumns(Filter('Complaints', StartsWith('Title', pf_ds2_complaints_search.Value) && (pf_ds2_complaints_filter = "All" || IsBlank(pf_ds2_complaints_filter) || 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = pf_ds2_complaints_filter).Value)), "pfx_experimenttitle", If(pf_ds2_complaints_descending, SortOrder.Descending, SortOrder.Ascending)))) || pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                        Variant: AutoLayout
+                                    - pf_ds2_complaints_detailTabs:
+                                        Control: TabList
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Items: =["Details","Activity"]
+                                          DefaultSelectedItems: =[Coalesce(pf_ds2_complaints_tab, "Details")]
+                                          AccessibleLabel: ="Record sections"
+                                          Height: =Max(40, PF_controlHeight)
+                                          FontSize: =PF_typeBody
+                                          Size: ='TabList.Size'.Small
+                                          BasePaletteColor: =PF_brand
+                                          FontColor: =PF_text
+                                          OnChange: =Set(pf_ds2_complaints_tab, Self.Selected.Value)
+                                          DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                    - pf_ds2_complaints_detailFields:
+                                        Control: GroupContainer
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutAlignItems: =LayoutAlignItems.Stretch
+                                          LayoutGap: =PF_gap
+                                          DropShadow: =DropShadow.None
+                                          RadiusTopLeft: =0
+                                          RadiusTopRight: =0
+                                          RadiusBottomLeft: =0
+                                          RadiusBottomRight: =0
+                                          Height: =If(pf_ds2_complaints_reveal, 480, 200)
+                                          Visible: =Coalesce(pf_ds2_complaints_tab, "Details") = "Details"
+                                        Children:
+                                          - pf_ds2_complaints_recordLabel:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: ="Title"
+                                                AccessibleLabel: ="Title"
+                                                Color: =PF_muted
+                                                Size: =PF_typeCaption
+                                                Height: =24
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                          - pf_ds2_complaints_selectedTitle:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: =pf_ds2_complaints_selected.'Title'
+                                                AccessibleLabel: =pf_ds2_complaints_selected.'Title'
+                                                Color: =PF_text
+                                                Size: =PF_typeSection
+                                                Height: =64
+                                                AutoHeight: =true
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                FontWeight: =FontWeight.Semibold
+                                          - pf_ds2_complaints_revealButton:
+                                              Control: Button
+                                              Properties:
+                                                Icon: =""
+                                                Layout: ='ButtonCanvas.Layout'.TextOnly
+                                                Text: =If(pf_ds2_complaints_reveal, "Hide details", "Show details")
+                                                AccessibleLabel: =If(pf_ds2_complaints_reveal, "Hide details", "Show details")
+                                                OnSelect: =Set(pf_ds2_complaints_reveal, !pf_ds2_complaints_reveal)
+                                                Height: =PF_controlHeight
+                                                Width: =140
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Start
+                                                Appearance: ='ButtonCanvas.Appearance'.Secondary
+                                                FontSize: =PF_typeBody
+                                                FontWeight: =FontWeight.Semibold
+                                                FontColor: =PF_text
+                                                BasePaletteColor: =PF_brand
+                                                BorderRadius: =PF_radius
+                                                DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                                          - pf_ds2_complaints_readLabel_description:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: ="Description"
+                                                AccessibleLabel: ="Description"
+                                                Color: =PF_muted
+                                                Size: =PF_typeCaption
+                                                Height: =24
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                Visible: =pf_ds2_complaints_reveal
+                                          - pf_ds2_complaints_read_description:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: =Coalesce(pf_ds2_complaints_selected.'Description', "Not provided")
+                                                AccessibleLabel: =Coalesce(pf_ds2_complaints_selected.'Description', "Not provided")
+                                                Color: =PF_text
+                                                Size: =PF_typeBody
+                                                Height: =88
+                                                AutoHeight: =true
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                Visible: =pf_ds2_complaints_reveal
+                                          - pf_ds2_complaints_readLabel_resolutionNotes:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: ="Resolution Notes"
+                                                AccessibleLabel: ="Resolution Notes"
+                                                Color: =PF_muted
+                                                Size: =PF_typeCaption
+                                                Height: =24
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                Visible: =pf_ds2_complaints_reveal
+                                          - pf_ds2_complaints_read_resolutionNotes:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: =Coalesce(pf_ds2_complaints_selected.'Resolution Notes', "Not provided")
+                                                AccessibleLabel: =Coalesce(pf_ds2_complaints_selected.'Resolution Notes', "Not provided")
+                                                Color: =PF_text
+                                                Size: =PF_typeBody
+                                                Height: =88
+                                                AutoHeight: =true
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                Visible: =pf_ds2_complaints_reveal
+                                        Variant: AutoLayout
+                                    - pf_ds2_complaints_timeline:
+                                        Control: GroupContainer
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutAlignItems: =LayoutAlignItems.Stretch
+                                          LayoutGap: =PF_gap
+                                          DropShadow: =DropShadow.None
+                                          RadiusTopLeft: =0
+                                          RadiusTopRight: =0
+                                          RadiusBottomLeft: =0
+                                          RadiusBottomRight: =0
+                                          Height: =220
+                                          Visible: =pf_ds2_complaints_tab = "Activity"
+                                        Children:
+                                          - pf_ds2_complaints_timeline_events:
+                                              Control: Gallery
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Items: "=Table({Title: \"Created\", Description: \"Record added to the workspace\", When: Text(pf_ds2_complaints_selected.'Created On', \"dd mmm yyyy · hh:mm\")}, {Title: \"Last updated\", Description: \"Latest saved record version\", When: Text(pf_ds2_complaints_selected.'Modified On', \"dd mmm yyyy · hh:mm\")})"
+                                                AccessibleLabel: ="Record timestamps"
+                                                TemplateSize: =84
+                                                TemplatePadding: =0
+                                                TabIndex: =0
+                                                Height: =Min(336, Self.AllItemsCount * 84)
+                                                Visible: "=!IsEmpty(Table({Title: \"Created\", Description: \"Record added to the workspace\", When: Text(pf_ds2_complaints_selected.'Created On', \"dd mmm yyyy · hh:mm\")}, {Title: \"Last updated\", Description: \"Latest saved record version\", When: Text(pf_ds2_complaints_selected.'Modified On', \"dd mmm yyyy · hh:mm\")}))"
+                                              Children:
+                                                - pf_ds2_complaints_timeline_event:
+                                                    Control: GroupContainer
+                                                    Properties:
+                                                      Width: =Parent.TemplateWidth - 16
+                                                      LayoutMinWidth: =0
+                                                      LayoutMinHeight: =0
+                                                      FillPortions: =0
+                                                      AlignInContainer: =AlignInContainer.Stretch
+                                                      LayoutDirection: =LayoutDirection.Vertical
+                                                      LayoutAlignItems: =LayoutAlignItems.Stretch
+                                                      LayoutGap: =0
+                                                      DropShadow: =DropShadow.None
+                                                      RadiusTopLeft: =0
+                                                      RadiusTopRight: =0
+                                                      RadiusBottomLeft: =0
+                                                      RadiusBottomRight: =0
+                                                      Height: =80
+                                                      PaddingLeft: =PF_spaceMd
+                                                      BorderColor: =PF_border
+                                                      BorderThickness: =1
+                                                    Children:
+                                                      - pf_ds2_complaints_timeline_eventTitle:
+                                                          Control: ModernText
+                                                          Properties:
+                                                            Width: =Parent.Width
+                                                            LayoutMinWidth: =0
+                                                            LayoutMinHeight: =0
+                                                            FillPortions: =0
+                                                            AlignInContainer: =AlignInContainer.Stretch
+                                                            Text: =ThisItem.Title
+                                                            AccessibleLabel: =ThisItem.Title
+                                                            Color: =PF_text
+                                                            Size: =PF_typeBody
+                                                            Height: =24
+                                                            AutoHeight: =false
+                                                            Font: =PF_font
+                                                            PaddingLeft: =0
+                                                            PaddingRight: =0
+                                                            PaddingTop: =0
+                                                            PaddingBottom: =0
+                                                            FontWeight: =FontWeight.Semibold
+                                                      - pf_ds2_complaints_timeline_eventDescription:
+                                                          Control: ModernText
+                                                          Properties:
+                                                            Width: =Parent.Width
+                                                            LayoutMinWidth: =0
+                                                            LayoutMinHeight: =0
+                                                            FillPortions: =0
+                                                            AlignInContainer: =AlignInContainer.Stretch
+                                                            Text: =ThisItem.Description
+                                                            AccessibleLabel: =ThisItem.Description
+                                                            Color: =PF_muted
+                                                            Size: =PF_typeCaption
+                                                            Height: =24
+                                                            AutoHeight: =false
+                                                            Font: =PF_font
+                                                            PaddingLeft: =0
+                                                            PaddingRight: =0
+                                                            PaddingTop: =0
+                                                            PaddingBottom: =0
+                                                      - pf_ds2_complaints_timeline_eventWhen:
+                                                          Control: ModernText
+                                                          Properties:
+                                                            Width: =Parent.Width
+                                                            LayoutMinWidth: =0
+                                                            LayoutMinHeight: =0
+                                                            FillPortions: =0
+                                                            AlignInContainer: =AlignInContainer.Stretch
+                                                            Text: =ThisItem.When
+                                                            AccessibleLabel: =ThisItem.When
+                                                            Color: =PF_muted
+                                                            Size: =PF_typeCaption
+                                                            Height: =24
+                                                            AutoHeight: =false
+                                                            Font: =PF_font
+                                                            PaddingLeft: =0
+                                                            PaddingRight: =0
+                                                            PaddingTop: =0
+                                                            PaddingBottom: =0
+                                                    Variant: AutoLayout
+                                              Variant: Vertical
+                                          - pf_ds2_complaints_timeline_empty:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.Width
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: ="No recorded activity yet"
+                                                AccessibleLabel: ="No recorded activity yet"
+                                                Color: =PF_muted
+                                                Size: =PF_typeBody
+                                                Height: =48
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                                Visible: "=IsEmpty(Table({Title: \"Created\", Description: \"Record added to the workspace\", When: Text(pf_ds2_complaints_selected.'Created On', \"dd mmm yyyy · hh:mm\")}, {Title: \"Last updated\", Description: \"Latest saved record version\", When: Text(pf_ds2_complaints_selected.'Modified On', \"dd mmm yyyy · hh:mm\")}))"
+                                        Variant: AutoLayout
+                                  Variant: AutoLayout
+                            Variant: AutoLayout
+                      Variant: AutoLayout
+                Variant: AutoLayout
+          Variant: AutoLayout
+      - pf_ds2_complaints_mobileDock:
+          Control: GroupContainer
+          Properties:
+            Width: =Parent.Width
+            LayoutMinWidth: =0
+            LayoutMinHeight: =0
+            FillPortions: =0
+            AlignInContainer: =AlignInContainer.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =PF_gap
+            DropShadow: =DropShadow.None
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Height: =64
+            Fill: =PF_surface
+            Visible: =PF_mobile && !(pf_ds2_complaints_editor || pf_ds2_complaints_busy)
+            PaddingLeft: =PF_spaceInset
+            PaddingRight: =PF_spaceInset
+            X: =0
+            Y: =Parent.Height - 64
+          Children:
+            - pf_ds2_complaints_mobileNav0:
+                Control: Button
+                Properties:
+                  Icon: ="Home"
+                  Layout: ='ButtonCanvas.Layout'.IconBefore
+                  Text: ="Overview"
+                  AccessibleLabel: ="Overview"
+                  OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Navigate(Screen1, PF_navigationTransition))
+                  Height: =44
+                  Width: =100
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =1
+                  AlignInContainer: =AlignInContainer.Center
+                  Appearance: ='ButtonCanvas.Appearance'.Subtle
+                  FontSize: =PF_typeBody
+                  FontWeight: =FontWeight.Semibold
+                  FontColor: =PF_text
+                  BasePaletteColor: =PF_brand
+                  BorderRadius: =PF_radius
+                  DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+            - pf_ds2_complaints_mobileNav1:
+                Control: Button
+                Properties:
+                  Icon: ="Document"
+                  Layout: ='ButtonCanvas.Layout'.IconBefore
+                  Text: ="Complaints"
+                  AccessibleLabel: ="Complaints"
+                  OnSelect: =If(!(pf_ds2_complaints_editor || pf_ds2_complaints_busy), Navigate(pf_screen_complaints, PF_navigationTransition))
+                  Height: =44
+                  Width: =100
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =1
+                  AlignInContainer: =AlignInContainer.Center
+                  Appearance: ='ButtonCanvas.Appearance'.Primary
+                  FontSize: =PF_typeBody
+                  FontWeight: =FontWeight.Semibold
+                  FontColor: =PF_onBrand
+                  BasePaletteColor: =PF_brand
+                  BorderRadius: =PF_radius
+                  DisplayMode: =If(pf_ds2_complaints_editor || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+          Variant: AutoLayout
+      - pf_ds2_complaints_editDialog:
+          Control: GroupContainer
+          Properties:
+            Width: =Parent.Width
+            LayoutMinWidth: =0
+            LayoutMinHeight: =0
+            FillPortions: =0
+            AlignInContainer: =AlignInContainer.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutGap: =PF_gap
+            DropShadow: =DropShadow.None
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            X: =0
+            Y: =0
+            Height: =Parent.Height
+            Fill: =PF_scrim
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            Visible: =pf_ds2_complaints_editor && !pf_ds2_complaints_discard
+          Children:
+            - pf_ds2_complaints_editDialog_panel:
+                Control: GroupContainer
+                Properties:
+                  Width: =Min(760, Parent.Width - 32)
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =0
+                  AlignInContainer: =AlignInContainer.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutGap: =PF_gap
+                  DropShadow: =DropShadow.None
+                  RadiusTopLeft: =PF_radius
+                  RadiusTopRight: =PF_radius
+                  RadiusBottomLeft: =PF_radius
+                  RadiusBottomRight: =PF_radius
+                  Fill: =PF_surface
+                  PaddingLeft: =PF_spaceLg
+                  PaddingRight: =PF_spaceLg
+                  PaddingTop: =PF_spaceLg
+                  PaddingBottom: =PF_spaceLg
+                  Height: =Min(820, Parent.Height - 32)
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                Children:
+                  - pf_ds2_complaints_editDialog_title:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: =If(pf_ds2_complaints_form.Mode = FormMode.New, "New complaint", "Edit complaint")
+                        AccessibleLabel: =If(pf_ds2_complaints_form.Mode = FormMode.New, "New complaint", "Edit complaint")
+                        Color: =PF_text
+                        Size: =PF_typeTitle
+                        Height: =Max(40, PF_controlHeight)
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        FontWeight: =FontWeight.Semibold
+                  - pf_ds2_complaints_editDialog_description:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="Make your changes, then review before saving."
+                        AccessibleLabel: ="Make your changes, then review before saving."
+                        Color: =PF_muted
+                        Size: =PF_typeBody
+                        Height: =44
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                  - pf_ds2_complaints_stepper:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =Max(40, PF_controlHeight)
+                      Children:
+                        - pf_ds2_complaints_stepper_0:
+                            Control: ModernText
+                            Properties:
+                              Width: =(Parent.Width - 1 * 8) / 2
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =1
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: ="1  Details"
+                              AccessibleLabel: ="1  Details"
+                              Color: =If(pf_ds2_complaints_step = 1, PF_accentText, PF_muted)
+                              Size: =PF_typeBody
+                              Height: =32
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              FontWeight: =If(pf_ds2_complaints_step = 1, FontWeight.Semibold, FontWeight.Normal)
+                        - pf_ds2_complaints_stepper_1:
+                            Control: ModernText
+                            Properties:
+                              Width: =(Parent.Width - 1 * 8) / 2
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =1
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: ="2  Review & save"
+                              AccessibleLabel: ="2  Review & save"
+                              Color: =If(pf_ds2_complaints_step = 2, PF_accentText, PF_muted)
+                              Size: =PF_typeBody
+                              Height: =32
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              FontWeight: =If(pf_ds2_complaints_step = 2, FontWeight.Semibold, FontWeight.Normal)
+                      Variant: AutoLayout
+                  - pf_ds2_complaints_formHeading:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="Record information"
+                        AccessibleLabel: ="Record information"
+                        Color: =PF_text
+                        Size: =PF_typeBody
+                        Height: =24
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        FontWeight: =FontWeight.Semibold
+                        Visible: =pf_ds2_complaints_step = 1
+                  - pf_ds2_complaints_form:
+                      Control: Form
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        DataSource: ='Complaints'
+                        Item: =pf_ds2_complaints_selected
+                        DefaultMode: =FormMode.View
+                        SnapToColumns: =false
+                        NumberOfColumns: =If(Self.Width < 580, 1, 2)
+                        Height: =If(Self.Width < 580, 520, 430)
+                        Visible: =pf_ds2_complaints_step = 1
+                        OnSuccess: =Set(pf_ds2_complaints_selected, Self.LastSubmit); Set(pf_ds2_complaints_busy, false); Set(pf_ds2_complaints_editor, false); Set(pf_ds2_complaints_receipt, true); ViewForm(pf_ds2_complaints_form); Reset(pf_ds2_complaints_reason); Refresh('Complaints'); Notify("Changes saved", NotificationType.Success); SetFocus(pf_ds2_complaints_new)
+                        OnFailure: =Set(pf_ds2_complaints_busy, false); Notify(Self.Error, NotificationType.Error)
+                      Children:
+                        - pf_ds2_complaints_card_title:
+                            Control: TypedDataCard
+                            Properties:
+                              DataField: ="pfx_experimenttitle"
+                              DisplayName: ="Title"
+                              Default: =ThisItem.'Title'
+                              Update: =pf_ds2_complaints_input_title.Value
+                              Required: =true
+                              DisplayMode: =Parent.DisplayMode
+                              Width: =If(pf_ds2_complaints_form.Width < 580 || false, Parent.Width, Parent.Width / 2)
+                              Height: =100
+                              X: =0
+                              Y: =0
+                              MaxLength: =200
+                            Children:
+                              - pf_ds2_complaints_card_title_label:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: ="Title *"
+                                    AccessibleLabel: ="Title *"
+                                    Color: =PF_text
+                                    Size: =PF_typeCaption
+                                    Height: =24
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =4
+                                    FontWeight: =FontWeight.Semibold
+                                    Width: =Parent.Width - 24
+                              - pf_ds2_complaints_input_title:
+                                  Control: TextInput
+                                  Properties:
+                                    X: =12
+                                    Y: =30
+                                    Width: =Parent.Width - 24
+                                    Height: =PF_controlHeight
+                                    AccessibleLabel: ="Title"
+                                    DisplayMode: =Parent.DisplayMode
+                                    Value: =Parent.Default
+                                    Required: =true
+                                    MaxLength: =200
+                                    Mode: ='TextInputCanvas.Mode'.SingleLine
+                                    TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                                    FontSize: =PF_typeBody
+                                    FontColor: =PF_text
+                                    Fill: =PF_surface
+                                    BorderRadius: =PF_radius
+                                    BorderColor: =PF_inputBorder
+                                    BorderThickness: =1
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                              - pf_ds2_complaints_card_title_error:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: =If(IsBlank(Trim(pf_ds2_complaints_input_title.Value)), "Enter title.", Parent.Error)
+                                    AccessibleLabel: =If(IsBlank(Trim(pf_ds2_complaints_input_title.Value)), "Enter title.", Parent.Error)
+                                    Color: =PF_danger
+                                    Size: =PF_typeCaption
+                                    Height: =28
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =68
+                                    Width: =Parent.Width - 24
+                            Variant: TextualEdit
+                        - pf_ds2_complaints_card_priority:
+                            Control: TypedDataCard
+                            Properties:
+                              DataField: ="pfx_experimentpriority"
+                              DisplayName: ="Priority"
+                              Default: =ThisItem.'Priority'
+                              Update: =pf_ds2_complaints_input_priority.Selected.Value
+                              Required: =false
+                              DisplayMode: =Parent.DisplayMode
+                              Width: =If(pf_ds2_complaints_form.Width < 580 || false, Parent.Width, Parent.Width / 2)
+                              Height: =100
+                              X: =1
+                              Y: =0
+                            Children:
+                              - pf_ds2_complaints_card_priority_label:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: ="Priority"
+                                    AccessibleLabel: ="Priority"
+                                    Color: =PF_text
+                                    Size: =PF_typeCaption
+                                    Height: =24
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =4
+                                    FontWeight: =FontWeight.Semibold
+                                    Width: =Parent.Width - 24
+                              - pf_ds2_complaints_input_priority:
+                                  Control: ModernDropdown
+                                  Properties:
+                                    X: =12
+                                    Y: =30
+                                    Width: =Parent.Width - 24
+                                    Height: =PF_controlHeight
+                                    AccessibleLabel: ="Priority"
+                                    DisplayMode: =Parent.DisplayMode
+                                    Items: =Choices('Complaints'.'Priority')
+                                    ItemDisplayText: =Text(ThisItem.Value)
+                                    Default: =LookUp(Choices('Complaints'.'Priority'), Text(Value) = If(pf_ds2_complaints_form.Mode = FormMode.New, "Normal", Text(Parent.Default)))
+                                    Appearance: =Appearance.Outline
+                                    BorderColor: =PF_inputBorder
+                                    BorderThickness: =1
+                                    Color: =PF_text
+                                    Fill: =PF_surface
+                                    BasePaletteColor: =PF_brand
+                                    Size: =PF_typeBody
+                              - pf_ds2_complaints_card_priority_error:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: =Parent.Error
+                                    AccessibleLabel: =Parent.Error
+                                    Color: =PF_danger
+                                    Size: =PF_typeCaption
+                                    Height: =28
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =68
+                                    Width: =Parent.Width - 24
+                            Variant: ComboBoxOptionSetSingleEdit
+                        - pf_ds2_complaints_card_description:
+                            Control: TypedDataCard
+                            Properties:
+                              DataField: ="pfx_experimentdescription"
+                              DisplayName: ="Description"
+                              Default: =ThisItem.'Description'
+                              Update: =pf_ds2_complaints_input_description.Value
+                              Required: =false
+                              DisplayMode: =Parent.DisplayMode
+                              Width: =If(pf_ds2_complaints_form.Width < 580 || true, Parent.Width, Parent.Width / 2)
+                              Height: =152
+                              X: =0
+                              Y: =1
+                            Children:
+                              - pf_ds2_complaints_card_description_label:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: ="Description"
+                                    AccessibleLabel: ="Description"
+                                    Color: =PF_text
+                                    Size: =PF_typeCaption
+                                    Height: =24
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =4
+                                    FontWeight: =FontWeight.Semibold
+                                    Width: =Parent.Width - 24
+                              - pf_ds2_complaints_input_description:
+                                  Control: TextInput
+                                  Properties:
+                                    X: =12
+                                    Y: =30
+                                    Width: =Parent.Width - 24
+                                    Height: =88
+                                    AccessibleLabel: ="Description"
+                                    DisplayMode: =Parent.DisplayMode
+                                    Value: =Parent.Default
+                                    Required: =false
+                                    MaxLength: =4000
+                                    Mode: ='TextInputCanvas.Mode'.Multiline
+                                    TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                                    FontSize: =PF_typeBody
+                                    FontColor: =PF_text
+                                    Fill: =PF_surface
+                                    BorderRadius: =PF_radius
+                                    BorderColor: =PF_inputBorder
+                                    BorderThickness: =1
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                              - pf_ds2_complaints_card_description_error:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: =Parent.Error
+                                    AccessibleLabel: =Parent.Error
+                                    Color: =PF_danger
+                                    Size: =PF_typeCaption
+                                    Height: =28
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =120
+                                    Width: =Parent.Width - 24
+                            Variant: TextualMultilineEdit
+                        - pf_ds2_complaints_card_resolutionNotes:
+                            Control: TypedDataCard
+                            Properties:
+                              DataField: ="pfx_experimentresolutionnotes"
+                              DisplayName: ="Resolution Notes"
+                              Default: =ThisItem.'Resolution Notes'
+                              Update: '=pf_ds2_complaints_input_resolutionNotes.Value & If(!IsBlank(Trim(pf_ds2_complaints_reason.Value)), Char(10) & "Change reason: " & Trim(pf_ds2_complaints_reason.Value), "")'
+                              Required: =false
+                              DisplayMode: =Parent.DisplayMode
+                              Width: =If(pf_ds2_complaints_form.Width < 580 || true, Parent.Width, Parent.Width / 2)
+                              Height: =152
+                              X: =0
+                              Y: =2
+                            Children:
+                              - pf_ds2_complaints_card_resolutionNotes_label:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: ="Resolution Notes"
+                                    AccessibleLabel: ="Resolution Notes"
+                                    Color: =PF_text
+                                    Size: =PF_typeCaption
+                                    Height: =24
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =4
+                                    FontWeight: =FontWeight.Semibold
+                                    Width: =Parent.Width - 24
+                              - pf_ds2_complaints_input_resolutionNotes:
+                                  Control: TextInput
+                                  Properties:
+                                    X: =12
+                                    Y: =30
+                                    Width: =Parent.Width - 24
+                                    Height: =88
+                                    AccessibleLabel: ="Resolution Notes"
+                                    DisplayMode: =Parent.DisplayMode
+                                    Value: =Parent.Default
+                                    Required: =false
+                                    MaxLength: =4000
+                                    Mode: ='TextInputCanvas.Mode'.Multiline
+                                    TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                                    FontSize: =PF_typeBody
+                                    FontColor: =PF_text
+                                    Fill: =PF_surface
+                                    BorderRadius: =PF_radius
+                                    BorderColor: =PF_inputBorder
+                                    BorderThickness: =1
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                              - pf_ds2_complaints_card_resolutionNotes_error:
+                                  Control: ModernText
+                                  Properties:
+                                    Text: =Parent.Error
+                                    AccessibleLabel: =Parent.Error
+                                    Color: =PF_danger
+                                    Size: =PF_typeCaption
+                                    Height: =28
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    X: =12
+                                    Y: =120
+                                    Width: =Parent.Width - 24
+                            Variant: TextualMultilineEdit
+                      Layout: Vertical
+                      Variant: Modern
+                  - pf_ds2_complaints_review:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =440
+                        Visible: =pf_ds2_complaints_step = 2
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                      Children:
+                        - pf_ds2_complaints_reviewTitle:
+                            Control: ModernText
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: '="Title: " & pf_ds2_complaints_input_title.Value'
+                              AccessibleLabel: '="Title: " & pf_ds2_complaints_input_title.Value'
+                              Color: =PF_text
+                              Size: =PF_typeBody
+                              Height: =52
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              FontWeight: =FontWeight.Semibold
+                        - pf_ds2_complaints_review_priority:
+                            Control: ModernText
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: '="Priority: " & Text(pf_ds2_complaints_input_priority.Selected.Value)'
+                              AccessibleLabel: '="Priority: " & Text(pf_ds2_complaints_input_priority.Selected.Value)'
+                              Color: =PF_muted
+                              Size: =PF_typeBody
+                              Height: =64
+                              AutoHeight: =true
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                        - pf_ds2_complaints_review_description:
+                            Control: ModernText
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: '="Description: " & pf_ds2_complaints_input_description.Value'
+                              AccessibleLabel: '="Description: " & pf_ds2_complaints_input_description.Value'
+                              Color: =PF_muted
+                              Size: =PF_typeBody
+                              Height: =64
+                              AutoHeight: =true
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                        - pf_ds2_complaints_review_resolutionNotes:
+                            Control: ModernText
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: '="Resolution Notes: " & pf_ds2_complaints_input_resolutionNotes.Value'
+                              AccessibleLabel: '="Resolution Notes: " & pf_ds2_complaints_input_resolutionNotes.Value'
+                              Color: =PF_muted
+                              Size: =PF_typeBody
+                              Height: =64
+                              AutoHeight: =true
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                        - pf_ds2_complaints_reasonLabel:
+                            Control: ModernText
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: ="Reason for change *"
+                              AccessibleLabel: ="Reason for change *"
+                              Color: =PF_text
+                              Size: =PF_typeBody
+                              Height: =24
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              FontWeight: =FontWeight.Semibold
+                              Visible: =true
+                        - pf_ds2_complaints_reason:
+                            Control: TextInput
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AccessibleLabel: ="Reason for change"
+                              Visible: =true
+                              Placeholder: ="Briefly explain the update"
+                              Value: =""
+                              Height: =72
+                              Mode: ='TextInputCanvas.Mode'.Multiline
+                              MaxLength: =300
+                              TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                              FontSize: =PF_typeBody
+                              Appearance: ='TextInputCanvas.Appearance'.Outline
+                              FontColor: =PF_text
+                              Fill: =PF_surface
+                        - pf_ds2_complaints_reasonHelp:
+                            Control: ModernText
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: ="Saved with Resolution Notes. No notification is sent."
+                              AccessibleLabel: ="Saved with Resolution Notes. No notification is sent."
+                              Color: =PF_muted
+                              Size: =PF_typeCaption
+                              Height: =36
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                      Variant: AutoLayout
+                  - pf_ds2_complaints_saveError:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: =pf_ds2_complaints_form.Error
+                        AccessibleLabel: =pf_ds2_complaints_form.Error
+                        Color: =PF_danger
+                        Size: =PF_typeBody
+                        Height: =48
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        Visible: =!IsBlank(pf_ds2_complaints_form.Error)
+                  - pf_ds2_complaints_editorActions:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =48
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                      Children:
+                        - pf_ds2_complaints_cancel:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: ="Cancel"
+                              AccessibleLabel: ="Cancel"
+                              OnSelect: =If(pf_ds2_complaints_form.Unsaved || !IsBlank(pf_ds2_complaints_reason.Value), Set(pf_ds2_complaints_discard, true); SetFocus(pf_ds2_complaints_discardDialog_cancel), ResetForm(pf_ds2_complaints_form); ViewForm(pf_ds2_complaints_form); Reset(pf_ds2_complaints_reason); Set(pf_ds2_complaints_discard, false); Set(pf_ds2_complaints_editor, false); SetFocus(pf_ds2_complaints_new))
+                              Height: =PF_controlHeight
+                              Width: =88
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Secondary
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_text
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                              DisplayMode: =If(pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                        - pf_ds2_complaints_back:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: ="Back"
+                              AccessibleLabel: ="Back"
+                              OnSelect: =Set(pf_ds2_complaints_step, 1)
+                              Height: =PF_controlHeight
+                              Width: =88
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Secondary
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_text
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                              Visible: =pf_ds2_complaints_step = 2
+                              DisplayMode: =If(pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                        - pf_ds2_complaints_reviewButton:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: ="Review changes"
+                              AccessibleLabel: ="Review changes"
+                              OnSelect: =Set(pf_ds2_complaints_step, 2); SetFocus(pf_ds2_complaints_reason)
+                              Height: =PF_controlHeight
+                              Width: =156
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Primary
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_onBrand
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                              Visible: =pf_ds2_complaints_step = 1
+                              DisplayMode: =If(!pf_ds2_complaints_form.Valid || (IsBlank(Trim(pf_ds2_complaints_input_title.Value))) || pf_ds2_complaints_busy, DisplayMode.Disabled, DisplayMode.Edit)
+                        - pf_ds2_complaints_save:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: =If(pf_ds2_complaints_busy, "Saving…", "Save changes")
+                              AccessibleLabel: =If(pf_ds2_complaints_busy, "Saving…", "Save changes")
+                              OnSelect: =If(!pf_ds2_complaints_busy && pf_ds2_complaints_form.Valid && !(IsBlank(Trim(pf_ds2_complaints_input_title.Value))) && !(IsBlank(Trim(pf_ds2_complaints_reason.Value)) || Len(pf_ds2_complaints_card_resolutionNotes.Update) > 4000), Set(pf_ds2_complaints_busy, true); SubmitForm(pf_ds2_complaints_form))
+                              Height: =PF_controlHeight
+                              Width: =144
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Primary
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_onBrand
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                              Visible: =pf_ds2_complaints_step = 2
+                              DisplayMode: =If(pf_ds2_complaints_busy || !pf_ds2_complaints_form.Valid || (IsBlank(Trim(pf_ds2_complaints_input_title.Value))) || (IsBlank(Trim(pf_ds2_complaints_reason.Value)) || Len(pf_ds2_complaints_card_resolutionNotes.Update) > 4000), DisplayMode.Disabled, DisplayMode.Edit)
+                      Variant: AutoLayout
+                Variant: AutoLayout
+          Variant: AutoLayout
+      - pf_ds2_complaints_discardDialog:
+          Control: GroupContainer
+          Properties:
+            Width: =Parent.Width
+            LayoutMinWidth: =0
+            LayoutMinHeight: =0
+            FillPortions: =0
+            AlignInContainer: =AlignInContainer.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutGap: =PF_gap
+            DropShadow: =DropShadow.None
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            X: =0
+            Y: =0
+            Height: =Parent.Height
+            Fill: =PF_scrim
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            Visible: =pf_ds2_complaints_discard
+          Children:
+            - pf_ds2_complaints_discardDialog_panel:
+                Control: GroupContainer
+                Properties:
+                  Width: =Min(520, Parent.Width - 32)
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =0
+                  AlignInContainer: =AlignInContainer.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutGap: =PF_gap
+                  DropShadow: =DropShadow.None
+                  RadiusTopLeft: =PF_radius
+                  RadiusTopRight: =PF_radius
+                  RadiusBottomLeft: =PF_radius
+                  RadiusBottomRight: =PF_radius
+                  Fill: =PF_surface
+                  PaddingLeft: =PF_spaceLg
+                  PaddingRight: =PF_spaceLg
+                  PaddingTop: =PF_spaceLg
+                  PaddingBottom: =PF_spaceLg
+                  Height: =260
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                Children:
+                  - pf_ds2_complaints_discardDialog_title:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="Discard unsaved changes?"
+                        AccessibleLabel: ="Discard unsaved changes?"
+                        Color: =PF_text
+                        Size: =PF_typeTitle
+                        Height: =Max(40, PF_controlHeight)
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        FontWeight: =FontWeight.Semibold
+                  - pf_ds2_complaints_discardDialog_description:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="Your saved record will stay unchanged."
+                        AccessibleLabel: ="Your saved record will stay unchanged."
+                        Color: =PF_muted
+                        Size: =PF_typeBody
+                        Height: =44
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                  - pf_ds2_complaints_discardDialog_actions:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =PF_controlHeight
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                      Children:
+                        - pf_ds2_complaints_discardDialog_cancel:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: ="Keep editing"
+                              AccessibleLabel: ="Keep editing"
+                              OnSelect: =Set(pf_ds2_complaints_discard, false); SetFocus(pf_ds2_complaints_cancel)
+                              Height: =PF_controlHeight
+                              Width: =120
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Secondary
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_text
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                        - pf_ds2_complaints_discardDialog_confirm:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: ="Discard changes"
+                              AccessibleLabel: ="Discard changes"
+                              OnSelect: =ResetForm(pf_ds2_complaints_form); ViewForm(pf_ds2_complaints_form); Reset(pf_ds2_complaints_reason); Set(pf_ds2_complaints_discard, false); Set(pf_ds2_complaints_editor, false); SetFocus(pf_ds2_complaints_new)
+                              Height: =PF_controlHeight
+                              Width: =156
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Primary
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_onBrand
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                      Variant: AutoLayout
+                Variant: AutoLayout
+          Variant: AutoLayout

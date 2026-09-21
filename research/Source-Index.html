@@ -1,0 +1,157 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PowerCanvas — Sources</title><style>
+:root{color-scheme:light;--ink:#173146;--muted:#586b78;--accent:#076b79;--border:#d6e1e5;--paper:#fff;--bg:#eff3f4}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Georgia,'Times New Roman',serif}
+a{color:var(--accent);text-underline-offset:3px}a:hover{color:#004c58}a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid #dc9936;outline-offset:3px}
+.skip{position:fixed;top:-100px;left:12px;background:white;padding:12px;z-index:10}.skip:focus{top:12px}
+.shell{display:grid;grid-template-columns:280px minmax(0,1100px);max-width:1420px;margin:0 auto;min-height:100vh}.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:34px 24px;font:13px/1.5 system-ui,sans-serif}
+.brand{font-size:23px;font-weight:750;letter-spacing:-.5px;margin-bottom:4px}.kicker{text-transform:uppercase;letter-spacing:1.2px;font:700 11px/1.5 system-ui,sans-serif;color:var(--muted)}.sidebar nav{margin-top:24px}.sidebar nav a{display:block;padding:7px 0;text-decoration:none;color:var(--muted);border-bottom:1px solid #dde5e8}.sidebar nav a:hover{color:var(--accent)}
+.downloads{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 28px;font:13px system-ui,sans-serif}.downloads a{padding:7px 11px;border:1px solid var(--border);border-radius:5px;background:white;text-decoration:none}
+main{background:var(--paper);padding:54px 64px 80px;border-left:1px solid var(--border);min-width:0}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25;color:var(--ink);scroll-margin-top:30px}h1{font-size:40px;letter-spacing:-1.3px;margin:0 0 26px;max-width:820px}h2{font-size:27px;letter-spacing:-.5px;margin:64px 0 22px;padding-top:28px;border-top:2px solid var(--border)}h3{font-size:20px;margin:32px 0 14px}p{margin:0 0 18px}li{margin:7px 0}strong{font-weight:700}code{font:13px/1.6 Consolas,'Courier New',monospace;background:#edf3f5;border-radius:3px;padding:2px 5px;overflow-wrap:anywhere}pre{padding:20px 22px;background:#142b3b;color:#e4f0f4;border-radius:6px;overflow:auto;line-height:1.6}pre code{padding:0;background:none;color:inherit;overflow-wrap:normal}
+.table-wrap{overflow:auto;max-width:100%;margin:22px 0 27px;border:1px solid var(--border);border-radius:5px}table{border-collapse:collapse;width:100%;font:13px/1.55 system-ui,sans-serif}th{background:#e8f1f3;text-align:left;font-weight:700;color:#173e4b;vertical-align:top}th,td{padding:12px 14px;border-bottom:1px solid var(--border);min-width:130px;vertical-align:top}tbody tr:nth-child(even){background:#f6f9fa}tbody tr:last-child td{border-bottom:0}table code{font-size:12px}.table-wrap:has(th:nth-child(6)) table{min-width:950px}
+.architecture{font:14px/1.5 system-ui,sans-serif;background:#f1f7f8;padding:26px;border:1px solid #cee0e5;border-radius:8px;margin:25px 0}.diagram-input,.diagram-providers{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}.diagram-input span,.diagram-providers span{background:#fff;border:1px solid #aecad1;padding:10px 14px;border-radius:5px}.diagram-stage{max-width:630px;margin:auto;text-align:center;background:#fff;border:1px solid #aecad1;padding:12px;border-radius:5px}.emphasis{background:#0b6071;color:white;border:0;font-weight:700}.arrow{text-align:center;font-size:23px;line-height:1.5;color:#4d7f89}figcaption{font-size:12px;color:var(--muted);margin-top:20px;text-align:center}
+.footer{font:12px system-ui,sans-serif;color:var(--muted);padding-top:26px;margin-top:50px;border-top:1px solid var(--border)}button{font:13px system-ui,sans-serif;background:white;color:var(--accent);border:1px solid var(--border);padding:8px 12px;border-radius:5px;cursor:pointer}
+@media(max-width:1050px){.shell{grid-template-columns:230px minmax(0,1fr)}main{padding:38px 30px}.sidebar{padding:24px 18px}h1{font-size:34px}}
+@media(max-width:750px){.shell{display:block}.sidebar{position:relative;height:auto;padding:22px 24px}.sidebar nav{max-height:210px;overflow:auto;border:1px solid var(--border);padding:12px}.sidebar .downloads{margin-bottom:0}main{padding:32px 22px;border-left:0;border-top:1px solid var(--border)}h1{font-size:30px}h2{font-size:24px}body{font-size:16px}th,td{padding:10px;min-width:145px}}
+@media print{body{background:white;font-size:10pt;line-height:1.4}.shell{display:block}.sidebar,.downloads,button,.skip{display:none}main{padding:0;border:0}h1{font-size:26pt}h2{break-before:auto;font-size:18pt;margin-top:30px}h3{font-size:13pt}h1,h2,h3{break-after:avoid}pre{white-space:pre-wrap;background:#f2f2f2;color:#111}.table-wrap{overflow:visible;border:0}table,.table-wrap:has(th:nth-child(6)) table{min-width:0;font-size:8pt}th,td{min-width:0;padding:5px;overflow-wrap:anywhere}tr{break-inside:avoid}.architecture{break-inside:avoid}a{color:inherit}}
+main{max-width:1050px;margin:0 auto}</style></head><body><main><p><a href="PowerCanvas-Feasibility-Report.html">Back to report</a></p><h1>PowerCanvas research source index</h1>
+<p>Research/access date: 17 September 2026. This index lists references cited in the report; citations in the report provide the context for each claim. Publication/update dates are stated only where verified in the report. Repository activity is recorded separately.</p>
+<ol>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/create-manage-model-driven-apps-using-code">Model-driven app APIs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-automate/manage-flows-with-code">cloud flows through code</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/create-canvas-external-tools">Canvas external authoring, updated 1 September 2026</a></li>
+<li><a href="https://github.com/microsoft/power-platform-skills">Microsoft development plugins</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/model-driven-app-external-tools">model app builder preview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/canvas">PAC Canvas reference</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/power-apps-yaml">Canvas source formats</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/canvas-apps-git-integration">Canvas Git integration</a></li>
+<li><a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/canvas-apps/AGENTS.md">Canvas plugin architecture</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/specialized-columns">Specialized columns</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/important-changes-coming#deprecation-of-test-engine">Deprecation notice</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/guidance/alm-accelerator/overview">ALM Accelerator status</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/auth">PAC authentication</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/reference/cli">Power Apps CLI</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/alm">ALM</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/alm/solution-concepts-alm">Solution concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/rest/api/power-platform/">Power Platform API reference</a></li>
+<li><a href="https://github.com/microsoft/PowerApps-Tooling">PowerApps-Tooling notice</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/overview-modern-controls">Modern controls</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-theming">theming</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-control-updates">2026 control updates</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/accessible-apps-limitations">Canvas accessibility limitations</a></li>
+<li><a href="https://github.com/microsoft/Power-Fx">Power Fx repository</a></li>
+<li><a href="https://github.com/microsoft/power-fx-host-samples">host samples</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/power-fx">PAC Power Fx</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/delegation-overview">Delegation overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/customize-entity-forms">Forms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/customize-entity-views">views</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/when-edit-customization-file">supported XML edits</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-automate/developer/business-process-flows-code">Business process flows using code</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-create-business-rule">business rule authoring</a></li>
+<li><a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/model-apps/README.md">Model-app plugin</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/create-update-entity-definitions-using-web-api">Table definition APIs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/create-update-entity-relationships-using-web-api">Relationship APIs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-concepts">Security concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-access-rights">access-right dependencies</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/admin/security-roles-privileges">cumulative privileges</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/security-roles">Role templates</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/update-solutions">Solution update and upgrade behavior</a></li>
+<li><a href="https://github.com/microsoft/power-platform-skills/blob/main/plugins/power-automate/README.md">Power Automate plugin</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-connection-reference">Connection reference activation rules</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-automate/service-principal-support">Service-principal flow support</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-automate/assign-user-license-service-principal-flow">designated user licensing</a></li>
+<li><a href="https://learn.microsoft.com/en-us/graph/api/list-create?view=graph-rest-1.0">Graph list creation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/graph/api/site-post-sites?view=graph-rest-beta">Graph beta site creation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/sharepoint/dev/apis/site-creation-rest">SharePoint site REST</a></li>
+<li><a href="https://pnp.github.io/pnpcore/">PnP Core support</a></li>
+<li><a href="https://pnp.github.io/powershell/cmdlets/New-PnPSite.html">PnP site creation</a></li>
+<li><a href="https://pnp.github.io/pnpcore/using-the-sdk/configuring%20authentication.html">PnP authentication</a></li>
+<li><a href="https://learn.microsoft.com/en-us/graph/permissions-selected-overview">Selected permissions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/sharepoint/dev/sp-add-ins/retirement-announcement-for-azure-acs">ACS retirement</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/pages">PAC pages</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-pages/configure/web-api-overview">Power Pages Web API restrictions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/overview">Code apps overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/npm-quickstart">Code-app quickstart</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/env"><code>pac env</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/solution"><code>pac solution</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/modelbuilder"><code>pac modelbuilder</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/application"><code>pac application</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/connector"><code>pac connector</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/plugin"><code>pac plugin</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/package"><code>pac package</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/admin"><code>pac admin</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/pcf"><code>pac pcf</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/connection"><code>pac connection</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/model"><code>pac model</code></a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/reference/">Current PAC index</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction">PAC installation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/work-with-data">Dataverse SDK choice</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/alm/conn-ref-env-variables-build-tools">Deployment settings</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools">Azure DevOps Build Tools</a></li>
+<li><a href="https://github.com/microsoft/powerplatform-actions">GitHub Actions repository</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/alm/pipelines">Power Platform pipelines</a></li>
+<li><a href="https://github.com/microsoft/terraform-provider-power-platform">Microsoft Terraform provider</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/state">Terraform state</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/cli/commands/plan">saved plans</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/use-powerapps-checker">Solution Checker</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/playwright-samples/overview">Power Platform Playwright samples</a></li>
+<li><a href="https://github.com/microsoft/EasyRepro">EasyRepro</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/identity-platform/msal-node-extensions">MSAL Node extensions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/msal/dotnet/how-to/token-cache-serialization">.NET token persistence</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/admin/powerplatform-api-create-service-principal">Admin service-principal model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables">Environment variables</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/admin/powerapps-flow-licensing-faq">Power Platform licensing FAQ</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/admin/power-automate-licensing/faqs">Power Automate FAQ</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/developer/plan">Developer Plan</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/admin/dlp-connector-classification">Connector classification</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/admin/prevent-data-loss">data policies</a></li>
+<li><a href="https://learn.microsoft.com/en-us/connectors/custom-connectors/define-openapi-definition">Custom connector definition requirements</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/admin/backup-restore-environments">Backup and restore restrictions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/api-limits">Dataverse service protection</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/api-limits-overview">limit categories</a></li>
+<li><a href="https://learn.microsoft.com/en-us/graph/throttling">Graph throttling</a></li>
+<li><a href="https://learn.microsoft.com/en-us/sharepoint/dev/general-development/how-to-avoid-getting-throttled-or-blocked-in-sharepoint-online">SharePoint throttling</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-automate/limits-and-config">flow limits</a></li>
+<li><a href="https://github.com/rpothin/pulumi-powerplatform">Pulumi Power Platform</a></li>
+<li><a href="https://github.com/pnp/cli-microsoft365">CLI for Microsoft 365</a></li>
+<li><a href="https://github.com/pnp/powershell">PnP PowerShell</a></li>
+<li><a href="https://github.com/pnp/pnpcore">PnP Core SDK</a></li>
+<li><a href="https://github.com/MscrmTools/XrmToolBox">XrmToolBox</a></li>
+<li><a href="https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools">DLaB tools</a></li>
+<li><a href="https://github.com/context-and-oss/XrmDefinitelyTyped">XrmDefinitelyTyped</a></li>
+<li><a href="https://github.com/scottdurow/SparkleXrm/tree/master/spkl">spkl within SparkleXrm</a></li>
+<li><a href="https://github.com/WaelHamze/xrm-ci-framework">xRM CI Framework</a></li>
+<li><a href="https://github.com/context-and-oss/Daxif">Daxif</a></li>
+<li><a href="https://github.com/microsoft/PowerApps-TestEngine">Test Engine</a></li>
+<li><a href="https://www.xrmtoolbox.com/plugins/">XrmToolBox catalog</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/maker/plan-designer/plan-designer">Plans overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/connecting-to-git">Git provider integration</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/sdk-python/overview">Python SDK</a></li>
+<li><a href="https://github.com/tj/commander.js">Commander</a></li>
+<li><a href="https://oclif.io/docs/introduction/">oclif</a></li>
+<li><a href="https://github.com/bombshell-dev/clack">Clack</a></li>
+<li><a href="https://github.com/SBoudrias/Inquirer.js">Inquirer</a></li>
+<li><a href="https://github.com/chalk/chalk">Chalk</a></li>
+<li><a href="https://github.com/vadimdemedes/ink">Ink</a></li>
+<li><a href="https://spectreconsole.net/">Spectre.Console</a></li>
+<li><a href="https://docs.rs/clap/latest/clap/">Clap</a></li>
+<li><a href="https://github.com/console-rs/dialoguer">Dialoguer</a></li>
+<li><a href="https://github.com/console-rs/indicatif">Indicatif</a></li>
+<li><a href="https://typer.tiangolo.com/">Typer</a></li>
+<li><a href="https://click.palletsprojects.com/en/stable/">Click</a></li>
+<li><a href="https://rich.readthedocs.io/en/stable/introduction.html">Rich</a></li>
+<li><a href="https://learn.microsoft.com/en-us/power-platform/alm/git-integration/overview">Native Git overview</a></li>
+<li><a href="https://developer.salesforce.com/docs/platform/pkg2-dev/guide/pd-dev-hub-intro.html">Salesforce DX / scratch orgs</a></li>
+<li><a href="https://developer.salesforce.com/docs/platform/code-builder/guide/codebuilder-dev-models.html">Salesforce development models</a></li>
+<li><a href="https://supabase.com/docs/guides/local-development/database-migrations">Supabase migrations</a></li>
+<li><a href="https://firebase.google.com/docs/cli">Firebase CLI</a></li>
+<li><a href="https://www.pulumi.com/docs/iac/concepts/resources/">Pulumi resources</a></li>
+<li><a href="https://docs.aws.amazon.com/cdk/v2/guide/home.html">AWS CDK</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview">Bicep</a></li>
+<li><a href="https://www.serverless.com/framework/docs">Serverless Framework</a></li>
+<li><a href="https://www.nuget.org/packages/Microsoft.PowerApps.CLI">Microsoft.PowerApps.CLI</a></li>
+<li><a href="https://www.nuget.org/packages/Microsoft.PowerPlatform.Dataverse.Client/">Microsoft.PowerPlatform.Dataverse.Client</a></li>
+<li><a href="https://www.nuget.org/packages/Microsoft.PowerFx.Core/">Microsoft.PowerFx.Core</a></li>
+<li><a href="https://www.npmjs.com/package/%40microsoft/power-apps-cli?activeTab=versions">@microsoft/power-apps-cli</a></li>
+<li><a href="https://www.npmjs.com/package/%40pnp/cli-microsoft365?activeTab=versions">@pnp/cli-microsoft365</a></li>
+</ol>
+</main></body></html>

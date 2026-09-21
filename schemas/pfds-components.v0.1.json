@@ -1,0 +1,1065 @@
+[
+  {
+    "name": "AppShell",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS AppShell semantic contract",
+    "children": true,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Page",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Page semantic contract",
+    "children": true,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "gap": {
+          "default": "md",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "padding": {
+          "default": "none",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "align": {
+          "default": "stretch",
+          "type": "string",
+          "enum": [
+            "stretch",
+            "start",
+            "center",
+            "end"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Stack",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Stack semantic contract",
+    "children": true,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "gap": {
+          "default": "md",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "padding": {
+          "default": "none",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "align": {
+          "default": "stretch",
+          "type": "string",
+          "enum": [
+            "stretch",
+            "start",
+            "center",
+            "end"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Row",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Row semantic contract",
+    "children": true,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "gap": {
+          "default": "md",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "padding": {
+          "default": "none",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "align": {
+          "default": "stretch",
+          "type": "string",
+          "enum": [
+            "stretch",
+            "start",
+            "center",
+            "end"
+          ]
+        },
+        "wrap": {
+          "default": true,
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Column",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Column semantic contract",
+    "children": true,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "gap": {
+          "default": "md",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "padding": {
+          "default": "none",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "align": {
+          "default": "stretch",
+          "type": "string",
+          "enum": [
+            "stretch",
+            "start",
+            "center",
+            "end"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Sidebar",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Sidebar semantic contract",
+    "children": false,
+    "nativeControl": "Gallery",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 6,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "screen": {
+                "type": "string",
+                "maxLength": 64,
+                "pattern": "^[a-z][a-zA-Z0-9]*$"
+              }
+            },
+            "required": [
+              "label",
+              "screen"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "PageHeader",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS PageHeader semantic contract",
+    "children": false,
+    "nativeControl": "Label",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Button",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Button semantic contract",
+    "children": false,
+    "nativeControl": "Button",
+    "events": [
+      "onSelect"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "pressed",
+      "focused",
+      "disabled"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": true,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "variant": {
+          "default": "primary",
+          "type": "string",
+          "enum": [
+            "primary",
+            "secondary"
+          ]
+        },
+        "disabled": {
+          "default": false,
+          "type": "boolean"
+        },
+        "onSelect": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "navigate"
+                },
+                "screen": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^[a-z][a-zA-Z0-9]*$"
+                }
+              },
+              "required": [
+                "type",
+                "screen"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "refresh"
+                },
+                "source": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^[a-z][a-zA-Z0-9]*$"
+                }
+              },
+              "required": [
+                "type",
+                "source"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "label",
+        "onSelect"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "TextInput",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS TextInput semantic contract",
+    "children": false,
+    "nativeControl": "TextInput",
+    "events": [
+      "onChange"
+    ],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": true,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "placeholder": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "field": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        }
+      },
+      "required": [
+        "label",
+        "source",
+        "field"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Dropdown",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Dropdown semantic contract",
+    "children": false,
+    "nativeControl": "DropDown",
+    "events": [
+      "onChange"
+    ],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": true,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "options": {
+          "minItems": 1,
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "default": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "label",
+        "options"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Card",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Card semantic contract",
+    "children": true,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "gap": {
+          "default": "md",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "padding": {
+          "default": "none",
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl"
+          ]
+        },
+        "align": {
+          "default": "stretch",
+          "type": "string",
+          "enum": [
+            "stretch",
+            "start",
+            "center",
+            "end"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "MetricCard",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS MetricCard semantic contract",
+    "children": false,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "supportingText": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "Badge",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS Badge semantic contract",
+    "children": false,
+    "nativeControl": "Label",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "tone": {
+          "default": "neutral",
+          "type": "string",
+          "enum": [
+            "neutral",
+            "success",
+            "danger"
+          ]
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "SimpleList",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS SimpleList semantic contract",
+    "children": false,
+    "nativeControl": "Gallery",
+    "events": [],
+    "states": [
+      "loading",
+      "loaded",
+      "empty",
+      "error",
+      "forbidden"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "columns": {
+          "minItems": 1,
+          "maxItems": 6,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z][a-zA-Z0-9]*$"
+          }
+        },
+        "maxVisible": {
+          "default": 25,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "state": {
+          "default": "loaded",
+          "type": "string",
+          "enum": [
+            "loading",
+            "loaded",
+            "empty",
+            "error",
+            "forbidden"
+          ]
+        }
+      },
+      "required": [
+        "source",
+        "columns",
+        "label"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "LoadingState",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS LoadingState semantic contract",
+    "children": false,
+    "nativeControl": "Label",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "default": "Loading records",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "EmptyState",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS EmptyState semantic contract",
+    "children": false,
+    "nativeControl": "GroupContainer",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "ErrorState",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS ErrorState semantic contract",
+    "children": false,
+    "nativeControl": "GroupContainer",
+    "events": [
+      "retry"
+    ],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "kind": {
+          "default": "error",
+          "type": "string",
+          "enum": [
+            "error",
+            "forbidden"
+          ]
+        },
+        "retry": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "navigate"
+                },
+                "screen": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^[a-z][a-zA-Z0-9]*$"
+                }
+              },
+              "required": [
+                "type",
+                "screen"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "refresh"
+                },
+                "source": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "pattern": "^[a-z][a-zA-Z0-9]*$"
+                }
+              },
+              "required": [
+                "type",
+                "source"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "RecordForm",
+    "version": "0.1.0",
+    "maturity": "experimental",
+    "introducedInPowerCanvas": "0.1.0-dev.1",
+    "description": "PFDS RecordForm semantic contract",
+    "children": false,
+    "nativeControl": "Form",
+    "events": [],
+    "states": [
+      "default"
+    ],
+    "capabilities": {
+      "compact": true,
+      "dark": true,
+      "multiSelect": false,
+      "requiresModernControls": false,
+      "arbitraryPositioning": false
+    },
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "fields": {
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z][a-zA-Z0-9]*$"
+          }
+        },
+        "revealFields": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z][a-zA-Z0-9]*$"
+          }
+        },
+        "reasonField": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "source",
+        "fields",
+        "revealFields",
+        "label"
+      ],
+      "additionalProperties": false
+    }
+  }
+]

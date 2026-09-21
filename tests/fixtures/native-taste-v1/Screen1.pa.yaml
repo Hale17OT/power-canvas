@@ -1,0 +1,1140 @@
+Screens:
+  Screen1:
+    Properties:
+      Fill: =PF_canvas
+      OnVisible: =Set(pf_ds2_dashboard_loading, true); Set(pf_ds2_dashboard_loadError, ""); IfError(Refresh('Complaints'), Set(pf_ds2_dashboard_loadError, FirstError.Message)); Set(pf_ds2_dashboard_loading, false)
+    Children:
+      - pf_ds2_dashboard_root:
+          Control: GroupContainer
+          Properties:
+            Width: =Parent.Width
+            LayoutMinWidth: =0
+            LayoutMinHeight: =0
+            FillPortions: =0
+            AlignInContainer: =AlignInContainer.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutGap: =0
+            DropShadow: =DropShadow.None
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Height: =Parent.Height - If(PF_mobile, 64, 0)
+          Children:
+            - pf_ds2_dashboard_sidebar:
+                Control: GroupContainer
+                Properties:
+                  Width: =PF_navWidth
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =0
+                  AlignInContainer: =AlignInContainer.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutGap: =PF_gap
+                  DropShadow: =DropShadow.None
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  Height: =Parent.Height
+                  Fill: =PF_rail
+                  PaddingLeft: =PF_spaceInset
+                  PaddingRight: =PF_spaceInset
+                  PaddingTop: =PF_spaceInset
+                  PaddingBottom: =PF_spaceMd
+                  Visible: =!PF_mobile
+                Children:
+                  - pf_ds2_dashboard_sidebar_brand:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="PowerCanvas"
+                        AccessibleLabel: ="PowerCanvas"
+                        Color: =PF_railText
+                        Size: =PF_typeBrand
+                        Height: =64
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        FontWeight: =FontWeight.Semibold
+                        Visible: =!PF_tablet
+                  - pf_ds2_dashboard_sidebar_section:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="WORKSPACE"
+                        AccessibleLabel: ="WORKSPACE"
+                        Color: =PF_railMuted
+                        Size: =PF_typeEyebrow
+                        Height: =28
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        Visible: =!PF_tablet
+                  - pf_ds2_dashboard_sidebar_item0:
+                      Control: Button
+                      Properties:
+                        Icon: ="Home"
+                        Layout: =If(PF_tablet, 'ButtonCanvas.Layout'.IconOnly, 'ButtonCanvas.Layout'.IconBefore)
+                        Text: =If(PF_tablet, "", "Overview")
+                        AccessibleLabel: ="Overview"
+                        OnSelect: =If(!(false), Navigate(Screen1, PF_navigationTransition))
+                        Height: =44
+                        Width: =Parent.Width - 24
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Center
+                        Appearance: ='ButtonCanvas.Appearance'.Primary
+                        FontSize: =PF_typeBody
+                        FontWeight: =FontWeight.Semibold
+                        FontColor: =PF_railText
+                        BasePaletteColor: =PF_brand
+                        BorderRadius: =PF_radius
+                        Align: =Align.Left
+                        DisplayMode: =If(false, DisplayMode.Disabled, DisplayMode.Edit)
+                  - pf_ds2_dashboard_sidebar_item1:
+                      Control: Button
+                      Properties:
+                        Icon: ="Document"
+                        Layout: =If(PF_tablet, 'ButtonCanvas.Layout'.IconOnly, 'ButtonCanvas.Layout'.IconBefore)
+                        Text: =If(PF_tablet, "", "Complaints")
+                        AccessibleLabel: ="Complaints"
+                        OnSelect: =If(!(false), Navigate(pf_screen_complaints, PF_navigationTransition))
+                        Height: =44
+                        Width: =Parent.Width - 24
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Center
+                        Appearance: ='ButtonCanvas.Appearance'.Transparent
+                        FontSize: =PF_typeBody
+                        FontWeight: =FontWeight.Semibold
+                        FontColor: =PF_railText
+                        BasePaletteColor: =PF_brand
+                        BorderRadius: =PF_radius
+                        Align: =Align.Left
+                        DisplayMode: =If(false, DisplayMode.Disabled, DisplayMode.Edit)
+                  - pf_ds2_dashboard_sidebar_spacer:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =1
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =0
+                      Children: []
+                      Variant: AutoLayout
+                  - pf_ds2_dashboard_sidebar_foot:
+                      Control: ModernText
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="POWERCANVAS / WORKSPACE"
+                        AccessibleLabel: ="POWERCANVAS / WORKSPACE"
+                        Color: =PF_railMuted
+                        Size: =PF_typeCaption
+                        Height: =24
+                        AutoHeight: =false
+                        Font: =PF_font
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        Visible: =!PF_tablet
+                Variant: AutoLayout
+            - pf_ds2_dashboard_main:
+                Control: GroupContainer
+                Properties:
+                  Width: =Parent.Width - PF_navWidth
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =1
+                  AlignInContainer: =AlignInContainer.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutGap: =0
+                  DropShadow: =DropShadow.None
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  Height: =Parent.Height
+                Children:
+                  - pf_ds2_dashboard_header:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =0
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =PF_headerHeight
+                        Fill: =PF_surface
+                        PaddingLeft: =PF_pagePadding
+                        PaddingRight: =PF_pagePadding
+                      Children:
+                        - pf_ds2_dashboard_workspaceName:
+                            Control: ModernText
+                            Properties:
+                              Width: =100
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =1
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: ="PowerCanvas • Complaint desk"
+                              AccessibleLabel: ="PowerCanvas • Complaint desk"
+                              Color: =PF_text
+                              Size: =PF_typeBody
+                              Height: =36
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              FontWeight: =FontWeight.Semibold
+                        - pf_ds2_dashboard_theme:
+                            Control: Button
+                            Properties:
+                              Icon: =""
+                              Layout: ='ButtonCanvas.Layout'.TextOnly
+                              Text: ="Theme"
+                              AccessibleLabel: ="Theme"
+                              OnSelect: =Set(pf_dark, !PF_dark)
+                              Height: =PF_controlHeight
+                              Width: =88
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              FontSize: =PF_typeBody
+                              FontWeight: =FontWeight.Semibold
+                              FontColor: =PF_text
+                              BasePaletteColor: =PF_brand
+                              BorderRadius: =PF_radius
+                              DisplayMode: =If(false, DisplayMode.Disabled, DisplayMode.Edit)
+                        - pf_ds2_dashboard_avatar:
+                            Control: Avatar
+                            Properties:
+                              Name: =User().FullName
+                              AccessibleLabel: =User().FullName
+                              Badge: ='Avatar.Badge'.None
+                              Width: =32
+                              Height: =32
+                              BasePaletteColor: =PF_brand
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              AlignInContainer: =AlignInContainer.Center
+                      Variant: AutoLayout
+                  - pf_ds2_dashboard_content:
+                      Control: GroupContainer
+                      Properties:
+                        Width: =Parent.Width
+                        LayoutMinWidth: =0
+                        LayoutMinHeight: =0
+                        FillPortions: =1
+                        AlignInContainer: =AlignInContainer.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutGap: =PF_gap
+                        DropShadow: =DropShadow.None
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Height: =0
+                        PaddingLeft: =PF_pagePadding
+                        PaddingRight: =PF_pagePadding
+                        PaddingTop: =PF_spaceLg
+                        PaddingBottom: =PF_spaceLg
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                      Children:
+                        - pf_ds2_dashboard_pageHeader:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =If(PF_mobile, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =PF_gap
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              Height: =If(PF_mobile, 132, 88)
+                            Children:
+                              - pf_ds2_dashboard_pageTitle:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =200
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =1
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_spaceXs
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    Height: =80
+                                  Children:
+                                    - pf_ds2_dashboard_pageTitle_title:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Workspace overview"
+                                          AccessibleLabel: ="Workspace overview"
+                                          Color: =PF_text
+                                          Size: =PF_typeTitle
+                                          Height: =36
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_dashboard_pageTitle_subtitle:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Start with a complaint. Reveal details when you need them."
+                                          AccessibleLabel: ="Start with a complaint. Reveal details when you need them."
+                                          Color: =PF_muted
+                                          Size: =PF_typeBody
+                                          Height: =32
+                                          AutoHeight: =true
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                  Variant: AutoLayout
+                              - pf_ds2_dashboard_pageActions:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, 284)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutGap: =PF_gap
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    Height: =Max(40, PF_controlHeight)
+                                    LayoutJustifyContent: =LayoutJustifyContent.End
+                                  Children: []
+                                  Variant: AutoLayout
+                            Variant: AutoLayout
+                        - pf_ds2_dashboard_metrics:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =If(PF_mobile, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutGap: =PF_spaceMd
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              Height: =If(PF_mobile, 476, 148)
+                            Children:
+                              - pf_ds2_dashboard_kpi0:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, (Parent.Width - 32) / 3)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_spaceXs
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =PF_radius
+                                    RadiusTopRight: =PF_radius
+                                    RadiusBottomLeft: =PF_radius
+                                    RadiusBottomRight: =PF_radius
+                                    Fill: =PF_surface
+                                    PaddingLeft: =PF_spaceLg
+                                    PaddingRight: =PF_spaceLg
+                                    PaddingTop: =PF_spaceLg
+                                    PaddingBottom: =PF_spaceLg
+                                    Height: =148
+                                  Children:
+                                    - pf_ds2_dashboard_kpi0_label:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Accessible records"
+                                          AccessibleLabel: ="Accessible records"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =24
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                    - pf_ds2_dashboard_kpi0_value:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: =Text(CountIf('Complaints', true), "0")
+                                          AccessibleLabel: =Text(CountIf('Complaints', true), "0")
+                                          Color: =PF_text
+                                          Size: =PF_typeMetric
+                                          Height: =42
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_dashboard_kpi0_caption:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Current environment · your access"
+                                          AccessibleLabel: ="Current environment · your access"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =22
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                  Variant: AutoLayout
+                              - pf_ds2_dashboard_kpi1:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, (Parent.Width - 32) / 3)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_spaceXs
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =PF_radius
+                                    RadiusTopRight: =PF_radius
+                                    RadiusBottomLeft: =PF_radius
+                                    RadiusBottomRight: =PF_radius
+                                    Fill: =PF_surface
+                                    PaddingLeft: =PF_spaceLg
+                                    PaddingRight: =PF_spaceLg
+                                    PaddingTop: =PF_spaceLg
+                                    PaddingBottom: =PF_spaceLg
+                                    Height: =148
+                                  Children:
+                                    - pf_ds2_dashboard_kpi1_label:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="High"
+                                          AccessibleLabel: ="High"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =24
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                    - pf_ds2_dashboard_kpi1_value:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: =Text(CountIf('Complaints', 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = "High").Value), "0")
+                                          AccessibleLabel: =Text(CountIf('Complaints', 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = "High").Value), "0")
+                                          Color: =PF_text
+                                          Size: =PF_typeMetric
+                                          Height: =42
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_dashboard_kpi1_caption:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Prioritize your next review"
+                                          AccessibleLabel: ="Prioritize your next review"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =22
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                  Variant: AutoLayout
+                              - pf_ds2_dashboard_kpi2:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, (Parent.Width - 32) / 3)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_spaceXs
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =PF_radius
+                                    RadiusTopRight: =PF_radius
+                                    RadiusBottomLeft: =PF_radius
+                                    RadiusBottomRight: =PF_radius
+                                    Fill: =PF_surface
+                                    PaddingLeft: =PF_spaceLg
+                                    PaddingRight: =PF_spaceLg
+                                    PaddingTop: =PF_spaceLg
+                                    PaddingBottom: =PF_spaceLg
+                                    Height: =148
+                                  Children:
+                                    - pf_ds2_dashboard_kpi2_label:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Normal"
+                                          AccessibleLabel: ="Normal"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =24
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                    - pf_ds2_dashboard_kpi2_value:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: =Text(CountIf('Complaints', 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = "Normal").Value), "0")
+                                          AccessibleLabel: =Text(CountIf('Complaints', 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = "Normal").Value), "0")
+                                          Color: =PF_text
+                                          Size: =PF_typeMetric
+                                          Height: =42
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_dashboard_kpi2_caption:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Prioritize your next review"
+                                          AccessibleLabel: ="Prioritize your next review"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =22
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                  Variant: AutoLayout
+                            Variant: AutoLayout
+                        - pf_ds2_dashboard_empty:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutGap: =PF_gap
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              Height: =160
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              Visible: =IsEmpty('Complaints') && !pf_ds2_dashboard_loading && IsBlank(pf_ds2_dashboard_loadError)
+                              PaddingLeft: =PF_spaceLg
+                              PaddingRight: =PF_spaceLg
+                            Children:
+                              - pf_ds2_dashboard_empty_title:
+                                  Control: ModernText
+                                  Properties:
+                                    Width: =Parent.Width
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Text: ="No complaints yet"
+                                    AccessibleLabel: ="No complaints yet"
+                                    Color: =PF_text
+                                    Size: =PF_typeBody
+                                    Height: =32
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    FontWeight: =FontWeight.Semibold
+                                    Align: =Align.Center
+                              - pf_ds2_dashboard_empty_description:
+                                  Control: ModernText
+                                  Properties:
+                                    Width: =Parent.Width
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Text: ="Open the complaints workspace to create the first record."
+                                    AccessibleLabel: ="Open the complaints workspace to create the first record."
+                                    Color: =PF_muted
+                                    Size: =PF_typeBody
+                                    Height: =60
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    Align: =Align.Center
+                            Variant: AutoLayout
+                        - pf_ds2_dashboard_insights:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =If(PF_mobile, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutGap: =PF_spaceMd
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              Height: =If(PF_mobile, 600, 292)
+                            Children:
+                              - pf_ds2_dashboard_chart:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, (Parent.Width - PF_spaceMd) * PF_chartShare)
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_gap
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =PF_radius
+                                    RadiusTopRight: =PF_radius
+                                    RadiusBottomLeft: =PF_radius
+                                    RadiusBottomRight: =PF_radius
+                                    Fill: =PF_surface
+                                    PaddingLeft: =PF_spaceLg
+                                    PaddingRight: =PF_spaceLg
+                                    PaddingTop: =PF_spaceLg
+                                    PaddingBottom: =PF_spaceLg
+                                    Height: =292
+                                  Children:
+                                    - pf_ds2_dashboard_chart_title:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Priority distribution"
+                                          AccessibleLabel: ="Priority distribution"
+                                          Color: =PF_text
+                                          Size: =PF_typeSection
+                                          Height: =24
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_dashboard_chart_description:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Records grouped by their current priority"
+                                          AccessibleLabel: ="Records grouped by their current priority"
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =24
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                    - pf_ds2_dashboard_chart_bars:
+                                        Control: Gallery
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Items: "=Table({Label: \"Low\", Value: CountIf('Complaints', 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = \"Low\").Value)},{Label: \"Normal\", Value: CountIf('Complaints', 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = \"Normal\").Value)},{Label: \"High\", Value: CountIf('Complaints', 'Priority' = LookUp(Choices('Complaints'.'Priority'), Text(Value) = \"High\").Value)})"
+                                          AccessibleLabel: ="Priority distribution"
+                                          TemplateSize: =56
+                                          TabIndex: =0
+                                          Height: =180
+                                          TemplatePadding: =0
+                                        Children:
+                                          - pf_ds2_dashboard_chart_barLabel:
+                                              Control: ModernText
+                                              Properties:
+                                                Width: =Parent.TemplateWidth
+                                                LayoutMinWidth: =0
+                                                LayoutMinHeight: =0
+                                                FillPortions: =0
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                                Text: =ThisItem.Label & " · " & Text(ThisItem.Value)
+                                                AccessibleLabel: =ThisItem.Label & " · " & Text(ThisItem.Value)
+                                                Color: =PF_text
+                                                Size: =PF_typeBody
+                                                Height: =28
+                                                AutoHeight: =false
+                                                Font: =PF_font
+                                                PaddingLeft: =0
+                                                PaddingRight: =0
+                                                PaddingTop: =0
+                                                PaddingBottom: =0
+                                          - pf_ds2_dashboard_chart_bar:
+                                              Control: GroupContainer
+                                              Properties:
+                                                X: =0
+                                                Y: =32
+                                                Width: =Max(2, (Parent.TemplateWidth - 16) * ThisItem.Value / Max(1, CountIf('Complaints', true)))
+                                                Height: =6
+                                                Fill: =PF_brand
+                                                DropShadow: =DropShadow.None
+                                              Children: []
+                                              Variant: ManualLayout
+                                        Variant: Vertical
+                                  Variant: AutoLayout
+                              - pf_ds2_dashboard_next:
+                                  Control: GroupContainer
+                                  Properties:
+                                    Width: =If(PF_mobile, Parent.Width, (Parent.Width - PF_spaceMd) * (1 - PF_chartShare))
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Start
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutAlignItems: =LayoutAlignItems.Stretch
+                                    LayoutGap: =PF_gap
+                                    DropShadow: =DropShadow.None
+                                    RadiusTopLeft: =PF_radius
+                                    RadiusTopRight: =PF_radius
+                                    RadiusBottomLeft: =PF_radius
+                                    RadiusBottomRight: =PF_radius
+                                    Fill: =PF_surface
+                                    PaddingLeft: =PF_spaceLg
+                                    PaddingRight: =PF_spaceLg
+                                    PaddingTop: =PF_spaceLg
+                                    PaddingBottom: =PF_spaceLg
+                                    Height: =292
+                                  Children:
+                                    - pf_ds2_dashboard_next_title:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Keep the next step clear"
+                                          AccessibleLabel: ="Keep the next step clear"
+                                          Color: =PF_text
+                                          Size: =PF_typeSection
+                                          Height: =28
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                          FontWeight: =FontWeight.Semibold
+                                    - pf_ds2_dashboard_next_subtitle:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: ="Review context, make an update, and leave a useful note for the next person."
+                                          AccessibleLabel: ="Review context, make an update, and leave a useful note for the next person."
+                                          Color: =PF_muted
+                                          Size: =PF_typeCaption
+                                          Height: =32
+                                          AutoHeight: =true
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                    - pf_ds2_dashboard_nextText:
+                                        Control: ModernText
+                                        Properties:
+                                          Width: =Parent.Width
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Text: |-
+                                            ="1   Find the record
+                                            2   Review the details
+                                            3   Record the next action"
+                                          AccessibleLabel: |-
+                                            ="1   Find the record
+                                            2   Review the details
+                                            3   Record the next action"
+                                          Color: =PF_muted
+                                          Size: =PF_typeBody
+                                          Height: =112
+                                          AutoHeight: =false
+                                          Font: =PF_font
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          PaddingBottom: =0
+                                    - pf_ds2_dashboard_open:
+                                        Control: Button
+                                        Properties:
+                                          Icon: ="ArrowRight"
+                                          Layout: ='ButtonCanvas.Layout'.IconBefore
+                                          Text: ="Open complaints"
+                                          AccessibleLabel: ="Open complaints"
+                                          OnSelect: =Navigate(pf_screen_complaints, PF_navigationTransition)
+                                          Height: =PF_controlHeight
+                                          Width: =164
+                                          LayoutMinWidth: =0
+                                          LayoutMinHeight: =0
+                                          FillPortions: =0
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Appearance: ='ButtonCanvas.Appearance'.Primary
+                                          FontSize: =PF_typeBody
+                                          FontWeight: =FontWeight.Semibold
+                                          FontColor: =PF_onBrand
+                                          BasePaletteColor: =PF_brand
+                                          BorderRadius: =PF_radius
+                                  Variant: AutoLayout
+                            Variant: AutoLayout
+                        - pf_ds2_dashboard_loadingState:
+                            Control: Spinner
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Label: ="Loading workspace"
+                              AccessibleLabel: ="Loading workspace"
+                              Height: =72
+                              SpinnerSize: ='Spinner.SpinnerSize'.Small
+                              FontSize: =PF_typeBody
+                              FontColor: =PF_muted
+                              BasePaletteColor: =PF_brand
+                              Visible: =pf_ds2_dashboard_loading
+                        - pf_ds2_dashboard_dataNote:
+                            Control: ModernText
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Text: ="Counts reflect current access; large-dataset aggregation is not yet certified."
+                              AccessibleLabel: ="Counts reflect current access; large-dataset aggregation is not yet certified."
+                              Color: =PF_muted
+                              Size: =PF_typeCaption
+                              Height: =Max(40, PF_controlHeight)
+                              AutoHeight: =false
+                              Font: =PF_font
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                        - pf_ds2_dashboard_loadErrorState:
+                            Control: GroupContainer
+                            Properties:
+                              Width: =Parent.Width
+                              LayoutMinWidth: =0
+                              LayoutMinHeight: =0
+                              FillPortions: =0
+                              AlignInContainer: =AlignInContainer.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutGap: =PF_gap
+                              DropShadow: =DropShadow.None
+                              RadiusTopLeft: =PF_radius
+                              RadiusTopRight: =PF_radius
+                              RadiusBottomLeft: =PF_radius
+                              RadiusBottomRight: =PF_radius
+                              Fill: =PF_surface
+                              PaddingLeft: =PF_spaceLg
+                              PaddingRight: =PF_spaceLg
+                              PaddingTop: =PF_spaceLg
+                              PaddingBottom: =PF_spaceLg
+                              Height: =156
+                              Visible: =!IsBlank(pf_ds2_dashboard_loadError)
+                            Children:
+                              - pf_ds2_dashboard_loadErrorState_title:
+                                  Control: ModernText
+                                  Properties:
+                                    Width: =Parent.Width
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Text: ="Workspace unavailable"
+                                    AccessibleLabel: ="Workspace unavailable"
+                                    Color: =PF_danger
+                                    Size: =PF_typeBody
+                                    Height: =24
+                                    AutoHeight: =false
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                                    FontWeight: =FontWeight.Semibold
+                              - pf_ds2_dashboard_loadErrorState_description:
+                                  Control: ModernText
+                                  Properties:
+                                    Width: =Parent.Width
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Text: =pf_ds2_dashboard_loadError
+                                    AccessibleLabel: =pf_ds2_dashboard_loadError
+                                    Color: =PF_muted
+                                    Size: =PF_typeBody
+                                    Height: =48
+                                    AutoHeight: =true
+                                    Font: =PF_font
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PaddingBottom: =0
+                              - pf_ds2_dashboard_loadErrorState_retry:
+                                  Control: Button
+                                  Properties:
+                                    Icon: =""
+                                    Layout: ='ButtonCanvas.Layout'.TextOnly
+                                    Text: ="Try again"
+                                    AccessibleLabel: ="Try again"
+                                    OnSelect: =Set(pf_ds2_dashboard_loading, true); Set(pf_ds2_dashboard_loadError, ""); IfError(Refresh('Complaints'), Set(pf_ds2_dashboard_loadError, FirstError.Message)); Set(pf_ds2_dashboard_loading, false)
+                                    Height: =PF_controlHeight
+                                    Width: =120
+                                    LayoutMinWidth: =0
+                                    LayoutMinHeight: =0
+                                    FillPortions: =0
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Appearance: ='ButtonCanvas.Appearance'.Secondary
+                                    FontSize: =PF_typeBody
+                                    FontWeight: =FontWeight.Semibold
+                                    FontColor: =PF_text
+                                    BasePaletteColor: =PF_brand
+                                    BorderRadius: =PF_radius
+                            Variant: AutoLayout
+                      Variant: AutoLayout
+                Variant: AutoLayout
+          Variant: AutoLayout
+      - pf_ds2_dashboard_mobileDock:
+          Control: GroupContainer
+          Properties:
+            Width: =Parent.Width
+            LayoutMinWidth: =0
+            LayoutMinHeight: =0
+            FillPortions: =0
+            AlignInContainer: =AlignInContainer.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =PF_gap
+            DropShadow: =DropShadow.None
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Height: =64
+            Fill: =PF_surface
+            Visible: =PF_mobile && !(false)
+            PaddingLeft: =PF_spaceInset
+            PaddingRight: =PF_spaceInset
+            X: =0
+            Y: =Parent.Height - 64
+          Children:
+            - pf_ds2_dashboard_mobileNav0:
+                Control: Button
+                Properties:
+                  Icon: ="Home"
+                  Layout: ='ButtonCanvas.Layout'.IconBefore
+                  Text: ="Overview"
+                  AccessibleLabel: ="Overview"
+                  OnSelect: =If(!(false), Navigate(Screen1, PF_navigationTransition))
+                  Height: =44
+                  Width: =100
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =1
+                  AlignInContainer: =AlignInContainer.Center
+                  Appearance: ='ButtonCanvas.Appearance'.Primary
+                  FontSize: =PF_typeBody
+                  FontWeight: =FontWeight.Semibold
+                  FontColor: =PF_onBrand
+                  BasePaletteColor: =PF_brand
+                  BorderRadius: =PF_radius
+                  DisplayMode: =If(false, DisplayMode.Disabled, DisplayMode.Edit)
+            - pf_ds2_dashboard_mobileNav1:
+                Control: Button
+                Properties:
+                  Icon: ="Document"
+                  Layout: ='ButtonCanvas.Layout'.IconBefore
+                  Text: ="Complaints"
+                  AccessibleLabel: ="Complaints"
+                  OnSelect: =If(!(false), Navigate(pf_screen_complaints, PF_navigationTransition))
+                  Height: =44
+                  Width: =100
+                  LayoutMinWidth: =0
+                  LayoutMinHeight: =0
+                  FillPortions: =1
+                  AlignInContainer: =AlignInContainer.Center
+                  Appearance: ='ButtonCanvas.Appearance'.Subtle
+                  FontSize: =PF_typeBody
+                  FontWeight: =FontWeight.Semibold
+                  FontColor: =PF_text
+                  BasePaletteColor: =PF_brand
+                  BorderRadius: =PF_radius
+                  DisplayMode: =If(false, DisplayMode.Disabled, DisplayMode.Edit)
+          Variant: AutoLayout

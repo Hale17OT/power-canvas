@@ -1,0 +1,222 @@
+{
+  "provenance": {
+    "source": "Actual Microsoft Dataverse Default environment, 2026-09-17",
+    "representation": "Normalized observations; all tenant/remote/execution GUIDs pseudonymized consistently, organization URL replaced. Project ID and experiment schema names retained.",
+    "api": "Dataverse Web API v9.2",
+    "provider": "0.2.0-experimental.1",
+    "environmentType": "Default",
+    "nonDisposable": true
+  },
+  "observation": {
+    "schemaVersion": 1,
+    "projectId": "808f5ed9-73aa-4cd5-9d0f-480fd984b04e",
+    "target": {
+      "tenantId": "6e231d01-bb7b-4032-897e-18360ac877ee",
+      "environmentId": "default-6e231d01-bb7b-4032-897e-18360ac877ee",
+      "organizationId": "05ba749c-3239-43ab-891d-1cb574b8dff9",
+      "dataverseUrl": "https://redacted.crm.dynamics.com"
+    },
+    "snapshotId": "f782a132-1609-406b-8cef-e6a151152942",
+    "observedAt": "2026-09-17T17:07:33.623Z",
+    "providerVersions": {
+      "dataverse": "0.2.0-experimental.1"
+    },
+    "coverage": [
+      {
+        "kind": "publisher",
+        "status": "complete"
+      },
+      {
+        "kind": "solution",
+        "status": "complete"
+      },
+      {
+        "kind": "table",
+        "status": "complete"
+      },
+      {
+        "kind": "column",
+        "status": "complete"
+      },
+      {
+        "kind": "relationship",
+        "status": "complete"
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:publisher:publisher",
+        "remoteId": "af364849-aa53-4055-89b3-cfe096914a61",
+        "provider": "dataverse",
+        "kind": "publisher",
+        "schemaName": "PowerForgeExperimentPublisher",
+        "properties": {
+          "uniqueName": "PowerForgeExperimentPublisher",
+          "prefix": "pfx",
+          "optionValuePrefix": 73142,
+          "isManaged": false,
+          "customizable": true
+        }
+      },
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:solution:solution",
+        "remoteId": "d7ed692d-85f1-45d7-8a0c-050c82391337",
+        "provider": "dataverse",
+        "kind": "solution",
+        "schemaName": "pfx_PowerForgeExperiment",
+        "properties": {
+          "uniqueName": "pfx_PowerForgeExperiment",
+          "displayName": "PowerForge Experiment",
+          "version": "0.1.0.0",
+          "publisherUniqueName": "PowerForgeExperimentPublisher",
+          "isManaged": false,
+          "customizable": true
+        }
+      },
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:table:category",
+        "remoteId": "f37f40fb-f975-455b-8744-d7f5dab1ce9c",
+        "provider": "dataverse",
+        "kind": "table",
+        "schemaName": "pfx_ExperimentCategory",
+        "properties": {
+          "schemaName": "pfx_ExperimentCategory",
+          "displayName": "Category",
+          "pluralName": "Categories",
+          "ownership": "organization",
+          "auditing": false,
+          "primaryColumn": {
+            "schemaName": "pfx_ExperimentName",
+            "displayName": "Name",
+            "required": "application",
+            "type": "text",
+            "maxLength": 100
+          },
+          "solutionMember": true,
+          "isManaged": false,
+          "customizable": true
+        }
+      },
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:table:complaint",
+        "remoteId": "37c930d6-2f2a-4b16-8238-713c5cf861c6",
+        "provider": "dataverse",
+        "kind": "table",
+        "schemaName": "pfx_ExperimentComplaint",
+        "properties": {
+          "schemaName": "pfx_ExperimentComplaint",
+          "displayName": "Complaint",
+          "pluralName": "Complaints",
+          "ownership": "userOrTeam",
+          "auditing": true,
+          "primaryColumn": {
+            "schemaName": "pfx_ExperimentTitle",
+            "displayName": "Title",
+            "required": "application",
+            "type": "text",
+            "maxLength": 200
+          },
+          "solutionMember": true,
+          "isManaged": false,
+          "customizable": true
+        }
+      },
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:column:complaint/description",
+        "remoteId": "225b201f-5260-4c62-8dbe-c9568b36858c",
+        "provider": "dataverse",
+        "kind": "column",
+        "schemaName": "pfx_ExperimentDescription",
+        "properties": {
+          "schemaName": "pfx_ExperimentDescription",
+          "displayName": "Description",
+          "required": "none",
+          "type": "multilineText",
+          "maxLength": 4000,
+          "tableSchemaName": "pfx_ExperimentComplaint",
+          "solutionMember": true,
+          "isManaged": false,
+          "customizable": true
+        }
+      },
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:column:complaint/priority",
+        "remoteId": "addac034-7747-41c3-80c4-f02bf9ca960f",
+        "provider": "dataverse",
+        "kind": "column",
+        "schemaName": "pfx_ExperimentPriority",
+        "properties": {
+          "schemaName": "pfx_ExperimentPriority",
+          "displayName": "Priority",
+          "required": "none",
+          "type": "choice",
+          "choices": [
+            {
+              "value": 731420000,
+              "label": "Low"
+            },
+            {
+              "value": 731420001,
+              "label": "Normal"
+            },
+            {
+              "value": 731420002,
+              "label": "High"
+            }
+          ],
+          "default": 731420001,
+          "tableSchemaName": "pfx_ExperimentComplaint",
+          "solutionMember": true,
+          "isManaged": false,
+          "customizable": true
+        }
+      },
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:column:complaint/resolutionNotes",
+        "remoteId": "dba07db9-8ea9-4122-8df9-e13ca0c8d913",
+        "provider": "dataverse",
+        "kind": "column",
+        "schemaName": "pfx_ExperimentResolutionNotes",
+        "properties": {
+          "schemaName": "pfx_ExperimentResolutionNotes",
+          "displayName": "Resolution Notes",
+          "required": "none",
+          "type": "multilineText",
+          "maxLength": 4000,
+          "tableSchemaName": "pfx_ExperimentComplaint",
+          "solutionMember": true,
+          "isManaged": false,
+          "customizable": true
+        }
+      },
+      {
+        "resourceId": "pf:808f5ed9-73aa-4cd5-9d0f-480fd984b04e:dataverse:relationship:complaintCategory",
+        "remoteId": "e1f1fa91-06b3-4239-8615-c1c9745502a3",
+        "provider": "dataverse",
+        "kind": "relationship",
+        "schemaName": "pfx_ExperimentCategory_Complaint",
+        "properties": {
+          "schemaName": "pfx_ExperimentCategory_Complaint",
+          "fromTableSchemaName": "pfx_ExperimentComplaint",
+          "toTableSchemaName": "pfx_ExperimentCategory",
+          "lookup": {
+            "schemaName": "pfx_ExperimentCategory",
+            "displayName": "Category",
+            "required": "none"
+          },
+          "cascade": {
+            "delete": "restrict",
+            "assign": "none",
+            "share": "none",
+            "unshare": "none",
+            "reparent": "none",
+            "merge": "none"
+          },
+          "solutionMember": true,
+          "isManaged": false,
+          "customizable": true
+        }
+      }
+    ]
+  }
+}

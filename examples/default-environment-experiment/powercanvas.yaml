@@ -1,0 +1,147 @@
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: 808f5ed9-73aa-4cd5-9d0f-480fd984b04e
+  name: default-environment-experiment
+solution:
+  uniqueName: pfx_PowerForgeExperiment
+  displayName: PowerCanvas Experiment
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerForgeExperimentPublisher
+    prefix: pfx
+    optionValuePrefix: 73142
+dataverse:
+  tables:
+    complaint:
+      schemaName: pfx_ExperimentComplaint
+      displayName: Complaint
+      pluralName: Complaints
+      ownership: userOrTeam
+      primaryName: title
+      auditing: true
+      columns:
+        title:
+          schemaName: pfx_ExperimentTitle
+          displayName: Title
+          type: text
+          maxLength: 200
+          required: application
+        description:
+          schemaName: pfx_ExperimentDescription
+          displayName: Description
+          type: multilineText
+          maxLength: 4000
+        priority:
+          schemaName: pfx_ExperimentPriority
+          displayName: Priority
+          type: choice
+          choices:
+            - label: Low
+              value: 731420000
+            - label: Normal
+              value: 731420001
+            - label: High
+              value: 731420002
+          default: 731420001
+        resolutionNotes:
+          schemaName: pfx_ExperimentResolutionNotes
+          displayName: Resolution Notes
+          type: multilineText
+          maxLength: 4000
+        slaState:
+          schemaName: pfx_ExperimentSlaState
+          displayName: SLA State
+          type: multilineText
+          maxLength: 100000
+    category:
+      schemaName: pfx_ExperimentCategory
+      displayName: Category
+      pluralName: Categories
+      ownership: organization
+      primaryName: name
+      columns:
+        name:
+          schemaName: pfx_ExperimentName
+          displayName: Name
+          type: text
+          maxLength: 100
+          required: application
+  relationships:
+    complaintCategory:
+      schemaName: pfx_ExperimentCategory_Complaint
+      fromTable: complaint
+      toTable: category
+      lookup:
+        key: category
+        schemaName: pfx_ExperimentCategory
+        displayName: Category
+      cascade:
+        delete: restrict
+        assign: none
+        share: none
+        unshare: none
+        reparent: none
+        merge: none
+apps:
+  complaintDesk:
+    type: modelDriven
+    uniqueName: pfx_ExperimentComplaintManagement
+    displayName: Complaint Management
+    tables: [ complaint, category ]
+    forms:
+      complaintMain:
+        displayName: PowerCanvas Experiment Complaint Main
+        table: complaint
+        fields: [ title, priority, category, description, resolutionNotes ]
+        reveal:
+          fields: [ description, resolutionNotes ]
+      categoryMain:
+        displayName: PowerCanvas Experiment Category Main
+        table: category
+        fields: [ name ]
+    views:
+      activeComplaints:
+        displayName: PowerCanvas Experiment Active Complaints
+        table: complaint
+        columns: [ title, priority, category, createdon ]
+        activeOnly: true
+        orderBy: [ { column: createdon, direction: descending } ]
+      categories:
+        displayName: PowerCanvas Experiment Categories
+        table: category
+        columns: [ name ]
+        orderBy: [ { column: name, direction: ascending } ]
+    navigation:
+      - { group: Work, table: complaint }
+      - { group: Work, table: category }
+    commands:
+      generatedDetails:
+        bindingVersion: 1
+        visible: false
+        label: Generated details
+        form: complaintMain
+        action: toggleDetails
+        sequence: 101
+        tooltip: Toggle optional complaint details
+      generatedDetailsBound:
+        label: Generated details
+        form: complaintMain
+        action: toggleDetails
+        bindingVersion: 2
+        sequence: 100100016
+        tooltip: Toggle optional complaint details
+security:
+  roles:
+    complaintAgent:
+      displayName: PowerCanvas Experiment Complaint Agent
+      tables:
+        complaint:
+          read: user
+          create: user
+          write: user
+          append: user
+        category:
+          read: organization
+          appendTo: organization
+  appAccess:
+    complaintDesk: [ complaintAgent ]

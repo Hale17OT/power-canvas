@@ -1,0 +1,777 @@
+# Compile-only V3 capability fixture. No target binding or live test resources.
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: e6e2bc3d-f805-407c-a92d-fde2cf1c2e03
+  name: flows-v3-compile-only
+solution:
+  uniqueName: pfx_PowerForgeExperiment
+  displayName: PowerCanvas Experiment
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerForgeExperimentPublisher
+    prefix: pfx
+    optionValuePrefix: 73142
+dataverse:
+  tables: {}
+resources:
+  flows: {}
+  connectionReferences:
+    approvals:
+      logicalName: pfx_V3approvals
+      displayName: PowerCanvas V3 approvals
+      connector: shared_approvals
+      allowCreate: false
+    word:
+      logicalName: pfx_V3word
+      displayName: PowerCanvas V3 word
+      connector: shared_wordonlinebusiness
+      allowCreate: false
+    sp:
+      logicalName: pfx_V3sp
+      displayName: PowerCanvas V3 sp
+      connector: shared_sharepointonline
+      allowCreate: false
+    mail:
+      logicalName: pfx_V3mail
+      displayName: PowerCanvas V3 mail
+      connector: shared_office365
+      allowCreate: false
+    dv:
+      logicalName: pfx_V3dv
+      displayName: PowerCanvas V3 dv
+      connector: shared_commondataserviceforapps
+      allowCreate: false
+  environmentVariables:
+    site:
+      logicalName: pfx_V3site
+      displayName: V3 site
+      type: text
+    drive:
+      logicalName: pfx_V3drive
+      displayName: V3 drive
+      type: text
+    templateFile:
+      logicalName: pfx_V3templateFile
+      displayName: V3 templateFile
+      type: text
+    approver:
+      logicalName: pfx_V3approver
+      displayName: V3 approver
+      type: text
+      format: email
+  documentTemplates:
+    report:
+      provider: word
+      source:
+        op: environment
+        name: site
+      drive:
+        op: environment
+        name: drive
+      file:
+        op: environment
+        name: templateFile
+      fields:
+        Title:
+          controlId: "1001"
+          type: string
+          control: plainText
+          required: true
+  flowDataSources:
+    requests:
+      connector: shared_commondataserviceforapps
+      table: pfx_v3requests
+      logicalName: pfx_v3request
+      kind: table
+      columns:
+        pfx_requestid:
+          shape:
+            type: guid
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_title:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_due:
+          shape:
+            type: boolean
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_escalated:
+          shape:
+            type: boolean
+          required: false
+          readable: true
+          create: true
+          update: true
+    history:
+      connector: shared_commondataserviceforapps
+      table: pfx_v3history
+      logicalName: pfx_v3history
+      kind: table
+      columns:
+        pfx_source:
+          shape:
+            type: guid
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_event:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_actor:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_reason:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_before:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_after:
+          shape:
+            type: string
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_time:
+          shape:
+            type: datetime
+          required: false
+          readable: true
+          create: true
+          update: true
+        pfx_correlation:
+          shape:
+            type: guid
+          required: false
+          readable: true
+          create: true
+          update: true
+  workflowRecipes:
+    document:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3Document
+        displayName: V3 Document
+        flowType: instant
+        trigger:
+          type: manual
+        connectionReferences:
+          - word
+          - sp
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+        role: child
+        inputs:
+          - name: title
+            shape:
+              type: string
+        outputs:
+          - name: fileIdentifier
+            shape:
+              type: string
+          - name: pdfIdentifier
+            shape:
+              type: string
+      steps:
+        - name: Document
+          recipe: documentGeneration
+          connection: word
+          template: report
+          fields:
+            Title:
+              op: input
+              name: title
+          output:
+            connection: sp
+            site:
+              op: environment
+              name: site
+            folder:
+              op: literal
+              value: /PowerCanvasTest
+              shape:
+                type: string
+            fileName:
+              op: literal
+              value: Generated.docx
+              shape:
+                type: string
+            conflict: uniqueSuffix
+          pdf:
+            source:
+              op: environment
+              name: site
+            drive:
+              op: environment
+              name: drive
+            file:
+              op: output
+              name: Document_Save
+              path:
+                - Id
+            output:
+              connection: sp
+              site:
+                op: environment
+                name: site
+              folder:
+                op: literal
+                value: /PowerCanvasTest
+                shape:
+                  type: string
+              fileName:
+                op: literal
+                value: Generated.pdf
+                shape:
+                  type: string
+              conflict: uniqueSuffix
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.
+      response:
+        fileIdentifier:
+          op: output
+          name: Document
+          path:
+            - fileIdentifier
+        pdfIdentifier:
+          op: output
+          name: Document
+          path:
+            - pdfIdentifier
+    approval:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3Approval
+        displayName: V3 Approval
+        flowType: automated
+        trigger:
+          type: dataverse
+          connection: dv
+          table: pfx_v3requests
+          metadata: requests
+          changeType: rowAdded
+          scope: user
+        connectionReferences:
+          - approvals
+          - dv
+          - mail
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+        role: parent
+      steps:
+        - name: Review
+          recipe: approval
+          mode: startAndWait
+          timeoutHours: 24
+          request:
+            name: Request
+            use: approvals.startAndWait
+            connection: approvals
+            approvalType: firstToRespond
+            assignedTo:
+              - op: environment
+                name: approver
+            title:
+              op: trigger
+              path:
+                - pfx_title
+            enableNotifications: true
+            timeoutHours: 24
+          onApproved:
+            - name: Generate
+              recipe: childWorkflow
+              flow: document
+              arguments:
+                title:
+                  op: trigger
+                  path:
+                    - pfx_title
+            - name: NotifyApproved
+              recipe: notification
+              send:
+                name: NotifyApproved
+                use: outlook.sendEmail
+                connection: mail
+                to:
+                  - op: environment
+                    name: approver
+                subject:
+                  op: literal
+                  value: Compile-only workflow example
+                  shape:
+                    type: string
+                body:
+                  op: output
+                  name: Generate
+                  path:
+                    - pdfIdentifier
+              errorBehavior: stop
+              idempotencyIntent: Operator reviews unknown outcomes before resubmission.
+          onRejected:
+            - name: NotifyRejected
+              recipe: notification
+              send:
+                name: NotifyRejected
+                use: outlook.sendEmail
+                connection: mail
+                to:
+                  - op: environment
+                    name: approver
+                subject:
+                  op: literal
+                  value: Compile-only workflow example
+                  shape:
+                    type: string
+                body:
+                  op: literal
+                  value: Request rejected
+                  shape:
+                    type: string
+              errorBehavior: stop
+              idempotencyIntent: Operator reviews unknown outcomes before resubmission.
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.
+      correlation:
+        correlationId:
+          op: newGuid
+        sourceRecordId:
+          op: trigger
+          path:
+            - pfx_requestid
+        parentRunContext:
+          op: runId
+    notification:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3Notification
+        displayName: V3 Notification
+        flowType: instant
+        trigger:
+          type: powerAppsV2
+        connectionReferences:
+          - mail
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+      steps:
+        - name: Notify
+          recipe: notification
+          send:
+            name: Notify
+            use: outlook.sendEmail
+            connection: mail
+            to:
+              - op: environment
+                name: approver
+            subject:
+              op: literal
+              value: Compile-only workflow example
+              shape:
+                type: string
+            body:
+              op: literal
+              value: Configured event occurred
+              shape:
+                type: string
+          errorBehavior: stop
+          idempotencyIntent: Operator reviews unknown outcomes before resubmission.
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.
+      response: {}
+    audit:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3Audit
+        displayName: V3 Audit
+        flowType: instant
+        trigger:
+          type: powerAppsV2
+        connectionReferences:
+          - dv
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+        inputs:
+          - name: id
+            shape:
+              type: guid
+      steps:
+        - name: Audit
+          recipe: auditLog
+          destination:
+            name: Destination
+            use: dataverse.addRow
+            connection: dv
+            table: pfx_v3history
+            metadata: history
+            fields:
+              pfx_event:
+                op: literal
+                value: placeholder replaced by typed entry mapping
+                shape:
+                  type: string
+          columns:
+            recordId: pfx_source
+            eventType: pfx_event
+            actor: pfx_actor
+            reason: pfx_reason
+            before: pfx_before
+            after: pfx_after
+            timestamp: pfx_time
+            correlationId: pfx_correlation
+          entry:
+            recordId:
+              op: input
+              name: id
+            eventType:
+              op: literal
+              value: Changed
+              shape:
+                type: string
+            actor:
+              op: literal
+              value: explicit actor identity
+              shape:
+                type: string
+            reason:
+              op: literal
+              value: Compile fixture
+              shape:
+                type: string
+            before:
+              op: literal
+              value: "{}"
+              shape:
+                type: string
+            after:
+              op: literal
+              value: "{}"
+              shape:
+                type: string
+            timestamp:
+              op: utcNow
+            correlationId:
+              op: newGuid
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.
+      response: {}
+    routing:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3Routing
+        displayName: V3 Routing
+        flowType: instant
+        trigger:
+          type: powerAppsV2
+        connectionReferences:
+          - sp
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+        inputs:
+          - name: file
+            shape:
+              type: string
+      steps:
+        - name: Route
+          recipe: fileRouting
+          read:
+            name: Read
+            use: sharepoint.getFileContent
+            connection: sp
+            site:
+              op: environment
+              name: site
+            id:
+              op: input
+              name: file
+          when:
+            op: literal
+            value: true
+            shape:
+              type: boolean
+          output:
+            connection: sp
+            site:
+              op: environment
+              name: site
+            folder:
+              op: literal
+              value: /PowerCanvasTest
+              shape:
+                type: string
+            fileName:
+              op: literal
+              value: Generated.docx
+              shape:
+                type: string
+            conflict: uniqueSuffix
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.
+      response: {}
+    postSave:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3PostSave
+        displayName: V3 PostSave
+        flowType: instant
+        trigger:
+          type: powerAppsV2
+        connectionReferences:
+          - mail
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+      steps:
+        - name: AfterCommit
+          recipe: postSaveAutomation
+          commit: explicitAfterCommit
+          steps:
+            - name: SecondaryNotice
+              recipe: notification
+              send:
+                name: SecondaryNotice
+                use: outlook.sendEmail
+                connection: mail
+                to:
+                  - op: environment
+                    name: approver
+                subject:
+                  op: literal
+                  value: Compile-only workflow example
+                  shape:
+                    type: string
+                body:
+                  op: literal
+                  value: Save already committed
+                  shape:
+                    type: string
+              errorBehavior: stop
+              idempotencyIntent: Operator reviews unknown outcomes before resubmission.
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.
+      response: {}
+    reminder:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3reminder
+        displayName: V3 reminder
+        flowType: scheduled
+        trigger:
+          type: recurrence
+          frequency: Day
+          interval: 1
+          startTime: 2030-01-01T00:00:00Z
+        connectionReferences:
+          - dv
+          - mail
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+      steps:
+        - name: Due
+          recipe: reminder
+          query:
+            name: Query
+            use: dataverse.listRows
+            connection: dv
+            table: pfx_v3requests
+            metadata: requests
+            select:
+              - pfx_requestid
+              - pfx_title
+              - pfx_due
+            top: 25
+          maxItems: 25
+          eligibility:
+            op: equals
+            args:
+              - op: item
+                path:
+                  - pfx_due
+              - op: literal
+                value: true
+                shape:
+                  type: boolean
+          notification:
+            name: Reminder
+            recipe: notification
+            send:
+              name: Reminder
+              use: outlook.sendEmail
+              connection: mail
+              to:
+                - op: environment
+                  name: approver
+              subject:
+                op: literal
+                value: Compile-only workflow example
+                shape:
+                  type: string
+              body:
+                op: item
+                path:
+                  - pfx_title
+            errorBehavior: stop
+            idempotencyIntent: Operator reviews unknown outcomes before resubmission.
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.
+    escalation:
+      purpose: Compile-only reusable workflow capability fixture. No live business
+        automation.
+      flow:
+        logicalName: pfx_V3escalation
+        displayName: V3 escalation
+        flowType: scheduled
+        trigger:
+          type: recurrence
+          frequency: Day
+          interval: 1
+          startTime: 2030-01-01T00:00:00Z
+        connectionReferences:
+          - dv
+          - mail
+        environmentVariables:
+          - site
+          - drive
+          - templateFile
+          - approver
+        runPolicy:
+          mode: controlledWrite
+      steps:
+        - name: Due
+          recipe: escalation
+          query:
+            name: Query
+            use: dataverse.listRows
+            connection: dv
+            table: pfx_v3requests
+            metadata: requests
+            select:
+              - pfx_requestid
+              - pfx_title
+              - pfx_due
+            top: 25
+          maxItems: 25
+          eligibility:
+            op: equals
+            args:
+              - op: item
+                path:
+                  - pfx_due
+              - op: literal
+                value: true
+                shape:
+                  type: boolean
+          notification:
+            name: Reminder
+            recipe: notification
+            send:
+              name: Reminder
+              use: outlook.sendEmail
+              connection: mail
+              to:
+                - op: environment
+                  name: approver
+              subject:
+                op: literal
+                value: Compile-only workflow example
+                shape:
+                  type: string
+              body:
+                op: item
+                path:
+                  - pfx_title
+            errorBehavior: stop
+            idempotencyIntent: Operator reviews unknown outcomes before resubmission.
+          update:
+            name: Escalate
+            use: dataverse.updateRow
+            connection: dv
+            table: pfx_v3requests
+            metadata: requests
+            id:
+              op: item
+              path:
+                - pfx_requestid
+            fields:
+              pfx_escalated:
+                op: literal
+                value: true
+                shape:
+                  type: boolean
+      idempotency:
+        mode: operatorReviewed
+        rationale: No runtime permission or target is configured in this fixture.

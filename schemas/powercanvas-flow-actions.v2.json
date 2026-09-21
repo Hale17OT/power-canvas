@@ -1,0 +1,448 @@
+[
+  {
+    "name": "data.compose",
+    "operation": "Compose",
+    "requiredParameters": [
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "value",
+    "outputTypes": "value",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "data.parseJson",
+    "operation": "ParseJson",
+    "requiredParameters": [
+      "value",
+      "shape"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "string",
+    "outputTypes": "declared schema",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "data.select",
+    "operation": "Select",
+    "requiredParameters": [
+      "from",
+      "fields"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "array",
+    "outputTypes": "array of projected object",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "data.filterArray",
+    "operation": "Query",
+    "requiredParameters": [
+      "from",
+      "condition"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "array + boolean",
+    "outputTypes": "same array",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "control.condition",
+    "operation": "If",
+    "requiredParameters": [
+      "condition",
+      "actions"
+    ],
+    "optionalParameters": [
+      "otherwise"
+    ],
+    "inputTypes": "boolean",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "control.applyToEach",
+    "operation": "Foreach",
+    "requiredParameters": [
+      "from",
+      "maxItems",
+      "actions"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "bounded array",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "variables.initialize",
+    "operation": "InitializeVariable",
+    "requiredParameters": [
+      "variable",
+      "shape",
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "declared value",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "variables.set",
+    "operation": "SetVariable",
+    "requiredParameters": [
+      "variable",
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "same variable type",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "variables.append",
+    "operation": "AppendToArrayVariable",
+    "requiredParameters": [
+      "variable",
+      "value"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "array element",
+    "outputTypes": "none",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "powerApps.respond",
+    "operation": "Response",
+    "requiredParameters": [
+      "fields"
+    ],
+    "optionalParameters": [],
+    "inputTypes": "declared outputs",
+    "outputTypes": "Power Apps response",
+    "connector": null,
+    "connectionRequirement": false,
+    "environmentDependencies": "explicit flow references",
+    "risk": "READ",
+    "compiler": "typed-v1",
+    "validator": "strict-action-schema + scoped type checker"
+  },
+  {
+    "name": "dataverse.getRow",
+    "operation": "GetItem",
+    "requiredParameters": [
+      "connection",
+      "table",
+      "id",
+      "select"
+    ],
+    "optionalParameters": [
+      "shape",
+      "metadata",
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "selected record; shape or metadata required",
+    "connector": "shared_commondataserviceforapps",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "READ",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "dataverse.listRows",
+    "operation": "ListRecords",
+    "requiredParameters": [
+      "connection",
+      "table",
+      "select",
+      "top"
+    ],
+    "optionalParameters": [
+      "shape",
+      "metadata",
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "value array; shape or metadata required",
+    "connector": "shared_commondataserviceforapps",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "READ",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "dataverse.addRow",
+    "operation": "CreateRecord",
+    "requiredParameters": [
+      "connection",
+      "table",
+      "metadata",
+      "fields"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "metadata record",
+    "connector": "shared_commondataserviceforapps",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "WRITE_INTERNAL",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "dataverse.updateRow",
+    "operation": "UpdateOnlyRecord",
+    "requiredParameters": [
+      "connection",
+      "table",
+      "metadata",
+      "id",
+      "fields"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "metadata record",
+    "connector": "shared_commondataserviceforapps",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "WRITE_INTERNAL",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "sharepoint.getItems",
+    "operation": "GetItems",
+    "requiredParameters": [
+      "connection",
+      "site",
+      "list",
+      "metadata",
+      "top"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "value array",
+    "connector": "shared_sharepointonline",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "READ",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "sharepoint.getFileMetadata",
+    "operation": "GetFileMetadata",
+    "requiredParameters": [
+      "connection",
+      "site",
+      "id"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "file metadata",
+    "connector": "shared_sharepointonline",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "READ",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "sharepoint.getFileContent",
+    "operation": "GetFileContent",
+    "requiredParameters": [
+      "connection",
+      "site",
+      "id"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "binary",
+    "connector": "shared_sharepointonline",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "READ",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "sharepoint.createItem",
+    "operation": "PostItem",
+    "requiredParameters": [
+      "connection",
+      "site",
+      "list",
+      "metadata",
+      "fields"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "metadata record",
+    "connector": "shared_sharepointonline",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "WRITE_INTERNAL",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "sharepoint.updateItem",
+    "operation": "PatchItem",
+    "requiredParameters": [
+      "connection",
+      "site",
+      "list",
+      "metadata",
+      "id",
+      "fields"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "metadata record",
+    "connector": "shared_sharepointonline",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "WRITE_INTERNAL",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "sharepoint.createFile",
+    "operation": "CreateFile",
+    "requiredParameters": [
+      "connection",
+      "site",
+      "folder",
+      "fileName",
+      "content"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "file metadata",
+    "connector": "shared_sharepointonline",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "WRITE_INTERNAL",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "sharepoint.updateFileProperties",
+    "operation": "PatchFileItem",
+    "requiredParameters": [
+      "connection",
+      "site",
+      "list",
+      "metadata",
+      "id",
+      "fields"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "metadata record",
+    "connector": "shared_sharepointonline",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "WRITE_INTERNAL",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  },
+  {
+    "name": "outlook.sendEmail",
+    "operation": "SendEmailV2",
+    "requiredParameters": [
+      "connection",
+      "to",
+      "subject",
+      "body"
+    ],
+    "optionalParameters": [
+      "retry",
+      "idempotency"
+    ],
+    "inputTypes": "provider typed",
+    "outputTypes": "none (delivery is not certified)",
+    "connector": "shared_office365",
+    "connectionRequirement": true,
+    "environmentDependencies": "explicit flow references and target metadata",
+    "risk": "WRITE_EXTERNAL",
+    "compiler": "typed-v2",
+    "validator": "provider metadata + scoped expressions"
+  }
+]

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "users": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "jobs": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "frequency": {
+      "type": "string",
+      "enum": [
+        "occasional",
+        "daily",
+        "continuous"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "enum": [
+        "operations",
+        "executive",
+        "approval",
+        "document-review",
+        "inspection",
+        "configuration",
+        "exploration"
+      ]
+    },
+    "devices": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      }
+    },
+    "criticalInformation": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "accessibility": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "constraints": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "name",
+    "users",
+    "jobs",
+    "frequency",
+    "purpose",
+    "devices",
+    "criticalInformation",
+    "accessibility",
+    "constraints"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+apiVersion: powercanvas.connectors/v1alpha1
+name: pfx_PowerCanvasComplaintCatalog
+title: PowerCanvas synthetic complaint catalog
+baseUrl: https://catalog.powercanvas.invalid/v1
+auth:
+  type: apiKey
+  header: X_PowerCanvas_Key
+operations:
+  - id: ListCategories
+    summary: List synthetic complaint categories
+    method: GET
+    path: /categories
+    parameters:
+      - name: limit
+        type: integer
+        maximum: 100
+      - name: cursor
+        type: string
+    response:
+      collection: true
+      pagination: cursor
+      fields:
+        - name: id
+          type: string
+        - name: name
+          type: string
+        - name: active
+          type: boolean

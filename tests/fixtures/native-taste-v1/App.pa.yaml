@@ -1,0 +1,52 @@
+App:
+  Properties:
+    StartScreen: =Screen1
+    Formulas: |-
+      =PF_dark = Coalesce(pf_dark, false);
+      PF_canvas = If(PF_dark, ColorValue("#111722"), ColorValue("#F5F6FA"));
+      PF_surface = If(PF_dark, ColorValue("#1B2535"), ColorValue("#FFFFFF"));
+      PF_subtle = If(PF_dark, ColorValue("#253247"), ColorValue("#F0F2F7"));
+      PF_text = If(PF_dark, ColorValue("#EDF2FA"), ColorValue("#172033"));
+      PF_muted = If(PF_dark, ColorValue("#B8C4D6"), ColorValue("#5D677A"));
+      PF_border = If(PF_dark, ColorValue("#46566D"), ColorValue("#DDE2EC"));
+      PF_inputBorder = If(PF_dark, ColorValue("#8B9AAF"), ColorValue("#7D8798"));
+      PF_accentText = If(PF_dark, ColorValue("#C4BEFF"), ColorValue("#4F46A5"));
+      PF_brand = If(PF_dark, ColorValue("#4F46A5"), ColorValue("#4F46A5"));
+      PF_onBrand = If(PF_dark, ColorValue("#FFFFFF"), ColorValue("#FFFFFF"));
+      PF_danger = If(PF_dark, ColorValue("#FFB4AC"), ColorValue("#B42318"));
+      PF_success = If(PF_dark, ColorValue("#92DEB3"), ColorValue("#176B4A"));
+      PF_warning = If(PF_dark, ColorValue("#F3C67A"), ColorValue("#8A5300"));
+      PF_rail = If(PF_dark, ColorValue("#121A2A"), ColorValue("#121A2A"));
+      PF_railText = If(PF_dark, ColorValue("#E2E8F2"), ColorValue("#E2E8F2"));
+      PF_railMuted = If(PF_dark, ColorValue("#B0BCD0"), ColorValue("#B0BCD0"));
+      PF_selected = If(PF_dark, ColorValue("#33425E"), ColorValue("#E7EAF9"));
+      PF_font = Font.'Segoe UI';
+      PF_typeCaption = 12;
+      PF_typeBody = 14;
+      PF_typeSection = 16;
+      PF_typeMetric = 30;
+      PF_spaceXs = 4;
+      PF_headerHeight = 64;
+      PF_mobile = App.Width < 640;
+      PF_tablet = App.Width >= 640 && App.Width < 1100;
+      PF_wide = App.Width >= 1100;
+      PF_gap = 8;
+      PF_spaceMd = 16;
+      PF_spaceLg = 16;
+      PF_spaceXl = 32;
+      PF_radius = 4;
+      PF_controlHeight = If(PF_mobile, 44, 36);
+      PF_typeTitle = 24;
+      PF_pagePadding = If(PF_mobile, 16, 16);
+      PF_navWidth = If(PF_mobile, 0, If(PF_tablet, 64, 200));
+      PF_rowHeight = If(PF_mobile, 96, 64);
+      PF_detailWidth = 360;
+      PF_chartShare = 0.6;
+      PF_showMetadata = true;
+      PF_navigationTransition = ScreenTransition.None;
+      PF_elevation = DropShadow.None;
+      PF_spaceSm = 8;
+      PF_spaceInset = 12;
+      PF_typeEyebrow = 12;
+      PF_typeBrand = 18;
+      PF_scrim = RGBA(10, 18, 32, 0.48);

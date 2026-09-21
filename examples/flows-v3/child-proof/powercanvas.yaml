@@ -1,0 +1,75 @@
+apiVersion: powercanvas.dev/v1alpha1
+project:
+  id: 30b1c974-9725-4255-bce5-5b2861c7e89c
+  name: flow-v3-child-contract-proof
+solution:
+  uniqueName: pfx_PowerForgeExperiment
+  displayName: PowerCanvas Experiment
+  version: 0.1.0.0
+  publisher:
+    uniqueName: PowerForgeExperimentPublisher
+    prefix: pfx
+    optionValuePrefix: 73142
+dataverse:
+  tables: {}
+resources:
+  flows:
+    child:
+      logicalName: pfx_ExperimentV3ChildContract
+      displayName: PowerCanvas Experiment V3 child contract
+      description: Disabled connector-free typed child contract proof. No business
+        mutations.
+      role: child
+      flowType: instant
+      trigger:
+        type: manual
+      inputs:
+        - name: correlationId
+          shape:
+            type: guid
+      outputs:
+        - name: correlationId
+          shape:
+            type: guid
+      actions:
+        - name: Respond
+          use: flows.respond
+          fields:
+            correlationId:
+              op: input
+              name: correlationId
+    parent:
+      logicalName: pfx_ExperimentV3ParentContract
+      displayName: PowerCanvas Experiment V3 parent contract
+      description: Disabled connector-free parent contract proof. No Canvas attachment
+        or execution.
+      role: parent
+      flowType: instant
+      trigger:
+        type: powerAppsV2
+      inputs:
+        - name: correlationId
+          shape:
+            type: guid
+      outputs:
+        - name: correlationId
+          shape:
+            type: guid
+      dependencies:
+        - child
+      actions:
+        - name: Child
+          use: flows.invoke
+          flow: child
+          arguments:
+            correlationId:
+              op: input
+              name: correlationId
+        - name: Respond
+          use: powerApps.respond
+          fields:
+            correlationId:
+              op: output
+              name: Child
+              path:
+                - correlationId

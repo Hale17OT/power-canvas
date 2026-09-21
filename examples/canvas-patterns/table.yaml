@@ -1,0 +1,13 @@
+version: 0.2.0
+key: inventoryTable
+component: DataTable
+props:
+  label: Inventory
+  items: inventoryItems
+  title: ThisItem.Name
+  subtitle: ThisItem.Location
+  badge: ThisItem.Status
+  selected: ThisItem.Id = selectedInventory.Id
+  onSelect: Set(selectedInventory, ThisItem)
+  disabled: inventoryEditorOpen
+  height: Parent.Height - 72

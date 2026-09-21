@@ -1,0 +1,130 @@
+[
+  {
+    "name": "microsoft/power-platform-skills",
+    "language": "JavaScript",
+    "archived": false,
+    "pushed_at": "2026-09-17T14:41:50Z",
+    "url": "https://github.com/microsoft/power-platform-skills",
+    "license": "MIT"
+  },
+  {
+    "name": "microsoft/PowerApps-Tooling",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-09-16T20:34:01Z",
+    "url": "https://github.com/microsoft/PowerApps-Tooling",
+    "license": "MIT"
+  },
+  {
+    "name": "microsoft/Power-Fx",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-09-04T02:01:13Z",
+    "url": "https://github.com/microsoft/Power-Fx",
+    "license": "MIT"
+  },
+  {
+    "name": "microsoft/PowerApps-TestEngine",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-09-14T23:05:16Z",
+    "url": "https://github.com/microsoft/PowerApps-TestEngine",
+    "license": "MIT"
+  },
+  {
+    "name": "microsoft/EasyRepro",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2024-10-02T18:07:18Z",
+    "url": "https://github.com/microsoft/EasyRepro",
+    "license": "MIT"
+  },
+  {
+    "name": "microsoft/terraform-provider-power-platform",
+    "language": "Go",
+    "archived": false,
+    "pushed_at": "2026-09-14T20:05:34Z",
+    "url": "https://github.com/microsoft/terraform-provider-power-platform",
+    "license": "MIT"
+  },
+  {
+    "name": "rpothin/pulumi-powerplatform",
+    "language": "Python",
+    "archived": false,
+    "pushed_at": "2026-09-08T02:56:39Z",
+    "url": "https://github.com/rpothin/pulumi-powerplatform",
+    "license": "MIT"
+  },
+  {
+    "name": "pnp/cli-microsoft365",
+    "language": "TypeScript",
+    "archived": false,
+    "pushed_at": "2026-09-16T20:34:19Z",
+    "url": "https://github.com/pnp/cli-microsoft365",
+    "license": "MIT"
+  },
+  {
+    "name": "pnp/powershell",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-09-17T07:55:46Z",
+    "url": "https://github.com/pnp/powershell",
+    "license": "MIT"
+  },
+  {
+    "name": "pnp/pnpcore",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-09-17T05:15:05Z",
+    "url": "https://github.com/pnp/pnpcore",
+    "license": "MIT"
+  },
+  {
+    "name": "MscrmTools/XrmToolBox",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-09-16T10:51:05Z",
+    "url": "https://github.com/MscrmTools/XrmToolBox",
+    "license": "GPL-3.0"
+  },
+  {
+    "name": "context-and-oss/XrmDefinitelyTyped",
+    "language": "TypeScript",
+    "archived": false,
+    "pushed_at": "2026-09-01T20:31:02Z",
+    "url": "https://github.com/context-and-oss/XrmDefinitelyTyped",
+    "license": "MIT"
+  },
+  {
+    "name": "daryllabar/DLaB.Xrm.XrmToolBoxTools",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-08-04T14:59:09Z",
+    "url": "https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools",
+    "license": "MIT"
+  },
+  {
+    "name": "scottdurow/SparkleXrm",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2024-08-06T09:49:23Z",
+    "url": "https://github.com/scottdurow/SparkleXrm",
+    "license": "MIT"
+  },
+  {
+    "name": "WaelHamze/xrm-ci-framework",
+    "language": "C#",
+    "archived": false,
+    "pushed_at": "2026-01-11T15:45:32Z",
+    "url": "https://github.com/WaelHamze/xrm-ci-framework",
+    "license": "MIT"
+  },
+  {
+    "name": "context-and-oss/Daxif",
+    "language": "F#",
+    "archived": false,
+    "pushed_at": "2025-02-17T13:32:08Z",
+    "url": "https://github.com/context-and-oss/Daxif",
+    "license": "NOASSERTION"
+  }
+]
