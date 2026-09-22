@@ -39,6 +39,23 @@ describe('resumable facts without authority',()=>{
  it('rejects secret-bearing facts and unknown command IDs',async()=>{const {dir,journal}=await setup();expect(()=>taskJournalSchema.parse({...journal,facts:['Authorization: Bearer secret']})).toThrow();await expect(writeTask({...journal,plannedOperations:['flows overwrite --force']},dir,'.powercanvas/agent/bad.json')).rejects.toThrow('UNSUPPORTED');});
 });
 describe('portable skill packaging',()=>{
+ it('hashes LF source bytes and rejects CRLF generation before Git can normalize them',async()=>{
+  const dir=await temporary();dirs.push(dir);
+  const source=join(dir,'.agents/skills/fixture/SKILL.md'),mirror=join(dir,'plugins/powercanvas/skills/fixture/SKILL.md'),manifestPath=join(dir,'plugins/powercanvas/skills-manifest.json');
+  const content='# Portable fixture\n\nSame bytes on every checkout.\n';
+  await mkdir(dirname(source),{recursive:true});await writeFile(source,content);
+  const run=(args:string[]=[])=>promisify(execFile)(process.execPath,[join(root,'scripts/package-agent-plugin.mjs'),...args],{cwd:dir});
+  await run();await run(['--check']);
+  const manifest=await readFile(manifestPath,'utf8');
+  expect(JSON.parse(manifest).files).toEqual([{path:'fixture/SKILL.md',sha256:createHash('sha256').update(content).digest('hex')}]);
+  expect(await readFile(mirror,'utf8')).toBe(content);
+  // Both copies can match locally while a CRLF hash disagrees with Git's LF blobs.
+  const crlf=content.replaceAll('\n','\r\n');await writeFile(source,crlf);await writeFile(mirror,crlf);
+  await expect(run()).rejects.toThrow('LF line endings');await expect(run(['--check'])).rejects.toThrow('LF line endings');
+  expect(await readFile(manifestPath,'utf8')).toBe(manifest);
+  await writeFile(source,content);
+  await expect(run(['--check'])).rejects.toThrow('Generated skill drift');
+ });
  it('discovers five compact versioned skills with valid local references and implicit metadata',async()=>{const base=join(root,'.agents/skills');const names=await readdir(base);expect(names.sort()).toEqual(['powercanvas','powercanvas-canvas','powercanvas-debug','powercanvas-flows','powercanvas-taste']);for(const name of names){const file=join(base,name,'SKILL.md'),text=await readFile(file,'utf8'),front=parse(text.split('---')[1]!);expect(front.name).toBe(name);expect(front.description.length).toBeLessThan(1025);expect(front.metadata.version).toBe('1.0.0');expect(text.split(/\s+/).length).toBeLessThan(600);const ui=parse(await readFile(join(base,name,'agents/openai.yaml'),'utf8'));expect(ui.policy.allow_implicit_invocation).toBe(true);for(const m of text.matchAll(/\]\(([^)]+)\)/g))if(!m[1]!.startsWith('https:'))expect((await readFile(resolve(dirname(file),m[1]!))).length).toBeGreaterThan(0);}});
  it('keeps packaged skills identical and all packaged Markdown links inside the plugin',async()=>{const plugin=join(root,'plugins/powercanvas');const manifest=JSON.parse(await readFile(join(plugin,'skills-manifest.json'),'utf8')) as {files:{path:string;sha256:string}[]};for(const f of manifest.files){const path=join(plugin,'skills',f.path),content=await readFile(path);expect(createHash('sha256').update(content).digest('hex')).toBe(f.sha256);expect(content.equals(await readFile(join(root,'.agents/skills',f.path)))).toBe(true);if(f.path.endsWith('.md'))for(const match of content.toString().matchAll(/\]\(([^)]+)\)/g)){if(match[1]!.startsWith('https:'))continue;const target=resolve(dirname(path),match[1]!);expect(target.startsWith(plugin)).toBe(true);expect((await readFile(target)).length).toBeGreaterThan(0);}}});
  it('discovery wrapper checks version before making read-only inventory calls',async()=>{const dir=await temporary();dirs.push(dir);await mkdir(join(dir,'calls'));const fake=join(dir,'fake.mjs'),record=join(dir,'calls/log');await writeFile(fake,`import fs from 'node:fs';fs.appendFileSync(${JSON.stringify(record)},process.argv[2]+'\\n');console.log(JSON.stringify({name:'PowerCanvas',agentContractVersion:'9.0',skillCompatibility:{major:9}}));`);await expect(promisify(execFile)(process.execPath,[join(root,'.agents/skills/powercanvas/scripts/discover.mjs'),fake,dir])).rejects.toThrow();expect((await readFile(record,'utf8')).trim()).toBe('version');});

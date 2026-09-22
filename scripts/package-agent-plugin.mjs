@@ -8,6 +8,7 @@ async function visit(directory){for(const entry of await readdir(directory,{with
  const path=join(directory,entry.name);if(entry.isSymbolicLink())throw Error('Skill packaging rejects symlinks');
  if(entry.isDirectory()){await visit(path);continue;}
  const key=relative(source,path).replaceAll('\\','/'),data=await readFile(path),target=join(destination,key);
+ if(/\.(?:md|ya?ml|mjs|json)$/.test(key)&&data.includes('\r\n'))throw Error('Skill source must use LF line endings before packaging: '+key);
  if(check){if(!data.equals(await readFile(target)))throw Error('Generated skill drift: '+key);}
  else{await mkdir(dirname(target),{recursive:true});if((await lstat(target).catch(e=>{if(e.code==='ENOENT')return null;throw e;}))?.isSymbolicLink())throw Error('Generated skill target is a symlink');await writeFile(target,data);}
  inventory.push({path:key,sha256:createHash('sha256').update(data).digest('hex')});

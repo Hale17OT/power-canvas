@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "powercanvas-canvas/agents/openai.yaml",
-      "sha256": "d76b6a6f1d4aa3dd4778caa658115b551adc63e7b82f864935050fb968e342c7"
+      "sha256": "358ee563b676d4c3ea3b453d85f8e06e2571cbc3e83cc08e3e574c36c76ad114"
     },
     {
       "path": "powercanvas-canvas/references/authoring.md",
@@ -20,7 +20,7 @@
     },
     {
       "path": "powercanvas-debug/agents/openai.yaml",
-      "sha256": "8799c15ec3b4f07341397ab22efd2c4604c5ee3de6a5c5e8316bf36fe653d68e"
+      "sha256": "53b3e9ec31e81df9a492a75e345e581ce1492378698e5e953a6967d7e9756203"
     },
     {
       "path": "powercanvas-debug/references/debugging.md",
@@ -32,7 +32,7 @@
     },
     {
       "path": "powercanvas-flows/agents/openai.yaml",
-      "sha256": "063cf255b247740df5895681413fa8c3888652222e23e7e222e8f68a07ab3ae8"
+      "sha256": "12dfa3da3bd76bc1b3f9535054ece0182228bd6348481de05910e70caed55657"
     },
     {
       "path": "powercanvas-flows/references/flows.md",
@@ -44,15 +44,15 @@
     },
     {
       "path": "powercanvas-taste/agents/openai.yaml",
-      "sha256": "4e4c6d448cf7720201a6d4e438424a416ba576d1f1058dda528a999ff33a4d36"
+      "sha256": "8681b9a5e694b70fe04f143598e7a38520b07dee5483c956c89f45bf9004dc19"
     },
     {
       "path": "powercanvas-taste/references/research.md",
-      "sha256": "e2ca946b75604eb1dfa633f0fd2c3a62a25c48ee207b096b5e50287eaadd2546"
+      "sha256": "7a505d728b98dc6ae6cd51dda7db168422bf1d108da77284d0d33438a2b57c08"
     },
     {
       "path": "powercanvas-taste/references/workflow.md",
-      "sha256": "be69b6c5a568a707f66824071cda699e999a8b0a53d339d22994cb803ff29836"
+      "sha256": "4292821efde43524fde6a4a42989e779d0217fd58ab9d345603600d02dfacd4a"
     },
     {
       "path": "powercanvas-taste/SKILL.md",
@@ -60,7 +60,7 @@
     },
     {
       "path": "powercanvas/agents/openai.yaml",
-      "sha256": "2781c2577262aae869ec59f6197ec5da88585d444e03067aeda63b0b423132b7"
+      "sha256": "1bb43879debbf36c4ca8f3d88beb97d4f265387ce1367cf7da66d42bb5037a08"
     },
     {
       "path": "powercanvas/references/architecture.md",
