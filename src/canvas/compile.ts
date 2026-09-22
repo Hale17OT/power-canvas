@@ -8,6 +8,9 @@ import { registry } from './registry.js';
 import type { ComponentName } from './registry.js';
 import { resolveTheme, responsiveLayout } from './tokens.js';
 import { planApplicationOperation } from './application-boundary.js';
+import {planDesign} from './taste/decisions.js';
+import {compileDesignCandidate} from './taste/generation.js';
+import {createCompositionIR} from './composition-ir.js';
 
 const node = (key: string, component: ComponentName, props: ComponentNode['props'], children: ComponentNode[] = []): ComponentNode => ({ key, component, version: '0.1.0', props, children });
 export function expandPatterns(app: CanvasApp): ComponentNode {
@@ -70,7 +73,14 @@ function checkTree(project: Project, app: CanvasApp, root: ComponentNode): Diagn
 export function canvasDiagnostics(project: Project): Diagnostic[] {
   const names = Object.values(project.canvasApps ?? {}).map(app => app.uniqueName.toLowerCase());
   return Object.entries(project.canvasApps ?? {}).flatMap(([key, app]) => {
-    const diagnostics = checkTree(project, app, expandPatterns(app));
+    const diagnostics:Diagnostic[] = [];
+    if(app.nativeDesign){
+      try{
+        if(Object.keys(app.screens).length)throw new Error('Explicit binding migration required: nativeDesign cannot discard legacy business screens.');
+        const plan=planDesign(app.nativeDesign.product,{...(app.taste?.design?.v4?{design:app.taste.design.v4}:{})});
+        compileDesignCandidate(plan,app.nativeDesign.host,app.theme.mode,createCompositionIR(plan,app.nativeDesign.stability));
+      }catch(error){diagnostics.push({code:'PF-CANVAS-003',severity:'error',path:'nativeDesign',message:error instanceof Error?error.message:'Native design validation failed.'});}
+    }else diagnostics.push(...checkTree(project, app, expandPatterns(app)));
     const siblings = Object.values(project.canvasApps ?? {});
     if (siblings.length > 1 && !app.application?.existingAppId && !app.application?.requiresNewApplication) diagnostics.push({code:'PF-CANVAS-003',severity:'error',path:'application',message:'Multiple Canvas Apps require independently pinned existing IDs or explicit application-level requirements; device and benchmark variants are not app boundaries.'});
     if (app.application?.existingAppId && siblings.filter(s => s.application?.existingAppId === app.application!.existingAppId).length > 1) diagnostics.push({code:'PF-CANVAS-003',severity:'error',path:'application.existingAppId',message:'Device variations must be screens/compositions of one app declaration, not duplicate declarations for the same app ID.'});
@@ -84,6 +94,7 @@ const fxString = (value: string) => `"${value.replace(/"/g, '""')}"`;
 const fxIdentifier = (value: string) => `'${value.replace(/'/g, "''")}'`;
 export function compileCanvas(project: Project, appKey: string) {
   const raw = project.canvasApps?.[appKey]; if (!raw) throw new PowerCanvasError('PF-CANVAS-004', 'Canvas app does not exist.', 'Select a canvasApps key.');
+  if(raw.nativeDesign)throw new PowerCanvasError('PF-CANVAS-004','Native design uses the existing native candidate compiler.','Use taste generate or canvas native with explicit host and bindings.');
   const app = canvasAppSchema.parse(raw); const root = expandPatterns(app); const diagnostics = canvasDiagnostics(project);
   if (diagnostics.length) throw new PowerCanvasError('PF-CANVAS-003', 'Canvas semantics are invalid.', 'Resolve component and data-source diagnostics.', diagnostics);
   const required = new Set<string>(); const queries: { componentId: string; source: string; formula: string; maxVisible: number; delegation: string; states: string[] }[] = [];

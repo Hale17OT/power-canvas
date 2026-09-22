@@ -1,0 +1,13 @@
+{
+  "version": "canvas-production-core-v1",
+  "groups": {
+    "navigation": [],
+    "data": [],
+    "forms": [],
+    "overlays": [],
+    "commands": [],
+    "feedback": ["EmptyState.standard", "LoadingState.standard"],
+    "hierarchy": ["PageHeader.standard", "RecordHeader.standard", "SectionHeader.standard", "DetailPanel.standard"]
+  },
+  "dependencies": {}
+}

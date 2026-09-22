@@ -23,6 +23,194 @@
     "design": {
       "type": "object",
       "properties": {
+        "v4": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "type": "string",
+              "enum": [
+                "data-first",
+                "workspace-first",
+                "task-first",
+                "content-first"
+              ]
+            },
+            "designVariance": {
+              "default": 3,
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "archetype": {
+              "type": "string",
+              "enum": [
+                "operational-console",
+                "editorial-workspace",
+                "command-center",
+                "focused-task",
+                "analytical-briefing",
+                "document-workspace",
+                "collaborative-workspace",
+                "case-workspace",
+                "configuration-console",
+                "field-companion",
+                "executive-brief",
+                "process-tracker",
+                "inbox-workspace",
+                "content-library",
+                "timeline-workspace",
+                "mobile-utility"
+              ]
+            },
+            "dimensions": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "density": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "formality": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "warmth": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "contrast": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "surfaceDepth": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "radiusCharacter": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "typographyExpression": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "navigationPresence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "dataEmphasis": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "brandExpression": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "motion": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "decorativeIntensity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                }
+              },
+              "additionalProperties": false
+            },
+            "preferences": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "bans": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "surface": {
+              "type": "string",
+              "enum": [
+                "flat",
+                "sectioned",
+                "layered",
+                "carded",
+                "panelled",
+                "editorial"
+              ]
+            },
+            "overlaySurface": {
+              "default": "standard",
+              "type": "string",
+              "enum": [
+                "flat",
+                "standard",
+                "elevated",
+                "bordered",
+                "inset",
+                "dark",
+                "highContrast"
+              ]
+            },
+            "color": {
+              "default": "neutral-enterprise",
+              "type": "string",
+              "enum": [
+                "monochrome-accent",
+                "neutral-enterprise",
+                "warm-neutral",
+                "cool-technical",
+                "semantic-heavy",
+                "brand-forward",
+                "data-viz"
+              ]
+            },
+            "border": {
+              "default": "hairline",
+              "type": "string",
+              "enum": [
+                "none",
+                "hairline",
+                "section",
+                "component",
+                "emphasis-only"
+              ]
+            },
+            "radius": {
+              "default": "low",
+              "type": "string",
+              "enum": [
+                "square",
+                "low",
+                "moderate",
+                "soft",
+                "mixed-semantic"
+              ]
+            },
+            "reducedMotion": {
+              "default": true,
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
         "devices": {
           "type": "object",
           "properties": {

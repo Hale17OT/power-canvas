@@ -1,0 +1,28 @@
+import type {Command} from 'commander';
+export const risks=['READ_ONLY','LOCAL_WRITE','AUTHORING_SESSION_WRITE','TENANT_WRITE','BUSINESS_DATA_WRITE','DESTRUCTIVE'] as const;
+export type CommandRisk=typeof risks[number];
+type Policy={risk:CommandRisk;network:boolean;requiresAuthoringMcp:boolean|'conditional';requiresSavedPlan:boolean;note?:string};
+const policies:Record<string,Policy>={};
+function group(names:string,risk:CommandRisk,network=false,extra:Partial<Policy>={}){for(const name of names.split('|'))policies[name]={risk,network,requiresAuthoringMcp:false,requiresSavedPlan:false,...extra};}
+group('solution inspect|solution graph|solution diff|solution critique|solution audit|solution verify-export','READ_ONLY');
+group('solution plan','LOCAL_WRITE',false,{note:'Offline canonical plan, resolved project, external manifest and agent journal. No tenant mutation.'});
+group('solution apply','TENANT_WRITE',true,{requiresSavedPlan:true,note:'Delegates only to existing Dataverse and Flow apply gates. No activation, Canvas write, implicit adoption or import.'});
+group('version|capabilities|agent commands|agent route|agent resume|validate|auth list|auth show|env show|taste reference list|taste reference inspect|taste strategies|taste personalities|taste compositions|taste plan|taste schema|taste decisions|components list|components info|components resolve|components variants|patterns list|patterns info|canvas application-plan|canvas patterns|canvas catalog|flows actions|flows advise|flows authorization-context|flows providers|flows dependencies|flows portability|flows test-context|flows recipe list','READ_ONLY');
+group('init|agent journal|taste reference normalize|taste design generate|taste design sync|taste fixtures|taste critique|taste refine|taste audit|taste preflight|taste redesign|taste compose|taste explore|taste generate|taste migration-plan|components certify|components lab|components preview|patterns ingest|connector-compile|canvas component|canvas native|canvas compile|canvas production-core|canvas source compare|canvas migration-validate|canvas composition-lower|flows recipe explain|flows validate|flows audit|flows compile|flows metadata word-template|flows verify-export|flows binding|flows deployment-template','LOCAL_WRITE');
+group('auth add|auth remove|env use','LOCAL_WRITE',true,{note:'Changes local authentication/binding state; auth remove deletes the selected local profile/cache, not tenant resources.'});
+group('doctor|env list|inspect','READ_ONLY',true,{note:'May read live metadata and refresh authentication caches; doctor is offline unless live/environment options are supplied.'});
+group('plan|recover-create|flows metadata dataverse|flows metadata sharepoint|flows connections list|flows export|flows reconcile-state|flows canvas-plan|flows list|flows discover|flows inspect|flows plan','LOCAL_WRITE',true,{note:'Remote reads only; writes local artifacts or reconciliation/ownership state. Recovery still requires exact ownership guards.'});
+group('canvas source sync|canvas authoring doctor','LOCAL_WRITE',true,{requiresAuthoringMcp:'conditional',note:'Default authoringMcp is live read-only acquisition; explicit pacDownload is an independent saved-source witness and cannot authorize writes.'});
+group('canvas authoring recover','LOCAL_WRITE',true,{requiresAuthoringMcp:true,note:'Connects, reacquires source and plans owned-harness recovery; does not perform the authoring write.'});
+policies['recover-create']!.requiresSavedPlan=true;
+group('apply|flows apply','TENANT_WRITE',true,{requiresSavedPlan:true,note:'Existing target/source/ownership/plan gates remain authoritative; deploying a flow does not authorize activation.'});
+group('flows activate','BUSINESS_DATA_WRITE',true,{note:'Activation can start triggers and external/business side effects. Requires explicit activation and existing connection/operator/definition guards; no --plan option exists.'});
+group('flows deactivate','TENANT_WRITE',true,{note:'Changes an owned flow state through existing deployment and state guards; no --plan option exists.'});
+
+export function commandManifest(program:Command){
+  const commands:{command:string;purpose:string;risk:CommandRisk;mutatesTenant:boolean;mutatesLocalSource:boolean;network:boolean;requiresAuthoringMcp:boolean|'conditional';requiresSavedPlan:boolean;note:string;usage:string;options:{flags:string;required:boolean;description:string}[];aliases:string[];output:string}[]=[];
+  function visit(parent:Command,prefix:string){for(const c of parent.commands){const name=[prefix,c.name()].filter(Boolean).join(' ');if(c.commands.length){visit(c,name);continue;}const p=policies[name];if(!p)throw new Error('Unclassified CLI command: '+name);
+    commands.push({command:name,purpose:c.description()||name,...p,note:p.note??'Conservative maximum classification across supported options; no authorization is granted by discovery.',mutatesTenant:['AUTHORING_SESSION_WRITE','TENANT_WRITE','BUSINESS_DATA_WRITE','DESTRUCTIVE'].includes(p.risk),mutatesLocalSource:p.risk!=='READ_ONLY',usage:name+' '+c.registeredArguments.map(a=>a.required?`<${a.name()}>`:`[${a.name()}]`).join(' '),options:c.options.map(o=>({flags:o.flags,required:o.mandatory,description:o.description})),aliases:c.aliases(),output:'--json; generated artifacts remain available at --out where supported'});
+  }}visit(program,'');return commands.sort((a,b)=>a.command.localeCompare(b.command));
+}
+export function commandPolicy(command:string){const result=policies[command];if(!result)throw new Error('UNSUPPORTED: unclassified command');return result;}

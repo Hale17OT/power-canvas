@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "authority": ".agents/skills",
+  "files": [
+    {
+      "path": "powercanvas-canvas/agents/openai.yaml",
+      "sha256": "d76b6a6f1d4aa3dd4778caa658115b551adc63e7b82f864935050fb968e342c7"
+    },
+    {
+      "path": "powercanvas-canvas/references/authoring.md",
+      "sha256": "0b2b40f48cf301b5c841a4a6f7c0064ba87e4fea64b24069cfd55617471bcd07"
+    },
+    {
+      "path": "powercanvas-canvas/references/canvas.md",
+      "sha256": "3f9faad355e11ae5a84e52bcbeeb17a21e5c32c533a7d1d949f15837d9026e86"
+    },
+    {
+      "path": "powercanvas-canvas/SKILL.md",
+      "sha256": "dfc5988e6ad7858c22ea07f76b342c844f7ac250d47977f429fa466c000e5645"
+    },
+    {
+      "path": "powercanvas-debug/agents/openai.yaml",
+      "sha256": "8799c15ec3b4f07341397ab22efd2c4604c5ee3de6a5c5e8316bf36fe653d68e"
+    },
+    {
+      "path": "powercanvas-debug/references/debugging.md",
+      "sha256": "bffb595d919c0338094c7f2f01d970ee73cb6bceb8003bbe2355645f3ba3cc07"
+    },
+    {
+      "path": "powercanvas-debug/SKILL.md",
+      "sha256": "7cfb795ba502f85c8414f7045739ccd4c1b9b2be13c6bf0ae7649f212397869a"
+    },
+    {
+      "path": "powercanvas-flows/agents/openai.yaml",
+      "sha256": "063cf255b247740df5895681413fa8c3888652222e23e7e222e8f68a07ab3ae8"
+    },
+    {
+      "path": "powercanvas-flows/references/flows.md",
+      "sha256": "0c1c6a9358de5d75e31d0dcdffa9bd9e451b21106a385c6bf2a82f7d85d6f79c"
+    },
+    {
+      "path": "powercanvas-flows/SKILL.md",
+      "sha256": "2c7f5852f7a482d0cf25f7b09e4266ceed882ff5d3bde1ed0871ff0ab80ff543"
+    },
+    {
+      "path": "powercanvas-taste/agents/openai.yaml",
+      "sha256": "4e4c6d448cf7720201a6d4e438424a416ba576d1f1058dda528a999ff33a4d36"
+    },
+    {
+      "path": "powercanvas-taste/references/research.md",
+      "sha256": "e2ca946b75604eb1dfa633f0fd2c3a62a25c48ee207b096b5e50287eaadd2546"
+    },
+    {
+      "path": "powercanvas-taste/references/workflow.md",
+      "sha256": "be69b6c5a568a707f66824071cda699e999a8b0a53d339d22994cb803ff29836"
+    },
+    {
+      "path": "powercanvas-taste/SKILL.md",
+      "sha256": "ff1a3b4251557a215cd3a4d9d2f61942a4d1af905550ff2bbb4f3366178dea33"
+    },
+    {
+      "path": "powercanvas/agents/openai.yaml",
+      "sha256": "2781c2577262aae869ec59f6197ec5da88585d444e03067aeda63b0b423132b7"
+    },
+    {
+      "path": "powercanvas/references/architecture.md",
+      "sha256": "f9e5ec07a8f34f26b48360ef963c24265749e8ffc1718110126bb36db8a774cd"
+    },
+    {
+      "path": "powercanvas/references/capabilities.md",
+      "sha256": "0a3e168be40ec3cd0fb9d55c2181ed09c27f983ed2e7ee57bd6da3710d373c32"
+    },
+    {
+      "path": "powercanvas/references/hosts/claude-code.md",
+      "sha256": "999a92ce04e8b77969a24c0a28f922c510bd88dd63d64d359f694576b860dfd8"
+    },
+    {
+      "path": "powercanvas/references/hosts/codex.md",
+      "sha256": "450bc5be03f6b8a5ff00a8f6ed40197fdffd2060dd12756378f8d88429b593f3"
+    },
+    {
+      "path": "powercanvas/references/resume.md",
+      "sha256": "7932ecf5d1b74cf1710dbcdba596be1de7455cef016239585e9cf3d23955b139"
+    },
+    {
+      "path": "powercanvas/references/safety.md",
+      "sha256": "c1ac7f6c804a769238be6b7432801cf3418a05216bfec8c60217f9c64fc9561c"
+    },
+    {
+      "path": "powercanvas/scripts/discover.mjs",
+      "sha256": "8668531db279f1eca4a2641e21394fd98b4a7eb9b5de28452c21593ad0d04c78"
+    },
+    {
+      "path": "powercanvas/SKILL.md",
+      "sha256": "c3b386a40334602cbee07b719fa66768969b3d037534fae2bd045cb93df8158f"
+    }
+  ]
+}

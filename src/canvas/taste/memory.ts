@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { parseDocument } from 'yaml';
 import { createHash } from 'node:crypto';
 import { deviceStrategiesSchema } from './devices.js';
+import { contextSchema, v4DesignSchema } from './decision-schema.js';
 
 const words = z.array(z.string().min(1)).min(1);
 export const modes = ['operate', 'review', 'analyze', 'configure', 'enter', 'approve', 'explore'] as const;
@@ -16,6 +17,7 @@ export const traitGroups = {
 export const traits = Object.values(traitGroups).flat();
 const trait = z.string().refine(v => traits.includes(v), 'Unknown abstract design trait');
 export const productSchema = z.strictObject({
+  context: contextSchema.partial().optional(),
   name: z.string().min(1), users: words, jobs: words, frequency: z.enum(['occasional', 'daily', 'continuous']),
   purpose: z.enum(['operations', 'executive', 'approval', 'document-review', 'inspection', 'configuration', 'exploration']),
   devices: z.array(z.enum(['desktop', 'tablet', 'mobile'])).min(1), criticalInformation: words, accessibility: words, constraints: words,
@@ -33,6 +35,7 @@ export const referenceSchema = z.strictObject({
   dos: words, donts: words, powerAppsAdaptation: z.strictObject({ supported: words, translated: words, unsupported: words }),
 });
 export const designSchema = z.strictObject({
+  v4: v4DesignSchema.optional(),
   devices: deviceStrategiesSchema.optional(),
   version: z.literal('2.0'), personality: z.enum(['fluent-enterprise', 'clean-saas', 'dense-operations', 'executive-dashboard', 'minimal-workspace']),
   primary: referenceSchema, secondaryTraits: z.array(trait).max(3).default([]), traits: z.array(trait).min(1),

@@ -1,7 +1,12 @@
 import { z } from 'zod';
 import { patternCatalog } from '../patterns.js';
+import { componentEvidence, maturityLevels } from './catalog.js';
 
-export const recipeSchema = z.strictObject({ name: z.string(), modes: z.array(z.string()).default([]), personalityCompatibility: z.array(z.string()).default([]), deviceStrategy: z.string().optional(), category: z.string(), purpose: z.string(), appropriateUseCases: z.array(z.string()).min(1), inappropriateUseCases: z.array(z.string()).min(1), implementationType: z.enum(['modern', 'composition', 'pcf', 'planned']), nativeControls: z.array(z.string()), canvasComponents: z.array(z.string()), optionalPCF: z.array(z.string()), inputs: z.record(z.string(), z.unknown()), outputs: z.array(z.string()), variants: z.array(z.string()), states: z.array(z.string()), responsiveRules: z.array(z.string()), accessibilityRules: z.array(z.string()), themeTokens: z.array(z.string()), dependencies: z.array(z.string()), compositionRules: z.array(z.string()), classicReason: z.string().optional() });
+const baseRecipeSchema = z.strictObject({ name: z.string(), modes: z.array(z.string()).default([]), personalityCompatibility: z.array(z.string()).default([]), deviceStrategy: z.string().optional(), category: z.string(), purpose: z.string(), appropriateUseCases: z.array(z.string()).min(1), inappropriateUseCases: z.array(z.string()).min(1), implementationType: z.enum(['modern', 'composition', 'pcf', 'planned']), nativeControls: z.array(z.string()), canvasComponents: z.array(z.string()), optionalPCF: z.array(z.string()), inputs: z.record(z.string(), z.unknown()), outputs: z.array(z.string()), variants: z.array(z.string()), states: z.array(z.string()), responsiveRules: z.array(z.string()), accessibilityRules: z.array(z.string()), themeTokens: z.array(z.string()), dependencies: z.array(z.string()), compositionRules: z.array(z.string()), classicReason: z.string().optional() });
+export const recipeSchema = baseRecipeSchema.extend({
+  maturity:z.enum(maturityLevels), implementationTier:z.number().int().min(0).max(3), executable:z.boolean(), devices:z.array(z.string()),
+  actualFactory:z.string().nullable(), nativeValidated:z.boolean(), productionBenchmarked:z.boolean(), evidence:z.array(z.string()), limitations:z.array(z.string()),
+});
 export type Recipe = z.infer<typeof recipeSchema>;
 const groups: Record<string, string> = {
   navigation: 'AppShell Sidebar CollapsibleSidebar NavigationRail TopNavigation Breadcrumb Tabs VerticalTabs SegmentedNavigation MobileNavigation BackHeader',
@@ -49,10 +54,12 @@ const categoryGuidance: Record<string, [string, string]> = {
   content: ['Present secondary information with an appropriate disclosure level', 'Decorative wrappers and redundant visual labels'],
   analytics: ['Real scoped measures that support a comparison or decision', 'Invented numbers, misleading axes or missing text alternatives'],
 };
+let recipeCache: Recipe[] | undefined;
 export function recipes(): Recipe[] {
+  if (recipeCache) return recipeCache;
   const native = patternCatalog();
   const all = [...new Set([...Object.keys(categories), ...native.map(r => r.name)])];
-  return all.map(name => {
+  recipeCache = all.map(name => {
     const p = native.find(r => r.name === name); const m = modern[name];
     const category = categories[name] ?? 'content'; const policy = categoryGuidance[category]!; const advice = guidance[name];
     return recipeSchema.parse({ name, modes: name === 'MobileTaskForm' || name === 'MobileBottomActions' ? ['enter', 'review', 'approve'] : [], personalityCompatibility: name.startsWith('Mobile') && p ? ['dense-operations', 'minimal-workspace', 'fluent-enterprise'] : [], ...(name.startsWith('Mobile') && p ? {deviceStrategy:'Full-screen task; body scrolls independently; action region remains visible with bottom inset'} : {}), category, purpose: advice?.[0] ?? `${name}: ${policy[0]}`,
@@ -61,18 +68,20 @@ export function recipes(): Recipe[] {
       implementationType: m ? 'modern' : p ? 'composition' : 'planned', nativeControls: m ? [m] : p ? ['GroupContainer', 'ModernText', ...(p.classicExceptions.length ? ['Gallery'] : [])] : [],
       canvasComponents: p && !m ? [p.name] : [], optionalPCF: ['CalendarView', 'KanbanBoard', 'EditableTable', 'Timeline'].includes(name) ? ['Requires explicit capability gap, ownership, licensing and accessibility evaluation'] : [],
       inputs: p?.propsSchema ?? {}, outputs: p ? Object.keys((p.propsSchema as { properties?: Record<string, unknown> }).properties ?? {}).filter(k => /action|onSelect|onChange|confirm|cancel|retry/i.test(k)) : [],
-      variants: name === 'StatusBadge' ? ['standard', 'quiet'] : name.includes('Table') ? ['compact', 'standard', 'comfortable', 'selectable', 'editable', 'grouped'] : name.includes('Dialog') ? ['information', 'confirmation', 'destructive', 'form', 'review', 'success'] : name.includes('Card') ? ['standard', 'compact', 'interactive', 'selected', 'metric', 'warning', 'profile'] : ['standard'],
+      ...componentEvidence(name),
+      ...(!p && m ? {maturity:'PROTOTYPE',limitations:['Control mapping only; no reusable native factory'],implementationTier:1} : {}),
       states: ['default', 'disabled', 'empty', 'loading', 'error'], responsiveRules: ['Below 640: single column and touch targets', '640–1099: navigation rail', '1100+: side-by-side content where appropriate'],
       accessibilityRules: ['Meaningful names', 'Status text in addition to color', 'Logical focus order; overlays restore focus'], themeTokens: ['PF_text', 'PF_surface', 'PF_gap', 'PF_radius', 'PF_controlHeight'], dependencies: p ? [`PFDS/${p.version}`] : [], compositionRules: ['Host owns mutations and data scope', 'Do not nest decorative surfaces more than twice'], ...(p?.classicExceptions.length ? { classicReason: p.classicExceptions.join('; ') } : {}),
     });
   });
+  return recipeCache;
 }
 export interface ResolutionRequest { name: string; requiredCapabilities?: string[] | undefined; modernCapabilities?: string[] | undefined; compositionCapabilities?: string[] | undefined; allowPCF?: boolean | undefined; pcfJustification?: string | undefined; variant?: string | undefined; designContext?: { mode: string; personality: string; traits: string[]; density: number; device: 'desktop' | 'tablet' | 'mobile' } | undefined }
 export function resolveRecipe(request: ResolutionRequest) {
   const recipe = recipes().find(r => r.name === request.name);
   if (!recipe) throw new Error(`Unknown Taste recipe: ${request.name}`);
-  if (request.variant && !recipe.variants.includes(request.variant)) throw new Error('Unknown recipe variant.');
-  if (request.variant && request.variant !== 'standard' && !(request.name === 'StatusBadge' && request.variant === 'quiet') && !(request.requiredCapabilities?.length)) throw new Error('Variant needs an explicit capability contract; vocabulary alone does not implement it.');
+  if (request.variant && !recipe.variants.includes(request.variant)) throw new Error('Unknown recipe variant; no executable capability contract for this variant.');
+  if (request.variant && request.variant !== 'standard' && !recipe.executable && !(request.requiredCapabilities?.length)) throw new Error('Variant needs an explicit capability contract; vocabulary alone does not implement it.');
   const needs = request.requiredCapabilities ?? [];
   if (request.name === 'StatusBadge' && !needs.length && (request.variant === 'quiet' || request.designContext?.traits.includes('data-first') && request.designContext.density >= 7 && ['operate', 'review'].includes(request.designContext.mode))) return { recipe, level: 'modern', nativeControl: 'ModernText', treatment: 'quiet', reason: 'Dense operational priority stays textual and scannable without a filled badge competing with the record.', rejected: ['filled-badge', 'color-only-dot'], dependencies: [] };
   // Capabilities are supplied by live discovery, never inferred from a name alone.

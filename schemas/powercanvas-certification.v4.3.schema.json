@@ -1,0 +1,771 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "4.3"
+    },
+    "component": {
+      "type": "string"
+    },
+    "variant": {
+      "type": "string"
+    },
+    "sourceHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "planHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "environment": {
+      "type": "string",
+      "const": "Default"
+    },
+    "nonDisposable": {
+      "type": "boolean",
+      "const": true
+    },
+    "appId": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+    },
+    "controlVersions": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "compile": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "appChecker": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "accessibility": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "captures": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "native-player"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "theme": {
+            "type": "string",
+            "enum": [
+              "light",
+              "dark"
+            ]
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "sourceHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "planHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "review": {
+            "type": "string",
+            "minLength": 20
+          },
+          "binding": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string",
+                "const": "4.2"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "type": "string",
+                    "const": "4.2"
+                  },
+                  "identity": {
+                    "type": "object",
+                    "properties": {
+                      "environmentId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "appId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      },
+                      "sessionId": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "environmentId",
+                      "appId",
+                      "sessionId"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "authoringMcp",
+                      "pacDownload"
+                    ]
+                  },
+                  "acquiredAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  },
+                  "sourceHash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "screenHashes": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "businessFormulaHashes": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "dataSources": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "connectors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "evidenceHash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "readOnly": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "version",
+                  "identity",
+                  "mode",
+                  "acquiredAt",
+                  "sourceHash",
+                  "screenHashes",
+                  "businessFormulaHashes",
+                  "dataSources",
+                  "connectors",
+                  "evidenceHash",
+                  "readOnly"
+                ],
+                "additionalProperties": false
+              },
+              "designPlanHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "registryHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "component": {
+                "type": "string",
+                "minLength": 1
+              },
+              "variant": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sessionId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "viewport": {
+                "type": "object",
+                "properties": {
+                  "requestedWidth": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "browserWidth": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "browserHeight": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "cssWidth": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "cssHeight": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "logicalWidth": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "logicalHeight": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "devicePixelRatio": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "stableSamples": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "requestedWidth",
+                  "browserWidth",
+                  "browserHeight",
+                  "cssWidth",
+                  "cssHeight",
+                  "logicalWidth",
+                  "logicalHeight",
+                  "devicePixelRatio",
+                  "stableSamples"
+                ],
+                "additionalProperties": false
+              },
+              "theme": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark"
+                ]
+              }
+            },
+            "required": [
+              "version",
+              "source",
+              "designPlanHash",
+              "registryHash",
+              "component",
+              "variant",
+              "sessionId",
+              "viewport",
+              "theme"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "kind",
+          "width",
+          "theme",
+          "image",
+          "sourceHash",
+          "planHash",
+          "review",
+          "binding"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "interactions": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "sourceHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "name",
+          "passed",
+          "sourceHash",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "productBenchmark": {
+      "type": "object",
+      "properties": {
+        "functionalRegression": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "representativeData": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "qualityReview": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "functionalRegression",
+        "representativeData",
+        "qualityReview"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "4.2"
+        },
+        "identity": {
+          "type": "object",
+          "properties": {
+            "environmentId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "appId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "environmentId",
+            "appId",
+            "sessionId"
+          ],
+          "additionalProperties": false
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "authoringMcp",
+            "pacDownload"
+          ]
+        },
+        "acquiredAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "screenHashes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "businessFormulaHashes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "dataSources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "connectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidenceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "readOnly": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "identity",
+        "mode",
+        "acquiredAt",
+        "sourceHash",
+        "screenHashes",
+        "businessFormulaHashes",
+        "dataSources",
+        "connectors",
+        "evidenceHash",
+        "readOnly"
+      ],
+      "additionalProperties": false
+    },
+    "registryHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "registryArtifact": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidenceClass": {
+      "type": "string",
+      "enum": [
+        "COMPONENT_NATIVE_EVIDENCE",
+        "PRODUCT_BENCHMARK_EVIDENCE"
+      ]
+    },
+    "factoryHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "capabilityHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "capabilityArtifact": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "readback": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "generation": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "unverifiedControlVersions": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "knownAccessibilitySuggestions": {
+      "default": [],
+      "maxItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "screen": {
+            "type": "string"
+          },
+          "check": {
+            "type": "string",
+            "const": "ReadableScreenNameNeeded"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 30
+          }
+        },
+        "required": [
+          "screen",
+          "check",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "publication": {
+      "type": "object",
+      "properties": {
+        "publishedSourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "verification": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "publishedSourceHash",
+        "verification"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "component",
+    "variant",
+    "sourceHash",
+    "planHash",
+    "environment",
+    "nonDisposable",
+    "appId",
+    "controlVersions",
+    "compile",
+    "appChecker",
+    "accessibility",
+    "captures",
+    "interactions",
+    "source",
+    "registryHash",
+    "registryArtifact",
+    "sessionId",
+    "evidenceClass",
+    "factoryHash",
+    "capabilityHash",
+    "capabilityArtifact",
+    "readback",
+    "generation"
+  ],
+  "additionalProperties": false
+}

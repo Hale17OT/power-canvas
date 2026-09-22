@@ -17,9 +17,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -48,6 +46,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -162,6 +171,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -182,9 +209,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -213,6 +238,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -233,9 +269,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -264,6 +298,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -278,14 +323,80 @@
     "inappropriateUseCases": [
       "Replacing task actions with navigation or changing destinations across breakpoints"
     ],
-    "implementationType": "planned",
-    "nativeControls": [],
-    "canvasComponents": [],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "TopNavigation"
+    ],
     "optionalPCF": [],
-    "inputs": {},
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "underlined"
+          ]
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    },
     "outputs": [],
     "variants": [
-      "standard"
+      "standard",
+      "underlined"
     ],
     "states": [
       "default",
@@ -311,10 +422,31 @@
       "PF_radius",
       "PF_controlHeight"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
     ]
   },
   {
@@ -335,9 +467,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -366,6 +496,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -459,6 +600,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -479,9 +638,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -510,6 +667,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -530,9 +698,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -561,6 +727,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -581,9 +758,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -612,6 +787,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -632,9 +818,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -663,6 +847,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -760,12 +955,7 @@
       "onSelect"
     ],
     "variants": [
-      "compact",
-      "standard",
-      "comfortable",
-      "selectable",
-      "editable",
-      "grouped"
+      "standard"
     ],
     "states": [
       "default",
@@ -798,7 +988,25 @@
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
     ],
-    "classicReason": "Gallery: templated rows with mixed badges, metadata and contextual selection; no equivalent modern template API"
+    "classicReason": "Gallery: templated rows with mixed badges, metadata and contextual selection; no equivalent modern template API",
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
+    ]
   },
   {
     "name": "CompactTable",
@@ -818,14 +1026,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "compact",
-      "standard",
-      "comfortable",
-      "selectable",
-      "editable",
-      "grouped"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -854,6 +1055,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -874,14 +1086,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "compact",
-      "standard",
-      "comfortable",
-      "selectable",
-      "editable",
-      "grouped"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -910,6 +1115,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -932,14 +1148,7 @@
     ],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "compact",
-      "standard",
-      "comfortable",
-      "selectable",
-      "editable",
-      "grouped"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -968,6 +1177,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -988,14 +1208,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "compact",
-      "standard",
-      "comfortable",
-      "selectable",
-      "editable",
-      "grouped"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1024,6 +1237,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1044,9 +1268,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1075,6 +1297,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1089,14 +1322,94 @@
     "inappropriateUseCases": [
       "Implying editing, audit provenance or scale guarantees without a data contract"
     ],
-    "implementationType": "planned",
-    "nativeControls": [],
-    "canvasComponents": [],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "RichList"
+    ],
     "optionalPCF": [],
-    "inputs": {},
-    "outputs": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "onSelect": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "selected": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "comfortable",
+          "type": "string",
+          "enum": [
+            "compact",
+            "comfortable",
+            "cards"
+          ]
+        },
+        "maxItems": {
+          "default": 50,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        }
+      },
+      "required": [
+        "label",
+        "items",
+        "title",
+        "subtitle",
+        "status",
+        "onSelect"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [
+      "onSelect"
+    ],
     "variants": [
-      "standard"
+      "compact",
+      "comfortable",
+      "cards"
     ],
     "states": [
       "default",
@@ -1122,10 +1435,31 @@
       "PF_radius",
       "PF_controlHeight"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
     ]
   },
   {
@@ -1146,15 +1480,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1183,6 +1509,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1203,15 +1540,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1240,6 +1569,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1260,15 +1600,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1297,6 +1629,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1317,15 +1660,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1354,6 +1689,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1374,15 +1720,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1411,6 +1749,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1431,15 +1780,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1468,6 +1809,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1488,9 +1840,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1519,6 +1869,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1539,9 +1900,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1570,6 +1929,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1590,9 +1960,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1621,6 +1989,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1643,9 +2022,7 @@
     ],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1674,6 +2051,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1694,9 +2082,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1725,6 +2111,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1745,9 +2142,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1776,6 +2171,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1796,9 +2202,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1827,6 +2231,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1910,6 +2325,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -1930,9 +2363,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -1961,6 +2392,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -1983,9 +2425,7 @@
     ],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2014,6 +2454,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2036,9 +2487,7 @@
     ],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2067,6 +2516,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2089,9 +2549,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2120,6 +2578,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -2140,9 +2609,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2171,6 +2638,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2191,9 +2669,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2222,6 +2698,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2242,9 +2729,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2273,6 +2758,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2293,9 +2789,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2324,6 +2818,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2344,9 +2849,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2375,6 +2878,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2395,9 +2909,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2426,6 +2938,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2446,9 +2969,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2477,6 +2998,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2497,9 +3029,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2528,6 +3058,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2548,9 +3089,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2579,6 +3118,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2599,9 +3149,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2630,6 +3178,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2650,9 +3209,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2681,6 +3238,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2701,9 +3269,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2732,6 +3298,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2752,9 +3329,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2783,6 +3358,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2803,9 +3389,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2834,6 +3418,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2854,9 +3449,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2885,6 +3478,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2905,9 +3509,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2936,6 +3538,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -2956,9 +3569,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -2987,6 +3598,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3065,6 +3687,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -3085,9 +3725,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3116,6 +3754,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3136,9 +3785,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3167,6 +3814,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3187,9 +3845,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3218,6 +3874,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3238,9 +3905,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3269,6 +3934,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3291,9 +3967,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3322,6 +3996,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -3344,9 +4029,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3375,6 +4058,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -3397,9 +4091,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3428,6 +4120,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -3450,9 +4153,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3481,6 +4182,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -3501,9 +4213,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3532,6 +4242,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3552,9 +4273,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3583,6 +4302,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3603,9 +4333,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3634,6 +4362,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3735,6 +4474,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -3749,12 +4506,71 @@
     "inappropriateUseCases": [
       "Client-side visibility used as authorization or automatic mutation retries"
     ],
-    "implementationType": "planned",
-    "nativeControls": [],
-    "canvasComponents": [],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "BulkActionBar"
+    ],
     "optionalPCF": [],
-    "inputs": {},
-    "outputs": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "clear": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "actions": {
+          "minItems": 1,
+          "maxItems": 3,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "count",
+        "clear",
+        "actions"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [
+      "actions"
+    ],
     "variants": [
       "standard"
     ],
@@ -3782,10 +4598,31 @@
       "PF_radius",
       "PF_controlHeight"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
     ]
   },
   {
@@ -3806,9 +4643,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3837,6 +4672,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3851,12 +4697,83 @@
     "inappropriateUseCases": [
       "Client-side visibility used as authorization or automatic mutation retries"
     ],
-    "implementationType": "planned",
-    "nativeControls": [],
-    "canvasComponents": [],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "OverflowMenu"
+    ],
     "optionalPCF": [],
-    "inputs": {},
-    "outputs": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "open": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "toggle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "actions": {
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "label",
+        "open",
+        "toggle",
+        "close",
+        "actions"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [
+      "actions"
+    ],
     "variants": [
       "standard"
     ],
@@ -3884,10 +4801,31 @@
       "PF_radius",
       "PF_controlHeight"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
     ]
   },
   {
@@ -3908,9 +4846,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3939,6 +4875,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -3959,14 +4906,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "information",
-      "confirmation",
-      "destructive",
-      "form",
-      "review",
-      "success"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -3995,6 +4935,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4069,12 +5020,7 @@
       "confirmLabel"
     ],
     "variants": [
-      "information",
-      "confirmation",
-      "destructive",
-      "form",
-      "review",
-      "success"
+      "standard"
     ],
     "states": [
       "default",
@@ -4106,6 +5052,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -4126,14 +5090,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "information",
-      "confirmation",
-      "destructive",
-      "form",
-      "review",
-      "success"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4162,6 +5119,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4182,14 +5150,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "information",
-      "confirmation",
-      "destructive",
-      "form",
-      "review",
-      "success"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4218,6 +5179,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4238,14 +5210,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "information",
-      "confirmation",
-      "destructive",
-      "form",
-      "review",
-      "success"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4274,6 +5239,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4294,9 +5270,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4325,6 +5299,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4345,9 +5330,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4376,6 +5359,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4454,6 +5448,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -4474,14 +5486,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "information",
-      "confirmation",
-      "destructive",
-      "form",
-      "review",
-      "success"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4510,6 +5515,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4530,9 +5546,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4561,6 +5575,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4581,9 +5606,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4612,6 +5635,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4632,9 +5666,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4663,6 +5695,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4683,9 +5726,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4714,6 +5755,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4734,9 +5786,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4765,6 +5815,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4785,9 +5846,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4816,6 +5875,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4836,9 +5906,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -4867,6 +5935,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -4959,6 +6038,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -5043,6 +6140,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -5063,9 +6178,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5094,6 +6207,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5108,14 +6232,54 @@
     "inappropriateUseCases": [
       "Status that relies on color alone or falsely claims completion"
     ],
-    "implementationType": "planned",
-    "nativeControls": [],
-    "canvasComponents": [],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "Skeleton"
+    ],
     "optionalPCF": [],
-    "inputs": {},
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "rows": {
+          "default": 3,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "variant": {
+          "default": "content",
+          "type": "string",
+          "enum": [
+            "content",
+            "table"
+          ]
+        }
+      },
+      "required": [
+        "label",
+        "visible"
+      ],
+      "additionalProperties": false
+    },
     "outputs": [],
     "variants": [
-      "standard"
+      "content",
+      "table"
     ],
     "states": [
       "default",
@@ -5141,10 +6305,31 @@
       "PF_radius",
       "PF_controlHeight"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
     ]
   },
   {
@@ -5167,9 +6352,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5198,6 +6381,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -5218,9 +6412,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5249,6 +6441,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5269,9 +6472,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5300,6 +6501,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5320,9 +6532,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5351,6 +6561,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5371,9 +6592,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5402,6 +6621,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5424,9 +6654,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5455,6 +6683,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -5475,9 +6714,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5506,6 +6743,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5528,9 +6776,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5559,6 +6805,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PROTOTYPE",
+    "implementationTier": 1,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "Control mapping only; no reusable native factory"
     ]
   },
   {
@@ -5643,6 +6900,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -5663,9 +6938,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5694,6 +6967,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5714,9 +6998,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5745,6 +7027,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5765,9 +7058,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5796,6 +7087,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5816,15 +7118,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5853,6 +7147,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5873,9 +7178,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5904,6 +7207,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5924,9 +7238,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -5955,6 +7267,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -5975,9 +7298,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6006,6 +7327,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6026,9 +7358,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6057,6 +7387,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6077,9 +7418,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6108,6 +7447,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6128,9 +7478,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6159,6 +7507,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6179,9 +7538,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6210,6 +7567,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6230,9 +7598,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6261,6 +7627,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6281,9 +7658,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6312,6 +7687,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6332,9 +7718,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6363,6 +7747,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6383,9 +7778,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6414,6 +7807,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6434,9 +7838,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6465,6 +7867,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6485,9 +7898,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6516,6 +7927,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6536,15 +7958,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6573,6 +7987,17 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
     ]
   },
   {
@@ -6632,13 +8057,7 @@
     },
     "outputs": [],
     "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
+      "standard"
     ],
     "states": [
       "default",
@@ -6671,7 +8090,25 @@
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
     ],
-    "classicReason": "Gallery: templated rows with mixed badges, metadata and contextual selection; no equivalent modern template API"
+    "classicReason": "Gallery: templated rows with mixed badges, metadata and contextual selection; no equivalent modern template API",
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
+    ]
   },
   {
     "name": "ChartWithDetails",
@@ -6691,9 +8128,7 @@
     "optionalPCF": [],
     "inputs": {},
     "outputs": [],
-    "variants": [
-      "standard"
-    ],
+    "variants": [],
     "states": [
       "default",
       "disabled",
@@ -6722,6 +8157,1941 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "PLANNED",
+    "implementationTier": 0,
+    "executable": false,
+    "devices": [],
+    "actualFactory": null,
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [],
+    "limitations": [
+      "No executable native factory"
+    ]
+  },
+  {
+    "name": "BottomNavigation",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "BottomNavigation: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "BottomNavigation"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard",
+      "compact"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "NavigationDrawer",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "NavigationDrawer: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "NavigationDrawer"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "open": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "open",
+        "close",
+        "returnFocus",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard",
+      "compact"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "CompactSidebar",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "CompactSidebar: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "CompactSidebar"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "grouped"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard",
+      "grouped"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "SideSheet",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "SideSheet: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "SideSheet"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard",
+      "compact"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "BottomSheet",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "BottomSheet: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "BottomSheet"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard",
+      "compact"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "FullScreenTask",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "FullScreenTask: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "FullScreenTask"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard",
+      "compact"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "ContextPanel",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "ContextPanel: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "ContextPanel"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard",
+      "compact"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "FilterChips",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "FilterChips: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "FilterChips"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "options": {
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "selected": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "selected",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "reset": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "label",
+        "options",
+        "reset"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "standard"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "FilterPanel",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "FilterPanel: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "FilterPanel"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "apply": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "reset": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "panel",
+          "type": "string",
+          "enum": [
+            "inline",
+            "panel"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "apply",
+        "reset"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "inline",
+      "panel"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "GroupedList",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "GroupedList: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "GroupedList"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "onSelect": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "selected": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "comfortable",
+          "type": "string",
+          "enum": [
+            "compact",
+            "comfortable",
+            "cards"
+          ]
+        },
+        "maxItems": {
+          "default": 50,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "groupStart": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "label",
+        "items",
+        "title",
+        "subtitle",
+        "status",
+        "onSelect",
+        "group",
+        "groupStart"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [
+      "onSelect"
+    ],
+    "variants": [
+      "compact",
+      "comfortable",
+      "cards"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "RecordHeader",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "RecordHeader: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "RecordHeader"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "metadata": {
+          "default": "\"\"",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "compact",
+            "standard",
+            "editorial",
+            "mobile"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "subtitle"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "compact",
+      "standard",
+      "editorial",
+      "mobile"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "SectionHeader",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "SectionHeader: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "SectionHeader"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "default": "\"\"",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "compact",
+            "standard",
+            "numbered"
+          ]
+        },
+        "index": {
+          "default": 1,
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "compact",
+      "standard",
+      "numbered"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "Snackbar",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "Snackbar: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "Snackbar"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "dismiss": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "action": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "action": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "disabled": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "label",
+            "action"
+          ],
+          "additionalProperties": false
+        },
+        "variant": {
+          "default": "floating",
+          "type": "string",
+          "enum": [
+            "inline",
+            "floating"
+          ]
+        }
+      },
+      "required": [
+        "message",
+        "visible",
+        "dismiss"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [
+      "action"
+    ],
+    "variants": [
+      "inline",
+      "floating"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
+    ]
+  },
+  {
+    "name": "TaskForm",
+    "modes": [],
+    "personalityCompatibility": [],
+    "category": "content",
+    "purpose": "TaskForm: Present secondary information with an appropriate disclosure level",
+    "appropriateUseCases": [
+      "Present secondary information with an appropriate disclosure level"
+    ],
+    "inappropriateUseCases": [
+      "Decorative wrappers and redundant visual labels"
+    ],
+    "implementationType": "composition",
+    "nativeControls": [
+      "GroupContainer",
+      "ModernText"
+    ],
+    "canvasComponents": [
+      "TaskForm"
+    ],
+    "optionalPCF": [],
+    "inputs": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "single-column",
+          "type": "string",
+          "enum": [
+            "single-column",
+            "two-column",
+            "sectioned",
+            "wizard"
+          ]
+        },
+        "step": {
+          "default": "1",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "next": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "back": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "outputs": [],
+    "variants": [
+      "single-column",
+      "two-column",
+      "sectioned",
+      "wizard"
+    ],
+    "states": [
+      "default",
+      "disabled",
+      "empty",
+      "loading",
+      "error"
+    ],
+    "responsiveRules": [
+      "Below 640: single column and touch targets",
+      "640–1099: navigation rail",
+      "1100+: side-by-side content where appropriate"
+    ],
+    "accessibilityRules": [
+      "Meaningful names",
+      "Status text in addition to color",
+      "Logical focus order; overlays restore focus"
+    ],
+    "themeTokens": [
+      "PF_text",
+      "PF_surface",
+      "PF_gap",
+      "PF_radius",
+      "PF_controlHeight"
+    ],
+    "dependencies": [
+      "PFDS/0.2.0"
+    ],
+    "compositionRules": [
+      "Host owns mutations and data scope",
+      "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "expressivePattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Native Studio validation pending",
+      "Host owns data and focus entry; no browser focus-trap guarantee"
     ]
   },
   {
@@ -6800,6 +10170,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -6852,13 +10240,7 @@
     },
     "outputs": [],
     "variants": [
-      "standard",
-      "compact",
-      "interactive",
-      "selected",
-      "metric",
-      "warning",
-      "profile"
+      "standard"
     ],
     "states": [
       "default",
@@ -6890,6 +10272,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -6992,6 +10392,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -7067,6 +10485,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -7134,6 +10570,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -7220,7 +10674,25 @@
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
     ],
-    "classicReason": "Gallery: templated rows with mixed badges, metadata and contextual selection; no equivalent modern template API"
+    "classicReason": "Gallery: templated rows with mixed badges, metadata and contextual selection; no equivalent modern template API",
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
+    ]
   },
   {
     "name": "MobileBottomActions",
@@ -7292,6 +10764,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -7364,6 +10854,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -7416,12 +10924,7 @@
     },
     "outputs": [],
     "variants": [
-      "information",
-      "confirmation",
-      "destructive",
-      "form",
-      "review",
-      "success"
+      "standard"
     ],
     "states": [
       "default",
@@ -7453,6 +10956,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   },
   {
@@ -7526,6 +11047,24 @@
     "compositionRules": [
       "Host owns mutations and data scope",
       "Do not nest decorative surfaces more than twice"
+    ],
+    "maturity": "IMPLEMENTED",
+    "implementationTier": 2,
+    "executable": true,
+    "devices": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "actualFactory": "pattern",
+    "nativeValidated": false,
+    "productionBenchmarked": false,
+    "evidence": [
+      "Source factory",
+      "Local semantic tests; native runtime validation is a separate gate"
+    ],
+    "limitations": [
+      "Runtime evidence must match current generated source"
     ]
   }
 ]

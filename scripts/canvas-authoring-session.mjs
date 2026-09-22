@@ -1,3 +1,5 @@
+import {loadLocalAuthoringConfig} from './local-authoring-config.mjs';
+const local=await loadLocalAuthoringConfig();
 // Scoped official MCP session. Compile requires a hash-bound plan and a fresh remote preflight.
 import { spawn } from 'node:child_process';
 import process from 'node:process';
@@ -5,14 +7,15 @@ import { setTimeout, clearTimeout } from 'node:timers';
 import { resolve } from 'node:path';
 import { createInterface } from 'node:readline';
 import { readFile, writeFile } from 'node:fs/promises';
-import { readdir, appendFile } from 'node:fs/promises';
-import { parse } from 'yaml';
+import { appendFile } from 'node:fs/promises';
 import { hashJson } from '../dist/core/json.js';
 import { compileSucceeded } from '../dist/canvas/authoring-result.js';
-const appId = process.argv[2]; if (!/^[a-f0-9-]{36}$/.test(appId ?? '')) throw new Error('Explicit owned app ID required');
+import { readNativeSource } from '../dist/canvas/source-provider.js';
+import { planCanvasMigration } from '../dist/canvas/migration.js';
+const appId = process.argv[2]; if(appId!==local.binding.appId)throw new Error('Explicit app differs from local binding'); if (!/^[a-f0-9-]{36}$/.test(appId ?? '')) throw new Error('Explicit owned app ID required');
 const evidence = JSON.parse(await readFile(process.argv[3] ?? 'experiments/canvas-authoring/evidence/app-created.json', 'utf8'));
-if (evidence.solution !== 'pfx_PowerForgeExperiment' || evidence.environmentType !== 'Default' || evidence.nonDisposable !== true || !evidence.apps?.some(app => app.canvasappid === appId && app.ismanaged === false && app.displayname.startsWith('pfx_PowerCanvas')) || evidence.playerAppId !== appId || !evidence.members.some(member => member.objectid === appId && member.componenttype === 300)) throw new Error('App ID does not match the recorded experiment creation and solution membership.');
-const allowed = new Set(['list_controls', 'describe_control', 'list_data_sources', 'get_data_source_schema', 'get_accessibility_errors', 'get_appchecker_errors', 'sync_canvas', 'compile_canvas']);
+if (evidence.solution !== 'pfx_PowerForgeExperiment' || evidence.environmentType !== 'Default' || evidence.nonDisposable !== true || !evidence.apps?.some(app => app.canvasappid === appId && app.ismanaged === false && /^(pfx_PowerCanvas|pfx_PowerForge)/.test(app.displayname)) || evidence.playerAppId !== appId || !evidence.members.some(member => member.objectid === appId && member.componenttype === 300)) throw new Error('App ID does not match the recorded experiment creation and solution membership.');
+const allowed = new Set(['list_apis', 'describe_api', 'list_controls', 'describe_control', 'list_data_sources', 'get_data_source_schema', 'get_accessibility_errors', 'get_appchecker_errors', 'sync_canvas', 'compile_canvas']);
 const runId = new Date().toISOString().replaceAll(/[:.]/g, '-');
 const directory = resolve('.powercanvas/tooling');
 const child = spawn(resolve(directory, 'dotnet/dotnet.exe'), ['exec', resolve(directory, 'dotnet/sdk/10.0.401/dotnet.dll'), 'dnx', 'Microsoft.PowerApps.CanvasAuthoring.McpServer@1.1.5', '--yes'], {
@@ -33,7 +36,7 @@ try {
   const catalog = await request('tools/list', {});
   await writeFile(`.powercanvas/canvas-tool-catalog-${runId}.json`, JSON.stringify(catalog, null, 2), {flag:'wx'});
   console.log(JSON.stringify({ stage: 'Official server initialized; connecting to owned Canvas app', appId }));
-  const result = await request('tools/call', { name: 'connect', arguments: { environment_id: 'Default-22222222-2222-4222-8222-222222222222', app_id: appId, login_hint: 'operator@example.test' } });
+  const result = await request('tools/call', { name: 'connect', arguments: { environment_id: local.binding.environmentId, app_id: appId, environment_category: 'prod', login_hint: local.loginHint } });
   clearTimeout(timeout);
   // Official tool result is kept local. The public report is reviewed/redacted before archiving.
   const connectFile = `.powercanvas/canvas-connect-${runId}.json`;
@@ -48,15 +51,23 @@ try {
       if (command.name === 'compile_canvas') {
         const root = resolve('output/canvas/native'); const destination = resolve(command.arguments.directoryPath);
         if (!destination.startsWith(root + '\\')) throw new Error('Native source must be under the reviewed output folder.');
-        const files = async path => Object.fromEntries(await Promise.all((await readdir(path)).filter(f => f.endsWith('.pa.yaml') && f !== '_EditorState.pa.yaml').sort().map(async f => [f, parse(await readFile(resolve(path, f), 'utf8'))])));
+        const files = readNativeSource;
         const manifest = JSON.parse(await readFile(resolve(destination, 'native-manifest.json'), 'utf8'));
-        if (manifest.appId !== appId || manifest.solution !== 'pfx_PowerForgeExperiment' || manifest.environmentId !== 'Default-22222222-2222-4222-8222-222222222222' || !manifest.expectedRemoteHash) throw new Error('Reviewed native plan binding is incomplete.');
+        if (manifest.appId !== appId || manifest.solution !== 'pfx_PowerForgeExperiment' || manifest.environmentId !== local.binding.environmentId || !manifest.expectedRemoteHash) throw new Error('Reviewed native plan binding is incomplete.');
         if (hashJson(await files(destination)) !== manifest.nativeHash) throw new Error('Native source changed after review.');
         const fresh = resolve(root, `preflight-${runId}-${next}`);
         const check = await request('tools/call', { name: 'sync_canvas', arguments: { directoryPath: fresh } });
         await writeFile(`.powercanvas/canvas-preflight-${runId}-${next}.json`, JSON.stringify(check, null, 2), {flag: 'wx'});
         if (check.isError) throw new Error('Native source preflight request failed; no compile attempted. Inspect the preflight result.');
         if (hashJson(await files(fresh)) !== manifest.expectedRemoteHash) throw new Error('Studio changed after planning. Reconcile the fresh source before applying.');
+        // V4.2 cannot bypass business preservation by attaching a legacy native manifest.
+        const migration=planCanvasMigration(await files(fresh),await files(destination),[],manifest.approvedBehaviorChanges??[]);
+        if(!migration.safe)throw new Error('Native apply blocked: unresolved business binding or mutation path');
+        if(manifest.designSystem?.startsWith('PFDS/4')){
+          if(!manifest.sourceAgreement||manifest.sourceAgreement.status!=='MATCH'||manifest.sourceAgreement.authoring.sourceHash!==manifest.expectedRemoteHash)throw new Error('V4 source agreement required');
+          if(Date.now()-Date.parse(manifest.sourceAgreement.pac.acquiredAt)>15*60_000)throw new Error('Independent source expired; reacquire before apply');
+          if(manifest.previewOnly!==true||manifest.reviewedCandidateHash!==manifest.nativeHash)throw new Error('Reviewed preview-only candidate required');
+        }
         await appendFile('.powercanvas/canvas-authoring-journal.jsonl', JSON.stringify({ at: new Date().toISOString(), status: 'started', appId, nativeHash: manifest.nativeHash, expectedRemoteHash: manifest.expectedRemoteHash, environmentType: 'Default', nonDisposable: true }) + '\n');
       }
       if (command.name === 'sync_canvas') {
@@ -68,6 +79,10 @@ try {
       }
       const response = await request('tools/call', command);
       const filename = `.powercanvas/canvas-${command.name}-${runId}-${next}.json`; await writeFile(filename, JSON.stringify(response, null, 2), { flag: 'wx' });
+      if(command.name==='sync_canvas'){
+        try{if(response.isError)throw new Error('Official sync returned an error');await readNativeSource(command.arguments.directoryPath);}
+        catch(error){console.log(JSON.stringify({tool:command.name,ok:false,resultFile:filename,reason:'No verified App and screen source written: '+String(error)}));process.exitCode=1;continue;}
+      }
       if (command.name === 'compile_canvas') {
         await appendFile('.powercanvas/canvas-authoring-journal.jsonl', JSON.stringify({ at: new Date().toISOString(), status: compileSucceeded(response) ? 'validated-awaiting-readback' : 'validation-failed', appId, resultFile: filename, environmentType: 'Default', nonDisposable: true }) + '\n');
         if (!compileSucceeded(response)) { console.log(JSON.stringify({ tool: command.name, ok: false, resultFile: filename, remediation: 'Inspect validation and fresh source before another compile.' })); continue; }

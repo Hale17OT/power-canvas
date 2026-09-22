@@ -1,0 +1,11 @@
+source: https://www.powerappsui.com/components/accordion-list
+category: DATA DISPLAY
+observations:
+  - Repeated record groups need consistent spacing, headings and caller-owned content.
+adaptablePatterns:
+  - GroupedList
+  - SectionHeader
+notAdaptable:
+  - The V4 grouped list does not implement accordion collapse or imply server delegation.
+sourceAdapted: false
+reviewedAt: '2026-09-21'

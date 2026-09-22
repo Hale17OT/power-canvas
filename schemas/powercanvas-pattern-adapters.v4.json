@@ -1,0 +1,264 @@
+[
+  {
+    "name": "HoverCard",
+    "sourcePattern": "HoverCard",
+    "intent": "Reveal secondary context",
+    "categories": [
+      "OVERLAYS",
+      "CONTENT"
+    ],
+    "feasibility": "TRANSLATED",
+    "nativeTranslation": [
+      "ContextPanel"
+    ],
+    "limitations": [
+      "Hover-only activation rejected"
+    ],
+    "mobileTranslation": "BottomSheet on tap",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "ResizableSidebar",
+    "sourcePattern": "ResizableSidebar",
+    "intent": "Adjust reading space",
+    "categories": [
+      "LAYOUT",
+      "NAVIGATION"
+    ],
+    "feasibility": "TRANSLATED",
+    "nativeTranslation": [
+      "CompactSidebar"
+    ],
+    "limitations": [
+      "Preset widths only; no drag resize"
+    ],
+    "mobileTranslation": "NavigationDrawer",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "CommandPalette",
+    "sourcePattern": "CommandPalette",
+    "intent": "Find commands without scanning menus",
+    "categories": [
+      "SEARCH",
+      "PRODUCTIVITY"
+    ],
+    "feasibility": "TRANSLATED",
+    "nativeTranslation": [],
+    "limitations": [
+      "REFERENCE; search+command factory not implemented"
+    ],
+    "mobileTranslation": "FullScreenTask with search",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "BottomSheet",
+    "sourcePattern": "BottomSheet",
+    "intent": "Secondary touch task",
+    "categories": [
+      "OVERLAYS",
+      "MOBILE"
+    ],
+    "feasibility": "TRANSLATED",
+    "nativeTranslation": [
+      "BottomSheet"
+    ],
+    "limitations": [
+      "No swipe/drag dismissal"
+    ],
+    "mobileTranslation": "Bottom-anchored scrollable panel",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "NavigationDrawer",
+    "sourcePattern": "NavigationDrawer",
+    "intent": "Disclose lower-frequency destinations",
+    "categories": [
+      "NAVIGATION",
+      "MOBILE"
+    ],
+    "feasibility": "TRANSLATED",
+    "nativeTranslation": [
+      "NavigationDrawer"
+    ],
+    "limitations": [
+      "No swipe gesture; maximum 12 destinations"
+    ],
+    "mobileTranslation": "Labeled drawer with explicit close",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "GroupedList",
+    "sourcePattern": "GroupedList",
+    "intent": "Scan bounded grouped records",
+    "categories": [
+      "DATA DISPLAY"
+    ],
+    "feasibility": "TRANSLATED",
+    "nativeTranslation": [
+      "GroupedList"
+    ],
+    "limitations": [
+      "Host supplies sorted flat rows and group-start boolean; no implied delegation"
+    ],
+    "mobileTranslation": "Single column",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "GlassSurface",
+    "sourcePattern": "GlassSurface",
+    "intent": "Separate foreground context",
+    "categories": [
+      "SURFACES"
+    ],
+    "feasibility": "TRANSLATED",
+    "nativeTranslation": [
+      "SideSheet"
+    ],
+    "limitations": [
+      "No backdrop blur; use contrast and border"
+    ],
+    "mobileTranslation": "Opaque surface",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "DragDropKanban",
+    "sourcePattern": "DragDropKanban",
+    "intent": "Reorder work between stages",
+    "categories": [
+      "WORKFLOW",
+      "ADVANCED INTERACTION"
+    ],
+    "feasibility": "PCF_CANDIDATE",
+    "nativeTranslation": [],
+    "limitations": [
+      "No drag/drop board implemented"
+    ],
+    "mobileTranslation": "Explicit stage-change action",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Only after measured native capability/performance gap; never auto-install",
+    "complexity": "high",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "AdvancedCalendar",
+    "sourcePattern": "AdvancedCalendar",
+    "intent": "Inspect time and scheduling",
+    "categories": [
+      "WORKFLOW",
+      "ANALYTICS"
+    ],
+    "feasibility": "PCF_CANDIDATE",
+    "nativeTranslation": [],
+    "limitations": [
+      "No calendar interactions implemented"
+    ],
+    "mobileTranslation": "Agenda fallback requires a separate contract",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Only after measured native capability/performance gap; never auto-install",
+    "complexity": "high",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "ComplexGrid",
+    "sourcePattern": "ComplexGrid",
+    "intent": "Spreadsheet-like interaction",
+    "categories": [
+      "DATA DISPLAY",
+      "ADVANCED INTERACTION"
+    ],
+    "feasibility": "PCF_CANDIDATE",
+    "nativeTranslation": [],
+    "limitations": [
+      "No virtualization or spreadsheet editing claim"
+    ],
+    "mobileTranslation": "Record editor",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Only after measured native capability/performance gap; never auto-install",
+    "complexity": "high",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  },
+  {
+    "name": "NativeBackdropBlur",
+    "sourcePattern": "NativeBackdropBlur",
+    "intent": "Blur content behind an overlay",
+    "categories": [
+      "SURFACES"
+    ],
+    "feasibility": "REJECTED",
+    "nativeTranslation": [],
+    "limitations": [
+      "Canvas has no supported backdrop-filter primitive"
+    ],
+    "mobileTranslation": "Opaque high-contrast surface",
+    "accessibility": [
+      "Text labels, 44px actions, logical source order",
+      "Restore context after dismissal; native keyboard testing pending"
+    ],
+    "pcfEscalation": "Escalate only when required interaction exceeds this bounded translation",
+    "complexity": "medium",
+    "performance": "Bound gallery rows; avoid nested galleries; audit generated control count",
+    "maintainability": "Host supplies data and event formulas; shared semantic tokens"
+  }
+]

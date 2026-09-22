@@ -1,0 +1,6 @@
+interface:
+  display_name: "PowerCanvas"
+  short_description: "Plan and orchestrate PowerCanvas workflows"
+  default_prompt: "Use $powercanvas for this PowerCanvas task."
+policy:
+  allow_implicit_invocation: true

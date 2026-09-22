@@ -1,0 +1,6 @@
+{
+  "name": "powercanvas",
+  "version": "1.0.0",
+  "description": "PowerCanvas compiler workflows for Canvas, Taste, flows and debugging.",
+  "skills": "./skills/"
+}

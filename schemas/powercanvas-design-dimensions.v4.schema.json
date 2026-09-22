@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "density": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "formality": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "warmth": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "contrast": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "surfaceDepth": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "radiusCharacter": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "typographyExpression": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "navigationPresence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "dataEmphasis": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "brandExpression": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "motion": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "decorativeIntensity": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    }
+  },
+  "required": [
+    "density",
+    "formality",
+    "warmth",
+    "contrast",
+    "surfaceDepth",
+    "radiusCharacter",
+    "typographyExpression",
+    "navigationPresence",
+    "dataEmphasis",
+    "brandExpression",
+    "motion",
+    "decorativeIntensity"
+  ],
+  "additionalProperties": false
+}

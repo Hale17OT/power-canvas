@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "sourcePattern": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "categories": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "FOUNDATIONS",
+          "NAVIGATION",
+          "LAYOUT",
+          "SURFACES",
+          "DATA DISPLAY",
+          "FORMS",
+          "SELECTION",
+          "ACTIONS",
+          "SEARCH",
+          "FILTERING",
+          "OVERLAYS",
+          "FEEDBACK",
+          "CONTENT",
+          "IDENTITY",
+          "FILES",
+          "COMMUNICATION",
+          "WORKFLOW",
+          "ANALYTICS",
+          "MOBILE",
+          "PRODUCTIVITY",
+          "ADVANCED INTERACTION"
+        ]
+      }
+    },
+    "feasibility": {
+      "type": "string",
+      "enum": [
+        "NATIVE",
+        "TRANSLATED",
+        "PCF_CANDIDATE",
+        "REJECTED"
+      ]
+    },
+    "nativeTranslation": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mobileTranslation": {
+      "type": "string"
+    },
+    "accessibility": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pcfEscalation": {
+      "type": "string"
+    },
+    "complexity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "performance": {
+      "type": "string"
+    },
+    "maintainability": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "sourcePattern",
+    "intent",
+    "categories",
+    "feasibility",
+    "nativeTranslation",
+    "limitations",
+    "mobileTranslation",
+    "accessibility",
+    "pcfEscalation",
+    "complexity",
+    "performance",
+    "maintainability"
+  ],
+  "additionalProperties": false
+}

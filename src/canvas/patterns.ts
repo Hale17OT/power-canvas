@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { NativeControl } from './native-types.js';
 import { resolveTheme } from './tokens.js';
+import { expressiveContracts, expressivePattern, type ExpressivePattern } from './expressive.js';
 
 /** PFDS 0.2: native composition primitives. No application identities or data mutations live here. */
 export const PATTERN_VERSION = '0.2.0';
@@ -31,6 +32,7 @@ const label = z.string().min(1).max(200);
 const action = z.strictObject({ label, action: expr, icon: z.string().optional(), primary: z.boolean().default(false) });
 const section = z.strictObject({ title: expr, subtitle: expr.default('""') });
 const contracts = {
+  ...expressiveContracts,
   PageHeader: section,
   KpiCard: z.strictObject({ label: expr, value: expr, caption: expr.default('""') }),
   Sidebar: z.strictObject({ title: label, items: z.array(z.strictObject({ label, icon: label, action: expr, selected: z.boolean() })).min(1).max(6), disabled: expr.default('false') }),
@@ -64,11 +66,12 @@ export function patternCatalog() { return Object.entries(contracts).map(([name, 
 
 /** Inputs ending in expressions are explicitly authored Power Fx, reviewed before remote compile. */
 export function pattern<K extends Pattern>(name: string, kind: K, input: z.input<typeof contracts[K]>, children: Control[] = [], props: Props = {}): Control {
+  if (Object.hasOwn(expressiveContracts, kind)) return expressivePattern(name, kind as ExpressivePattern, input, children, props);
   const parsed = contracts[kind].parse(input);
   // Each discriminant is validated above; local accessors keep one public generic entry point.
   const p = parsed as Record<string, unknown>; const s = (key: string) => String(p[key]);
   const txt = (suffix: string, key: string, extra: Props = {}) => text(`${name}_${suffix}`, s(key), extra);
-  let result: Control;
+  let result: Control = {};
   switch (kind) {
     case 'PageHeader': result = stack(name, [txt('title', 'title', { Size: '=PF_typeTitle', FontWeight: '=FontWeight.Semibold', Height: '=36' }), txt('subtitle', 'subtitle', { Color: '=PF_muted', Height: '=32', AutoHeight: '=true' })], { Height: '=80', LayoutGap: '=4' }); break;
     case 'KpiCard': result = stack(name, [txt('label', 'label', { Color: '=PF_muted', Size: '=PF_typeCaption' }), txt('value', 'value', { Size: '=PF_typeMetric', FontWeight: '=FontWeight.Semibold', Height: '=42' }), txt('caption', 'caption', { Color: '=PF_muted', Size: '=PF_typeCaption', Height: '=22' })], { ...surface, Height: '=148', Width: '=If(PF_mobile, Parent.Width, (Parent.Width - 32) / 3)', AlignInContainer: '=AlignInContainer.Start', LayoutGap: '=4' }); break;

@@ -1,0 +1,10 @@
+import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import process from 'node:process';
+import {evaluateRouting} from '../dist/agent/eval.js';
+import {commandManifest} from '../dist/agent/commands.js';
+import {createProgram} from '../dist/cli/program.js';
+const cases=JSON.parse(await readFile('tests/fixtures/agent/routing.json','utf8'));
+const result=evaluateRouting(cases,commandManifest(createProgram()).map(c=>c.command));
+await mkdir('output/agent-v1',{recursive:true});await writeFile('output/agent-v1/evaluation.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify({passed:result.passed,routingCases:result.results.length,resultInterpretationCases:result.interpretations.length,remoteCalls:0,failures:result.results.filter(r=>!r.passed).map(r=>({id:r.id,checks:r.checks}))}));
+if(!result.passed)process.exitCode=1;

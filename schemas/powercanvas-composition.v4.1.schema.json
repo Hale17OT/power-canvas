@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "4.1"
+    },
+    "screen": {
+      "type": "string",
+      "pattern": "^[A-Za-z_]\\w*$"
+    },
+    "planHash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "archetype": {
+      "type": "string"
+    },
+    "family": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string",
+      "enum": [
+        "experimental",
+        "production"
+      ]
+    },
+    "shell": {
+      "type": "string",
+      "enum": [
+        "contextual",
+        "focused"
+      ]
+    },
+    "regions": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z_]\\w*$"
+          },
+          "slot": {
+            "type": "string",
+            "enum": [
+              "page.header",
+              "page.navigation",
+              "page.primaryContent",
+              "page.secondaryContent",
+              "record.identity",
+              "record.metadata",
+              "record.actions",
+              "record.activity",
+              "data.search",
+              "data.filters",
+              "data.commands",
+              "data.view",
+              "data.selectionActions",
+              "form.header",
+              "form.fields",
+              "form.review",
+              "form.actions",
+              "page.feedback",
+              "document.preview"
+            ]
+          },
+          "layout": {
+            "type": "string",
+            "enum": [
+              "stack",
+              "row",
+              "split",
+              "overlay",
+              "fixed",
+              "flow"
+            ]
+          },
+          "component": {
+            "type": "object",
+            "properties": {
+              "preferred": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallback": {
+                "type": "string",
+                "minLength": 1
+              },
+              "variant": {
+                "default": "standard",
+                "type": "string"
+              }
+            },
+            "required": [
+              "preferred"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "slot",
+          "layout",
+          "component"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "responsive": {
+      "minItems": 3,
+      "maxItems": 3,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "type": "string",
+            "enum": [
+              "desktop",
+              "tablet",
+              "mobile"
+            ]
+          },
+          "navigation": {
+            "type": "object",
+            "properties": {
+              "preferred": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallback": {
+                "type": "string",
+                "minLength": 1
+              },
+              "variant": {
+                "default": "standard",
+                "type": "string"
+              }
+            },
+            "required": [
+              "preferred"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "device",
+          "navigation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "version",
+    "screen",
+    "planHash",
+    "archetype",
+    "family",
+    "stability",
+    "shell",
+    "regions",
+    "responsive",
+    "bindings",
+    "hash"
+  ],
+  "additionalProperties": false
+}

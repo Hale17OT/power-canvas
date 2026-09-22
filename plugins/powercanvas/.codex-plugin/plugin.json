@@ -1,0 +1,16 @@
+{
+  "name": "powercanvas",
+  "version": "1.0.0",
+  "description": "Agent workflows over the deterministic PowerCanvas compiler.",
+  "author": { "name": "PowerCanvas contributors" },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PowerCanvas",
+    "shortDescription": "Plan, design and validate PowerCanvas projects.",
+    "longDescription": "Five portable skills route Canvas, Taste, flow and debugging work through existing compiler and safety gates. Native authoring uses Microsoft's separately configured provider.",
+    "developerName": "PowerCanvas",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": ["Use PowerCanvas to inspect this project.", "Plan a Canvas redesign while preserving behavior.", "Plan a typed approval workflow."]
+  }
+}

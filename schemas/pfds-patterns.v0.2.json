@@ -1,5 +1,1375 @@
 [
   {
+    "name": "TopNavigation",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "underlined"
+          ]
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "BottomNavigation",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "NavigationDrawer",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "open": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "open",
+        "close",
+        "returnFocus",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "CompactSidebar",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "minItems": 1,
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "selected": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "grouped"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "SideSheet",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "BottomSheet",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "FullScreenTask",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "ContextPanel",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "returnFocus": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "returnFocusMobile": {
+          "type": "string",
+          "pattern": "^[A-Za-z_]\\w*$"
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "standard",
+            "compact"
+          ]
+        },
+        "scrim": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "subtle",
+            "standard",
+            "strong"
+          ]
+        },
+        "surface": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "flat",
+            "standard",
+            "elevated",
+            "bordered",
+            "inset",
+            "dark",
+            "highContrast"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "close",
+        "returnFocus"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "OverflowMenu",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "open": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "toggle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "close": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "actions": {
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "label",
+        "open",
+        "toggle",
+        "close",
+        "actions"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "BulkActionBar",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "clear": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "actions": {
+          "minItems": 1,
+          "maxItems": 3,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "disabled": {
+                "default": "false",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "count",
+        "clear",
+        "actions"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "FilterChips",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "options": {
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "selected": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "label",
+              "selected",
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "reset": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "label",
+        "options",
+        "reset"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "FilterPanel",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "apply": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "reset": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "panel",
+          "type": "string",
+          "enum": [
+            "inline",
+            "panel"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "visible",
+        "apply",
+        "reset"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "RichList",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "onSelect": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "selected": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "comfortable",
+          "type": "string",
+          "enum": [
+            "compact",
+            "comfortable",
+            "cards"
+          ]
+        },
+        "maxItems": {
+          "default": 50,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        }
+      },
+      "required": [
+        "label",
+        "items",
+        "title",
+        "subtitle",
+        "status",
+        "onSelect"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "GroupedList",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "onSelect": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "selected": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "disabled": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "comfortable",
+          "type": "string",
+          "enum": [
+            "compact",
+            "comfortable",
+            "cards"
+          ]
+        },
+        "maxItems": {
+          "default": 50,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "groupStart": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "label",
+        "items",
+        "title",
+        "subtitle",
+        "status",
+        "onSelect",
+        "group",
+        "groupStart"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "RecordHeader",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "metadata": {
+          "default": "\"\"",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "compact",
+            "standard",
+            "editorial",
+            "mobile"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "subtitle"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "SectionHeader",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "subtitle": {
+          "default": "\"\"",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "standard",
+          "type": "string",
+          "enum": [
+            "compact",
+            "standard",
+            "numbered"
+          ]
+        },
+        "index": {
+          "default": 1,
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "Skeleton",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "rows": {
+          "default": 3,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "variant": {
+          "default": "content",
+          "type": "string",
+          "enum": [
+            "content",
+            "table"
+          ]
+        }
+      },
+      "required": [
+        "label",
+        "visible"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "Snackbar",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "visible": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "dismiss": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "action": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "action": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "disabled": {
+              "default": "false",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "label",
+            "action"
+          ],
+          "additionalProperties": false
+        },
+        "variant": {
+          "default": "floating",
+          "type": "string",
+          "enum": [
+            "inline",
+            "floating"
+          ]
+        }
+      },
+      "required": [
+        "message",
+        "visible",
+        "dismiss"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
+    "name": "TaskForm",
+    "version": "0.2.0",
+    "propsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "variant": {
+          "default": "single-column",
+          "type": "string",
+          "enum": [
+            "single-column",
+            "two-column",
+            "sectioned",
+            "wizard"
+          ]
+        },
+        "step": {
+          "default": "1",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "next": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "back": {
+          "default": "false",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "implementation": "native-control composition",
+    "mutationOwner": "host application",
+    "breakpoints": [
+      640,
+      1100
+    ],
+    "modernFirst": true,
+    "classicExceptions": [],
+    "accessibility": "Named interactive controls; visible text statuses; responsive reading order; modal host must disable background and restore focus"
+  },
+  {
     "name": "PageHeader",
     "version": "0.2.0",
     "propsSchema": {

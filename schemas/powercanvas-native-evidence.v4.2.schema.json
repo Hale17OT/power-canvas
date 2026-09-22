@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "4.2"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "4.2"
+        },
+        "identity": {
+          "type": "object",
+          "properties": {
+            "environmentId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "appId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "environmentId",
+            "appId",
+            "sessionId"
+          ],
+          "additionalProperties": false
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "authoringMcp",
+            "pacDownload"
+          ]
+        },
+        "acquiredAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "screenHashes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "businessFormulaHashes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "dataSources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "connectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidenceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "readOnly": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "identity",
+        "mode",
+        "acquiredAt",
+        "sourceHash",
+        "screenHashes",
+        "businessFormulaHashes",
+        "dataSources",
+        "connectors",
+        "evidenceHash",
+        "readOnly"
+      ],
+      "additionalProperties": false
+    },
+    "designPlanHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "registryHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "component": {
+      "type": "string",
+      "minLength": 1
+    },
+    "variant": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "viewport": {
+      "type": "object",
+      "properties": {
+        "requestedWidth": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "browserWidth": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "browserHeight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "cssWidth": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "cssHeight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "logicalWidth": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "logicalHeight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "devicePixelRatio": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "stableSamples": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "requestedWidth",
+        "browserWidth",
+        "browserHeight",
+        "cssWidth",
+        "cssHeight",
+        "logicalWidth",
+        "logicalHeight",
+        "devicePixelRatio",
+        "stableSamples"
+      ],
+      "additionalProperties": false
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "light",
+        "dark"
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "source",
+    "designPlanHash",
+    "registryHash",
+    "component",
+    "variant",
+    "sessionId",
+    "viewport",
+    "theme"
+  ],
+  "additionalProperties": false
+}

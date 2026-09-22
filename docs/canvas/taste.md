@@ -1,5 +1,7 @@
 # PowerApps Taste
 
+For the offline decision-first V4 engine, executable component expansion and benchmarks, see the [V4 guide](design-v4.md). Existing V1–V3 generation remains supported.
+
 For PRODUCT.md, DESIGN.md, screenshot-bound critique, native refinements and design drift, see the [V2 design-memory guide](taste-memory.md). V1 contracts below remain supported.
 
 Taste is PowerCanvas's workflow-to-design subsystem for native Canvas generation. The agent reasons about the workflow and writes a structured intent. The deterministic CLI resolves personality/dials, selects compositions, resolves component capabilities, emits PFDS source, inventories dependencies and rejects static failures. Runtime evidence remains a separate completion gate.
@@ -90,3 +92,7 @@ Use the existing three-way sync planner against the last generated intent, last 
 The current bound native app supports dashboard, record list and editable master/detail. Other compositions generate configurable native layout blocks; they do not invent document storage, approval permissions, user administration or services. Several advanced vocabulary entries remain planned. The semantic HTML showcase is a different older layer, not a native quality certificate. Large-data delegation, separate-user authorization, standalone licensing and production ALM remain separate gates.
 
 See the [repository skill](../../skills/powerapps-taste/SKILL.md) and [research decisions](../../skills/powerapps-taste/references/research.md).
+
+For fresh native acquisition, source agreement, behavioral migration and evidence gates, see [Design Engine V4.2](design-v42.md) and its [execution report](design-v42-report.md).
+
+For source-bound authoring recovery, reversible certification batches and the provisional production-core manifest, see [Design Engine V4.4](design-v44.md) and its [blocked acceptance report](design-v44-report.md).

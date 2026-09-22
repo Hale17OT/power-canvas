@@ -1,0 +1,6 @@
+interface:
+  display_name: "PowerCanvas Canvas"
+  short_description: "Generate and migrate native Canvas source"
+  default_prompt: "Use $powercanvas-canvas for this PowerCanvas task."
+policy:
+  allow_implicit_invocation: true

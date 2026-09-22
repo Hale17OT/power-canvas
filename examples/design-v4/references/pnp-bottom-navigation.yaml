@@ -1,0 +1,11 @@
+source: https://github.com/pnp/powerapps-designtoolkit/blob/main/materialdesign%20components/docs/BottomNavigation.md
+category: NAVIGATION
+observations:
+  - A small bounded destination set suits mobile navigation; larger sets need a different surface.
+adaptablePatterns:
+  - BottomNavigation
+  - NavigationDrawer
+notAdaptable:
+  - Gesture navigation is not provided by the native translation.
+sourceAdapted: false
+reviewedAt: '2026-09-21'

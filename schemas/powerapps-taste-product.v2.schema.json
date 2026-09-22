@@ -2,6 +2,121 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
+    "context": {
+      "type": "object",
+      "properties": {
+        "destinationCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "hierarchyDepth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "navigationFrequency": {
+          "type": "string",
+          "enum": [
+            "occasional",
+            "frequent"
+          ]
+        },
+        "userFamiliarity": {
+          "type": "string",
+          "enum": [
+            "new",
+            "experienced"
+          ]
+        },
+        "persistentContext": {
+          "type": "boolean"
+        },
+        "taskMinutes": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 480
+        },
+        "fieldCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "fieldComplexity": {
+          "type": "string",
+          "enum": [
+            "simple",
+            "dependent"
+          ]
+        },
+        "validationBurden": {
+          "type": "string",
+          "enum": [
+            "low",
+            "high"
+          ]
+        },
+        "recordCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "comparison": {
+          "type": "boolean"
+        },
+        "visualContent": {
+          "type": "boolean"
+        },
+        "scanKey": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "status",
+            "time",
+            "measure"
+          ]
+        },
+        "sorting": {
+          "type": "boolean"
+        },
+        "editing": {
+          "type": "boolean"
+        },
+        "workflow": {
+          "type": "string",
+          "enum": [
+            "queue",
+            "analysis",
+            "reading",
+            "entry",
+            "configuration",
+            "stages",
+            "history"
+          ]
+        },
+        "overlayTask": {
+          "type": "string",
+          "enum": [
+            "confirmation",
+            "edit",
+            "filter",
+            "inspect"
+          ]
+        },
+        "destructive": {
+          "type": "boolean"
+        },
+        "actionCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "bulkActions": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
     "name": {
       "type": "string",
       "minLength": 1

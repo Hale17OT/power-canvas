@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "canvas-production-core-v1"
+    },
+    "groups": {
+      "type": "object",
+      "properties": {
+        "navigation": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+          }
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+          }
+        },
+        "forms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+          }
+        },
+        "overlays": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+          }
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+          }
+        },
+        "feedback": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+          }
+        },
+        "hierarchy": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+          }
+        }
+      },
+      "required": [
+        "navigation",
+        "data",
+        "forms",
+        "overlays",
+        "commands",
+        "feedback",
+        "hierarchy"
+      ],
+      "additionalProperties": false
+    },
+    "dependencies": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[A-Za-z]+\\.[a-z][a-z-]*$"
+        }
+      }
+    }
+  },
+  "required": [
+    "version",
+    "groups",
+    "dependencies"
+  ],
+  "additionalProperties": false
+}

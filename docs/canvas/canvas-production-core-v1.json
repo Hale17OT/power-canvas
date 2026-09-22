@@ -1,0 +1,279 @@
+{
+  "version": "canvas-production-core-v1",
+  "groups": {
+    "navigation": [],
+    "data": [],
+    "forms": [],
+    "overlays": [],
+    "commands": [],
+    "feedback": [
+      "EmptyState.standard",
+      "LoadingState.standard"
+    ],
+    "hierarchy": [
+      "PageHeader.standard",
+      "RecordHeader.standard",
+      "SectionHeader.standard",
+      "DetailPanel.standard"
+    ]
+  },
+  "dependencies": {},
+  "status": "INCOMPLETE",
+  "confidencePolicy": "NATIVE_VALIDATED; publication not required; production benchmark remains separate",
+  "variants": [
+    {
+      "id": "EmptyState.standard",
+      "maturity": "NATIVE_VALIDATED",
+      "sourceHash": "74385a3d1e6d4d8b4bd15a13d2fc3229039fdccd9b670da18502e613573565b9",
+      "factoryHash": "fac11f95cb0eb70d1685e197ef855a0272c63fcacd8bfcc287ed7ebf28245988",
+      "capabilityHash": "a420252aae8d204c4ee524139e73f66bc7a21d0b70a668bf9a7356eee514d9b7",
+      "evidenceHash": "5df9c13d1a51db331369ea6de50bb4cd2521bd07849c56f3863540dc7c18c54b",
+      "dependencies": []
+    },
+    {
+      "id": "LoadingState.standard",
+      "maturity": "NATIVE_VALIDATED",
+      "sourceHash": "74385a3d1e6d4d8b4bd15a13d2fc3229039fdccd9b670da18502e613573565b9",
+      "factoryHash": "44aba910afe9c56e2e5f05641812f562ce2047b74eab8edbbf9765d70c5cce7a",
+      "capabilityHash": "a420252aae8d204c4ee524139e73f66bc7a21d0b70a668bf9a7356eee514d9b7",
+      "evidenceHash": "9be4e3e3f02804fea6c2ec1166b47bbd479e641badc2d1e87a6e60a38257a2c9",
+      "dependencies": []
+    },
+    {
+      "id": "PageHeader.standard",
+      "maturity": "NATIVE_VALIDATED",
+      "sourceHash": "74385a3d1e6d4d8b4bd15a13d2fc3229039fdccd9b670da18502e613573565b9",
+      "factoryHash": "53472dfbd42bf05e9e4403b861275b43ad9b02bc1f19153591ac37072e791788",
+      "capabilityHash": "a420252aae8d204c4ee524139e73f66bc7a21d0b70a668bf9a7356eee514d9b7",
+      "evidenceHash": "3c99aa0ca82d1c89d983c2b5472fdbb4ab7b6943c35b014d6b7d49c5014f2949",
+      "dependencies": []
+    },
+    {
+      "id": "RecordHeader.standard",
+      "maturity": "NATIVE_VALIDATED",
+      "sourceHash": "74385a3d1e6d4d8b4bd15a13d2fc3229039fdccd9b670da18502e613573565b9",
+      "factoryHash": "ff5efa77dfe24e5be55cff65798ccafb94988d98e99280e85a1a56beedfa2e7f",
+      "capabilityHash": "a420252aae8d204c4ee524139e73f66bc7a21d0b70a668bf9a7356eee514d9b7",
+      "evidenceHash": "d6a5d340a34563c21ff244781dfbe5b378548a6700c1cc10efa20c348bb49b75",
+      "dependencies": []
+    },
+    {
+      "id": "SectionHeader.standard",
+      "maturity": "NATIVE_VALIDATED",
+      "sourceHash": "74385a3d1e6d4d8b4bd15a13d2fc3229039fdccd9b670da18502e613573565b9",
+      "factoryHash": "e49d4f2abc2c85d2d03e8ef66dc26f0c3e6497a19ba20904a760caf4fc539b0a",
+      "capabilityHash": "a420252aae8d204c4ee524139e73f66bc7a21d0b70a668bf9a7356eee514d9b7",
+      "evidenceHash": "91795e87312ac3f9e4e6f3660ac0bd5b81b7ab0a51ae3e51b1d04b36d696034e",
+      "dependencies": []
+    },
+    {
+      "id": "DetailPanel.standard",
+      "maturity": "NATIVE_VALIDATED",
+      "sourceHash": "74385a3d1e6d4d8b4bd15a13d2fc3229039fdccd9b670da18502e613573565b9",
+      "factoryHash": "e039272e53ee788a59116c50443a5551ba26672d4b2129f00bdd6b41dc73b536",
+      "capabilityHash": "a420252aae8d204c4ee524139e73f66bc7a21d0b70a668bf9a7356eee514d9b7",
+      "evidenceHash": "39fe2cceea8c89c3a6a91292435afa6165b7c9705ae28fcd56be1017d1fe6769",
+      "dependencies": []
+    }
+  ],
+  "dependencyClosure": {
+    "passed": true,
+    "dependencies": [
+      "DetailPanel.standard",
+      "EmptyState.standard",
+      "LoadingState.standard",
+      "PageHeader.standard",
+      "RecordHeader.standard",
+      "SectionHeader.standard"
+    ],
+    "failures": []
+  },
+  "breadth": {
+    "navigation": false,
+    "data": false,
+    "forms": false,
+    "overlays": false,
+    "commands": false,
+    "feedback": false,
+    "hierarchy": true
+  },
+  "typedFields": [
+    {
+      "type": "text",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "multiline",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "number",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "currency",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "percentage",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "email",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "phone",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "url",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "boolean",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "toggle",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "singleChoice",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Native Form.Updates proof pending"
+    },
+    {
+      "type": "multiChoice",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "date",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "datetime",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "lookup",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    },
+    {
+      "type": "person",
+      "status": "IMPLEMENTED",
+      "productionSupported": false,
+      "reason": "Complete native read-only/theme/validation certification pending"
+    }
+  ],
+  "styles": [
+    {
+      "name": "desktop-operations",
+      "requirements": [
+        "CompactSidebar.standard",
+        "DataTable.standard",
+        "TaskForm.sectioned",
+        "SideSheet.standard",
+        "CommandBar.standard",
+        "SearchBox.standard",
+        "FilterBar.standard",
+        "PageHeader.standard",
+        "ErrorState.standard"
+      ],
+      "missing": [
+        "CompactSidebar.standard",
+        "DataTable.standard",
+        "TaskForm.sectioned",
+        "SideSheet.standard",
+        "CommandBar.standard",
+        "SearchBox.standard",
+        "FilterBar.standard",
+        "ErrorState.standard"
+      ],
+      "supported": false
+    },
+    {
+      "name": "desktop-read-oriented",
+      "requirements": [
+        "TopNavigation.standard",
+        "RichList.compact",
+        "GroupedList.compact",
+        "DetailPanel.standard",
+        "PageHeader.standard",
+        "EmptyState.standard"
+      ],
+      "missing": [
+        "TopNavigation.standard",
+        "RichList.compact",
+        "GroupedList.compact"
+      ],
+      "supported": false
+    },
+    {
+      "name": "mobile-task",
+      "requirements": [
+        "BottomNavigation.standard",
+        "RichList.compact",
+        "TaskForm.single-column",
+        "FullScreenTask.standard",
+        "CommandBar.standard",
+        "PageHeader.standard",
+        "ErrorState.standard"
+      ],
+      "missing": [
+        "BottomNavigation.standard",
+        "RichList.compact",
+        "TaskForm.single-column",
+        "FullScreenTask.standard",
+        "CommandBar.standard",
+        "ErrorState.standard"
+      ],
+      "supported": false
+    }
+  ],
+  "responsiveContracts": {
+    "status": "EXISTING_EVIDENCE_RETAINED_NOT_GENERALIZED",
+    "reason": "V4.3 app-specific 12-boundary proof is not a certificate for untested component layouts"
+  },
+  "readiness": {
+    "generalBusiness": "NOT READY",
+    "mobileTask": "NOT READY",
+    "analyticsHeavy": "LIMITED",
+    "documentWorkspaces": "LIMITED",
+    "advancedInteractions": "NOT READY"
+  },
+  "capabilityQueries": {
+    "responsiveMasterDetail": "NOT PRODUCTION SUPPORTED",
+    "dragDropKanban": "NOT PRODUCTION SUPPORTED; PCF_CANDIDATE"
+  },
+  "remoteWrites": 0
+}

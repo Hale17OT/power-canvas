@@ -19,6 +19,13 @@ import { visualFixtureVariant } from '../canvas/taste/fixtures.js';
 import { devices, type Device } from '../canvas/taste/devices.js';
 import { planApplicationOperation } from '../canvas/application-boundary.js';
 import { refinementPasses, refineNative } from '../canvas/taste/refine.js';
+import { registerDesignV4Commands } from './design-v4-commands.js';
+import { componentMetadataSchema } from '../canvas/taste/decision-schema.js';
+
+async function readSemanticMetadata(directory:string,file?:string) {
+  try{return z.record(z.string(),componentMetadataSchema).parse(JSON.parse(await readFile(resolve(file??join(directory,'component-metadata.json')),'utf8')));}
+  catch(error){if(!file&&(error as NodeJS.ErrnoException).code==='ENOENT')return undefined;throw error;}
+}
 
 export async function readNativeDirectory(directory: string): Promise<NativeFiles> {
   const root = resolve(directory);
@@ -35,16 +42,18 @@ export function registerTasteCommands(program: Command, globals: () => { project
   const reference = taste.command('reference').description('Abstract reference intelligence; no brand styles');
   reference.command('list').action(() => emit(referenceDirections, JSON.stringify(referenceDirections, null, 2), globals().json));
   reference.command('inspect <id>').action((id: string) => { const found = referenceDirections.find(r => r.id === id); if (!found) throw new Error('Unknown abstract reference direction'); emit(found, JSON.stringify(found, null, 2), globals().json); });
-  reference.command('normalize <file>').requiredOption('--out <directory>').action(async (file: string, o: { out: string }) => { const source = await readFile(resolve(file), 'utf8'); const profile = parseMemory(source, 'reference', referenceSchema); await save(o.out, 'reference.json', { profile, sourceHash: sha256(source), method: 'Explicit reviewed extraction from prose; supported/translated/unsupported distinctions are required' }); });
+  reference.command('normalize <file>').requiredOption('--out <directory>').action(async (file: string, o: { out: string }) => { const source = await readFile(resolve(file), 'utf8'); const profile = parseMemory(source, 'reference', referenceSchema); await save(o.out, 'reference.json', { profile, sourceHash: sha256(source), method: 'Explicit reviewed extraction from prose; supported/translated/unsupported distinctions are required' });if(globals().json)emit({out:resolve(o.out),artifacts:['reference.json'],remoteWrites:0},'',true); });
   const design = taste.command('design');
   design.command('generate').requiredOption('--product <file>').requiredOption('--out <directory>').action(async (o: { product: string; out: string }) => {
     const source = await readFile(resolve(o.product), 'utf8'); const product = parseMemory(source, 'product', productSchema); const memory = generateDesign(product);
     const markdown = `# ${product.name} design contract\n\n${memory.primary.visualCharacter.join('. ')}.\n\nThis contract is authoritative. The JSON companion is generated; edit this file, then synchronize.\n\n## Native visual rules\n\n${memory.primary.dos.map(v => '- ' + v).join('\n')}\n\n## Avoid\n\n${memory.primary.donts.map(v => '- ' + v).join('\n')}\n\n## Validated contract\n\n\`\`\`powercanvas-design\n${stringify(memory)}\`\`\`\n`;
     await save(o.out, 'DESIGN.md', markdown); await save(o.out, 'design.json', companion(source, markdown)); await save(o.out, 'design-decisions.json', selectDirection(product));
+    if(globals().json)emit({out:resolve(o.out),artifacts:['DESIGN.md','design.json','design-decisions.json'],remoteWrites:0},'',true);
   });
   design.command('sync').requiredOption('--product <file>').requiredOption('--design <file>').requiredOption('--out <directory>').action(async (o: { product: string; design: string; out: string }) => {
     const generated = companion(await readFile(resolve(o.product), 'utf8'), await readFile(resolve(o.design), 'utf8'));
     await mkdir(resolve(o.out), { recursive: true }); await writeFile(join(resolve(o.out), 'design.json'), JSON.stringify(generated, null, 2) + '\n');
+    if(globals().json)emit({out:resolve(o.out),artifacts:['design.json'],remoteWrites:0},'',true);
   });
   taste.command('fixtures <directory>').requiredOption('--bindings <file>').requiredOption('--source <key>').requiredOption('--count <count>').requiredOption('--out <directory>').action(async (directory: string, o: {bindings:string;source:string;count:string;out:string}) => {
     const count=z.union([z.literal(0),z.literal(1),z.literal(4),z.literal(24)]).parse(Number(o.count));
@@ -64,12 +73,15 @@ export function registerTasteCommands(program: Command, globals: () => { project
     const images = Object.fromEntries(await Promise.all(review.screenshots.map(async shot => [shot.path, sha256(await readFile(resolve(shot.path)))])));
     const result = critique(await readNativeDirectory(directory), review, images); await save(o.out, 'taste-critique.json', result); emit(result, JSON.stringify(result, null, 2), globals().json);
   });
-  taste.command('refine <directory>').requiredOption('--design <file>').requiredOption('--focus <pass>').requiredOption('--out <directory>').action(async (directory: string, o: { design: string; focus: string; out: string }) => {
+  taste.command('refine <directory>').requiredOption('--design <file>').requiredOption('--focus <pass>').requiredOption('--out <directory>').option('--metadata <file>', 'Semantic component metadata emitted by V4').action(async (directory: string, o: { design: string; focus: string; out: string; metadata?:string }) => {
     const focus = z.enum(refinementPasses).parse(o.focus); const memory = parseMemory(await readFile(resolve(o.design), 'utf8'), 'design', designSchema);
-    const before = await readNativeDirectory(directory); const result = refineNative(before, memory, focus); const gate = preflight(result.files, before);
+    const metadata=await readSemanticMetadata(directory,o.metadata);
+    const before = await readNativeDirectory(directory); const result = refineNative(before, memory, focus, metadata); const gate = preflight(result.files, before,undefined,metadata);
     await save(o.out, 'refinement.json', { focus, changes: result.changes, outcome: result.outcome, gate });
     if (!gate.staticPassed) throw new Error('Refinement blocked by native preflight');
     for (const [name, value] of Object.entries(result.files)) await save(o.out, name, stringify(value, { lineWidth: 0 }));
+    if(metadata)await save(o.out,'component-metadata.json',metadata);
+    if(globals().json)emit({out:resolve(o.out),focus,changes:result.changes,gate,remoteWrites:0},'',true);
   });
   taste.command('personalities').action(() => emit(personalityNames, JSON.stringify(personalityNames), globals().json));
   taste.command('compositions').action(() => emit(compositions(), JSON.stringify(compositions(), null, 2), globals().json));
@@ -79,12 +91,12 @@ export function registerTasteCommands(program: Command, globals: () => { project
     const device = z.enum(devices).parse(o.device); const result = { applicationBoundary: planApplicationOperation(app.application, {purpose: device}), ...resolveTaste(app.taste), device, deviceStrategy: app.taste.design?.devices?.[device], screens: Object.entries(app.screens).map(([key, screen]) => ({ key, pattern: screen.pattern, mode: app.taste!.design?.modes[key] ?? app.taste!.design?.modes.default })) }; emit(result, JSON.stringify(result, null, 2), globals().json);
   });
   taste.command('audit <directory>').option('--design <file>').requiredOption('--out <directory>').action(async (directory: string, o: { out: string; design?: string }) => {
-    const files = await readNativeDirectory(directory); const report = o.design ? auditDesign(files, parseMemory(await readFile(resolve(o.design), 'utf8'), 'design', designSchema)) : auditNative(files); await save(o.out, 'taste-audit.json', report);
+    const files = await readNativeDirectory(directory); const report = o.design ? auditDesign(files, parseMemory(await readFile(resolve(o.design), 'utf8'), 'design', designSchema)) : auditNative(files,await readSemanticMetadata(directory)); await save(o.out, 'taste-audit.json', report);
     emit(report, JSON.stringify({ metrics: report.metrics, findings: report.findings }, null, 2), globals().json);
   });
   taste.command('preflight <directory>').option('--before <directory>').option('--evidence <file>').requiredOption('--out <directory>').action(async (directory: string, o: { before?: string; evidence?: string; out: string }) => {
     const evidenceSchema = z.strictObject({ sourceHash: z.string().regex(/^[a-f0-9]{64}$/), desktop: z.boolean(), tablet: z.boolean(), narrow: z.boolean(), accessibility: z.boolean(), behavior: z.boolean(), visualReview: z.boolean() });
-    const report = preflight(await readNativeDirectory(directory), o.before ? await readNativeDirectory(o.before) : undefined, o.evidence ? evidenceSchema.parse(JSON.parse(await readFile(resolve(o.evidence), 'utf8'))) : undefined);
+    const report = preflight(await readNativeDirectory(directory), o.before ? await readNativeDirectory(o.before) : undefined, o.evidence ? evidenceSchema.parse(JSON.parse(await readFile(resolve(o.evidence), 'utf8'))) : undefined,await readSemanticMetadata(directory));
     await save(o.out, 'taste-preflight.json', report); emit(report, JSON.stringify(report, null, 2), globals().json);
     if (!report.complete) process.exitCode = 1;
   });
@@ -107,6 +119,7 @@ export function registerTasteCommands(program: Command, globals: () => { project
   });
   taste.command('schema').action(() => emit(z.toJSONSchema(tasteSchema, { io: 'input' }), JSON.stringify(z.toJSONSchema(tasteSchema, { io: 'input' }), null, 2), globals().json));
   const components = program.command('components').description('Taste recipe registry; planned entries are explicitly non-executable');
+  registerDesignV4Commands(program,taste,components,globals);
   components.command('list').action(() => emit(recipes(), JSON.stringify(recipes(), null, 2), globals().json));
   components.command('info <name>').action((name: string) => { const result = recipes().find(r => r.name === name); if (!result) throw new Error('Unknown recipe.'); emit(result, JSON.stringify(result, null, 2), globals().json); });
   components.command('resolve').requiredOption('--spec <file>').action(async (o: { spec: string }) => {

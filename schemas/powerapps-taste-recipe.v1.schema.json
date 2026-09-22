@@ -126,6 +126,55 @@
     },
     "classicReason": {
       "type": "string"
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "REFERENCE",
+        "PLANNED",
+        "PROTOTYPE",
+        "IMPLEMENTED",
+        "NATIVE_VALIDATED",
+        "PRODUCTION_BENCHMARKED"
+      ]
+    },
+    "implementationTier": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "executable": {
+      "type": "boolean"
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "actualFactory": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nativeValidated": {
+      "type": "boolean"
+    },
+    "productionBenchmarked": {
+      "type": "boolean"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [
@@ -146,7 +195,16 @@
     "accessibilityRules",
     "themeTokens",
     "dependencies",
-    "compositionRules"
+    "compositionRules",
+    "maturity",
+    "implementationTier",
+    "executable",
+    "devices",
+    "actualFactory",
+    "nativeValidated",
+    "productionBenchmarked",
+    "evidence",
+    "limitations"
   ],
   "additionalProperties": false
 }

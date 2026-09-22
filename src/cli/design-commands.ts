@@ -13,6 +13,7 @@ import { PowerCanvasError, hasCode } from '../core/errors.js';
 import { emit } from './output.js';
 import { resolveRecipe } from '../canvas/taste/registry.js';
 import { planApplicationOperation } from '../canvas/application-boundary.js';
+import { registerSourceCommands } from './source-commands.js';
 
 async function artifact(directory: string, name: string, content: unknown) {
   await mkdir(directory, { recursive: true }); const path = join(directory, name);
@@ -32,6 +33,7 @@ export function registerDesignCommands(program: Command, globalOptions: () => { 
       emit({ ok: true, scope: 'local-artifacts', files, remoteCreated: false }, `Created connector artifacts in ${out}. No connector was deployed.`, globalOptions().json);
     });
   const canvas = program.command('canvas').description('PFDS semantic and native compilation; remote apply requires a reviewed live plan');
+  registerSourceCommands(canvas,()=>globalOptions().json);
   canvas.command('application-plan').requiredOption('--app <key>').option('--operation <operation>', 'update-existing or create-new', 'update-existing').option('--purpose <purpose>', 'Application-level intent or device/design work', 'application').description('Guard app identity and explicit creation intent; never provisions or publishes an app')
     .action(async (o: {app:string;operation:string;purpose:string}) => {
       const {project}=await loadProject(globalOptions().project);const app=project.canvasApps?.[o.app];if(!app)throw new Error('Unknown Canvas app');
@@ -58,6 +60,8 @@ export function registerDesignCommands(program: Command, globalOptions: () => { 
       const result = compileNativeCanvas(project, options.app, bindings); const out = resolve(options.out);
       for (const [name, content] of Object.entries(result.yaml)) await artifact(out, name, content);
       await artifact(out, 'native-manifest.json', result.manifest);
+      if(result.composition)await artifact(out,'composition-ir.json',result.composition);
+      if(result.metadata)await artifact(out,'component-metadata.json',result.metadata);
         await artifact(out, 'device-composition.json', { decisions: result.deviceDecisions, preservation: result.devicePreservation });
       await artifact(out, 'pattern-catalog.json', patternCatalog());
       if (result.taste) await artifact(out, 'taste-report.json', result.taste);

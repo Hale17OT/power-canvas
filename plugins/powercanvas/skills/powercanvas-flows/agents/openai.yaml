@@ -1,0 +1,6 @@
+interface:
+  display_name: "PowerCanvas Flows"
+  short_description: "Compile typed business workflow recipes"
+  default_prompt: "Use $powercanvas-flows for this PowerCanvas task."
+policy:
+  allow_implicit_invocation: true

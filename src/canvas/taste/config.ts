@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { designSchema } from './memory.js';
 import { strategies } from './strategies.js';
+import { dimensionPresets } from './decision-schema.js';
 
 export const personalityNames = ['fluent-enterprise', 'clean-saas', 'dense-operations', 'executive-dashboard', 'minimal-workspace'] as const;
 const dial = z.number().min(0).max(10);
@@ -23,7 +24,7 @@ export function resolveTaste(input: unknown) {
   const [designVariance, visualDensity, brandExpression, componentComplexity, motionIntensity] = personalities[personality];
   const dials = dialsSchema.parse({ designVariance, visualDensity, brandExpression, componentComplexity, motionIntensity, ...config.dials });
   const dense = dials.visualDensity >= 7; const spacious = dials.visualDensity <= 3;
-  return { ...config, personality, strategy: strategies[personality], dials, tokens: {
+  return { ...config, personality, dimensions: {...dimensionPresets[personality], ...config.design?.v4?.dimensions, ...(config.reducedMotion ? {motion:0} : {})}, strategy: strategies[personality], dials, tokens: {
     spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 },
     pagePadding: dense ? 16 : spacious ? 32 : 24, gap: dense ? 8 : spacious ? 24 : 16,
     controlHeight: dense ? 36 : 44, rowHeight: dense ? 64 : spacious ? 96 : 76,

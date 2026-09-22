@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "4.2"
+    },
+    "mode": {
+      "type": "string",
+      "const": "retained-native"
+    },
+    "sourceHash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "behaviorHash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "control": {
+            "type": "string",
+            "minLength": 1
+          },
+          "variant": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layout": {
+            "type": "string",
+            "minLength": 1
+          },
+          "presentation": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "behavior": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1
+            },
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hasChildren": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "presentation",
+          "behavior",
+          "children",
+          "hasChildren"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "file",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "app": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "control": {
+          "type": "string",
+          "minLength": 1
+        },
+        "variant": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layout": {
+          "type": "string",
+          "minLength": 1
+        },
+        "presentation": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "behavior": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hasChildren": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "presentation",
+        "behavior",
+        "children",
+        "hasChildren"
+      ],
+      "additionalProperties": false
+    },
+    "hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "version",
+    "mode",
+    "sourceHash",
+    "behaviorHash",
+    "nodes",
+    "screens",
+    "app",
+    "hash"
+  ],
+  "additionalProperties": false
+}

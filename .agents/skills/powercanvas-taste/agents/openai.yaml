@@ -1,0 +1,6 @@
+interface:
+  display_name: "PowerCanvas Taste"
+  short_description: "Design and critique Canvas app experiences"
+  default_prompt: "Use $powercanvas-taste for this PowerCanvas task."
+policy:
+  allow_implicit_invocation: true

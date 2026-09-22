@@ -1,0 +1,6 @@
+interface:
+  display_name: "PowerCanvas Debug"
+  short_description: "Diagnose compiler and authoring blockers"
+  default_prompt: "Use $powercanvas-debug for this PowerCanvas task."
+policy:
+  allow_implicit_invocation: true

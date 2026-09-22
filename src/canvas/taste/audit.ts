@@ -1,5 +1,6 @@
 import { hashJson } from '../../core/json.js';
 import type { NativeFiles, NativeControl } from '../native-types.js';
+import type { SemanticMap } from './decision-schema.js';
 
 export interface Node { name: string; path: string; parent: string | undefined; node: NativeControl; depth: number }
 export function controls(files: NativeFiles): Node[] {
@@ -43,7 +44,7 @@ export function compareBehavior(before: NativeFiles, after: NativeFiles) {
   });
   return { preserved: changed.length === 0, changed, limitation: 'Lexical comparison; runtime data, permissions and service behavior require live tests.' };
 }
-export function auditNative(files: NativeFiles) {
+export function auditNative(files: NativeFiles, metadata:SemanticMap={}) {
   const nodes = controls(files); const findings: Finding[] = [];
   const add = (rule: string, n: Node, severity: Finding['severity'], evidence: string, remedy: string) => findings.push({ rule, path: n.path, severity, evidence, remedy });
   const modernNames = new Set(['ModernText', 'Button', 'TextInput', 'ModernDropdown', 'Badge', 'Avatar', 'Spinner', 'TabList']);
@@ -79,13 +80,17 @@ export function auditNative(files: NativeFiles) {
   }
   if (!nodes.length) findings.push({ rule: 'source-empty', severity: 'error', path: '/', evidence: 'No native controls', remedy: 'Audit exported .pa.yaml screen source.' });
   const screens = Object.entries(files).filter(([name]) => name !== 'App.pa.yaml');
-  const stateCoverage = screens.map(([screen, value]) => { const source = JSON.stringify(value); return { screen, empty: /empty|IsEmpty/i.test(source), loading: /Spinner|LoadingState/.test(source), error: /IfError|\.Error|ErrorState/.test(source) }; });
+  const stateCoverage = screens.map(([screen, value]) => {
+    const source = JSON.stringify(value);
+    const hasState=(recipes:string[])=>nodes.some(n=>n.path.startsWith('/'+screen+'/')&&n.node.Properties.Visible!==undefined&&recipes.includes(metadata[n.name]?.recipe??''));
+    return { screen, empty: /empty|IsEmpty/i.test(source)||hasState(['EmptyState']), loading: /Spinner|LoadingState/.test(source)||hasState(['LoadingState','Skeleton']), error: /IfError|\.Error|ErrorState/.test(source)||hasState(['ErrorState']) };
+  });
   for (const s of stateCoverage) for (const state of ['empty', 'loading', 'error'] as const) if (!s[state]) findings.push({ rule: `state-${state}`, severity: 'warning', path: s.screen, evidence: `No ${state} source evidence`, remedy: `Implement or explicitly justify ${state} handling for this screen.` });
   return { version: '1.0', sourceHash: hashJson(files), metrics: { controls: nodes.length, modern, classicVisual: legacy, autoLayoutContainers: containers, styleProperties, tokenStyles }, findings, stateCoverage, dependencies: dependencies(files), limitations: ['Source heuristics are not runtime accessibility certification.', 'No visual-quality percentage is assigned.', 'Unknown external formulas, permissions and service behavior require runtime review.'] };
 }
 export interface RuntimeEvidence { sourceHash: string; desktop: boolean; tablet: boolean; narrow: boolean; accessibility: boolean; behavior: boolean; visualReview: boolean }
-export function preflight(files: NativeFiles, before?: NativeFiles, evidence?: RuntimeEvidence) {
-  const audit = auditNative(files); const behavior = before ? compareBehavior(before, files) : undefined;
+export function preflight(files: NativeFiles, before?: NativeFiles, evidence?: RuntimeEvidence, metadata?:SemanticMap) {
+  const audit = auditNative(files,metadata); const behavior = before ? compareBehavior(before, files) : undefined;
   const blockers = audit.findings.filter(f => f.severity === 'error' || f.severity === 'warning');
   if (behavior && !behavior.preserved) blockers.push({ rule: 'functional-preservation', severity: 'error', path: '/', evidence: `${behavior.changed.length} functional properties changed`, remedy: 'Restore behavior or explicitly review the functional migration.' });
   const runtime = ['desktop', 'tablet', 'narrow', 'accessibility', 'behavior', 'visualReview'] as const;

@@ -1,0 +1,60 @@
+import {projectSchema, type Project, type Column} from '../ir/schema.js';
+import {validateSemantics} from '../ir/validate.js';
+import {solutionSpecSchema, type SolutionSpec, type SharedType, type Issue} from './schema.js';
+import {responsibility} from '../flows/registry.js';
+
+export const dataverseTypeMap:Partial<Record<SharedType,Column['type']>>={string:'text',email:'text',multiline:'multilineText',integer:'integer',decimal:'decimal',percentage:'decimal',boolean:'boolean',choice:'choice',date:'dateTime',datetime:'dateTime'};
+export function conceptualType(column:Column):SharedType{return ({text:'string',multilineText:'multiline',dateTime:column.type==='dateTime'&&column.behavior==='dateOnly'?'date':'datetime'} as Record<string,SharedType>)[column.type]??column.type as SharedType;}
+export function resolveSolution(raw:unknown){
+ const spec=solutionSpecSchema.parse(raw);const issues:Issue[]=[];
+ const requirements=structuredClone(spec.requirements);const products:Record<string,import('../canvas/taste/memory.js').ProductContext>={};
+ const bind=(resource:string,requiredBy:string[])=>{for(const id of requiredBy){const r=requirements.find(v=>v.id===id);if(!r)throw new Error('Unknown requirement: '+id);if(!r.resources.includes(resource))r.resources.push(resource);}};
+ let project:Project;
+ if(spec.mode==='explicit'){project=spec.project;Object.assign(products,spec.products);}
+ else{
+  const prefix=spec.identity.solution.publisher.prefix;const tables:Project['dataverse']['tables']={};const relationships:Project['dataverse']['relationships']={};
+  for(const [key,e]of Object.entries(spec.entities)){
+   bind('table:'+key,e.requiredBy);
+   if(e.storage==='sharepoint'){issues.push({code:'EXTERNAL_PROVISIONING',severity:'error',resource:'table:'+key,message:'SharePoint list provisioning is external; supply explicit identity and metadata.'});continue;}
+   const columns:Record<string,Column>={};
+   for(const [f,field]of Object.entries(e.fields)){
+    const base={schemaName:prefix+'_'+key+'_'+f,displayName:field.label,required:field.required?'application':'none',lifecycle:{deletionPolicy:'retain'}};
+    const type=dataverseTypeMap[field.type];
+    if(field.type==='lookup'){
+     if(!field.target||!spec.entities[field.target])throw new Error('Lookup target must be a declared entity: '+key+'.'+f);
+     relationships[key+f]={schemaName:prefix+'_'+key+'_'+f,fromTable:key,toTable:field.target,lookup:{key:f,schemaName:prefix+'_'+key+'_'+f,displayName:field.label,required:field.required?'application':'none'},cascade:{delete:'restrict',assign:'none',share:'none',unshare:'none',reparent:'none',merge:'none'},lifecycle:{deletionPolicy:'retain'}};
+     bind('relationship:'+key+f,e.requiredBy);continue;
+    }
+    if(!type){issues.push({code:'UNSUPPORTED_TYPE',severity:'error',resource:'table:'+key,message:`${key}.${f}: ${field.type} has no current Dataverse provisioning adapter; retained as an unmet requirement.`});continue;}
+    const props=type==='text'?{maxLength:200}:type==='multilineText'?{maxLength:10000}:type==='integer'?{min:0,max:2147483647}:type==='decimal'?{min:0,max:field.type==='percentage'?100:1000000000,precision:2}:type==='boolean'?{default:false,trueLabel:'Yes',falseLabel:'No'}:type==='dateTime'?{behavior:field.type==='date'?'dateOnly':'userLocal'}:{choices:(field.choices??[]).map((label,i)=>({label,value:spec.identity.solution.publisher.optionValuePrefix*10000+i}))};
+    columns[f]={...base,type,...props} as Column;
+   }
+   const primary=Object.entries(columns).find(([,c])=>c.type==='text')?.[0];
+   if(!primary)throw new Error('An explicit string primary name is required: '+key);
+   if(e.keys.length)issues.push({code:'KEY_PROVISIONING_PLANNED',severity:'error',resource:'table:'+key,message:'Alternate keys require external provisioning; the current schema provider does not create them.'});
+   tables[key]={schemaName:prefix+'_'+key,displayName:e.label,pluralName:e.plural,ownership:e.ownership,primaryName:primary,auditing:e.auditing,columns,lifecycle:{deletionPolicy:'retain'}};
+  }
+  for(const [key,r]of Object.entries(relationships))if(!tables[r.fromTable]||!tables[r.toTable]){issues.push({code:'EXTERNAL_RELATIONSHIP',severity:'error',resource:'relationship:'+key,message:'A Dataverse lookup cannot provision an external SharePoint target; retain an explicit integration requirement.'});delete relationships[key];}
+  const apps:NonNullable<Project['canvasApps']>={};
+  for(const [key,e]of Object.entries(spec.experiences)){
+   bind('canvas:'+key,e.requiredBy);products[key]=e.product;
+   apps[key]={type:'canvas',uniqueName:prefix+'_'+key,displayName:e.product.name,componentPolicy:'experimental',theme:{mode:'light',density:'comfortable',brand:{primary:'#145C4F'},font:'Segoe UI',radius:'soft'},shell:{pattern:'sidebar',navigation:[{screen:'workspace',label:e.product.name}]},screens:{workspace:{pattern:'masterDetail',title:e.product.name,source:e.source,columns:e.fields.slice(0,6),pageSize:25,detail:{fields:e.fields,revealFields:[]}}}};
+   if(e.host){apps[key]!.screens={};apps[key]!.nativeDesign={product:e.product,host:e.host,stability:spec.profile};}
+   if(e.jobBoundary)apps[key]!.application={requiresNewApplication:true,requirement:{kind:'explicit-application',statement:e.jobBoundary}};
+  }
+  for(const [key,ids]of Object.entries(spec.automationRequirements))bind('flow:'+key,ids);
+  for(const process of spec.processes){
+   const advice=responsibility(process.job);
+   if(advice.provider==='PowerFx'){
+    if(process.implementation)issues.push({code:'UNNECESSARY_FLOW',severity:'error',message:process.id+': synchronous UI validation/single-record saves must not create a second flow write path.'});
+    for(const key of Object.keys(apps))bind('canvas:'+key,process.requiredBy);
+   }else if(!process.implementation||!spec.automation.workflowRecipes?.[process.implementation])issues.push({code:'RECIPE_CONFIGURATION_REQUIRED',severity:'error',message:process.id+': '+(advice.recipe??'external integration')+' requires explicit typed recipe configuration, destinations and recipients.'});
+   else {const recipe=spec.automation.workflowRecipes[process.implementation]!;if(advice.recipe&&!recipe.steps.some(s=>s.recipe===advice.recipe))issues.push({code:'RECIPE_RESPONSIBILITY_MISMATCH',severity:'error',message:process.id+': expected '+advice.recipe+' recipe.'});bind('flow:'+process.implementation,process.requiredBy);}
+  }
+  project=projectSchema.parse({...spec.identity,dataverse:{tables,relationships},canvasApps:apps,resources:spec.automation});
+ }
+ const seen=new Set<string>();for(const r of requirements){if(seen.has(r.id))throw new Error('Duplicate requirement ID: '+r.id);seen.add(r.id);}
+ for(const d of validateSemantics(project))issues.push({code:d.code,severity:'error',message:d.message});
+ return {spec,project,requirements,products,issues};
+}
+export function storageDecision(spec:SolutionSpec){return spec.mode==='intent'?Object.entries(spec.entities).map(([entity,v])=>({entity,selected:v.storage,reason:v.rationale,provisioning:v.storage==='dataverse'?'existing Dataverse adapter':'EXTERNAL',criteria:['relationships','record ownership/security','auditing','scale/delegation','business rules','document orientation','licensing','integration'],ownership:v.ownership,auditing:v.auditing})):[];}

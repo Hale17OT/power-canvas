@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "4.4"
+    },
+    "owner": {
+      "type": "string",
+      "const": "PowerCanvasCertification"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ephemeral": {
+      "type": "boolean",
+      "const": true
+    },
+    "appId": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+    },
+    "environmentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "baseHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "candidateHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "file": {
+      "type": "string",
+      "const": "pc_certification_preview.pa.yaml"
+    },
+    "screen": {
+      "type": "string",
+      "const": "pc_certification_preview"
+    },
+    "subtreeHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "controls": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "version",
+    "owner",
+    "purpose",
+    "ephemeral",
+    "appId",
+    "environmentId",
+    "baseHash",
+    "candidateHash",
+    "file",
+    "screen",
+    "subtreeHash",
+    "controls"
+  ],
+  "additionalProperties": false
+}

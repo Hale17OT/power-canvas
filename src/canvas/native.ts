@@ -6,15 +6,20 @@ import { nativeBindingsSchema } from './native-types.js';
 import type { NativeBindings, NativeFiles } from './native-types.js';
 import { pattern as nativePattern, patternCatalog, designFormulas, control, text, button, stack, row, fill, fxText } from './patterns.js';
 import type { Control, Props } from './patterns.js';
-import { applyTaste } from './taste/engine.js';
+import { applyTaste, type PresentationRole } from './taste/engine.js';
 import { resolveRecipe } from './taste/registry.js';
 import { preflight, auditNative } from './taste/audit.js';
 import { auditDesign } from './taste/judgment.js';
+import { legacyAnalyticalContract } from './taste/adapters/analytical-contract.js';
 import { analyticalScreen } from './taste/analytical.js';
 import { composeMobileTasks, compareDeviceMigration } from './taste/mobile.js';
 import { composeRegions } from './taste/compositions.js';
 import { planApplicationOperation } from './application-boundary.js';
 import { composeFlowCommands } from '../flows/native.js';
+import { compileDesignCandidate } from './taste/generation.js';
+import { planDesign } from './taste/decisions.js';
+import { createCompositionIR } from './composition-ir.js';
+import { controls } from './taste/audit.js';
 export { nativeBindingsSchema } from './native-types.js';
 export type { NativeBindings, NativeControl, NativeFiles } from './native-types.js';
 const id = (s: string) => `'${s.replaceAll("'", "''")}'`;
@@ -22,9 +27,32 @@ const primary: Props = { Appearance: "='ButtonCanvas.Appearance'.Primary", FontC
 
 /** PFDS owns composition; the application owns data bindings and actions. */
 export function compileNativeCanvas(project: Project, appKey: string, raw: NativeBindings) {
-  const bindings = nativeBindingsSchema.parse(raw); const semantic = compileCanvas(project, appKey); const app = project.canvasApps![appKey]!;
+  const bindings = nativeBindingsSchema.parse(raw); const app = project.canvasApps?.[appKey];
+  if(!app)throw new Error('Unknown Canvas app: '+appKey);
+  if(app.nativeDesign){
+    const applicationBoundary=planApplicationOperation(app.application,{operation:'update-existing',targetAppId:bindings.appId});
+    if(bindings.solution!==project.solution.uniqueName)throw new Error('Native binding must use the project solution.');
+    if(Object.keys(app.screens).length)throw new Error('Explicit binding migration required: legacy business screens cannot be discarded by nativeDesign.');
+    if(Object.keys(bindings.flowSources??{}).length)throw new Error('Explicit typed flow binding migration required before nativeDesign compilation.');
+    for(const f of app.nativeDesign.host.fields)if('sourceBinding'in f&&f.sourceBinding){
+      const source=Object.values(bindings.sources).find(s=>s.logicalName===f.sourceBinding!.table);
+      if(!source?.fields[f.sourceBinding.column])throw new Error('Typed field has an unresolved live Dataverse binding');
+    }
+    const plan=planDesign(app.nativeDesign.product,{...(app.taste?.design?.v4?{design:app.taste.design.v4}:{})});
+    const candidate=compileDesignCandidate(plan,app.nativeDesign.host,app.theme.mode,createCompositionIR(plan,app.nativeDesign.stability));
+    for(const n of controls(candidate.files))if(!bindings.controls.includes(n.node.Control??''))throw new Error('Live control discovery required: '+n.node.Control);
+    const files=candidate.files;
+    return {files,taste:undefined,deviceDecisions:[],devicePreservation:undefined,composition:candidate.composition,metadata:candidate.metadata,yaml:Object.fromEntries(Object.entries(files).map(([name,value])=>[name,stringify(value,{lineWidth:0})])),manifest:{appId:bindings.appId,applicationBoundary,environmentId:bindings.environmentId,solution:bindings.solution,sourceHash:hashJson(app),nativeHash:hashJson(files),dialect:'CanvasAuthoring.McpServer-1.1.5/live-discovered',designSystem:'PFDS/4.1',screens:Object.fromEntries(Object.keys(files).filter(name=>name!=='App.pa.yaml').map(name=>[name.replace('.pa.yaml',''),name.replace('.pa.yaml','')])),patterns:candidate.resolutions.map(r=>r.selected),constraints:['Reviewed migration required before existing-app apply','Native runtime certification pending'],compositionHash:candidate.composition.hash,preflight:candidate.preflight}};
+  }
+  const semantic = compileCanvas(project, appKey);
+  if(app.taste?.design?.v4)throw new Error('V4 structural generation requires an explicit host contract via taste generate. Review its candidate and migrate bindings before using the existing-app publication path; V4 must not be silently ignored.');
   const applicationBoundary = planApplicationOperation(app.application, {operation:'update-existing', targetAppId:bindings.appId});
-  const pattern: typeof nativePattern = (...args) => { if (app.taste) resolveRecipe({ name: args[1] }); return nativePattern(...args); };
+  const presentationRoles:Record<string,PresentationRole>={};
+  const pattern: typeof nativePattern = (...args) => {
+    if (app.taste) resolveRecipe({ name: args[1] });
+    if(args[1]==='DataTable')presentationRoles[args[0]+'_metadata']='record-metadata';
+    return nativePattern(...args);
+  };
   if (bindings.solution !== project.solution.uniqueName) throw new Error('Native binding must use the project solution.');
   const required = ['Button', 'ModernText', 'TextInput', 'ModernDropdown', 'GroupContainer', 'Gallery', 'Form', 'TypedDataCard', 'Badge', 'Avatar', 'Spinner', 'TabList'];
   for (const c of required) if (!bindings.controls.includes(c)) throw new Error(`Live control discovery required: ${c}`);
@@ -40,6 +68,8 @@ export function compileNativeCanvas(project: Project, appKey: string, raw: Nativ
   for (const [key, screen] of Object.entries(app.screens)) {
     if (screen.pattern === 'custom') throw new Error('Native custom DS1 trees require migration to PFDS 0.2 patterns.');
     const p = `pf_ds2_${key}`; const modal = `${p}_editor`; const busy = `${p}_busy`; const selected = `${p}_selected`; const form = `${p}_form`; const reveal = `${p}_reveal`; const discard = `${p}_discard`; const step = `${p}_step`;
+    // Producer-owned identities are registered once. The presentation pass never infers roles from names.
+    Object.assign(presentationRoles,{[`${p}_detail`]:'detail-region',[`${p}_chart`]:'chart-region',[`${p}_next`]:'supporting-region',[`${p}_content`]:'page-content',[`${p}_toolbar`]:'command-region',[`${p}_list_identity`]:'list-identity'});
     const disabled = screen.pattern === 'masterDetail' ? `${modal} || ${busy}` : 'false';
     const guard = (a: string) => `If(!(${disabled}), ${a})`;
     const mode: Props = { DisplayMode: `=If(${disabled}, DisplayMode.Disabled, DisplayMode.Edit)` };
@@ -49,7 +79,7 @@ export function compileNativeCanvas(project: Project, appKey: string, raw: Nativ
     if (screen.pattern === 'analytical') {
       const ctx = context(screen.source);
       if (ctx.table.columns[screen.groupBy]?.type !== 'choice') throw new Error('Analytical grouping requires a typed choice');
-      files[`${names[key]}.pa.yaml`] = analyticalScreen(names[key]!, p, screen, ctx.binding, ctx.table.columns[ctx.table.primaryName]!.schemaName.toLowerCase(), ctx.table.columns[screen.groupBy]!.schemaName.toLowerCase());
+      files[`${names[key]}.pa.yaml`] = analyticalScreen(names[key]!, p, screen, ctx.binding, ctx.table.columns[ctx.table.primaryName]!.schemaName.toLowerCase(), ctx.table.columns[screen.groupBy]!.schemaName.toLowerCase(), legacyAnalyticalContract(ctx.binding));
       continue;
     }
     if (screen.pattern !== 'dashboard') {
@@ -143,7 +173,7 @@ export function compileNativeCanvas(project: Project, appKey: string, raw: Nativ
     const shell = row(`${p}_root`, [pattern(`${p}_sidebar`, 'Sidebar', { title: 'PowerCanvas', items: navigation, disabled }), main], { Width: '=Parent.Width', Height: '=Parent.Height - If(PF_mobile, 64, 0)', LayoutGap: '=0', LayoutAlignItems: '=LayoutAlignItems.Stretch' });
     files[`${names[key]}.pa.yaml`] = { Screens: { [names[key]!]: { Properties: { Fill: '=PF_canvas', OnVisible: onVisible }, Children: [shell, dock, ...overlays] } } };
   }
-  const taste = applyTaste(files, app);
+  const taste = applyTaste(files, app, presentationRoles);
   const beforeDevice = structuredClone(files);
   const deviceDecisions = app.taste?.design ? composeMobileTasks(files, app.taste.design) : [];
   const devicePreservation = app.taste?.design ? compareDeviceMigration(beforeDevice, files, app.taste.design) : undefined;

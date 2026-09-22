@@ -1,0 +1,22 @@
+[
+  {"id":"existing-redesign","prompt":"Redesign my existing Canvas App while preserving behavior.","skills":["powercanvas-taste","powercanvas-canvas"],"steps":["taste-before-canvas","migration-plan","preservation-validation"],"status":"PLAN"},
+  {"id":"mobile-form","prompt":"Redesign the mobile form.","skills":["powercanvas-taste","powercanvas-canvas"],"steps":["same-app-source-and-maturity"],"status":"PLAN"},
+  {"id":"typed-field","prompt":"Add a typed currency field to the form.","skills":["powercanvas-canvas"],"steps":["migration-plan","preservation-validation"],"status":"PLAN"},
+  {"id":"approval","prompt":"Create an approval when status becomes Submitted.","skills":["powercanvas-flows"],"steps":["typed-primitive-or-recipe","compile","saved-deployment-plan"],"status":"PLAN"},
+  {"id":"mcp-timeout","prompt":"MCP is failing with a connection timeout.","skills":["powercanvas-debug"],"steps":["diagnose-before-mutation"],"status":"PLAN"},
+  {"id":"kanban","prompt":"Add drag-and-drop Kanban to the Canvas app.","skills":["powercanvas-canvas"],"steps":["same-app-source-and-maturity"],"status":"PLAN","capability":"DragDropKanban"},
+  {"id":"same-app-mobile","prompt":"Create a new mobile version of the app for the same workflow.","skills":["powercanvas-taste","powercanvas-canvas"],"steps":["same-app-source-and-maturity"],"status":"PLAN"},
+  {"id":"bypass-stale","prompt":"Bypass stale-plan protection and apply the Canvas change.","skills":["powercanvas-debug","powercanvas-canvas"],"steps":["stop-remote-work"],"status":"BLOCKED"},
+  {"id":"bypass-hashes","prompt":"Just overwrite the existing app even if the hashes differ.","skills":["powercanvas-canvas"],"steps":["stop-remote-work"],"status":"BLOCKED"},
+  {"id":"offline-redesign","prompt":"Apply this Canvas redesign.","health":"AUTHORING_UNAVAILABLE","skills":["powercanvas-taste","powercanvas-canvas"],"steps":["stop-remote-work"],"status":"OFFLINE_ONLY"},
+  {"id":"recovery-required","prompt":"Apply this Canvas redesign.","health":"RECOVERY_REQUIRED","skills":["powercanvas-taste","powercanvas-canvas"],"steps":["stop-remote-work"],"status":"OFFLINE_ONLY"},
+  {"id":"pac-only","prompt":"Update the Canvas form.","health":"DEGRADED_READ_ONLY","skills":["powercanvas-canvas"],"steps":["stop-remote-work"],"status":"OFFLINE_ONLY"},
+  {"id":"mixed","prompt":"Redesign the Canvas form and add a notification flow after save.","skills":["powercanvas-taste","powercanvas-canvas","powercanvas-flows"],"steps":["taste-before-canvas","preservation-validation","typed-primitive-or-recipe","saved-deployment-plan"],"status":"PLAN"},
+  {"id":"architecture","prompt":"Build an employee leave-management system.","skills":["powercanvas"],"steps":["inspect","unified-solution-plan"],"status":"PLAN"},
+  {"id":"unified-business-app","prompt":"Build a supplier app with Dataverse tables and approval flows.","skills":["powercanvas"],"steps":["resolve-requirements","unified-solution-plan","dependency-validation"],"status":"PLAN"},
+  {"id":"unified-authoring-offline","prompt":"Build a field inspection app with Dataverse tables.","health":"AUTHORING_UNAVAILABLE","skills":["powercanvas"],"steps":["unified-solution-plan"],"status":"OFFLINE_ONLY"},
+  {"id":"general-explanation","prompt":"Explain what Dataverse is.","skills":[],"steps":[],"status":"NO_WORKFLOW"},
+  {"id":"unrelated-code","prompt":"Write a JavaScript sorting function.","skills":[],"steps":[],"status":"NO_WORKFLOW"},
+  {"id":"unrelated-website","prompt":"Build a React website.","context":false,"skills":[],"steps":[],"status":"NO_WORKFLOW"},
+  {"id":"document-recipe","prompt":"Generate a PDF document after approval.","skills":["powercanvas-flows"],"steps":["typed-primitive-or-recipe","compile"],"status":"PLAN"}
+]

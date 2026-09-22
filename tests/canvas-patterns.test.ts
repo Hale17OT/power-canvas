@@ -6,7 +6,7 @@ import { compileNativeCanvas } from '../src/canvas/native.js';
 import { parseProject } from '../src/config/load.js';
 it('instantiates a versioned generic component without embedding complaint data or mutation logic', () => {
   const names = patternCatalog().map(p => p.name);
-  expect(names).toHaveLength(22); expect(new Set(names).size).toBe(22);
+  expect(names).toHaveLength(41); expect(new Set(names).size).toBe(names.length);
   const request = { version: '0.2.0', key: 'stockMetric', component: 'KpiCard', props: { label: '"Inventory"', value: 'Text(stockCount)', caption: '"Current stock"' } };
   expect(patternRequestSchema.safeParse(request).success).toBe(true);
   expect(patternRequestSchema.safeParse({ ...request, props: { ...request.props, x: 400 } }).success).toBe(false);
@@ -17,7 +17,7 @@ it('instantiates a versioned generic component without embedding complaint data 
 });
 it('publishes component-specific JSON schemas and accessible dark/light text colors', () => {
   const schema = patternRequestJsonSchema();
-  expect(schema.oneOf).toHaveLength(22);
+  expect(schema.oneOf).toHaveLength(patternCatalog().length);
   expect(schema.oneOf.find(p => p.properties.component.const === 'KpiCard')!.properties.props.required).toContain('value');
   for (const [foreground, background] of [['#172033', '#FFFFFF'], ['#5D677A', '#F5F6FA'], ['#EDF2FA', '#1B2535'], ['#B8C4D6', '#253247'], ['#C4BEFF', '#1B2535'], ['#FFFFFF', '#4F46A5']]) expect(contrast(foreground!, background!)).toBeGreaterThanOrEqual(4.5);
 });

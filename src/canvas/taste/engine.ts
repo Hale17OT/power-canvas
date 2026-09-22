@@ -9,7 +9,8 @@ import { refineNative, refinementPasses } from './refine.js';
 import { auditDesign } from './judgment.js';
 
 /** Deterministic presentation pass. Stable identities and domain formulas stay owned by the native compiler. */
-export function applyTaste(files: NativeFiles, app: CanvasApp) {
+export type PresentationRole='record-metadata'|'detail-region'|'chart-region'|'supporting-region'|'page-content'|'command-region'|'list-identity';
+export function applyTaste(files: NativeFiles, app: CanvasApp, roles:Record<string,PresentationRole>={}) {
   if (!app.taste) return undefined;
   const intent = resolveTaste(app.taste); const before = structuredClone(files);
   const formulas = { ...tasteFormulas(intent), PF_spaceSm: '8', PF_spaceInset: '12', PF_typeEyebrow: '12', PF_typeBrand: '18', PF_scrim: 'RGBA(10, 18, 32, 0.48)' };
@@ -29,15 +30,15 @@ export function applyTaste(files: NativeFiles, app: CanvasApp) {
       if (value === '=If(PF_mobile, 96, 76)') p[key] = '=PF_rowHeight';
       if (value === '=If(PF_mobile, 84, 64)') p[key] = '=PF_rowHeight - 12';
     }
-    if (name.endsWith('_metadata')) p.Height = '=If(PF_showMetadata, 22, 0)';
-    if (name.endsWith('_detail')) p.Width = '=If(PF_wide, PF_detailWidth, Parent.Width)';
-    if (name.endsWith('_chart')) p.Width = '=If(PF_mobile, Parent.Width, (Parent.Width - PF_spaceMd) * PF_chartShare)';
-    if (name.endsWith('_next')) p.Width = '=If(PF_mobile, Parent.Width, (Parent.Width - PF_spaceMd) * (1 - PF_chartShare))';
-    if (name.endsWith('_content')) p.LayoutGap = '=PF_gap';
+    if (roles[name]==='record-metadata') p.Height = '=If(PF_showMetadata, 22, 0)';
+    if (roles[name]==='detail-region') p.Width = '=If(PF_wide, PF_detailWidth, Parent.Width)';
+    if (roles[name]==='chart-region') p.Width = '=If(PF_mobile, Parent.Width, (Parent.Width - PF_spaceMd) * PF_chartShare)';
+    if (roles[name]==='supporting-region') p.Width = '=If(PF_mobile, Parent.Width, (Parent.Width - PF_spaceMd) * (1 - PF_chartShare))';
+    if (roles[name]==='page-content') p.LayoutGap = '=PF_gap';
     if (p.Height === '=40') p.Height = '=Max(40, PF_controlHeight)';
-    if (name.endsWith('_toolbar')) p.Height = '=If(PF_mobile, 152, If(PF_tablet, 88, 44))';
+    if (roles[name]==='command-region') p.Height = '=If(PF_mobile, 152, If(PF_tablet, 88, 44))';
     // Center compact row contents without shrinking the 44px touch layout on phones.
-    if (name.endsWith('_list_identity')) p.LayoutJustifyContent = '=LayoutJustifyContent.Center';
+    if (roles[name]==='list-identity') p.LayoutJustifyContent = '=LayoutJustifyContent.Center';
   }
   const refinements = [];
   if (app.taste.design) for (const focus of refinementPasses) {

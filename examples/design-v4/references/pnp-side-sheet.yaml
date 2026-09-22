@@ -1,0 +1,11 @@
+source: https://github.com/pnp/powerapps-designtoolkit/blob/main/materialdesign%20components/docs/SideSheet.md
+category: OVERLAYS
+observations:
+  - Supplementary context benefits from a caller-owned content region and explicit close event.
+adaptablePatterns:
+  - SideSheet
+  - ContextPanel
+notAdaptable:
+  - HTML shadow tricks and classic-control source are not imported into the modern native dialect.
+sourceAdapted: false
+reviewedAt: '2026-09-21'

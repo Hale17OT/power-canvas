@@ -20,9 +20,15 @@
     "check": "npm run lint && npm run typecheck && npm test",
     "powercanvas": "node dist/cli/index.js",
     "schema": "npm run build && node scripts/schema.mjs",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots",
-    "build:pcf": "npm --prefix pcf/Timeline run build"
+    "test:visual": "npm run design:benchmarks && playwright test",
+    "test:visual:update": "npm run design:benchmarks && playwright test --update-snapshots",
+    "build:pcf": "npm --prefix pcf/Timeline run build",
+    "design:benchmarks": "npm run build && node scripts/design-v4-benchmarks.mjs",
+    "design:v41": "npm run build && node scripts/design-v41-benchmarks.mjs",
+    "test:design-visual": "npm run design:benchmarks && playwright test design-v4.spec.mjs",
+    "agent:eval": "npm run build && node scripts/package-agent-plugin.mjs --check && node scripts/agent-eval.mjs",
+    "agent:package": "node scripts/package-agent-plugin.mjs",
+    "solution:benchmarks": "npm run build && node scripts/solution-benchmarks.mjs"
   },
   "dependencies": {
     "@azure/msal-node": "6.0.1",
