@@ -20,7 +20,7 @@ export function required(value: unknown): string {
 }
 export const attributeCasts: Record<string, string> = {
   String: 'StringAttributeMetadata', Memo: 'MemoAttributeMetadata', Integer: 'IntegerAttributeMetadata', Decimal: 'DecimalAttributeMetadata',
-  Boolean: 'BooleanAttributeMetadata', DateTime: 'DateTimeAttributeMetadata', Picklist: 'PicklistAttributeMetadata', Lookup: 'LookupAttributeMetadata',
+  Boolean: 'BooleanAttributeMetadata', DateTime: 'DateTimeAttributeMetadata', Picklist: 'PicklistAttributeMetadata', Lookup: 'LookupAttributeMetadata',Money:'MoneyAttributeMetadata',Virtual:'MultiSelectPicklistAttributeMetadata',
 };
 export function normalizeColumn(raw: Raw): Record<string, JsonValue> {
   const base = { schemaName: textValue(raw.SchemaName), displayName: label(raw.DisplayName), required: required(raw.RequiredLevel) };
@@ -29,6 +29,8 @@ export function normalizeColumn(raw: Raw): Record<string, JsonValue> {
     case 'Memo': return { ...base, type: 'multilineText', maxLength: numberValue(raw.MaxLength) };
     case 'Integer': return { ...base, type: 'integer', min: numberValue(raw.MinValue), max: numberValue(raw.MaxValue) };
     case 'Decimal': return { ...base, type: 'decimal', min: numberValue(raw.MinValue), max: numberValue(raw.MaxValue), precision: numberValue(raw.Precision) };
+    case 'Money':if(numberValue(raw.PrecisionSource)!==0)return {...base,type:'unsupported:currencyPrecisionSource'};return {...base,type:'currency',min:numberValue(raw.MinValue),max:numberValue(raw.MaxValue),precision:numberValue(raw.Precision)};
+    case 'Virtual':if(rawObject(raw.AttributeTypeName).Value!=='MultiSelectPicklistType')return {...base,type:'unsupported:Virtual'};return {...base,type:'multiChoice',choices:z.array(z.record(z.string(),z.unknown())).parse(rawObject(raw.OptionSet).Options).map(o=>({value:numberValue(o.Value),label:label(o.Label)})).sort((a,b)=>a.value-b.value)};
     case 'DateTime': {
       const behavior = textValue(rawObject(raw.DateTimeBehavior).Value);
       return { ...base, type: 'dateTime', behavior: ({ UserLocal: 'userLocal', DateOnly: 'dateOnly', TimeZoneIndependent: 'timeZoneIndependent' } as Record<string, string>)[behavior] ?? `unsupported:${behavior}` };
@@ -39,7 +41,7 @@ export function normalizeColumn(raw: Raw): Record<string, JsonValue> {
     }
     case 'Picklist': {
       const optionSet = rawObject(raw.OptionSet);
-      if (optionSet.IsGlobal === true) return { ...base, type: 'unsupported:globalChoice' };
+      if (optionSet.IsGlobal === true) return { ...base, type:'choice',choices:[],globalOptionSetName:textValue(optionSet.Name),default:raw.DefaultFormValue===null||raw.DefaultFormValue===-1?null:numberValue(raw.DefaultFormValue) };
       const options = z.array(z.record(z.string(), z.unknown())).parse(optionSet.Options);
       return { ...base, type: 'choice', choices: options.map(option => ({ value: numberValue(option.Value), label: label(option.Label) })).sort((a, b) => a.value - b.value),
         default: raw.DefaultFormValue === null || raw.DefaultFormValue === -1 ? null : numberValue(raw.DefaultFormValue) };
@@ -48,9 +50,13 @@ export function normalizeColumn(raw: Raw): Record<string, JsonValue> {
   }
 }
 export function normalizeTable(raw: Raw, primary: Raw): Record<string, JsonValue> {
+  // An unset optional description is returned as an empty Label object. Required
+  // display labels and nonempty localized descriptions still require English.
+  const description = raw.Description == null ? undefined : rawObject(raw.Description);
+  const emptyDescription = description && Array.isArray(description.LocalizedLabels) && description.LocalizedLabels.length === 0 && description.UserLocalizedLabel === null;
   return { schemaName: textValue(raw.SchemaName), displayName: label(raw.DisplayName), pluralName: label(raw.DisplayCollectionName),
     ownership: raw.OwnershipType === 'UserOwned' ? 'userOrTeam' : raw.OwnershipType === 'OrganizationOwned' ? 'organization' : `unsupported:${textValue(raw.OwnershipType)}`,
-    auditing: booleanValue(rawObject(raw.IsAuditEnabled).Value), primaryColumn: normalizeColumn(primary) };
+    auditing: booleanValue(rawObject(raw.IsAuditEnabled).Value),...(description?{description:emptyDescription?'':label(description)}:{}), primaryColumn: normalizeColumn(primary) };
 }
 export function normalizeRelationship(raw: Raw, lookup: Raw, fromSchema: string, toSchema: string): Record<string, JsonValue> {
   const cascade = rawObject(raw.CascadeConfiguration);

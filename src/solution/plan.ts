@@ -1,12 +1,19 @@
+import {solutionReadiness} from './readiness.js';
 import {z} from 'zod';
 import {compileSolution, digest, capabilityFingerprint, mutationCounts, orderResources, type SolutionIR} from './compile.js';
 import {solutionSpecSchema, evidenceSchema, flowEvidenceSchema, type ResourceIR} from './schema.js';
 import {planFlows, verifyPlan, type FlowPlan, type FlowOwnership} from '../flows/plan.js';
 import type {FlowSnapshot} from '../flows/remote.js';
+import {safeUpdate} from '../planner/dataverse.js';
+import type {JsonValue} from '../core/json.js';
 
 export const savedSolutionPlanSchema=z.strictObject({version:z.literal(1),createdAt:z.iso.datetime(),expiresAt:z.iso.datetime(),spec:solutionSpecSchema,evidence:evidenceSchema,flowEvidence:flowEvidenceSchema.optional(),ir:z.json(),contentHash:z.string().regex(/^[a-f0-9]{64}$/)});
 export function solutionPlan(raw:unknown,evidence:unknown={},flowEvidence?:unknown,now=new Date()){
- const spec=solutionSpecSchema.parse(raw),proof=evidenceSchema.parse(evidence);const ir=compileSolution(spec,proof,now);
+ const spec=solutionSpecSchema.parse(raw),proof=evidenceSchema.parse(evidence);
+ if(proof.dataverse?.plan.certification&&proof.dataverse.plan.certification.manifest.fixtureHash!==digest(spec))throw new Error('Certification fixture hash differs from the reviewed manifest');
+ // Saved plans are JSON artifacts; omit optional undefined annotations identically in memory and on disk.
+ const ir=JSON.parse(JSON.stringify(compileSolution(spec,proof,now))) as SolutionIR;
+ if(proof.dataverse?.plan.certification)for(const root of proof.dataverse.plan.certification.manifest.roots){const r=ir.resources.find(r=>r.nativeId===root.resourceId);if(!r||digest([...r.requiredBy].sort())!==digest([...root.requiredBy].sort()))throw new Error('Certification requirement traceability differs from fixture');}
  const flow=flowEvidence===undefined?undefined:flowEvidenceSchema.parse(flowEvidence);
  if(flow){
   const native=flow.plan as unknown as FlowPlan;verifyPlan(native);
@@ -30,13 +37,14 @@ export function solutionPlan(raw:unknown,evidence:unknown={},flowEvidence?:unkno
   }
   ir.validation.blockers=ir.validation.blockers.filter(b=>!('resource'in b)||!b.resource||!rebuilt.operations.some(o=>o.key===b.resource&&!['BLOCKED','CONFLICT','ORPHANED'].includes(o.status)));
  }
+ ir.readiness=solutionReadiness(ir.project,ir.resources,proof,ir.validation.blockers,now);
  ir.capabilities=ir.resources.map(r=>({resource:r.id,...r.capability}));ir.ownership=ir.resources.map(r=>({resource:r.id,state:r.ownership}));
  ir.resourceHash=digest(ir.resources.map(r=>({id:r.id,definitionHash:r.definitionHash})));
  ir.requirements=ir.requirements.map(r=>({...r,resources:ir.resources.filter(v=>v.requiredBy.includes(r.id)).map(v=>v.id)}));
  ir.expectedMutations=mutationCounts(ir.resources);try{ir.deploymentOrder=orderResources(ir.resources);}catch{ir.status='BLOCKED';}
  ir.dependencies=ir.resources.flatMap(r=>r.dependencies.map(to=>({from:r.id,to})));
  ir.deployment=ir.deployment.map(s=>({...s,resources:ir.deploymentOrder.filter(id=>ir.resources.find(r=>r.id===id)?.stage===s.stage)}));
- if(!ir.validation.blockers.length)ir.status='FULLY_IMPLEMENTABLE';
+ if(!ir.validation.blockers.length)ir.status=ir.resources.some(r=>r.state==='DEFERRED_REQUIRES_PUBLICATION')&&!ir.resources.some(r=>['CREATE','UPDATE'].includes(r.state))?'PROVIDER_CONVERGED_WITH_DEFERRED_PUBLICATION':'FULLY_IMPLEMENTABLE';
  const body={version:1 as const,createdAt:now.toISOString(),expiresAt:new Date(now.getTime()+3600000).toISOString(),spec,evidence:proof,...(flow?{flowEvidence:flow}:{}),ir};
  return {...body,contentHash:digest(body)};
 }
@@ -52,8 +60,8 @@ export function validateSolutionPlan(raw:unknown,currentSpec:unknown,currentEvid
  return rebuilt;
 }
 export function solutionDiff(before:SolutionIR,after:SolutionIR){
- const ids=[...new Set([...before.resources,...after.resources].map(r=>r.id))].sort();return ids.map(id=>{const a=before.resources.find(r=>r.id===id),b=after.resources.find(r=>r.id===id);return {resource:id,state:!b?'ORPHANED':!a?'CREATE':a.definitionHash===b.definitionHash?'NO_OP':'UPDATE',before:a?.definitionHash??null,after:b?.definitionHash??null,executable:false,reason:!b?'Retain; automatic deletion forbidden.':'Source comparison only; target ownership/discovery still required.'};});
+ const ids=[...new Set([...before.resources,...after.resources].map(r=>r.id))].sort();return ids.map(id=>{const a=before.resources.find(r=>r.id===id),b=after.resources.find(r=>r.id===id);const security=['rolePermissions','appAccess'].includes((b??a)!.kind),old=(a?.definition??{}) as Record<string,JsonValue>,next=(b?.definition??{}) as Record<string,JsonValue>;return {resource:id,state:!b?'ORPHANED':!a?'CREATE':a.definitionHash===b.definitionHash?'NO_OP':'UPDATE',changedProperties:[...new Set([...Object.keys(old),...Object.keys(next)])].filter(k=>digest(old[k]??null)!==digest(next[k]??null)),risk:security?(!b||a&&!safeUpdate(b.kind,old,next)?'SECURITY_DESTRUCTIVE':'SECURITY_WRITE'):'TENANT_WRITE',before:a?.definitionHash??null,after:b?.definitionHash??null,executable:false,reason:!b?'Retain; automatic deletion forbidden.':'Source comparison only; target ownership/discovery still required.'};});
 }
-export function critiqueSolution(ir:SolutionIR){return {kind:'ARCHITECTURE_CRITIQUE',deterministicGate:false,observations:ir.validation.issues.filter(i=>i.severity==='warning'),questions:['Does each app serve a distinct job rather than a different viewport?','Are optional workflows worth their connection, security and operational cost?','Are reference data and configuration minimal and shared?','Are security scope, licensing and external document ownership acceptable?'],resourceCount:ir.resources.length,flowCount:ir.resources.filter(r=>r.kind==='flow').length,appCount:ir.resources.filter(r=>r.kind==='canvas').length,remoteMutations:0};}
+export function critiqueSolution(ir:SolutionIR){return {kind:'ARCHITECTURE_CRITIQUE',deterministicGate:false,observations:ir.validation.issues.filter(i=>i.severity==='warning'),questions:['Should this app remain unpublished under manual policy?','Is the retained Category-specific form/view warning acceptable?','Should relational administration use the model-driven provider?','Are roles broader than declared persona needs?','Are custom forms/views redundant?','Is a tailored mobile workflow better served by Canvas?','Does each app serve a distinct job rather than a different viewport?','Are optional workflows worth their connection, security and operational cost?','Are reference data and configuration minimal and shared?','Are security scope, licensing and external document ownership acceptable?'],resourceCount:ir.resources.length,flowCount:ir.resources.filter(r=>r.kind==='flow').length,appCount:ir.resources.filter(r=>r.kind==='canvas').length,remoteMutations:0};}
 export function summarizeSolution(plan:SolutionPlan){const ir=plan.ir;const counts:Record<string,number>={};for(const r of ir.resources)counts[r.state]=(counts[r.state]??0)+1;return `${ir.identity.name}: ${ir.status}\n${ir.requirements.length} requirements; ${ir.resources.length} resources\n${Object.entries(counts).map(([s,n])=>`${s}: ${n}`).join(', ')}\n${ir.validation.blockers.length} blockers; production readiness unproven\n${ir.deployment.map(s=>s.stage+': '+s.resources.length).join(' → ')}\n0 remote mutations; inspect exact saved plan before apply.`;}
 export function executableResources(resources:ResourceIR[]){return resources.filter(r=>r.state==='CREATE'||r.state==='UPDATE');}

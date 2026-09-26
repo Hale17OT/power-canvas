@@ -28,7 +28,8 @@ describe('Dataverse metadata normalization', () => {
   });
   it('does not guess missing labels or coerce unsupported requiredness/types', () => {
     expect(() => normalizeColumn({ ...base, DisplayName: { LocalizedLabels: [] }, AttributeType: 'String', MaxLength: 4 })).toThrow('1033');
-    expect(normalizeColumn({ ...base, AttributeType: 'Money' }).type).toBe('unsupported:Money');
+    expect(normalizeColumn({ ...base, AttributeType: 'Image' }).type).toBe('unsupported:Image');
+    expect(() => normalizeColumn({ ...base, AttributeType: 'Money' })).toThrow(); // Supported type still requires complete metadata.
     expect(normalizeColumn({ ...base, AttributeType: 'String', MaxLength: 200, RequiredLevel: { Value: 'SystemRequired' } }).required).toBe('unsupported:SystemRequired');
   });
   it('round-trips table primary columns and relationship intent through documented payload shapes', () => {
@@ -51,6 +52,17 @@ describe('Dataverse metadata normalization', () => {
     expect(nativeLabel('a & b').LocalizedLabels[0]?.Label).toBe('a & b');
     expect(publishXml(['pf_Complaint'])).toContain('<entity>pf_complaint</entity>');
     expect(() => publishXml(['bad<script>'])).toThrow();
+  });
+  it('recognizes an unset optional table description without relaxing required English labels', () => {
+    const table = desiredResources(fixture()).find(item => item.kind === 'table')!;
+    const payload = tablePayload(table.properties);
+    const primary = { ...(payload.Attributes as Record<string, unknown>[])[0]!, AttributeType: 'String' };
+    const empty = { LocalizedLabels: [], UserLocalizedLabel: null };
+    expect(normalizeTable({ ...payload, Description: empty }, primary).description).toBe('');
+    expect(normalizeTable({ ...payload, Description: label('Explicit description') }, primary).description).toBe('Explicit description');
+    expect(() => normalizeTable({ ...payload, Description: { LocalizedLabels: [{ LanguageCode: 1031, Label: 'Beschreibung' }], UserLocalizedLabel: null } }, primary)).toThrow('1033');
+    expect(() => normalizeTable({ ...payload, DisplayName: empty, Description: empty }, primary)).toThrow('1033');
+    expect(() => normalizeTable({ ...payload, Description: { LocalizedLabels: [], UserLocalizedLabel: { LanguageCode: 1033, Label: 'Ambiguous' } } }, primary)).toThrow('1033');
   });
 });
 
@@ -131,7 +143,7 @@ describe('read-only transport boundary', () => {
       else if (path.endsWith('/EntityDefinitions')) data = { value: [{ MetadataId: tableId, SchemaName: 'pf_Category', LogicalName: 'pf_category' }] };
       else if (path.endsWith('/Attributes')) data = { value: [primary] };
       else if (path.includes('/Attributes(')) data = primary;
-      else data = { ...native, MetadataId: tableId, PrimaryNameAttribute: 'pf_name', IsManaged: false, IsCustomizable: { Value: true } };
+      else data = { ...native, MetadataId: tableId, PrimaryNameAttribute: 'pf_name', EntitySetName: 'pf_complaints', IsManaged: false, IsCustomizable: { Value: true } };
       return new Response(JSON.stringify(data));
     });
     const observed = await new DataverseDiscovery(client).observe(project, target);

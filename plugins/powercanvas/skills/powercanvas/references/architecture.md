@@ -2,7 +2,7 @@
 
 PowerCanvas already has Canvas generation/Taste, composition and business-binding IR, source comparison/migration, component certification, typed flow primitives/recipes, dependency/portability planning and bounded Dataverse/model-driven delivery. Query the CLI for exact current availability.
 
-Plan broad requests with the core Unified Solution Compiler V1. Describe stable requirements in a `powercanvas.solution/v1` document, using `mode: intent` for structured entities/experiences/typed recipes or `mode: explicit` for existing projects. Intent resolves into the same existing project schema. Unstructured prose needs explicit reviewable decomposition; do not pretend the CLI parses arbitrary prose.
+Plan broad requests with the core Unified Solution Compiler. Describe stable requirements in a `powercanvas.solution/v1` document, using `mode: intent` for structured entities/experiences/typed recipes or `mode: explicit` for existing projects. Intent resolves into the same existing project schema. V2 Dataverse/model-driven and persona support is described in [native solution delivery](solution-v2.md). Unstructured prose needs explicit reviewable decomposition; do not pretend the CLI parses arbitrary prose.
 
 Run `solution plan --spec <file> --out <project-relative-output.json>`, then `solution inspect`, `solution graph`, `solution audit` and `solution critique`, each with `--plan <file>`. See `docs/solution-v1.md` for the contract. Audit is a deterministic gate; critique is architecture guidance. Inspect requirements, shared types, resource states, traceability, dependencies, ownership and external prerequisites before subsystem work.
 

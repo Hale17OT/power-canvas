@@ -2,12 +2,20 @@ import { create } from 'xmlbuilder2';
 import type { DataverseHttp } from '../dataverse/http.js';
 import { guidValue } from '../dataverse/normalize.js';
 import { PowerCanvasError } from '../core/errors.js';
+import type { Resource } from '../dataverse/desired.js';
+import { requirePublishedApp } from './lifecycle.js';
+
+export async function readPublishedAppRoleIds(http: DataverseHttp, app: Resource): Promise<string[]> {
+  requirePublishedApp(app);
+  return (await http.all(`appmodules(${guidValue(app.remoteId)})/appmoduleroles_association?$select=roleid`)).map(item => guidValue(item.roleid));
+}
 
 // Standard Microsoft role templates, not names supplied by arbitrary tenant roles.
 export const PLATFORM_APP_ROLE_TEMPLATES = ['119f245c-3cc8-4b62-b31c-d1a046ced15d', '627090ff-40a3-4053-8790-584edc5be201'];
 export async function readAppRoleIds(http: DataverseHttp, appId: string): Promise<string[]> {
   // These readable lookup attributes are absent from the intersect's OData type.
-  // FetchXML also reads associations before the new app has been published.
+  // Read-only intersect evidence can exist before publication. It does not prove
+  // published access or authorize an unpublished association mutation route.
   const entity = create().ele('fetch').ele('entity', { name: 'appmoduleroles' });
   entity.ele('attribute', { name: 'roleid' });
   entity.ele('filter').ele('condition', { attribute: 'appmoduleid', operator: 'eq', value: guidValue(appId) });

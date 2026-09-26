@@ -3,7 +3,8 @@ import {validateSemantics} from '../ir/validate.js';
 import {solutionSpecSchema, type SolutionSpec, type SharedType, type Issue} from './schema.js';
 import {responsibility} from '../flows/registry.js';
 
-export const dataverseTypeMap:Partial<Record<SharedType,Column['type']>>={string:'text',email:'text',multiline:'multilineText',integer:'integer',decimal:'decimal',percentage:'decimal',boolean:'boolean',choice:'choice',date:'dateTime',datetime:'dateTime'};
+export const dataverseTypeMap:Partial<Record<SharedType,Column['type']>>={string:'text',email:'text',multiline:'multilineText',integer:'integer',decimal:'decimal',currency:'currency',multiChoice:'multiChoice',percentage:'decimal',boolean:'boolean',choice:'choice',date:'dateTime',datetime:'dateTime'};
+export function experienceDelivery(e:{delivery?:string|undefined;workload?:string|undefined}){return e.delivery==='modelDriven'||e.delivery==='auto'&&e.workload==='administration'?'modelDriven':'canvas';}
 export function conceptualType(column:Column):SharedType{return ({text:'string',multilineText:'multiline',dateTime:column.type==='dateTime'&&column.behavior==='dateOnly'?'date':'datetime'} as Record<string,SharedType>)[column.type]??column.type as SharedType;}
 export function resolveSolution(raw:unknown){
  const spec=solutionSpecSchema.parse(raw);const issues:Issue[]=[];
@@ -12,7 +13,7 @@ export function resolveSolution(raw:unknown){
  let project:Project;
  if(spec.mode==='explicit'){project=spec.project;Object.assign(products,spec.products);}
  else{
-  const prefix=spec.identity.solution.publisher.prefix;const tables:Project['dataverse']['tables']={};const relationships:Project['dataverse']['relationships']={};
+  const prefix=spec.identity.solution.publisher.prefix;const tables:Project['dataverse']['tables']={};const relationships:Project['dataverse']['relationships']={};const keys:NonNullable<Project['dataverse']['keys']>={};
   for(const [key,e]of Object.entries(spec.entities)){
    bind('table:'+key,e.requiredBy);
    if(e.storage==='sharepoint'){issues.push({code:'EXTERNAL_PROVISIONING',severity:'error',resource:'table:'+key,message:'SharePoint list provisioning is external; supply explicit identity and metadata.'});continue;}
@@ -26,17 +27,24 @@ export function resolveSolution(raw:unknown){
      bind('relationship:'+key+f,e.requiredBy);continue;
     }
     if(!type){issues.push({code:'UNSUPPORTED_TYPE',severity:'error',resource:'table:'+key,message:`${key}.${f}: ${field.type} has no current Dataverse provisioning adapter; retained as an unmet requirement.`});continue;}
-    const props=type==='text'?{maxLength:200}:type==='multilineText'?{maxLength:10000}:type==='integer'?{min:0,max:2147483647}:type==='decimal'?{min:0,max:field.type==='percentage'?100:1000000000,precision:2}:type==='boolean'?{default:false,trueLabel:'Yes',falseLabel:'No'}:type==='dateTime'?{behavior:field.type==='date'?'dateOnly':'userLocal'}:{choices:(field.choices??[]).map((label,i)=>({label,value:spec.identity.solution.publisher.optionValuePrefix*10000+i}))};
-    columns[f]={...base,type,...props} as Column;
+    const props=type==='text'?{maxLength:200}:type==='multilineText'?{maxLength:10000}:type==='integer'?{min:0,max:2147483647}:(type==='decimal'||type==='currency')?{min:0,max:field.type==='percentage'?100:1000000000,precision:2}:type==='boolean'?{default:false,trueLabel:'Yes',falseLabel:'No'}:type==='dateTime'?{behavior:field.type==='date'?'dateOnly':'userLocal'}:{choices:(field.choices??[]).map((label,i)=>({label,value:spec.identity.solution.publisher.optionValuePrefix*10000+i}))};
+    columns[f]={...base,type,...props,...(type==='currency'?{min:0,max:1000000000,precision:2}:{}),...(field.globalChoice?{globalChoice:field.globalChoice,choices:[]}:{} )} as Column;
    }
    const primary=Object.entries(columns).find(([,c])=>c.type==='text')?.[0];
    if(!primary)throw new Error('An explicit string primary name is required: '+key);
-   if(e.keys.length)issues.push({code:'KEY_PROVISIONING_PLANNED',severity:'error',resource:'table:'+key,message:'Alternate keys require external provisioning; the current schema provider does not create them.'});
+   for(const [index,columns]of e.keys.entries()){const name=key+'Key'+index;keys[name]={schemaName:prefix+'_'+name,table:key,columns,reason:e.rationale,lifecycle:{deletionPolicy:'retain'}};bind('key:'+name,e.requiredBy);}
    tables[key]={schemaName:prefix+'_'+key,displayName:e.label,pluralName:e.plural,ownership:e.ownership,primaryName:primary,auditing:e.auditing,columns,lifecycle:{deletionPolicy:'retain'}};
   }
   for(const [key,r]of Object.entries(relationships))if(!tables[r.fromTable]||!tables[r.toTable]){issues.push({code:'EXTERNAL_RELATIONSHIP',severity:'error',resource:'relationship:'+key,message:'A Dataverse lookup cannot provision an external SharePoint target; retain an explicit integration requirement.'});delete relationships[key];}
   const apps:NonNullable<Project['canvasApps']>={};
+  const modelApps:Project['apps']={};
   for(const [key,e]of Object.entries(spec.experiences)){
+   if(experienceDelivery(e)==='modelDriven'){
+    bind('app:'+key,e.requiredBy);
+    if(!e.jobBoundary)issues.push({code:'APP_BOUNDARY_REQUIRED',severity:'error',resource:'app:'+key,message:'Model-driven experience requires an explicit audience/job boundary.'});
+    modelApps[key]=e.model??{type:'modelDriven',uniqueName:prefix+'_'+key,displayName:e.product.name,tables:[e.source],forms:{main:{displayName:e.product.name+' Main',table:e.source,fields:e.fields,lifecycle:{deletionPolicy:'retain'}}},views:{active:{displayName:e.product.name+' Active',table:e.source,columns:e.fields,activeOnly:true,orderBy:[],lifecycle:{deletionPolicy:'retain'}}},navigation:[{area:'Operations',group:'Records',table:e.source}],publishPolicy:'manual',lifecycle:{deletionPolicy:'retain'}};
+    continue;
+   }
    bind('canvas:'+key,e.requiredBy);products[key]=e.product;
    apps[key]={type:'canvas',uniqueName:prefix+'_'+key,displayName:e.product.name,componentPolicy:'experimental',theme:{mode:'light',density:'comfortable',brand:{primary:'#145C4F'},font:'Segoe UI',radius:'soft'},shell:{pattern:'sidebar',navigation:[{screen:'workspace',label:e.product.name}]},screens:{workspace:{pattern:'masterDetail',title:e.product.name,source:e.source,columns:e.fields.slice(0,6),pageSize:25,detail:{fields:e.fields,revealFields:[]}}}};
    if(e.host){apps[key]!.screens={};apps[key]!.nativeDesign={product:e.product,host:e.host,stability:spec.profile};}
@@ -51,7 +59,7 @@ export function resolveSolution(raw:unknown){
    }else if(!process.implementation||!spec.automation.workflowRecipes?.[process.implementation])issues.push({code:'RECIPE_CONFIGURATION_REQUIRED',severity:'error',message:process.id+': '+(advice.recipe??'external integration')+' requires explicit typed recipe configuration, destinations and recipients.'});
    else {const recipe=spec.automation.workflowRecipes[process.implementation]!;if(advice.recipe&&!recipe.steps.some(s=>s.recipe===advice.recipe))issues.push({code:'RECIPE_RESPONSIBILITY_MISMATCH',severity:'error',message:process.id+': expected '+advice.recipe+' recipe.'});bind('flow:'+process.implementation,process.requiredBy);}
   }
-  project=projectSchema.parse({...spec.identity,dataverse:{tables,relationships},canvasApps:apps,resources:spec.automation});
+  project=projectSchema.parse({...spec.identity,dataverse:{tables,relationships,...(spec.choices?{choices:spec.choices}:{}),...(Object.keys(keys).length?{keys}:{})},apps:modelApps,canvasApps:apps,resources:spec.automation,...(spec.securityModel?{security:spec.securityModel}:{})});
  }
  const seen=new Set<string>();for(const r of requirements){if(seen.has(r.id))throw new Error('Duplicate requirement ID: '+r.id);seen.add(r.id);}
  for(const d of validateSemantics(project))issues.push({code:d.code,severity:'error',message:d.message});

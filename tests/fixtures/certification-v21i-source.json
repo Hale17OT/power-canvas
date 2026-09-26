@@ -1,0 +1,404 @@
+{
+  "apiVersion": "powercanvas.solution/v1",
+  "mode": "explicit",
+  "profile": "experimental",
+  "requirements": [
+    {
+      "id": "REQ-certification",
+      "statement": "Prove the bounded native provider using isolated metadata, no business data and no human role assignments.",
+      "concerns": [
+        "data",
+        "ui",
+        "security"
+      ],
+      "resources": [
+        "choice:certificationState",
+        "table:certificationCategory",
+        "table:certificationProbe",
+        "column:certificationProbe.amount",
+        "column:certificationProbe.count",
+        "column:certificationProbe.date",
+        "column:certificationProbe.enabled",
+        "column:certificationProbe.externalCode",
+        "column:certificationProbe.notes",
+        "column:certificationProbe.occurredAt",
+        "column:certificationProbe.state",
+        "key:certificationExternalCode",
+        "relationship:certificationCategoryProbe",
+        "role:certificationReader",
+        "rolePermissions:certificationReader",
+        "form:certification.main",
+        "view:certification.active",
+        "sitemap:certification",
+        "app:certification",
+        "appComponents:certification",
+        "appAccess:certification"
+      ]
+    }
+  ],
+  "project": {
+    "apiVersion": "powercanvas.dev/v1alpha1",
+    "project": {
+      "id": "808f5ed9-73aa-4cd5-9d0f-480fd984b04e",
+      "name": "default-environment-experiment"
+    },
+    "solution": {
+      "uniqueName": "pfx_PowerForgeExperiment",
+      "displayName": "PowerCanvas Experiment",
+      "version": "0.1.0.0",
+      "publisher": {
+        "uniqueName": "PowerForgeExperimentPublisher",
+        "prefix": "pfx",
+        "optionValuePrefix": 73142
+      }
+    },
+    "dataverse": {
+      "tables": {
+        "certificationProbe": {
+          "schemaName": "pfx_ExperimentCertificationProbe",
+          "displayName": "Provider certification probe",
+          "pluralName": "Provider certification probes",
+          "ownership": "userOrTeam",
+          "primaryName": "name",
+          "auditing": true,
+          "lifecycle": {
+            "deletionPolicy": "retain"
+          },
+          "description": "PowerCanvas provider certification metadata; no business records.",
+          "columns": {
+            "name": {
+              "schemaName": "pfx_ExperimentCertificationName",
+              "displayName": "Name",
+              "required": "application",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "text",
+              "maxLength": 200
+            },
+            "externalCode": {
+              "schemaName": "pfx_ExperimentCertificationExternalCode",
+              "displayName": "ExternalCode",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "text",
+              "maxLength": 80
+            },
+            "notes": {
+              "schemaName": "pfx_ExperimentCertificationNotes",
+              "displayName": "Notes",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "multilineText",
+              "maxLength": 2000
+            },
+            "count": {
+              "schemaName": "pfx_ExperimentCertificationCount",
+              "displayName": "Count",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "integer",
+              "min": 0,
+              "max": 10000
+            },
+            "amount": {
+              "schemaName": "pfx_ExperimentCertificationAmount",
+              "displayName": "Amount",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "decimal",
+              "min": 0,
+              "max": 10000,
+              "precision": 2
+            },
+            "enabled": {
+              "schemaName": "pfx_ExperimentCertificationEnabled",
+              "displayName": "Enabled",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "boolean",
+              "default": false,
+              "trueLabel": "Yes",
+              "falseLabel": "No"
+            },
+            "date": {
+              "schemaName": "pfx_ExperimentCertificationDate",
+              "displayName": "Date",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "dateTime",
+              "behavior": "dateOnly"
+            },
+            "occurredAt": {
+              "schemaName": "pfx_ExperimentCertificationOccurredAt",
+              "displayName": "OccurredAt",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "dateTime",
+              "behavior": "userLocal"
+            },
+            "state": {
+              "schemaName": "pfx_ExperimentCertificationState",
+              "displayName": "State",
+              "required": "none",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "choice",
+              "choices": [],
+              "globalChoice": "certificationState"
+            }
+          }
+        },
+        "certificationCategory": {
+          "schemaName": "pfx_ExperimentCertificationCategory",
+          "displayName": "Provider certification category",
+          "pluralName": "Provider certification categories",
+          "ownership": "userOrTeam",
+          "primaryName": "name",
+          "auditing": false,
+          "lifecycle": {
+            "deletionPolicy": "retain"
+          },
+          "description": "PowerCanvas provider certification lookup target; no business records.",
+          "columns": {
+            "name": {
+              "schemaName": "pfx_ExperimentCertificationCategoryName",
+              "displayName": "CategoryName",
+              "required": "application",
+              "lifecycle": {
+                "deletionPolicy": "retain"
+              },
+              "type": "text",
+              "maxLength": 100
+            }
+          }
+        }
+      },
+      "choices": {
+        "certificationState": {
+          "schemaName": "pfx_ExperimentCertificationState",
+          "displayName": "Provider certification state",
+          "options": [
+            {
+              "label": "Draft",
+              "value": 731420100
+            },
+            {
+              "label": "Active",
+              "value": 731420101
+            },
+            {
+              "label": "Closed",
+              "value": 731420102
+            }
+          ],
+          "lifecycle": {
+            "deletionPolicy": "retain"
+          }
+        }
+      },
+      "keys": {
+        "certificationExternalCode": {
+          "schemaName": "pfx_ExperimentCertificationExternalCodeKey",
+          "table": "certificationProbe",
+          "columns": [
+            "externalCode"
+          ],
+          "reason": "Verify the bounded alternate-key provider and Active index state.",
+          "lifecycle": {
+            "deletionPolicy": "retain"
+          }
+        }
+      },
+      "relationships": {
+        "certificationCategoryProbe": {
+          "schemaName": "pfx_ExperimentCertificationCategoryProbe",
+          "fromTable": "certificationProbe",
+          "toTable": "certificationCategory",
+          "lookup": {
+            "key": "category",
+            "schemaName": "pfx_ExperimentCertificationCategoryLookup",
+            "displayName": "Certification category",
+            "required": "none"
+          },
+          "cascade": {
+            "delete": "restrict",
+            "assign": "none",
+            "share": "none",
+            "unshare": "none",
+            "reparent": "none",
+            "merge": "none"
+          },
+          "lifecycle": {
+            "deletionPolicy": "retain"
+          }
+        }
+      }
+    },
+    "apps": {
+      "certification": {
+        "type": "modelDriven",
+        "uniqueName": "pfx_ExperimentCertification",
+        "displayName": "PowerCanvas Experiment Certification",
+        "publishPolicy": "manual",
+        "tables": [
+          "certificationProbe",
+          "certificationCategory"
+        ],
+        "forms": {
+          "main": {
+            "displayName": "PowerCanvas Experiment Certification Main",
+            "table": "certificationProbe",
+            "layout": [
+              {
+                "name": "Certification",
+                "label": "Certification",
+                "sections": [
+                  {
+                    "name": "Identity",
+                    "label": "Identity",
+                    "columns": 2,
+                    "fields": [
+                      {
+                        "field": "name",
+                        "column": 1,
+                        "readOnly": false,
+                        "visible": true
+                      },
+                      {
+                        "field": "externalCode",
+                        "column": 2,
+                        "readOnly": true,
+                        "visible": true
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Context",
+                    "label": "Context",
+                    "columns": 1,
+                    "fields": [
+                      {
+                        "field": "notes",
+                        "column": 1,
+                        "readOnly": false,
+                        "visible": true
+                      },
+                      {
+                        "field": "state",
+                        "column": 1,
+                        "readOnly": false,
+                        "visible": true
+                      },
+                      {
+                        "field": "category",
+                        "column": 1,
+                        "readOnly": false,
+                        "visible": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "fields": [
+              "name",
+              "externalCode",
+              "notes",
+              "state",
+              "category"
+            ],
+            "lifecycle": {
+              "deletionPolicy": "retain"
+            }
+          }
+        },
+        "views": {
+          "active": {
+            "displayName": "PowerCanvas Experiment Certification Active",
+            "table": "certificationProbe",
+            "columns": [
+              "name",
+              "externalCode",
+              "state",
+              "category"
+            ],
+            "activeOnly": true,
+            "filters": [
+              {
+                "field": "state",
+                "operator": "in",
+                "values": [
+                  731420100,
+                  731420101
+                ]
+              }
+            ],
+            "orderBy": [
+              {
+                "column": "name",
+                "direction": "ascending"
+              }
+            ],
+            "lifecycle": {
+              "deletionPolicy": "retain"
+            }
+          }
+        },
+        "navigation": [
+          {
+            "area": "Certification",
+            "group": "Probes",
+            "table": "certificationProbe"
+          },
+          {
+            "area": "Configuration",
+            "group": "Categories",
+            "table": "certificationCategory"
+          }
+        ],
+        "lifecycle": {
+          "deletionPolicy": "retain"
+        }
+      }
+    },
+    "security": {
+      "roles": {
+        "certificationReader": {
+          "displayName": "PowerCanvas Experiment Certification Reader",
+          "lifecycle": {
+            "deletionPolicy": "retain"
+          },
+          "tables": {
+            "certificationProbe": {
+              "read": "user"
+            },
+            "certificationCategory": {
+              "read": "user"
+            }
+          }
+        }
+      },
+      "appAccess": {
+        "certification": [
+          "certificationReader"
+        ]
+      }
+    }
+  }
+}

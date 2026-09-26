@@ -32,7 +32,7 @@ it('plans migration of an owned app from the older baseline without adopting a c
   }
   const plan = createPlan(project, observation, ownership, 'all', new Date(), policy);
   expect(plan.blockers).toEqual([]);
-  expect(plan.operations.map(item => item.action)).toEqual(['updateOwnedProperties', 'publish']);
+  expect(plan.operations.map(item => item.action)).toEqual(['updateOwnedProperties']);
   validateSavedPlan(plan, project, observation, ownership);
   const app = observation.resources.find(item => item.kind === 'app')!;
   ownership.resources = ownership.resources.filter(item => item.resourceId !== app.resourceId);
@@ -173,10 +173,10 @@ it('gates model generation on the current verified schema and orders app/securit
   const { project, observation, ownership } = modelState();
   const plan = createPlan(project, observation, ownership, 'all', new Date(), policy);
   expect(plan.blockers).toEqual([]);
-  expect(plan.operations.filter(item => item.action === 'publish')).toHaveLength(1);
+  expect(plan.operations.filter(item => item.action === 'publish')).toHaveLength(0);expect(plan.deferred).toHaveLength(1);
   const completed = new Set<string>();
   for (const operation of plan.operations) { expect(operation.dependsOn.every(id => completed.has(id))).toBe(true); completed.add(operation.id); }
-  expect(plan.operations.find(item => item.action === 'setAppAccess')!.dependsOn).toContain(plan.operations.find(item => item.action === 'grantRolePrivileges')!.id);
+  expect(plan.operations.some(item=>item.action==='setAppAccess')).toBe(false);expect(plan.deferred?.[0]?.dependency).toContain(':appPublication:');
   delete ownership.experiment1Evidence;
   const blocked = createPlan(project, observation, ownership, 'all', new Date(), policy);
   expect(blocked.blockers.some(item => item.code === 'PF-CAPABILITY-003')).toBe(true);

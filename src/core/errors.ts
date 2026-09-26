@@ -1,4 +1,4 @@
-export type ErrorCode = `PF-${'FLOW' | 'AUTH' | 'ENV' | 'DV' | 'MDA' | 'CANVAS' | 'CONNECTOR' | 'SOLUTION' | 'PLAN' | 'STATE' | 'SAFETY' | 'VALIDATION' | 'CONFIG' | 'CAPABILITY' | 'CLI' | 'INTERNAL'}-${string}`;
+export type ErrorCode = `PF-${'CERT' | 'FLOW' | 'AUTH' | 'ENV' | 'DV' | 'MDA' | 'CANVAS' | 'CONNECTOR' | 'SOLUTION' | 'PLAN' | 'STATE' | 'SAFETY' | 'VALIDATION' | 'CONFIG' | 'CAPABILITY' | 'CLI' | 'INTERNAL'}-${string}`;
 
 export interface Diagnostic {
   code: ErrorCode;

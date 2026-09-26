@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "intent": {
+      "type": "string",
+      "const": "PROVIDER_CERTIFICATION"
+    },
+    "evidenceState": {
+      "type": "string",
+      "const": "ATTEMPT_INTENT_ONLY"
+    },
+    "projectId": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+    },
+    "fixtureHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "projectHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "tenantId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+        },
+        "environmentId": {
+          "type": "string"
+        },
+        "organizationId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+        },
+        "dataverseUrl": {
+          "type": "string",
+          "pattern": "^https:\\/\\/[a-z0-9-]+\\.(?:api\\.)?crm[0-9]*\\.dynamics\\.com$"
+        }
+      },
+      "required": [
+        "tenantId",
+        "environmentId",
+        "organizationId",
+        "dataverseUrl"
+      ],
+      "additionalProperties": false
+    },
+    "namespace": {
+      "type": "string",
+      "const": "pfx_ExperimentCertification"
+    },
+    "roots": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "maxLength": 300,
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:/-]*$"
+          },
+          "definitionHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "requiredBy": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 300,
+              "pattern": "^[a-zA-Z][a-zA-Z0-9._:/-]*$"
+            }
+          }
+        },
+        "required": [
+          "resourceId",
+          "definitionHash",
+          "requiredBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "existingDependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "maxLength": 300,
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:/-]*$"
+          },
+          "remoteId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+          },
+          "baselineHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "displayNamePolicy": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "preserveExisting"
+            ]
+          }
+        },
+        "required": [
+          "resourceId",
+          "remoteId",
+          "baselineHash",
+          "displayNamePolicy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "allowedActions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 300,
+        "pattern": "^[a-zA-Z][a-zA-Z0-9._:/-]*$"
+      }
+    },
+    "expectedPublication": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 300,
+        "pattern": "^[a-zA-Z][a-zA-Z0-9._:/-]*$"
+      }
+    },
+    "forbidden": {
+      "type": "string",
+      "const": "historicalUpdates,deletes,businessData,Canvas,Flow,authentication"
+    },
+    "applyAuthorization": {
+      "type": "string",
+      "const": "REQUIRED_SEPARATE_REVIEW"
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "intent",
+    "evidenceState",
+    "projectId",
+    "fixtureHash",
+    "projectHash",
+    "target",
+    "namespace",
+    "roots",
+    "existingDependencies",
+    "allowedActions",
+    "expectedPublication",
+    "forbidden",
+    "applyAuthorization",
+    "contentHash"
+  ],
+  "additionalProperties": false
+}

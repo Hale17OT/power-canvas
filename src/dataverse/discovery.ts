@@ -1,3 +1,5 @@
+import {normalizeKey} from './key.js';
+import {readGlobalChoice} from './global-choice.js';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import type { Project } from '../ir/schema.js';
@@ -5,7 +7,7 @@ import { nameSchema } from '../ir/schema.js';
 import type { Observation, Ownership, Target } from '../state/models.js';
 import { DATAVERSE_VERSION, discoveryScope } from './desired.js';
 import type { DesiredResource, Resource } from './desired.js';
-import { attributeCasts, guidValue, normalizeColumn, normalizeRelationship, normalizeTable, rawObject, textValue } from './normalize.js';
+import { attributeCasts, guidValue, normalizeColumn, normalizeRelationship, normalizeTable, rawObject, textValue,label } from './normalize.js';
 import type { Raw } from './normalize.js';
 import { DataverseHttp } from './http.js';
 import { PowerCanvasError } from '../core/errors.js';
@@ -14,9 +16,10 @@ export const metadataPath = (schemaName: string): string => `EntityDefinitions(L
 export class DataverseDiscovery {
   constructor(readonly http: DataverseHttp) {}
   async attribute(table: string, raw: Raw): Promise<Raw> {
+    if(raw.AttributeType==='Virtual'&&rawObject(raw.AttributeTypeName??{}).Value!=='MultiSelectPicklistType')return raw;
     const cast = attributeCasts[textValue(raw.AttributeType)];
     if (!cast) return raw;
-    const expanded = ['Picklist', 'Boolean'].includes(textValue(raw.AttributeType)) ? '?$expand=OptionSet' : '';
+    const expanded = ['Picklist', 'Boolean','Virtual'].includes(textValue(raw.AttributeType)) ? '?$expand=OptionSet' : '';
     return rawObject((await this.http.request(`${metadataPath(table)}/Attributes(${guidValue(raw.MetadataId)})/Microsoft.Dynamics.CRM.${cast}${expanded}`)).data);
   }
   async observe(project: Project, target: Target, ownership?: Ownership): Promise<Observation> {
@@ -28,7 +31,7 @@ export class DataverseDiscovery {
       const key = schema.toLowerCase(); if (tableCache.has(key)) return tableCache.get(key);
       if (!tables.some(table => textValue(table.SchemaName).toLowerCase() === key)) return undefined;
       const raw = rawObject((await this.http.request(metadataPath(schema))).data);
-      const attributes = await this.http.all(`${metadataPath(schema)}/Attributes?$select=SchemaName,LogicalName,MetadataId,AttributeType,DisplayName,RequiredLevel,IsManaged,IsCustomizable`);
+      const attributes = await this.http.all(`${metadataPath(schema)}/Attributes?$select=SchemaName,LogicalName,MetadataId,AttributeType,AttributeTypeName,DisplayName,RequiredLevel,IsManaged,IsCustomizable`);
       const value = { raw, attributes }; tableCache.set(key, value); return value;
     };
     const publisherName = nameSchema.parse(project.solution.publisher.uniqueName);
@@ -54,17 +57,24 @@ export class DataverseDiscovery {
         if (!solution || textValue(solution.uniquename).toLowerCase() !== spec.schemaName.toLowerCase()) continue;
         add(spec, solution, guidValue(solution.solutionid), { uniqueName: textValue(solution.uniquename), displayName: textValue(solution.friendlyname), version: textValue(solution.version),
           publisherUniqueName: publishers.find(item => guidValue(item.publisherid) === guidValue(solution._publisherid_value)) ? project.solution.publisher.uniqueName : 'unknown-publisher' });
+      } else if(spec.kind==='choice'){
+        const raw=await readGlobalChoice(this.http,spec.schemaName,ownership?.resources.find(r=>r.resourceId===spec.resourceId)?.remoteId);if(!raw)continue;const id=guidValue(raw.MetadataId);
+        add(spec,raw,id,{schemaName:textValue(raw.Name),optionSetType:textValue(raw.OptionSetType),isGlobal:z.boolean().parse(raw.IsGlobal),displayName:label(raw.DisplayName),options:z.array(z.record(z.string(),z.unknown())).parse(raw.Options).map(o=>({value:z.int().parse(o.Value),label:label(o.Label)})).sort((a,b)=>a.value-b.value),solutionMember:member(id,9)});
+      } else if(spec.kind==='key'){
+        const tableName=textValue(spec.properties.tableSchemaName),table=await readTable(tableName);if(!table)continue;
+        const keys=await this.http.all(`${metadataPath(tableName)}/Keys`),matches=keys.filter(k=>textValue(k.SchemaName).toLowerCase()===spec.schemaName.toLowerCase());if(matches.length>1)throw new Error('Ambiguous alternate key identity');if(!matches.length)continue;
+        const raw=matches[0]!,id=guidValue(raw.MetadataId);add(spec,raw,id,normalizeKey(raw,table.raw,tableName,member(id,14)||includesAttributes(guidValue(table.raw.MetadataId))));
       } else if (spec.kind === 'table') {
         const table = await readTable(spec.schemaName); if (!table) continue;
         const primary = table.attributes.find(item => item.LogicalName === table.raw.PrimaryNameAttribute);
         if (!primary) throw new PowerCanvasError('PF-DV-005', 'Primary-name metadata is incomplete.', 'Do not plan from incomplete metadata.');
         const id = guidValue(table.raw.MetadataId);
-        add(spec, table.raw, id, { ...normalizeTable(table.raw, await this.attribute(spec.schemaName, primary)), solutionMember: member(id, 1) && (member(guidValue(primary.MetadataId), 2) || includesAttributes(id)) });
+        add(spec, table.raw, id, { ...normalizeTable(table.raw, await this.attribute(spec.schemaName, primary)), ...(table.raw.Privileges ? { securityPrivilegeMetadata: { MetadataId: id, LogicalName: textValue(table.raw.LogicalName), SchemaName: textValue(table.raw.SchemaName), Privileges: table.raw.Privileges as import('../core/json.js').JsonValue } } : {}), primaryMetadataId:guidValue(primary.MetadataId), entitySetName:textValue(table.raw.EntitySetName), primaryNameAttribute:textValue(table.raw.PrimaryNameAttribute), solutionMember: member(id, 1) && (member(guidValue(primary.MetadataId), 2) || includesAttributes(id)) });
       } else if (spec.kind === 'column') {
         const tableName = textValue(spec.properties.tableSchemaName); const table = await readTable(tableName); if (!table) continue;
         const raw = table.attributes.find(item => textValue(item.SchemaName).toLowerCase() === spec.schemaName.toLowerCase()); if (!raw) continue;
         const id = guidValue(raw.MetadataId);
-        add(spec, raw, id, { ...normalizeColumn(await this.attribute(tableName, raw)), tableSchemaName: tableName, solutionMember: member(id, 2) || includesAttributes(guidValue(table.raw.MetadataId)) });
+        add(spec, raw, id, { ...normalizeColumn(await this.attribute(tableName, raw)), logicalName:textValue(raw.LogicalName), tableSchemaName: tableName, solutionMember: member(id, 2) || includesAttributes(guidValue(table.raw.MetadataId)) });
       } else if (spec.kind === 'relationship') {
         const identities = await this.http.all(`RelationshipDefinitions?$select=SchemaName,MetadataId,RelationshipType&$filter=SchemaName eq '${nameSchema.parse(spec.schemaName)}'`);
         if (identities.some(item => item.RelationshipType !== 'OneToManyRelationship')) throw new PowerCanvasError('PF-DV-004', 'The relationship schema name is occupied by another relationship type.', 'Choose an unused name; existing relationships cannot be adopted.');
@@ -91,6 +101,6 @@ export class DataverseDiscovery {
       }
     }
     return { schemaVersion: 1, projectId: project.project.id, target, snapshotId: randomUUID(), observedAt: new Date().toISOString(),
-      providerVersions: { dataverse: DATAVERSE_VERSION }, coverage: ['publisher', 'solution', 'table', 'column', 'relationship'].map(kind => ({ kind, status: 'complete' })), resources };
+      providerVersions: { dataverse: DATAVERSE_VERSION }, coverage: ['publisher', 'solution', 'table', 'column', 'relationship',...new Set(scope.filter(s=>['choice','key'].includes(s.kind)).map(s=>s.kind))].map(kind => ({ kind, status: 'complete' })), resources };
   }
 }

@@ -1,3 +1,4 @@
+import { appLifecycle } from './lifecycle.js';
 import { z } from 'zod';
 import type { Project } from '../ir/schema.js';
 import type { Observation, Ownership } from '../state/models.js';
@@ -5,16 +6,22 @@ import type { DesiredResource, Resource } from '../dataverse/desired.js';
 import { DataverseHttp } from '../dataverse/http.js';
 import { guidValue, rawObject, textValue } from '../dataverse/normalize.js';
 import { modelResources, MODEL_KINDS, MODEL_VERSION } from './desired.js';
-import { elements } from './xml.js';
+import { elements,readFormLayout,readViewFilters } from './xml.js';
 import { PowerCanvasError } from '../core/errors.js';
-import { normalizeGrants } from './privileges.js';
+import { normalizeRolePrivilegeIds, resolveObservedPrivileges } from './table-privileges.js';
 import { appIdentity, publisherLocalName, sitemapIdentity } from './names.js';
-import { PLATFORM_APP_ROLE_TEMPLATES, readAppRoleIds, splitAppRoles } from './access.js';
+import { PLATFORM_APP_ROLE_TEMPLATES, readAppRoleIds, readPublishedAppRoleIds, splitAppRoles } from './access.js';
 import { observeReveal } from './reveal.js';
 import { hashJson } from '../core/json.js';
 
 export const quote = (value: string) => `'${value.replaceAll("'", "''")}'`;
 export const componentTypes: Record<string, number> = { command: 10148, webResource: 61, form: 60, view: 26, sitemap: 62, role: 20, app: 80 };
+/** Drain concurrent reads before surfacing failure so diagnostic evidence cannot finish early. */
+export async function completeReads<T>(requests:Promise<T>[]):Promise<T[]>{
+ const results=await Promise.allSettled(requests);const failed=results.find(r=>r.status==='rejected');
+ if(failed?.status==='rejected')throw failed.reason;
+ return results.map(r=>(r as PromiseFulfilledResult<T>).value);
+}
 export async function observeModel(project: Project, base: Observation, http: DataverseHttp, ownership?: Ownership, publishedOnly = false, verifiedAppIds: ReadonlySet<string> = new Set()): Promise<Observation> {
   const scope = modelResources(project); const ids = new Set(scope.map(item => item.resourceId));
   for (const owned of ownership?.resources.filter(item => item.provider === 'model-driven') ?? []) {
@@ -46,10 +53,10 @@ export async function observeModel(project: Project, base: Observation, http: Da
         const privileges = z.array(z.object({ PrivilegeId: z.guid(), Depth: z.string() })).parse(response.RolePrivileges);
         if (!owned && privileges.length === 0) continue;
         privilegeNames ??= new Map((await http.all('privileges?$select=privilegeid,name')).map(item => [guidValue(item.privilegeid), textValue(item.name)]));
-        const actual = privileges.map(item => ({ privilegeName: privilegeNames!.get(item.PrivilegeId.toLowerCase()) ?? `unknown:${item.PrivilegeId}`, depth: item.Depth }));
-        const normalized = normalizeGrants(actual, z.array(z.object({ privilegeName: z.string(), depth: z.string() })).parse(spec.properties.grants));
+        const resolved = resolveObservedPrivileges(project, spec.resourceId, { ...base, resources });
+        const normalized = normalizeRolePrivilegeIds(privileges, privilegeNames, resolved);
         if (!owned && normalized.grants.length === 0) continue;
-        add(spec, {}, parent.remoteId, { role: parent.resourceId, ...normalized });
+        add(spec, {}, parent.remoteId, { role: parent.resourceId, ...normalized, rolePrivilegeReadback: { roleId: parent.remoteId, privileges: privileges.map(p => ({ privilegeId: p.PrivilegeId.toLowerCase(), depth: p.Depth })) } });
       } else if (spec.kind === 'appComponents') {
         const rows = await http.all(`appmodulecomponents?$select=objectid,componenttype&$filter=_appmoduleidunique_value eq ${guidValue(parent.properties.componentLayerId)}`);
         if (!owned && rows.length === 0) continue;
@@ -59,7 +66,7 @@ export async function observeModel(project: Project, base: Observation, http: Da
       } else {
         defaultAppRoles ??= (await http.all(`roles?$select=roleid,_roletemplateid_value&$filter=_businessunitid_value eq ${rootUnitId} and (${PLATFORM_APP_ROLE_TEMPLATES.map(id => `_roletemplateid_value eq ${id}`).join(' or ')})`))
           .map(item => ({ remoteId: guidValue(item.roleid), templateId: guidValue(item._roletemplateid_value) }));
-        const actualRoleIds = publishedOnly ? (await http.all(`appmodules(${guidValue(parent.remoteId)})/appmoduleroles_association?$select=roleid`)).map(item => guidValue(item.roleid)) : await readAppRoleIds(http, parent.remoteId);
+        const actualRoleIds = publishedOnly || parent.properties.lifecycle === 'PUBLISHED' ? await readPublishedAppRoleIds(http,parent) : await readAppRoleIds(http, parent.remoteId);
         const normalized = splitAppRoles(actualRoleIds, defaultAppRoles);
         if (!owned && normalized.roles.length === 0) continue;
         const roles = normalized.roles.map(id => resources.find(resource => resource.kind === 'role' && resource.remoteId === id)?.resourceId ?? `unowned:${id}`).sort();
@@ -84,8 +91,9 @@ export async function observeModel(project: Project, base: Observation, http: Da
     if (spec.kind === 'sitemap' || spec.kind === 'app') identities.push(`${route.name} eq ${quote(publisherLocalName(project, name))}`,
       `${spec.kind === 'sitemap' ? 'sitemapname' : 'name'} eq ${quote(textValue(spec.properties.displayName ?? name))}`);
     const filters = spec.kind === 'sitemap' ? identities : [identities.join(' or ')];
-    const read = async (unpublished: boolean) => (await Promise.all(filters.map(filter => http.all(`${route.set}${unpublished ? '/Microsoft.Dynamics.CRM.RetrieveUnpublishedMultiple()' : ''}?$select=${route.select}&$filter=${filter}`)))).flat();
-    const [published, unpublished] = await Promise.all([read(false), ['role', 'command'].includes(spec.kind) || publishedOnly ? Promise.resolve([]) : read(true)]);
+    const read = async (unpublished: boolean) => (await completeReads(filters.map(filter => http.all(`${route.set}${unpublished ? '/Microsoft.Dynamics.CRM.RetrieveUnpublishedMultiple()' : ''}?$select=${route.select}&$filter=${filter}`)))).flat();
+    const [published, unpublished] = await completeReads([read(false), ['role', 'command'].includes(spec.kind) || publishedOnly ? Promise.resolve([]) : read(true)]);
+    if(!published||!unpublished)throw Error('Incomplete model-driven read group');
     let rows = [...new Map([...published, ...unpublished].map(item => [guidValue(item[route.id]), item])).values()];
     if (spec.kind === 'role') {
       const roots = rows.filter(item => item._parentrootroleid_value === null || item._parentrootroleid_value === undefined);
@@ -107,17 +115,17 @@ export async function observeModel(project: Project, base: Observation, http: Da
       add(spec, raw, remoteId, { uniqueName: textValue(raw.name), displayName: textValue(raw.displayname), contentHash: hashJson(Buffer.from(textValue(raw.content), 'base64').toString('utf8')), webResourceType: z.number().parse(raw.webresourcetype), solutionMember: member(remoteId, 'webResource') });
     } else if (spec.kind === 'form') {
       const fields = elements(textValue(raw.formxml), 'control').map(item => item.getAttribute('datafieldname')).filter((item): item is string => Boolean(item));
-      add(spec, raw, remoteId, { displayName: textValue(raw.name), tableSchemaName, fields: raw.type === 2 ? fields : ['unsupported:formType'], ...(spec.properties.reveal ? { reveal: observeReveal(textValue(raw.formxml), spec.properties.reveal) } : {}), solutionMember: member(remoteId, 'form', table) });
+      add(spec, raw, remoteId, { displayName: textValue(raw.name), tableSchemaName, fields: raw.type === 2 ? fields : ['unsupported:formType'],...(spec.properties.layout?{layout:readFormLayout(textValue(raw.formxml))}:{}), ...(spec.properties.reveal ? { reveal: observeReveal(textValue(raw.formxml), spec.properties.reveal) } : {}), solutionMember: member(remoteId, 'form', table) });
     } else if (spec.kind === 'view') {
       const fetchxml = textValue(raw.fetchxml); const layoutxml = textValue(raw.layoutxml);
-      const conditions = elements(fetchxml, 'condition');
+      const conditions = elements(fetchxml, 'condition').filter(c=>!spec.properties.filters||c.getAttribute('attribute')==='statecode'&&c.getAttribute('operator')==='eq'&&c.getAttribute('value')==='0');
       const activeOnly = conditions.length === 0 ? false : conditions.length === 1 && conditions[0]!.getAttribute('attribute') === 'statecode' && conditions[0]!.getAttribute('operator') === 'eq' && conditions[0]!.getAttribute('value') === '0' ? true : 'unsupported:filter';
       const columns = elements(layoutxml, 'cell').map(item => item.getAttribute('name') ?? 'unknown');
       const orderBy = elements(fetchxml, 'order').map(item => ({ column: item.getAttribute('attribute') ?? 'unknown', direction: item.getAttribute('descending') === 'true' ? 'descending' : 'ascending' }));
       add(spec, raw, remoteId, { displayName: textValue(raw.name), tableSchemaName, columns, orderBy,
-        activeOnly: raw.querytype === 0 && elements(fetchxml, 'link-entity').length === 0 ? activeOnly : 'unsupported:viewShape', solutionMember: member(remoteId, 'view', table) });
+        activeOnly: raw.querytype === 0 && elements(fetchxml, 'link-entity').length === 0 ? activeOnly : 'unsupported:viewShape',...(spec.properties.filters?{filters:readViewFilters(fetchxml,spec.properties.filters)}:{}), solutionMember: member(remoteId, 'view', table) });
     } else if (spec.kind === 'sitemap') {
-      const navigation = elements(textValue(raw.sitemapxml), 'SubArea').map(item => ({ table: item.getAttribute('Entity') ?? 'unsupported:url',
+      const navigation = elements(textValue(raw.sitemapxml), 'SubArea').map(item => ({...((spec.properties.navigation as {area?:string}[]).some(n=>n.area)?{area:item.parentElement?.parentElement?.getElementsByTagName('Title').item(0)?.getAttribute('Title')??''}:{}), table: item.getAttribute('Entity') ?? 'unsupported:url',
         title: item.getElementsByTagName('Title').item(0)?.getAttribute('Title') ?? '', group: item.parentElement?.getElementsByTagName('Title').item(0)?.getAttribute('Title') ?? '' }));
       add(spec, raw, remoteId, { ...sitemapIdentity(project, raw), navigation, solutionMember: member(remoteId, 'sitemap') });
     } else if (spec.kind === 'role') {
@@ -134,7 +142,7 @@ export async function observeModel(project: Project, base: Observation, http: Da
       }
       const publishedRow = published.find(item => item.appmoduleid === remoteId && item.componentstate === 0);
       const publishedIdentityVerified = raw.componentstate === 1 && publishedRow ? Boolean(appIdentity(project, publishedRow, publisher.remoteId, { knownAppId, solutionMember, active })) : false;
-      add(spec, raw, remoteId, { ...appIdentity(project, raw, publisher.remoteId, { knownAppId, solutionMember, active, publishedIdentityVerified }), displayName: textValue(raw.name), clientType: z.number().int().min(1).max(31).parse(raw.clienttype), solutionMember });
+      add(spec, raw, remoteId, { ...appIdentity(project, raw, publisher.remoteId, { knownAppId, solutionMember, active, publishedIdentityVerified }), lifecycle: appLifecycle(Boolean(publishedRow), raw.componentstate === 1), componentState: Number(raw.componentstate), displayName: textValue(raw.name), clientType: z.number().int().min(1).max(31).parse(raw.clienttype), solutionMember });
     }
   }
   return { ...base, providerVersions: { ...base.providerVersions, 'model-driven': MODEL_VERSION }, coverage: [...base.coverage, ...MODEL_KINDS.map(kind => ({ kind, status: 'complete' as const }))], resources };

@@ -25,10 +25,16 @@ playwright/.auth/
 .azure/
 .msal/
 .auth/
+.pac/
+.powerplatform/
 *.local.json
 *.local.yaml
 *.local.yml
 *.local.toml
+*.auth.json
+*.token.json
+local.settings.json
+AuthProfile.json
 auth-state*.json
 storage-state*.json
 storageState*.json
@@ -71,7 +77,6 @@ Desktop.ini
 .idea/
 .vscode/*
 !.vscode/extensions.json
-!.vscode/settings.json
 
 # Keep deliberate source-controlled binary fixtures explicit if added later.
 *.msapp

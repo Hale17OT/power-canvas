@@ -28,7 +28,8 @@
     "test:design-visual": "npm run design:benchmarks && playwright test design-v4.spec.mjs",
     "agent:eval": "npm run build && node scripts/package-agent-plugin.mjs --check && node scripts/agent-eval.mjs",
     "agent:package": "node scripts/package-agent-plugin.mjs",
-    "solution:benchmarks": "npm run build && node scripts/solution-benchmarks.mjs"
+    "solution:benchmarks": "npm run build && node scripts/solution-benchmarks.mjs",
+    "solution:v2": "npm run build && node scripts/solution-v2-benchmarks.mjs"
   },
   "dependencies": {
     "@azure/msal-node": "6.0.1",

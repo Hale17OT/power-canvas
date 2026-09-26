@@ -1,0 +1,52 @@
+import {describe,it,expect,vi} from 'vitest';
+import {randomUUID} from 'node:crypto';
+import {join} from 'node:path';
+import {fixture} from './helpers.js';
+import {matchingState,target} from './planner-fixtures.js';
+import {authDoctor,type AuthDoctorPorts} from '../src/auth/doctor.js';
+import {profileStoreLocation,type StoredProfile} from '../src/auth/profiles.js';
+import {DataverseHttp} from '../src/dataverse/http.js';
+import {PowerCanvasError} from '../src/core/errors.js';
+import {pacInventory,parsePacWho,parsePacProfiles} from '../src/auth/pac-inventory.js';
+import {assertAuthEvidenceSafe} from '../src/auth/safe-evidence.js';
+import {interpretResult,routeRequest} from '../src/agent/routing.js';
+
+function setup(){
+ const project=fixture(),state=matchingState(project),principal=randomUUID();
+ const profile:StoredProfile={alias:'experiment',tenantId:target.tenantId,clientId:randomUUID(),homeAccountId:'bound-account',cacheId:randomUUID(),allowedEnvironmentIds:[target.environmentId],preferredDataverseUrl:target.dataverseUrl,cloud:'public',mode:'interactive'};
+ const solution=state.observation.resources.find(r=>r.kind==='solution')!,publisher=state.observation.resources.find(r=>r.kind==='publisher')!;
+ const rawSolution={solutionid:solution.remoteId,uniquename:project.solution.uniqueName,friendlyname:project.solution.displayName,version:project.solution.version,ismanaged:false,_publisherid_value:publisher.remoteId};
+ const rawPublisher={publisherid:publisher.remoteId,uniquename:project.solution.publisher.uniqueName,customizationprefix:project.solution.publisher.prefix,customizationoptionvalueprefix:project.solution.publisher.optionValuePrefix};
+ const transport=vi.fn(async(url:Parameters<typeof fetch>[0],init?:RequestInit)=>{expect(init?.method).toBe('GET');if(String(url).includes('/solutions?'))return new Response(JSON.stringify({value:[rawSolution]}));if(String(url).includes('/publishers('))return new Response(JSON.stringify(rawPublisher));throw Error('Unexpected request');});
+ const connected={http:new DataverseHttp(target.dataverseUrl+'/api/data/v9.2/',{token:async()=>'synthetic-only'},transport),identity:{OrganizationId:target.organizationId,UserId:principal,BusinessUnitId:randomUUID()},environment:{...target,displayName:'Fixture',applicationUrl:target.dataverseUrl,organizationType:12},requestId:randomUUID()};
+ const ports:AuthDoctorPorts={profiles:{root:'fixture-store',legacyCompatibility:false,list:vi.fn(async()=>[profile])},binding:async()=>({alias:'experiment-default',authProfile:'experiment',target}),project:async()=>project,connect:vi.fn(async()=>connected),ownership:async()=>state.ownership,pac:async()=>({status:'READY',executable:'pac',profiles:[],current:{},note:'Fixture only'})};
+ return {ports,profile,connected,principal,rawSolution,rawPublisher,state,transport};
+}
+describe('Explicit auth profile and target diagnosis',()=>{
+ it('verifies the named profile and solution/publisher receipts using GET only',async()=>{const s=setup(),r=await authDoctor('.',{expectedPrincipal:s.principal},s.ports);expect(r).toMatchObject({status:'READY',verified:true,tenantMutations:0,authProfilesChanged:0,ownership:{status:'VERIFIED'}});expect(s.transport).toHaveBeenCalledTimes(2);expect(JSON.stringify(r)).not.toContain('bound-account');expect(JSON.stringify(r)).not.toContain('synthetic-only');});
+ it('fails closed when the profile is missing even if another profile matches',async()=>{const s=setup();s.ports.profiles.list=async()=>[{...s.profile,alias:'different'}];const r=await authDoctor('.',{},s.ports);expect(r).toMatchObject({status:'PROFILE_MISSING',candidates:['different']});expect(s.ports.connect).not.toHaveBeenCalled();});
+ it.each(['tenant','environment','url'])('blocks a named profile with wrong %s',async kind=>{const s=setup();if(kind==='tenant')s.profile.tenantId=randomUUID();if(kind==='environment')s.profile.allowedEnvironmentIds=[];if(kind==='url')s.profile.preferredDataverseUrl='https://other.crm.dynamics.com';expect((await authDoctor('.',{},s.ports)).status).toBe('PROFILE_TARGET_MISMATCH');expect(s.ports.connect).not.toHaveBeenCalled();});
+ it('blocks wrong WhoAmI principal',async()=>{const s=setup();expect((await authDoctor('.',{expectedPrincipal:randomUUID()},s.ports)).status).toBe('PRINCIPAL_MISMATCH');expect(s.transport).not.toHaveBeenCalled();});
+ it('blocks unexpected discovery target even with an authenticated session',async()=>{const s=setup();s.connected.environment.environmentId=randomUUID();expect((await authDoctor('.',{},s.ports)).status).toBe('ENVIRONMENT_MISMATCH');expect(s.transport).not.toHaveBeenCalled();});
+ it('classifies MSAL account mismatch separately from expired authentication',async()=>{const s=setup();s.ports.connect=vi.fn(async()=>{throw new PowerCanvasError('PF-AUTH-005','Wrong identity','Inspect');});expect((await authDoctor('.',{},s.ports)).status).toBe('PRINCIPAL_MISMATCH');s.ports.connect=vi.fn(async()=>{throw new PowerCanvasError('PF-AUTH-006','Sign-in required','Operator action');});expect((await authDoctor('.',{},s.ports)).status).toBe('AUTHENTICATION_FAILED');});
+ it('distinguishes enumeration failures from absent profiles without echoing raw errors',async()=>{const s=setup();s.ports.profiles.list=async()=>{throw Error('access_token=DO_NOT_LOG');};const r=await authDoctor('.',{},s.ports);expect(r.status).toBe('PROFILE_ENUMERATION_FAILED');expect(JSON.stringify(r)).not.toContain('DO_NOT_LOG');expect(s.ports.connect).not.toHaveBeenCalled();});
+ it('blocks wrong publisher even if its display name resembles the intended publisher',async()=>{const s=setup();s.rawPublisher.customizationprefix='other';expect((await authDoctor('.',{},s.ports)).status).toBe('PUBLISHER_MISMATCH');});
+ it('requires an owned stable solution identity, not a matching name',async()=>{const s=setup();s.rawSolution.solutionid=randomUUID();expect((await authDoctor('.',{},s.ports)).status).toBe('OWNERSHIP_UNVERIFIED');});
+ it('distinguishes un-applied source branding from verified ownership without hiding it',async()=>{const s=setup();const source=await s.ports.project();source.solution.displayName='New source label';const r=await authDoctor('.',{},s.ports);expect(r.status).toBe('READY');expect(r.sourceDifferences).toEqual([expect.objectContaining({property:'displayName',source:'New source label',ownedLive:s.rawSolution.friendlyname})]);expect(r.authProfilesChanged).toBe(0);});
+ it('still blocks remote label drift against the existing ownership receipt',async()=>{const s=setup();s.rawSolution.friendlyname='Unexpected remote edit';expect((await authDoctor('.',{},s.ports)).status).toBe('OWNERSHIP_UNVERIFIED');});
+ it('blocks a managed target solution',async()=>{const s=setup();s.rawSolution.ismanaged=true;expect((await authDoctor('.',{},s.ports)).status).toBe('SOLUTION_MISMATCH');});
+});
+describe('Rebrand profile-store compatibility',()=>{
+ it('discovers the legacy named store only when the entire canonical store is absent',()=>{const home='fixture-home',canonical=join(home,'.powercanvas','auth'),legacy=join(home,'.powerforge','auth');expect(profileStoreLocation(home,p=>p===legacy)).toMatchObject({root:legacy,legacyCompatibility:true});expect(profileStoreLocation(home,()=>true)).toMatchObject({root:canonical,legacyCompatibility:false});expect(profileStoreLocation(home,()=>false)).toMatchObject({root:canonical,legacyCompatibility:false});});
+ it('does not merge stores or fall back to a different named account when canonical exists',()=>{const seen:string[]=[];const root=profileStoreLocation('fixture-home',p=>{seen.push(p);return true;});expect(root.legacyCompatibility).toBe(false);expect(seen).toHaveLength(1);});
+ it('does not reinterpret an inaccessible store as a missing store',()=>{expect(()=>profileStoreLocation('fixture-home',()=>{throw Error('Access denied');})).toThrow('Access denied');});
+});
+describe('PAC diagnostic isolation and sanitized evidence',()=>{
+ const header='Index Active Kind      Name                User                                     Cloud  Type Environment    Environment Url                        ERP URL';
+ const row='[1]   *      UNIVERSAL Readback            fixture@example.invalid                  Public User Fixture        https://synthetic.crm.dynamics.com/ ';
+ it('projects the supported inventory fields and excludes token expiration/cache internals',()=>{expect(parsePacProfiles(header+'\n'+row)[0]).toMatchObject({index:1,active:true,name:'Readback',user:'fixture@example.invalid',cloud:'Public',type:'User',friendlyName:'Fixture',environmentUrl:'https://synthetic.crm.dynamics.com/'});expect(parsePacWho('Name: Readback\nToken Expires: some date\nUser: fixture@example.invalid\nPUID: ignore')).toEqual({name:'Readback',user:'fixture@example.invalid'});});
+ it('invokes only auth list and who; runtime override is confined to child calls',async()=>{const runner=vi.fn(async(_exe:string,args:string[])=>args[1]==='list'?header+'\n'+row:'Name: Readback');const r=await pacInventory('selected-pac','existing-runtime',runner);expect(r.status).toBe('READY');expect(runner.mock.calls.map(c=>c[1])).toEqual([['auth','list'],['auth','who']]);});
+ it('records missing/runtime/format failures without choosing another PAC installation or leaking stderr',async()=>{for(const [code,stderr,status]of [['ENOENT','secret','PAC_UNAVAILABLE'],[1,'Missing .NET framework access_token=secret','PAC_RUNTIME_UNAVAILABLE']] as const){const r=await pacInventory('pac',undefined,async()=>{throw Object.assign(Error('secret'),{code,stderr});});expect(r.status).toBe(status);expect(JSON.stringify(r)).not.toContain('secret');}expect((await pacInventory('pac',undefined,async()=>'unknown output')).status).toBe('PROFILE_ENUMERATION_FAILED');});
+ it.each([{accessToken:'x'},{refresh_token:'x'},{password:'x'},{clientSecret:'x'},{certificate:'x'},{cookies:'x'},{note:'Bearer secret'},{note:'-----BEGIN PRIVATE KEY-----'}])('rejects credential-shaped evidence %#',value=>{expect(()=>assertAuthEvidenceSafe(value)).toThrow();});
+ it('routes PF-AUTH-001 to auth recovery instead of retrying apply',()=>{expect(interpretResult({error:{code:'PF-AUTH-001'}})).toMatchObject({next:'authentication-recovery',autoRetry:false,mutationAuthorized:false});const r=routeRequest('PF-AUTH-001 when running solution apply',{powerCanvasProject:true});expect(r.skills).toEqual(['powercanvas-debug']);expect(r.commands.map(c=>c.command)).toEqual(['auth doctor']);expect(r.executionAuthorized).toBe(false);});
+});

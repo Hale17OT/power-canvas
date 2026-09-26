@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "purpose": {
+      "type": "string",
+      "const": "PROVIDER_CERTIFICATION"
+    },
+    "evidenceState": {
+      "type": "string",
+      "const": "ATTEMPT_INTENT_ONLY"
+    },
+    "intentManifestHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "fixtureHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "projectHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "tenantId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+        },
+        "environmentId": {
+          "type": "string"
+        },
+        "organizationId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+        },
+        "dataverseUrl": {
+          "type": "string",
+          "pattern": "^https:\\/\\/[a-z0-9-]+\\.(?:api\\.)?crm[0-9]*\\.dynamics\\.com$"
+        }
+      },
+      "required": [
+        "tenantId",
+        "environmentId",
+        "organizationId",
+        "dataverseUrl"
+      ],
+      "additionalProperties": false
+    },
+    "solutionId": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+    },
+    "publisherId": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+    },
+    "publisherPrefix": {
+      "type": "string",
+      "const": "pfx"
+    },
+    "namespace": {
+      "type": "string",
+      "const": "pfx_ExperimentCertification"
+    },
+    "ownershipRevision": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "ownershipHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "ownershipReceiptHashes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "resourceId",
+          "hash"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "desiredResources": {
+      "minItems": 21,
+      "maxItems": 21,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "definitionHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identity": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "resourceId",
+          "definitionHash",
+          "kind",
+          "identity"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "operations": {
+      "minItems": 6,
+      "maxItems": 21,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "resourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "risk": {
+            "type": "string",
+            "enum": [
+              "additive",
+              "securityWrite"
+            ]
+          },
+          "definitionHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "dependsOn": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "resourceId",
+          "action",
+          "risk",
+          "definitionHash",
+          "dependsOn"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "deferred": {
+      "maxItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "type": "string",
+            "const": "DEFERRED_REQUIRES_PUBLICATION"
+          },
+          "dependency": {
+            "type": "string",
+            "minLength": 1
+          },
+          "app": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "resourceId",
+          "state",
+          "dependency",
+          "app",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ownedPrerequisites": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "resourceId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "remoteId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+              },
+              "receiptHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "definitionHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "state": {
+                "type": "string",
+                "const": "OWNED_EXPECTED_STATE"
+              },
+              "canonicalName": {
+                "type": "string",
+                "const": "pfx_experimentcertificationstate"
+              }
+            },
+            "required": [
+              "resourceId",
+              "remoteId",
+              "receiptHash",
+              "definitionHash",
+              "state",
+              "canonicalName"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "resourceId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "remoteId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+              },
+              "receiptHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "definitionHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "state": {
+                "type": "string",
+                "const": "OWNED_EXPECTED_STATE"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "table",
+                  "column",
+                  "key",
+                  "relationship",
+                  "role"
+                ]
+              },
+              "schemaName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lookupMetadataId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+              },
+              "businessUnitId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+              }
+            },
+            "required": [
+              "resourceId",
+              "remoteId",
+              "receiptHash",
+              "definitionHash",
+              "state",
+              "kind",
+              "schemaName"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "requiredDependencies": {
+      "minItems": 2,
+      "maxItems": 2,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "remoteId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+          },
+          "baselineHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "resourceId",
+          "remoteId",
+          "baselineHash"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "forbiddenResources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "forbiddenEffects": {
+      "type": "string",
+      "const": "historicalUpdates,deletes,Canvas,Flow,businessData,connectionReferences,environmentVariables,publication,humanAssignments,teamAssignments,authentication,bindingChanges"
+    },
+    "resolvedTablePrivileges": {
+      "minItems": 2,
+      "maxItems": 2,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tableResourceId": {
+            "type": "string"
+          },
+          "tableId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+          },
+          "logicalName": {
+            "type": "string"
+          },
+          "schemaName": {
+            "type": "string"
+          },
+          "privilegeType": {
+            "type": "string"
+          },
+          "depth": {
+            "type": "string",
+            "enum": [
+              "Basic",
+              "Local",
+              "Deep",
+              "Global"
+            ]
+          },
+          "privilegeId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "canBeBasic": {
+            "type": "boolean"
+          },
+          "canBeLocal": {
+            "type": "boolean"
+          },
+          "canBeDeep": {
+            "type": "boolean"
+          },
+          "canBeGlobal": {
+            "type": "boolean"
+          },
+          "legacyProjectionName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tableResourceId",
+          "tableId",
+          "logicalName",
+          "schemaName",
+          "privilegeType",
+          "depth",
+          "privilegeId",
+          "name",
+          "canBeBasic",
+          "canBeLocal",
+          "canBeDeep",
+          "canBeGlobal",
+          "legacyProjectionName"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "expectedPublication": {
+      "maxItems": 0,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "planHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "planExpiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+    },
+    "historicalHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "purpose",
+    "evidenceState",
+    "intentManifestHash",
+    "fixtureHash",
+    "projectHash",
+    "target",
+    "solutionId",
+    "publisherId",
+    "publisherPrefix",
+    "namespace",
+    "ownershipRevision",
+    "ownershipHash",
+    "ownershipReceiptHashes",
+    "desiredResources",
+    "operations",
+    "requiredDependencies",
+    "forbiddenResources",
+    "forbiddenEffects",
+    "expectedPublication",
+    "planHash",
+    "planExpiresAt",
+    "historicalHash",
+    "contentHash"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+# EntityKey managed properties and confirmed-create recovery
+
+The alternate-key source contract owns SchemaName, DisplayName and KeyAttributes. Its provider additionally requires the expected parent, solution membership, unmanaged identity and an Active index. It does not author IsCustomizable.
+
+Microsoft documents [EntityKeyMetadata](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/reference/entitykeymetadata?view=dataverse-latest) with separate IsManaged and IsCustomizable properties. The latter is a [BooleanManagedProperty](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/reference/booleanmanagedproperty?view=dataverse-latest): Value, CanBeChanged and ManagedPropertyLogicalName. The [SDK property is read-only](https://learn.microsoft.com/en-us/dotnet/api/microsoft.xrm.sdk.metadata.entitykeymetadata.iscustomizable?view=dataverse-sdk-latest). [Managed properties](https://learn.microsoft.com/en-us/power-platform/alm/managed-properties-alm) govern customization in managed solution lifecycles; their values do not replace IsManaged.
+
+The EntityKey verifier therefore retains IsCustomizable as observed PLATFORM_MANAGED_PROPERTY evidence and does not invent a desired true or false value. Pending and Failed index states still cannot complete creation. IsManaged must explicitly be false. Other resource kinds keep their existing customizable guards. Key updates remain unsupported, including updates to labels or key columns; equivalent unowned keys remain collisions.
+
+`reviewConfirmedKeyRecovery` and `recoverConfirmedKey` implement a closed, local-only recovery policy for the V2.1k confirmed surviving key CREATE. They bind the original execution/operation/MetadataId, fixture and resolved source hashes, sealed plan/manifest/receipt, saved journal and reconciliation bytes, revision 48 and existing receipt hashes. A fresh complete readback under the normal ownership lock must confirm all defining metadata, parent MetadataId, dependencies and Active status.
+
+The single new receipt uses CREATE_RECOVERY / POSTCONDITION_PLATFORM_MANAGED_PROPERTY provenance, including observed managed-property detail. It advances ownership through the normal locked writer. The original failed journal and report remain immutable. This is not adoption, a retry, tenant mutation, certification completion or permission to execute the nine remaining operations. No new execution receipt is issued. Full alternate-key maturity requires the remaining certification evidence gates.
+
+Tenant evidence, stable tenant identities, raw exports and run logs belong in ignored output directories and must not be packaged into public documentation.

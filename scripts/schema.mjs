@@ -27,8 +27,12 @@ import {nativeEvidenceBindingSchema} from '../dist/canvas/native-evidence.js';
 import {harnessOwnershipSchema} from '../dist/canvas/authoring-lifecycle.js';
 import {productionCoreRequestSchema} from '../dist/canvas/production-core.js';
 import {solutionSpecSchema} from '../dist/solution/schema.js';
+import {certificationManifestSchema} from '../dist/state/models.js';
+import {executionManifestSchema,executionReceiptSchema} from '../dist/execution/certification.js';
 
 await mkdir(new URL('../schemas/', import.meta.url), { recursive: true });
+for(const [name,schema]of [['execution',executionManifestSchema],['authorization',executionReceiptSchema]])await writeFile(new URL(`../schemas/powercanvas-provider-certification-${name}.v1.schema.json`,import.meta.url),JSON.stringify(z.toJSONSchema(schema,{io:'input'}),null,2)+'\n');
+await writeFile(new URL('../schemas/powercanvas-provider-certification.v1.schema.json',import.meta.url),JSON.stringify(z.toJSONSchema(certificationManifestSchema,{io:'input'}),null,2)+'\n');
 await writeFile(new URL('../schemas/powercanvas-solution.v1.schema.json',import.meta.url),JSON.stringify(z.toJSONSchema(solutionSpecSchema,{io:'input',reused:'ref'}),null,2)+'\n');
 for(const [name,input]of [['harness-ownership',harnessOwnershipSchema],['production-core-request',productionCoreRequestSchema]])await writeFile(new URL(`../schemas/powercanvas-${name}.v4.4.schema.json`,import.meta.url),JSON.stringify(z.toJSONSchema(input,{io:'input'}),null,2)+'\n');
 await writeFile(new URL('../schemas/powercanvas-certification.v4.3.schema.json',import.meta.url),JSON.stringify(z.toJSONSchema(nativeCertificationV43Schema,{io:'input'}),null,2)+'\n');

@@ -1,0 +1,9 @@
+{
+  "SchemaName": "pfx_ExperimentCertificationExternalCodeKey",
+  "DisplayName": {
+    "LocalizedLabels": [
+      {"Label": "PowerCanvas Experiment Certification External Code", "LanguageCode": 1033}
+    ]
+  },
+  "KeyAttributes": ["pfx_experimentcertificationexternalcode"]
+}

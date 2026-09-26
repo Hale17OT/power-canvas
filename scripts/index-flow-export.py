@@ -39,7 +39,7 @@ def walk(value):
             yield from walk(v)
 
 
-def index(path):
+def index(path, native=False):
     data = Path(path).read_bytes()
     with zipfile.ZipFile(io.BytesIO(data)) as archive:
         solution = xml(bounded(archive, 'solution.xml')).find('SolutionManifest')
@@ -83,11 +83,44 @@ def index(path):
                     if name in msapp.namelist():
                         ids.update(walk(json.loads(bounded(msapp, name))))
                 result['canvasReferences'].append(dict(logicalName=app.findtext('Name'), workflowIds=sorted(ids)))
+        if native:
+            components = []
+            def component(kind, identity, node, parent=None, identifier=None):
+                if identity:
+                    entry = dict(kind=kind, identity=identity, definitionPresent=True)
+                    if parent:
+                        entry['parent'] = parent.lower()
+                    if identifier:
+                        entry['id'] = identifier.strip('{}').lower()
+                    components.append(entry)
+            for entity in custom.findall('./Entities/Entity'):
+                name = entity.findtext('Name')
+                component('table', name, entity)
+                for attribute in entity.findall('./EntityInfo/entity/attributes/attribute'):
+                    component('column', attribute.get('PhysicalName'), attribute, name)
+                for form in entity.findall('./FormXml/forms/systemform'):
+                    component('form', form.findtext('./LocalizedNames/LocalizedName[@languagecode="1033"][@description]') or form.findtext('formid'), form, name, form.findtext('formid'))
+                for query in entity.findall('./SavedQueries/savedqueries/savedquery'):
+                    component('view', query.findtext('savedqueryid'), query, name, query.findtext('savedqueryid'))
+                for key in entity.findall('.//EntityKey'):
+                    component('key', key.get('Name') or key.findtext('Name'), key, name)
+            for rel in custom.findall('./EntityRelationships/EntityRelationship'):
+                component('relationship', rel.get('Name'), rel)
+            for choice in custom.findall('./optionsets/optionset'):
+                component('choice', choice.get('Name'), choice)
+            for role in custom.findall('./Roles/Role'):
+                component('role', role.get('name'), role, identifier=role.get('id'))
+            for app in custom.findall('./AppModules/AppModule'):
+                component('app', app.findtext('UniqueName'), app, identifier=app.findtext('AppModuleId'))
+            for sitemap in custom.findall('./AppModuleSiteMaps/AppModuleSiteMap'):
+                component('sitemap', sitemap.findtext('SiteMapUniqueName'), sitemap, identifier=sitemap.findtext('SiteMapId'))
+            result['nativeComponents'] = components
+            result['rootComponents'] = [dict(type=int(n.get('type')), **({'id': n.get('id').strip('{}').lower()} if n.get('id') else {}), **({'schemaName': n.get('schemaName')} if n.get('schemaName') else {})) for n in solution.findall('./RootComponents/RootComponent')]
         return result
 
 
 if __name__ == '__main__':
-    result = index(sys.argv[1])
+    result = index(sys.argv[1], '--solution' in sys.argv[3:])
     with open(sys.argv[2], 'x', encoding='utf-8') as output:
         json.dump(result, output, indent=2)
         output.write('\n')

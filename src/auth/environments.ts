@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { environmentIdSchema, targetSchema } from '../state/models.js';
 import type { Target } from '../state/models.js';
 import { DataverseHttp } from '../dataverse/http.js';
+import type {TransportOptions} from '../dataverse/transport.js';
 import { DISCOVERY_ORIGIN } from './msal.js';
 import type { TokenSource } from './msal.js';
 import type { StoredProfile } from './profiles.js';
@@ -18,8 +19,8 @@ export const environmentBindingSchema = z.strictObject({ alias: aliasSchema, aut
 export type EnvironmentBinding = z.infer<typeof environmentBindingSchema>;
 const configSchema = z.strictObject({ schemaVersion: z.literal(1), selected: aliasSchema, environments: z.array(environmentBindingSchema) });
 
-export async function discoverEnvironments(profile: StoredProfile, credentials: TokenSource): Promise<Environment[]> {
-  const http = new DataverseHttp(`${DISCOVERY_ORIGIN}/api/discovery/v2.0/`, credentials);
+export async function discoverEnvironments(profile: StoredProfile, credentials: TokenSource, transportOptions:TransportOptions={}): Promise<Environment[]> {
+  const http = new DataverseHttp(`${DISCOVERY_ORIGIN}/api/discovery/v2.0/`, credentials,fetch,transportOptions);
   const rows = await http.all('Instances?$select=TenantId,EnvironmentId,Id,ApiUrl,Url,FriendlyName,OrganizationType,State');
   const result: Environment[] = [];
   for (const row of rows) {
@@ -32,15 +33,15 @@ export async function discoverEnvironments(profile: StoredProfile, credentials: 
   return result;
 }
 
-export async function verifyTarget(profile: StoredProfile, binding: EnvironmentBinding, credentials: TokenSource) {
+export async function verifyTarget(profile: StoredProfile, binding: EnvironmentBinding, credentials: TokenSource, transportOptions:TransportOptions={}) {
   if (profile.tenantId !== binding.target.tenantId || !profile.allowedEnvironmentIds.includes(binding.target.environmentId)) {
     throw new PowerCanvasError('PF-ENV-002', 'Profile is not authorized for this tenant/environment binding.', 'Use env use to explicitly bind the intended discovered environment.');
   }
-  const discovered = (await discoverEnvironments(profile, credentials)).find(item => item.environmentId === binding.target.environmentId);
+  const discovered = (await discoverEnvironments(profile, credentials,transportOptions)).find(item => item.environmentId === binding.target.environmentId);
   if (!discovered || discovered.organizationId !== binding.target.organizationId || discovered.dataverseUrl !== binding.target.dataverseUrl || discovered.tenantId !== binding.target.tenantId) {
     throw new PowerCanvasError('PF-ENV-003', 'Live discovery does not match the selected immutable target.', 'Resolve the mismatch before planning or applying.');
   }
-  const http = new DataverseHttp(`${binding.target.dataverseUrl}/api/data/v9.2/`, credentials);
+  const http = new DataverseHttp(`${binding.target.dataverseUrl}/api/data/v9.2/`, credentials,fetch,transportOptions);
   const response = await http.request('WhoAmI');
   const identity = z.object({ OrganizationId: z.guid(), UserId: z.guid(), BusinessUnitId: z.guid() }).parse(response.data);
   if (identity.OrganizationId.toLowerCase() !== binding.target.organizationId) throw new PowerCanvasError('PF-ENV-003', 'WhoAmI organization differs from discovery.', 'Stop and correct the environment binding.');

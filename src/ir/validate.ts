@@ -42,16 +42,30 @@ export function validateSemantics(project: Project): Diagnostic[] {
     for (const [columnKey, column] of Object.entries(table.columns)) {
       const columnPath = `${path}.columns.${columnKey}`;
       qualified(column.schemaName, `${columnPath}.schemaName`);
-      if ((column.type === 'integer' || column.type === 'decimal') && column.min > column.max) fail(columnPath, 'Minimum cannot exceed maximum.');
+      if (['integer','decimal','currency'].includes(column.type) && 'min' in column && column.min > column.max) fail(columnPath, 'Minimum cannot exceed maximum.');
       if (column.type === 'decimal' && (column.min < -100000000000 || column.max > 100000000000)) fail(columnPath, 'Decimal range exceeds the bounded Dataverse range.');
-      if (column.type === 'choice') {
-        const values = column.choices.map(choice => choice.value);
+      if (column.type === 'choice'||column.type==='multiChoice') {
+        const global=column.type==='choice'&&column.globalChoice?project.dataverse.choices?.[column.globalChoice]:undefined;
+        if(column.type==='choice'&&column.globalChoice&&(!global||column.choices.length))fail(columnPath,'Global choice must resolve and cannot also declare local options.');
+        const values = (global?.options??column.choices).map(choice => choice.value);
+        if(!values.length)fail(columnPath,'Choice must declare options or reference a global choice.');
         if (new Set(values).size !== values.length) fail(`${columnPath}.choices`, 'Choice values must be unique.');
         const first = project.solution.publisher.optionValuePrefix * 10000;
         if (values.some(value => value < first || value > first + 9999)) fail(`${columnPath}.choices`, 'Choice values must use the declared publisher option-value range.');
-        if (column.default !== undefined && !values.includes(column.default)) fail(`${columnPath}.default`, 'Choice default must reference a declared numeric value.');
+        if ('default' in column && column.default !== undefined && !values.includes(column.default)) fail(`${columnPath}.default`, 'Choice default must reference a declared numeric value.');
       }
     }
+  }
+  for(const [key,choice]of Object.entries(project.dataverse.choices??{})){
+    qualified(choice.schemaName,'dataverse.choices.'+key);const values=choice.options.map(o=>o.value),first=project.solution.publisher.optionValuePrefix*10000;
+    if(new Set(values).size!==values.length||values.some(v=>v<first||v>first+9999))fail('dataverse.choices.'+key,'Choice values must be unique stable identities in the publisher range.');
+  }
+  unique(Object.values(project.dataverse.choices??{}).map(c=>c.schemaName),'dataverse.choices');
+  for(const [key,definition]of Object.entries(project.dataverse.keys??{})){
+    qualified(definition.schemaName,'dataverse.keys.'+key);unique(definition.columns,'dataverse.keys.'+key);
+    const table=tables[definition.table];
+    if(!table||definition.columns.some(c=>!table.columns[c]||!['text','integer','decimal','dateTime','choice'].includes(table.columns[c]!.type)))fail('dataverse.keys.'+key,'Key requires supported columns on an existing table; primary GUIDs are independent.');
+    if(definition.columns.reduce((bytes,c)=>bytes+(table?.columns[c]?.type==='text'?(table.columns[c] as {maxLength:number}).maxLength*2:16),0)>900)fail('dataverse.keys.'+key,'Alternate key exceeds the bounded 900-byte index budget.');
   }
   for (const [key, rel] of Object.entries(relationships)) {
     const path = `dataverse.relationships.${key}`;
@@ -83,6 +97,14 @@ export function validateSemantics(project: Project): Diagnostic[] {
     for (const [commandKey, command] of Object.entries(app.commands ?? {})) if (!app.forms[command.form]?.reveal) fail(`${path}.commands.${commandKey}.form`, 'toggleDetails requires a form with declared reveal fields.');
     for (const [formKey, form] of Object.entries(app.forms)) {
       checkFields(form.table, form.fields, `${path}.forms.${formKey}`, false);
+      for(const field of form.fields){const col=tables[form.table]?.columns[field];if(col&&!['text','multilineText','choice'].includes(col.type))fail(`${path}.forms.${formKey}`,`Unsupported native form control for ${field} (${col.type}); the bounded adapter supports text, memo, choice and lookups.`);}
+      if(form.layout){
+        const placement=form.layout.flatMap(t=>t.sections.flatMap(s=>s.fields.map(f=>f.field)));
+        unique(form.layout.map(t=>t.name),path+'.tabs');unique(form.layout.flatMap(t=>t.sections.map(s=>s.name)),path+'.sections');
+        if(placement.length!==form.fields.length||placement.some(f=>!form.fields.includes(f))||new Set(placement).size!==placement.length)fail(path+'.layout','Layout must place every declared field exactly once.');
+        for(const tab of form.layout)for(const section of tab.sections)if(section.fields.some(f=>f.column>section.columns))fail(path+'.layout','Field column exceeds section columns.');
+        if(form.reveal)fail(path+'.layout','Structured layouts and scripted reveal cannot be combined in V2.');
+      }
       if (form.reveal) {
         unique(form.reveal.fields, `${path}.forms.${formKey}.reveal.fields`);
         for (const field of form.reveal.fields) if (!form.fields.includes(field) || !tables[form.table]?.columns[field] || tables[form.table]!.columns[field]!.required !== 'none') fail(`${path}.forms.${formKey}.reveal.fields`, 'Reveal fields must be optional owned columns included on this form. Visibility is not security.');
@@ -91,6 +113,15 @@ export function validateSemantics(project: Project): Diagnostic[] {
     for (const [viewKey, view] of Object.entries(app.views)) {
       checkFields(view.table, view.columns, `${path}.views.${viewKey}`, true);
       checkFields(view.table, view.orderBy.map(sort => sort.column), `${path}.views.${viewKey}.orderBy`, true);
+      for(const filter of view.filters??[]){
+        if(!hasField(view.table,filter.field,true))fail(path+'.filters','Filter references a missing column.');
+        const zero=['null','not-null','eq-userid'].includes(filter.operator),many=['in','not-in'].includes(filter.operator);
+        if(zero?filter.values.length!==0:many?!filter.values.length:filter.values.length!==1)fail(path+'.filters','Filter operator/value arity mismatch.');
+        const col=tables[view.table]?.columns[filter.field];
+        if(col&&filter.values.some(v=>['integer','decimal','currency','choice'].includes(col.type)?typeof v!=='number':col.type==='boolean'?typeof v!=='boolean':typeof v!=='string'))fail(path+'.filters','Filter value has incompatible column type.');
+        if(col?.type==='choice'){const options=col.globalChoice?project.dataverse.choices?.[col.globalChoice]?.options:col.choices;if(filter.values.some(v=>!options?.some(o=>o.value===v)))fail(path+'.filters','Choice filter must use declared numeric identities.');}
+        if(filter.operator==='eq-userid'&&filter.field!=='ownerid')fail(path+'.filters','eq-userid currently supports ownerid only; custom table lookups are not user identities.');
+      }
     }
     for (const nav of app.navigation) if (!app.tables.includes(nav.table)) fail(`${path}.navigation`, 'Navigation table must be included in the application.');
   }
@@ -101,7 +132,7 @@ export function validateSemantics(project: Project): Diagnostic[] {
     for (const [table, privileges] of Object.entries(role.tables)) {
       if (!tables[table]) fail(`${path}.tables.${table}`, 'Role table does not exist.');
       if (Object.keys(privileges).length === 0) fail(`${path}.tables.${table}`, 'Declare at least one privilege.');
-      if (tables[table]?.ownership === 'organization' && Object.values(privileges).some(depth => depth !== 'organization')) {
+      if (tables[table]?.ownership === 'organization' && Object.values(privileges).some(depth => depth !== 'organization'&&depth!=='none')) {
         fail(`${path}.tables.${table}`, 'Organization-owned tables require organization privilege depth.');
       }
     }

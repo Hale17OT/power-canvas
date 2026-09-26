@@ -7,7 +7,7 @@ The current implementation includes:
 - strict project schemas and canonical `powercanvas.yaml` configuration;
 - Canvas design-system and native-control validation;
 - typed Power Automate connector primitives and workflow recipes;
-- a [Unified Solution Compiler](docs/solution-v1.md) for requirement traceability, typed resource planning, dependency graphs and gated subsystem orchestration;
+- a [Unified Solution Compiler](docs/solution-v2.md) for requirement traceability, Dataverse/model-driven resources, persona security, dependency graphs and gated subsystem orchestration;
 - plan/apply separation, risk classification, ownership, collision checks, and solution export verification;
 - deterministic tests for schema, compiler, Canvas, flow, recipe, and safety behavior.
 
@@ -39,7 +39,7 @@ After `npm ci` and `npm run build`, verify `node dist/cli/index.js version --jso
 - “Use PowerCanvas to plan a manager approval flow after this Dataverse status change.”
 - “Use PowerCanvas to diagnose why Canvas authoring is unavailable using existing evidence.”
 
-The skill routes work; the CLI still enforces schemas, maturity, ownership and plan/apply safety. Offline inspection, planning and compilation work without Canvas MCP. Native authoring needs Microsoft's separately configured provider. Unified solution compilation remains a future capability.
+The skill routes work; the CLI still enforces schemas, maturity, ownership and plan/apply safety. Offline inspection, planning and compilation work without Canvas MCP. Native authoring needs Microsoft's separately configured provider. Unified solution V2 supports bounded Dataverse-native delivery through the existing providers; live validation and production readiness remain separate.
 
 `npm run agent:package` generates the local [plugin](plugins/powercanvas/README.md) from the same skills; `npm run agent:eval` runs deterministic routing/safety evaluations. Claude can load that plugin with `claude --plugin-dir ./plugins/powercanvas`. No tenant changes or global plugin installation are part of packaging. See [agent architecture and resume guide](docs/agent-v1.md).
 

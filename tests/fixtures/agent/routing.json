@@ -18,5 +18,10 @@
   {"id":"general-explanation","prompt":"Explain what Dataverse is.","skills":[],"steps":[],"status":"NO_WORKFLOW"},
   {"id":"unrelated-code","prompt":"Write a JavaScript sorting function.","skills":[],"steps":[],"status":"NO_WORKFLOW"},
   {"id":"unrelated-website","prompt":"Build a React website.","context":false,"skills":[],"steps":[],"status":"NO_WORKFLOW"},
-  {"id":"document-recipe","prompt":"Generate a PDF document after approval.","skills":["powercanvas-flows"],"steps":["typed-primitive-or-recipe","compile"],"status":"PLAN"}
+  {"id":"document-recipe","prompt":"Generate a PDF document after approval.","skills":["powercanvas-flows"],"steps":["typed-primitive-or-recipe","compile"],"status":"PLAN"},
+  {"id":"native-admin","prompt":"Build a model-driven administrative app.","health":"AUTHORING_UNAVAILABLE","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"},
+  {"id":"mixed-hr","prompt":"Plan a Canvas employee app and a model-driven HR app.","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"},
+  {"id":"role-access","prompt":"Configure security roles and model-driven app access.","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"},
+  {"id":"native-data","prompt":"Add Dataverse tables and global choices.","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"},
+  {"id":"auth-recovery","prompt":"PF-AUTH-001 while running solution apply","skills":["powercanvas-debug"],"steps":["authentication-recovery","operator-boundary"],"status":"PLAN"}
 ]

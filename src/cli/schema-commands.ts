@@ -32,7 +32,7 @@ export function registerSchemaCommands(program: Command, global: () => CliContex
       const result = await recoverCreate(loaded.project, plan, store, {
         verifyTarget: async () => {
           const fresh = await connect(global().project, options.env);
-          if (hashJson(fresh.binding.target) !== hashJson(plan.target) || hashJson(executionPolicy(fresh.environment.organizationType, plan.executionPolicy?.mode === 'defaultExperiment', plan.executionPolicy?.modelDriven === true)) !== hashJson(plan.executionPolicy ?? null)) throw new PowerCanvasError('PF-ENV-003', 'Recovery target or policy differs from the original plan.', 'Use the original verified target.');
+          if (hashJson(fresh.binding.target) !== hashJson(plan.target) || hashJson(executionPolicy(fresh.environment.organizationType, plan.executionPolicy?.mode === 'defaultExperiment', plan.executionPolicy?.modelDriven === true,plan.executionPolicy?.unified===true,plan.executionPolicy?.publishModel===true)) !== hashJson(plan.executionPolicy ?? null)) throw new PowerCanvasError('PF-ENV-003', 'Recovery target or policy differs from the original plan.', 'Use the original verified target.');
         },
         observe: async ownership => {
           const base = await discovery.observe(loaded.project, connected.binding.target, ownership);
@@ -53,16 +53,20 @@ export function registerSchemaCommands(program: Command, global: () => CliContex
   program.command('plan').option('--env <alias>').option('--scope <scope>', 'all or explicit dataverse-only scope', 'all').option('--out <path>')
     .option('--default-experiment', 'Use the isolated, additive-only non-disposable Default-environment experiment policy')
     .option('--model-driven-experiment', 'Include bounded experimental app generation after verified Experiment 1 evidence')
+    .option('--unified-dataverse','Plan the Dataverse-native portion of a unified project; other providers are explicitly deferred')
+    .option('--publish-model','Explicitly include ValidateApp and scoped publication in a unified native saved plan')
     .description('Read-only three-way Dataverse plan; saved plans are bound to the exact target and source')
-    .action(async (options: { env?: string; scope: string; out?: string; defaultExperiment?: boolean; modelDrivenExperiment?: boolean }) => {
+    .action(async (options: { env?: string; scope: string; out?: string; defaultExperiment?: boolean; modelDrivenExperiment?: boolean; unifiedDataverse?:boolean;publishModel?:boolean }) => {
       if (!['all', 'dataverse'].includes(options.scope)) throw new PowerCanvasError('PF-CLI-001', 'Unknown planning scope.', 'Use --scope dataverse for Experiment 1; all remains blocked while app providers are unavailable.');
       const loaded = await loadProject(global().project); const connected = await connect(global().project, options.env);
       const store = new LocalStateStore(global().project, loaded.project.project.id, connected.binding.target);
       const ownership = await store.readOwnership();
+      if(options.publishModel&&!options.unifiedDataverse)throw Error('--publish-model requires --unified-dataverse');
+      if(options.unifiedDataverse&&Object.keys(loaded.project.apps).length+Object.keys(loaded.project.security.roles).length)options.modelDrivenExperiment=true;
       if (options.modelDrivenExperiment && options.scope !== 'all') throw new PowerCanvasError('PF-CLI-001', 'Model-driven planning requires scope all.', 'Omit --scope dataverse when enabling the model-driven experiment.');
       const base = await new DataverseDiscovery(connected.http).observe(loaded.project, connected.binding.target, ownership);
       const observed = options.modelDrivenExperiment ? await observeModel(loaded.project, base, connected.http, ownership) : base;
-      const plan = createPlan(loaded.project, observed, ownership, options.scope as 'all' | 'dataverse', new Date(), executionPolicy(connected.environment.organizationType, options.defaultExperiment ?? false, options.modelDrivenExperiment ?? false));
+      const plan = createPlan(loaded.project, observed, ownership, options.scope as 'all' | 'dataverse', new Date(), executionPolicy(connected.environment.organizationType, options.defaultExperiment ?? false, options.modelDrivenExperiment ?? false,options.unifiedDataverse??false,options.publishModel??false));
       if (options.out) await editJson(resolve(options.out), planSchema, () => plan);
       const lines = plan.operations.map(operation => `${operation.classification === 'create' ? '+' : '~'} ${operation.action} ${operation.resourceId}`);
       const deferred = plan.scope === 'dataverse' ? [...(Object.keys(loaded.project.apps).length ? ['model-driven app intent'] : []), ...(Object.keys(loaded.project.security.roles).length ? ['security role intent'] : [])] : [];
@@ -82,7 +86,7 @@ export function registerSchemaCommands(program: Command, global: () => CliContex
         verifyTarget: async () => {
           const fresh = await connect(global().project, options.env);
           if (hashJson(fresh.binding.target) !== hashJson(plan.target)) throw new PowerCanvasError('PF-ENV-003', 'Selected target does not match the saved plan.', 'Select the reviewed target or create another plan.');
-          const expectedPolicy = executionPolicy(fresh.environment.organizationType, plan.executionPolicy?.mode === 'defaultExperiment', plan.executionPolicy?.modelDriven === true);
+          const expectedPolicy = executionPolicy(fresh.environment.organizationType, plan.executionPolicy?.mode === 'defaultExperiment', plan.executionPolicy?.modelDriven === true,plan.executionPolicy?.unified===true,plan.executionPolicy?.publishModel===true);
           if (!plan.executionPolicy || hashJson(expectedPolicy) !== hashJson(plan.executionPolicy)) throw new PowerCanvasError('PF-SAFETY-005', 'Live environment type differs from the reviewed policy.', 'Create a fresh plan with the correct environment policy.');
           await assertWritePreflight(fresh.http, fresh.identity.UserId, fresh.environment.organizationType, fresh.binding.target.organizationId, loaded.project, plan.executionPolicy.mode === 'defaultExperiment', plan.executionPolicy.modelDriven === true);
         },

@@ -1,0 +1,773 @@
+{
+  "apiVersion": "powercanvas.solution/v1",
+  "mode": "intent",
+  "identity": {
+    "apiVersion": "powercanvas.dev/v1alpha1",
+    "project": {
+      "id": "11111111-1111-4111-8111-111111111121",
+      "name": "leave-management-v2"
+    },
+    "solution": {
+      "uniqueName": "pcn_LeaveManagementV2",
+      "displayName": "Leave Management",
+      "version": "1.0.0.0",
+      "publisher": {
+        "uniqueName": "PowerCanvasBenchmarks",
+        "prefix": "pcn",
+        "optionValuePrefix": 74512
+      }
+    }
+  },
+  "requirements": [
+    {
+      "id": "REQ-data",
+      "statement": "Persist leave management business records with explicit ownership.",
+      "concerns": [
+        "data"
+      ]
+    },
+    {
+      "id": "REQ-ui",
+      "statement": "Users work with leave management on desktop and mobile in one application.",
+      "concerns": [
+        "ui"
+      ]
+    },
+    {
+      "id": "REQ-security",
+      "statement": "Limit each persona to its explicitly authorized records and actions.",
+      "concerns": [
+        "security"
+      ]
+    },
+    {
+      "id": "REQ-approval",
+      "statement": "Request explicit manager approval with bounded wait and no automatic retries.",
+      "concerns": [
+        "automation",
+        "configuration"
+      ]
+    },
+    {
+      "id": "REQ-hr",
+      "statement": "HR administrators manage leave records and configuration in a separate back-office job.",
+      "concerns": [
+        "ui",
+        "security"
+      ]
+    },
+    {
+      "id": "REQ-notify",
+      "statement": "Send explicitly requested leave status notifications using a configured recipient.",
+      "concerns": [
+        "automation"
+      ]
+    }
+  ],
+  "entities": {
+    "requests": {
+      "label": "Leave request",
+      "plural": "Leave requests",
+      "ownership": "userOrTeam",
+      "rationale": "Owned requests need relational manager review and audit history.",
+      "fields": {
+        "title": {
+          "type": "string",
+          "label": "Request"
+        },
+        "start": {
+          "type": "date",
+          "label": "Start date"
+        },
+        "end": {
+          "type": "date",
+          "label": "End date"
+        },
+        "status": {
+          "type": "choice",
+          "label": "Status",
+          "choices": [
+            "Draft",
+            "Submitted",
+            "Approved",
+            "Rejected"
+          ]
+        },
+        "reason": {
+          "type": "multiline",
+          "label": "Reason"
+        },
+        "leaveType": {
+          "type": "lookup",
+          "label": "Leave type",
+          "target": "types"
+        }
+      },
+      "auditing": true,
+      "requiredBy": [
+        "REQ-data"
+      ]
+    },
+    "types": {
+      "label": "Leave type",
+      "plural": "Leave types",
+      "ownership": "organization",
+      "requiredBy": [
+        "REQ-data"
+      ],
+      "rationale": "HR-managed leave categories are shared across employee requests.",
+      "fields": {
+        "title": {
+          "type": "string",
+          "label": "Leave type"
+        }
+      }
+    }
+  },
+  "experiences": {
+    "workspace": {
+      "requiredBy": [
+        "REQ-ui"
+      ],
+      "product": {
+        "name": "Leave Management",
+        "users": [
+          "Employees"
+        ],
+        "jobs": [
+          "Submit and inspect own leave requests"
+        ],
+        "frequency": "daily",
+        "purpose": "approval",
+        "devices": [
+          "desktop",
+          "mobile"
+        ],
+        "criticalInformation": [
+          "title",
+          "start",
+          "end",
+          "status",
+          "reason"
+        ],
+        "accessibility": [
+          "Keyboard access",
+          "Visible labels and focus"
+        ],
+        "constraints": [
+          "Single adaptive application",
+          "Explicit record ownership"
+        ],
+        "context": {
+          "fieldCount": 5,
+          "actionCount": 2,
+          "destinationCount": 3,
+          "recordCount": 30,
+          "persistentContext": true,
+          "overlayTask": "confirmation"
+        }
+      },
+      "source": "requests",
+      "fields": [
+        "title",
+        "start",
+        "end",
+        "status",
+        "reason"
+      ],
+      "host": {
+        "title": "Leave Management",
+        "subtitle": "Offline architecture fixture; no business writes",
+        "navigation": [
+          {
+            "label": "View 1",
+            "action": "false"
+          },
+          {
+            "label": "View 2",
+            "action": "false"
+          },
+          {
+            "label": "View 3",
+            "action": "false"
+          }
+        ],
+        "items": "Table({Title:\"Example\",Description:\"Fixture\",Status:\"Draft\",Value:0})",
+        "titleField": "ThisItem.Title",
+        "subtitleField": "ThisItem.Description",
+        "statusField": "ThisItem.Status",
+        "select": "false",
+        "selected": "Blank()",
+        "selectedTitle": "\"Fixture\"",
+        "selectedBody": "\"Offline fixture\"",
+        "commands": [
+          {
+            "label": "Action 1",
+            "action": "false"
+          },
+          {
+            "label": "Action 2",
+            "action": "false"
+          }
+        ],
+        "fields": [
+          {
+            "id": "title",
+            "label": "Request",
+            "type": "text",
+            "value": "\"\"",
+            "onChange": "false"
+          },
+          {
+            "id": "start",
+            "label": "Start date",
+            "type": "date",
+            "value": "Today()",
+            "onChange": "false"
+          },
+          {
+            "id": "end",
+            "label": "End date",
+            "type": "date",
+            "value": "Today()",
+            "onChange": "false"
+          },
+          {
+            "id": "status",
+            "label": "Status",
+            "type": "singleChoice",
+            "value": "\"\"",
+            "onChange": "false",
+            "items": "Table({Value:\"Draft\"},{Value:\"Submitted\"},{Value:\"Approved\"},{Value:\"Rejected\"})"
+          },
+          {
+            "id": "reason",
+            "label": "Reason",
+            "type": "multiline",
+            "value": "\"\"",
+            "onChange": "false"
+          }
+        ],
+        "empty": "true",
+        "loading": "false",
+        "error": "false",
+        "retry": "false",
+        "commit": "false",
+        "canCommit": "false",
+        "filters": [],
+        "chartItems": "Table({Label:\"Example\",Value:0})",
+        "chartMaximum": "1",
+        "metric": "\"0\"",
+        "metricLabel": "Records",
+        "timelineItems": "Table({Title:\"Example\",Description:\"Fixture\",Time:\"\",Actor:\"\"})",
+        "fixture": true,
+        "fixtureRows": [],
+        "taskContext": {
+          "originScreen": "App.ActiveScreen",
+          "originRecord": "Blank()",
+          "originNavigationState": "Blank()",
+          "dirty": "false",
+          "returnAction": "Back()",
+          "discardAction": "false"
+        }
+      },
+      "delivery": "canvas",
+      "workload": "selfService",
+      "jobBoundary": "Employees submit and inspect their own requests on desktop and mobile."
+    },
+    "hr": {
+      "requiredBy": [
+        "REQ-hr"
+      ],
+      "source": "requests",
+      "fields": [
+        "title",
+        "status",
+        "reason"
+      ],
+      "delivery": "auto",
+      "workload": "administration",
+      "jobBoundary": "HR manages cross-employee records and shared configuration as a distinct administrative job.",
+      "product": {
+        "name": "Leave Administration",
+        "users": [
+          "HR administrators",
+          "Managers"
+        ],
+        "jobs": [
+          "Review team leave and manage leave configuration"
+        ],
+        "frequency": "daily",
+        "purpose": "approval",
+        "devices": [
+          "desktop"
+        ],
+        "criticalInformation": [
+          "title",
+          "start",
+          "end",
+          "status",
+          "reason"
+        ],
+        "accessibility": [
+          "Keyboard access",
+          "Visible labels and focus"
+        ],
+        "constraints": [
+          "Single adaptive application",
+          "Explicit record ownership"
+        ],
+        "context": {
+          "fieldCount": 5,
+          "actionCount": 2,
+          "destinationCount": 3,
+          "recordCount": 30,
+          "persistentContext": true,
+          "overlayTask": "confirmation"
+        }
+      },
+      "model": {
+        "type": "modelDriven",
+        "uniqueName": "pcn_LeaveHR",
+        "displayName": "Leave Administration",
+        "tables": [
+          "requests",
+          "types"
+        ],
+        "publishPolicy": "manual",
+        "forms": {
+          "request": {
+            "displayName": "Leave review",
+            "table": "requests",
+            "fields": [
+              "title",
+              "reason",
+              "status",
+              "leaveType"
+            ],
+            "layout": [
+              {
+                "name": "review",
+                "label": "Review",
+                "sections": [
+                  {
+                    "name": "request",
+                    "label": "Request context",
+                    "columns": 2,
+                    "fields": [
+                      {
+                        "field": "title",
+                        "readOnly": true
+                      },
+                      {
+                        "field": "reason",
+                        "column": 2,
+                        "readOnly": true
+                      },
+                      {
+                        "field": "status"
+                      },
+                      {
+                        "field": "leaveType",
+                        "column": 2
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "views": {
+          "team": {
+            "displayName": "Submitted requests",
+            "table": "requests",
+            "columns": [
+              "title",
+              "start",
+              "end",
+              "status"
+            ],
+            "filters": [
+              {
+                "field": "status",
+                "operator": "eq",
+                "values": [
+                  745120001
+                ]
+              }
+            ]
+          }
+        },
+        "navigation": [
+          {
+            "area": "Operations",
+            "group": "Review",
+            "table": "requests"
+          },
+          {
+            "area": "Configuration",
+            "group": "Leave setup",
+            "table": "types"
+          }
+        ]
+      }
+    }
+  },
+  "security": [],
+  "externalDependencies": [
+    {
+      "id": "approver",
+      "kind": "mailbox",
+      "requiredBy": [
+        "REQ-approval"
+      ],
+      "provisioningMode": "existing",
+      "resolutionState": "unresolved"
+    }
+  ],
+  "unsupportedNeeds": [],
+  "references": [],
+  "automation": {
+    "connectionReferences": {
+      "approvals": {
+        "logicalName": "pcn_Approvals",
+        "displayName": "Approvals",
+        "connector": "shared_approvals",
+        "allowCreate": false
+      },
+      "mail": {
+        "logicalName": "pcn_Mail",
+        "displayName": "Mail",
+        "connector": "shared_office365",
+        "allowCreate": false
+      }
+    },
+    "environmentVariables": {
+      "approver": {
+        "logicalName": "pcn_Approver",
+        "displayName": "Approved reviewer",
+        "type": "text",
+        "format": "email"
+      }
+    },
+    "workflowRecipes": {
+      "approval": {
+        "purpose": "Request explicit reviewer approval and notify on confirmed approval.",
+        "flow": {
+          "logicalName": "pcn_Review",
+          "displayName": "Leave Management review",
+          "flowType": "instant",
+          "trigger": {
+            "type": "powerAppsV2"
+          },
+          "inputs": [
+            {
+              "name": "title",
+              "shape": {
+                "type": "string"
+              }
+            }
+          ],
+          "outputs": [],
+          "connectionReferences": [
+            "approvals",
+            "mail"
+          ],
+          "environmentVariables": [
+            "approver"
+          ],
+          "runPolicy": {
+            "mode": "controlledWrite"
+          },
+          "activationPolicy": "manual"
+        },
+        "steps": [
+          {
+            "recipe": "approval",
+            "name": "Review",
+            "mode": "startAndWait",
+            "timeoutHours": 24,
+            "request": {
+              "name": "Request",
+              "use": "approvals.startAndWait",
+              "connection": "approvals",
+              "approvalType": "firstToRespond",
+              "assignedTo": [
+                {
+                  "op": "environment",
+                  "name": "approver"
+                }
+              ],
+              "title": {
+                "op": "input",
+                "name": "title"
+              },
+              "enableNotifications": true,
+              "timeoutHours": 24
+            },
+            "onApproved": [
+              {
+                "recipe": "notification",
+                "name": "Notify",
+                "send": {
+                  "name": "Notify",
+                  "use": "outlook.sendEmail",
+                  "connection": "mail",
+                  "to": [
+                    {
+                      "op": "environment",
+                      "name": "approver"
+                    }
+                  ],
+                  "subject": {
+                    "op": "literal",
+                    "value": "Leave Management approved",
+                    "shape": {
+                      "type": "string"
+                    }
+                  },
+                  "body": {
+                    "op": "literal",
+                    "value": "Review the approved record in the app.",
+                    "shape": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "errorBehavior": "stop",
+                "idempotencyIntent": "Operator reconciliation before any uncertain external retry."
+              }
+            ],
+            "onRejected": [],
+            "onUnknown": []
+          }
+        ],
+        "idempotency": {
+          "mode": "operatorReviewed",
+          "rationale": "Compile-only benchmark; no approver authorization or runtime activation."
+        },
+        "response": {}
+      },
+      "notification": {
+        "purpose": "Notify a configured recipient of a saved leave status.",
+        "flow": {
+          "logicalName": "pcn_LeaveNotification",
+          "displayName": "Leave notification",
+          "flowType": "instant",
+          "trigger": {
+            "type": "powerAppsV2"
+          },
+          "connectionReferences": [
+            "mail"
+          ],
+          "environmentVariables": [
+            "approver"
+          ],
+          "runPolicy": {
+            "mode": "controlledWrite"
+          },
+          "activationPolicy": "manual"
+        },
+        "steps": [
+          {
+            "recipe": "notification",
+            "name": "Notify",
+            "send": {
+              "name": "Notify",
+              "use": "outlook.sendEmail",
+              "connection": "mail",
+              "to": [
+                {
+                  "op": "environment",
+                  "name": "approver"
+                }
+              ],
+              "subject": {
+                "op": "literal",
+                "value": "Leave Management approved",
+                "shape": {
+                  "type": "string"
+                }
+              },
+              "body": {
+                "op": "literal",
+                "value": "Review the approved record in the app.",
+                "shape": {
+                  "type": "string"
+                }
+              }
+            },
+            "errorBehavior": "stop",
+            "idempotencyIntent": "Operator reconciliation before any uncertain external retry."
+          }
+        ],
+        "idempotency": {
+          "mode": "operatorReviewed",
+          "rationale": "No retries after unknown communication outcomes; compile-only benchmark."
+        },
+        "response": {}
+      }
+    }
+  },
+  "automationRequirements": {
+    "approval": [
+      "REQ-approval"
+    ],
+    "notification": [
+      "REQ-notify"
+    ]
+  },
+  "processes": [
+    {
+      "id": "formSave",
+      "job": "singleRowUpdate",
+      "requiredBy": [
+        "REQ-ui"
+      ]
+    },
+    {
+      "id": "review",
+      "job": "approval",
+      "implementation": "approval",
+      "requiredBy": [
+        "REQ-approval"
+      ]
+    },
+    {
+      "id": "notify",
+      "job": "notification",
+      "implementation": "notification",
+      "requiredBy": [
+        "REQ-notify"
+      ]
+    }
+  ],
+  "securityModel": {
+    "roles": {
+      "employee": {
+        "displayName": "Leave employee",
+        "tables": {
+          "requests": {
+            "create": "user",
+            "read": "user",
+            "write": "user"
+          },
+          "types": {
+            "read": "organization"
+          }
+        }
+      },
+      "manager": {
+        "displayName": "Leave manager",
+        "tables": {
+          "requests": {
+            "create": "user",
+            "read": "businessUnit",
+            "write": "businessUnit"
+          },
+          "types": {
+            "read": "organization"
+          }
+        }
+      },
+      "hr": {
+        "displayName": "Leave hr",
+        "tables": {
+          "requests": {
+            "create": "user",
+            "read": "organization",
+            "write": "organization"
+          },
+          "types": {
+            "read": "organization",
+            "create": "organization",
+            "write": "organization"
+          }
+        }
+      }
+    },
+    "appAccess": {
+      "hr": [
+        "manager",
+        "hr"
+      ]
+    }
+  },
+  "personas": [
+    {
+      "id": "employee",
+      "requiredBy": [
+        "REQ-security"
+      ],
+      "roles": [
+        "employee"
+      ],
+      "apps": [
+        "canvas:workspace"
+      ],
+      "tableAccess": {
+        "requests": {
+          "create": "user",
+          "read": "user",
+          "write": "user"
+        },
+        "types": {
+          "read": "organization"
+        }
+      },
+      "flowAccess": [
+        "approval",
+        "notification"
+      ]
+    },
+    {
+      "id": "manager",
+      "requiredBy": [
+        "REQ-security"
+      ],
+      "roles": [
+        "manager"
+      ],
+      "apps": [
+        "app:hr"
+      ],
+      "tableAccess": {
+        "requests": {
+          "create": "user",
+          "read": "businessUnit",
+          "write": "businessUnit"
+        },
+        "types": {
+          "read": "organization"
+        }
+      },
+      "flowAccess": []
+    },
+    {
+      "id": "hr",
+      "requiredBy": [
+        "REQ-security"
+      ],
+      "roles": [
+        "hr"
+      ],
+      "apps": [
+        "app:hr"
+      ],
+      "tableAccess": {
+        "requests": {
+          "create": "user",
+          "read": "organization",
+          "write": "organization"
+        },
+        "types": {
+          "read": "organization",
+          "create": "organization",
+          "write": "organization"
+        }
+      },
+      "flowAccess": []
+    }
+  ]
+}

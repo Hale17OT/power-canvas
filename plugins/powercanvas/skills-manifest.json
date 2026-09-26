@@ -24,7 +24,7 @@
     },
     {
       "path": "powercanvas-debug/references/debugging.md",
-      "sha256": "bffb595d919c0338094c7f2f01d970ee73cb6bceb8003bbe2355645f3ba3cc07"
+      "sha256": "f7963b3b5faafa1d2b0899a2ea3b8948dd8a27937669108377cd1fd499c57540"
     },
     {
       "path": "powercanvas-debug/SKILL.md",
@@ -64,7 +64,7 @@
     },
     {
       "path": "powercanvas/references/architecture.md",
-      "sha256": "f9e5ec07a8f34f26b48360ef963c24265749e8ffc1718110126bb36db8a774cd"
+      "sha256": "1c344b8c675995e5efc503cd04246bfebb92ef2aeedb06959ed5559f82d6ab28"
     },
     {
       "path": "powercanvas/references/capabilities.md",
@@ -87,12 +87,16 @@
       "sha256": "c1ac7f6c804a769238be6b7432801cf3418a05216bfec8c60217f9c64fc9561c"
     },
     {
+      "path": "powercanvas/references/solution-v2.md",
+      "sha256": "87543555bbe6dc747253ec8853b7ce0d434649e94eba284025b8bc72300f4705"
+    },
+    {
       "path": "powercanvas/scripts/discover.mjs",
       "sha256": "8668531db279f1eca4a2641e21394fd98b4a7eb9b5de28452c21593ad0d04c78"
     },
     {
       "path": "powercanvas/SKILL.md",
-      "sha256": "c3b386a40334602cbee07b719fa66768969b3d037534fae2bd045cb93df8158f"
+      "sha256": "b76df423ef189f7a4dafb2daa863900f1100b19765f869c2bdc33f3bf9c5da84"
     }
   ]
 }

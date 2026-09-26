@@ -1,0 +1,409 @@
+{
+  "apiVersion": "powercanvas.solution/v1",
+  "mode": "intent",
+  "identity": {
+    "apiVersion": "powercanvas.dev/v1alpha1",
+    "project": {
+      "id": "11111111-1111-4111-8111-111111111120",
+      "name": "service-administration-v2"
+    },
+    "solution": {
+      "uniqueName": "pcn_ServiceAdministration",
+      "displayName": "Service Administration",
+      "version": "1.0.0.0",
+      "publisher": {
+        "uniqueName": "PowerCanvasBenchmarks",
+        "prefix": "pcn",
+        "optionValuePrefix": 74512
+      }
+    }
+  },
+  "requirements": [
+    {
+      "id": "REQ-data",
+      "statement": "Manage service records, equipment and reusable service categories.",
+      "concerns": [
+        "data"
+      ]
+    },
+    {
+      "id": "REQ-admin",
+      "statement": "Dispatchers maintain linked work and administrators maintain service configuration.",
+      "concerns": [
+        "ui",
+        "security"
+      ]
+    }
+  ],
+  "entities": {
+    "requests": {
+      "label": "Service request",
+      "plural": "Service requests",
+      "ownership": "userOrTeam",
+      "auditing": true,
+      "requiredBy": [
+        "REQ-data"
+      ],
+      "rationale": "Relational service records require explicit ownership and auditable configuration.",
+      "fields": {
+        "title": {
+          "type": "string",
+          "label": "Request"
+        },
+        "details": {
+          "type": "multiline",
+          "label": "Details"
+        },
+        "status": {
+          "type": "choice",
+          "label": "Status",
+          "globalChoice": "serviceStatus"
+        },
+        "category": {
+          "type": "lookup",
+          "label": "Category",
+          "target": "categories"
+        },
+        "asset": {
+          "type": "lookup",
+          "label": "Equipment",
+          "target": "assets"
+        }
+      }
+    },
+    "assets": {
+      "label": "Equipment",
+      "plural": "Equipments",
+      "ownership": "organization",
+      "auditing": true,
+      "requiredBy": [
+        "REQ-data"
+      ],
+      "rationale": "Relational service records require explicit ownership and auditable configuration.",
+      "fields": {
+        "title": {
+          "type": "string",
+          "label": "Name"
+        },
+        "externalId": {
+          "type": "string",
+          "label": "External identifier"
+        }
+      },
+      "keys": [
+        [
+          "externalId"
+        ]
+      ]
+    },
+    "categories": {
+      "label": "Category",
+      "plural": "Categorys",
+      "ownership": "organization",
+      "auditing": true,
+      "requiredBy": [
+        "REQ-data"
+      ],
+      "rationale": "Relational service records require explicit ownership and auditable configuration.",
+      "fields": {
+        "title": {
+          "type": "string",
+          "label": "Name"
+        }
+      }
+    }
+  },
+  "experiences": {
+    "admin": {
+      "requiredBy": [
+        "REQ-admin"
+      ],
+      "source": "requests",
+      "fields": [
+        "title",
+        "details",
+        "status"
+      ],
+      "delivery": "auto",
+      "workload": "administration",
+      "jobBoundary": "Dispatchers manage relational service work; administrators maintain shared configuration.",
+      "product": {
+        "name": "Service Administration",
+        "users": [
+          "Dispatchers",
+          "Service administrators"
+        ],
+        "jobs": [
+          "Manage relational records and shared configuration"
+        ],
+        "frequency": "daily",
+        "purpose": "approval",
+        "devices": [
+          "desktop"
+        ],
+        "criticalInformation": [
+          "title",
+          "start",
+          "end",
+          "status",
+          "reason"
+        ],
+        "accessibility": [
+          "Keyboard access",
+          "Visible labels and focus"
+        ],
+        "constraints": [
+          "Single adaptive application",
+          "Explicit record ownership"
+        ],
+        "context": {
+          "fieldCount": 5,
+          "actionCount": 2,
+          "destinationCount": 3,
+          "recordCount": 30,
+          "persistentContext": true,
+          "overlayTask": "confirmation"
+        }
+      },
+      "model": {
+        "type": "modelDriven",
+        "uniqueName": "pcn_ServiceAdmin",
+        "displayName": "Service Administration",
+        "tables": [
+          "requests",
+          "assets",
+          "categories"
+        ],
+        "publishPolicy": "manual",
+        "forms": {
+          "main": {
+            "displayName": "Service request",
+            "table": "requests",
+            "fields": [
+              "title",
+              "details",
+              "status",
+              "category",
+              "asset"
+            ],
+            "layout": [
+              {
+                "name": "request",
+                "label": "Request",
+                "sections": [
+                  {
+                    "name": "summary",
+                    "label": "Summary",
+                    "columns": 2,
+                    "fields": [
+                      {
+                        "field": "title"
+                      },
+                      {
+                        "field": "details",
+                        "column": 2
+                      }
+                    ]
+                  },
+                  {
+                    "name": "routing",
+                    "label": "Routing",
+                    "columns": 2,
+                    "fields": [
+                      {
+                        "field": "status"
+                      },
+                      {
+                        "field": "category",
+                        "column": 2
+                      },
+                      {
+                        "field": "asset",
+                        "column": 2,
+                        "readOnly": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "views": {
+          "open": {
+            "displayName": "Open requests",
+            "table": "requests",
+            "columns": [
+              "title",
+              "status",
+              "category"
+            ],
+            "filters": [
+              {
+                "field": "status",
+                "operator": "in",
+                "values": [
+                  745120000,
+                  745120001
+                ]
+              }
+            ],
+            "orderBy": [
+              {
+                "column": "createdon",
+                "direction": "descending"
+              }
+            ]
+          }
+        },
+        "navigation": [
+          {
+            "area": "Operations",
+            "group": "Daily work",
+            "table": "requests"
+          },
+          {
+            "area": "Configuration",
+            "group": "Equipment",
+            "table": "assets"
+          },
+          {
+            "area": "Configuration",
+            "group": "Service setup",
+            "table": "categories"
+          }
+        ]
+      }
+    }
+  },
+  "securityModel": {
+    "roles": {
+      "dispatcher": {
+        "displayName": "Service Dispatcher",
+        "tables": {
+          "requests": {
+            "read": "businessUnit",
+            "write": "businessUnit",
+            "create": "user",
+            "append": "businessUnit",
+            "appendTo": "businessUnit"
+          },
+          "assets": {
+            "read": "organization"
+          },
+          "categories": {
+            "read": "organization"
+          }
+        }
+      },
+      "admin": {
+        "displayName": "Service Administrator",
+        "tables": {
+          "requests": {
+            "read": "organization",
+            "write": "organization",
+            "create": "organization",
+            "append": "organization",
+            "appendTo": "organization"
+          },
+          "assets": {
+            "read": "organization",
+            "write": "organization",
+            "create": "organization"
+          },
+          "categories": {
+            "read": "organization",
+            "write": "organization",
+            "create": "organization"
+          }
+        }
+      }
+    },
+    "appAccess": {
+      "admin": [
+        "dispatcher",
+        "admin"
+      ]
+    }
+  },
+  "personas": [
+    {
+      "id": "Dispatcher",
+      "requiredBy": [
+        "REQ-admin"
+      ],
+      "roles": [
+        "dispatcher"
+      ],
+      "apps": [
+        "app:admin"
+      ],
+      "tableAccess": {
+        "requests": {
+          "read": "businessUnit",
+          "write": "businessUnit",
+          "create": "user",
+          "append": "businessUnit",
+          "appendTo": "businessUnit"
+        },
+        "assets": {
+          "read": "organization"
+        },
+        "categories": {
+          "read": "organization"
+        }
+      }
+    },
+    {
+      "id": "Administrator",
+      "requiredBy": [
+        "REQ-admin"
+      ],
+      "roles": [
+        "admin"
+      ],
+      "apps": [
+        "app:admin"
+      ],
+      "tableAccess": {
+        "requests": {
+          "read": "organization",
+          "write": "organization",
+          "create": "organization",
+          "append": "organization",
+          "appendTo": "organization"
+        },
+        "assets": {
+          "read": "organization",
+          "write": "organization",
+          "create": "organization"
+        },
+        "categories": {
+          "read": "organization",
+          "write": "organization",
+          "create": "organization"
+        }
+      }
+    }
+  ],
+  "choices": {
+    "serviceStatus": {
+      "schemaName": "pcn_ServiceStatus",
+      "displayName": "Service status",
+      "options": [
+        {
+          "label": "New",
+          "value": 745120000
+        },
+        {
+          "label": "Assigned",
+          "value": 745120001
+        },
+        {
+          "label": "Resolved",
+          "value": 745120002
+        }
+      ]
+    }
+  }
+}

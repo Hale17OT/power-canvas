@@ -1,0 +1,11 @@
+# Eleven-root certification continuation
+
+The V2.1k execution gate accepts the exact V2.1j corrected fixture and resolved project hashes, eleven previously verified choice/table/column roots, ownership revision 48, and the ten reviewed remaining operations. It is not a generic resume or Default-environment write exception. Earlier fixture gates remain bounded to their original zero/one satisfied-root cases.
+
+The new manifest binds every satisfied resource's stable ID, desired definition and unchanged ownership receipt. The recovered choice keeps its original V2.1g/V2.1h source provenance; the ten normal creation receipts retain their V2.1i source, operation identity and revisions 39–48. The new key label does not rewrite these receipts. Source changes, unexpected roots, receipt drift, publication, destructive operations or broader security scopes fail closed.
+
+Under the existing writer lock, owned prerequisites use `OWNED_EXPECTED_STATE`. Exact MetadataId reads validate table metadata, primary names, typed columns and global-choice binding. Solution membership checks accept only the exact component or the owning table's explicit include-subcomponents membership. No broad enumeration or full-discovery fallback occurs during pre-write attestation. Remaining create roots retain their existing exact collision checks. Aggregate checks accept the already attested old roots as dependencies and require normal current-plan receipts for newly created dependencies.
+
+The executor, dependency DAG, provider mutations, incremental readbacks and normal ownership writer remain authoritative. There is no second certification provider. The key must reach Active before receiving ownership. Any new provider mismatch, rejection, uncertainty or index failure stops the attempt, preserves survivors and permits only read-only reconciliation. No live hotfix or compensating delete is allowed.
+
+Fresh all-root NO_OP, platform dependencies, export and explicitly authorized Checker evidence remain separate proof dimensions. Publication, user/team assignment, business data, Canvas/Flow and authentication changes are outside the scope. Evidence is retained only in ignored output directories; live runtime/persona access is not implied by provider certification.

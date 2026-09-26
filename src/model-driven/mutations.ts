@@ -1,3 +1,6 @@
+import { requireAppValidation } from './validation.js';
+import { appPublishXml, requirePublishedApp } from './lifecycle.js';
+import { reattestPrivileges, rolePrivilegePayload } from './table-privileges.js';
 import { create } from 'xmlbuilder2';
 import { z } from 'zod';
 import type { Project } from '../ir/schema.js';
@@ -7,7 +10,7 @@ import type { Mutation } from '../dataverse/mutations.js';
 import { metadataPath } from '../dataverse/discovery.js';
 import { guidValue, rawObject, textValue } from '../dataverse/normalize.js';
 import { modelResources } from './desired.js';
-import { formXml, sitemapXml, viewXml } from './xml.js';
+import { formXml, sitemapXml, viewXml,elements } from './xml.js';
 import { componentTypes, observeModel } from './discovery.js';
 import { PowerCanvasError } from '../core/errors.js';
 import { hashJson } from '../core/json.js';
@@ -27,12 +30,19 @@ export async function mutateModel(project: Project, operation: PlannedOperation,
     if (!resource) throw new PowerCanvasError('PF-MDA-007', 'A verified component dependency is missing.', 'Stop and reobserve the partial execution.');
     return resource;
   };
+  if (operation.action === 'publishModelApp') {
+    const app = resolve(textValue(properties.app));
+    requireAppValidation((await http.request(`ValidateApp(AppModuleId=${guidValue(app.remoteId)})`)).data);
+    await mutate('publish-app', 'PublishXml', 'POST', { ParameterXml: appPublishXml(app.remoteId) });
+    const rows = await http.all(`appmodules?$select=appmoduleid,componentstate&$filter=appmoduleid eq ${guidValue(app.remoteId)}`);
+    if (rows.length !== 1 || guidValue(rows[0]!.appmoduleid) !== app.remoteId || rows[0]!.componentstate !== 0) throw new PowerCanvasError('PF-MDA-018', 'App publication readback incomplete.', 'Stop and reconcile; never retry publication blindly.');
+    return;
+  }
   if (operation.action === 'publish') {
     const apps = z.array(z.string()).parse(properties.apps).map(id => resolve(id));
     for (const app of apps) {
       const response = rawObject((await http.request(`ValidateApp(AppModuleId=${guidValue(app.remoteId)})`)).data);
-      const validation = rawObject(response.AppValidationResponse);
-      if (validation.ValidationSuccess !== true || !Array.isArray(validation.ValidationIssueList) || validation.ValidationIssueList.length) throw new PowerCanvasError('PF-MDA-008', 'App validation reported missing components or issues.', 'Inspect ValidateApp results before publishing; no designer repair is implied.');
+      requireAppValidation(response);
     }
     const root = create().ele('importexportxml'); const entities = root.ele('entities');
     for (const table of z.array(z.string()).parse(properties.tables)) entities.ele('entity').txt(table);
@@ -56,6 +66,14 @@ export async function mutateModel(project: Project, operation: PlannedOperation,
     }
     case 'updateOwnedProperties': {
       const app = resolve(operation.resourceId);
+      if(['view','sitemap','role'].includes(app.kind)||app.kind==='app'&&operation.before?.clientType===properties.clientType){
+        const route={view:'savedqueries',sitemap:'sitemaps',role:'roles',app:'appmodules'}[app.kind]!;
+        const raw=rawObject((await http.request(`${route}(${guidValue(app.remoteId)})`)).data);
+        let body:Record<string,unknown>={name:properties.displayName};
+        if(app.kind==='sitemap')body={sitemapxml:sitemapXml(spec)};
+        if(app.kind==='view'){const table=rawObject((await http.request(`${metadataPath(textValue(properties.tableSchemaName))}?$select=LogicalName,PrimaryIdAttribute,PrimaryNameAttribute,ObjectTypeCode`)).data);body={...body,...viewXml(spec,table)};}
+        await mutate('update',`${route}(${guidValue(app.remoteId)})`,'PATCH',body,{...headers,'If-Match':textValue(raw['@odata.etag'])});return;
+      }
       if (app.kind === 'command') {
         const raw = rawObject((await http.request(`appactions(${guidValue(app.remoteId)})?$select=sequence,hidden`)).data);
         if (raw.sequence !== operation.before?.sequence || raw.hidden !== operation.before?.hidden) throw new Error('Command changed after planning.');
@@ -65,8 +83,10 @@ export async function mutateModel(project: Project, operation: PlannedOperation,
         const rows = await http.all(`systemforms/Microsoft.Dynamics.CRM.RetrieveUnpublishedMultiple()?$select=formid,formxml&$filter=formid eq ${guidValue(app.remoteId)}`);
         const raw = rows[0] ?? rawObject((await http.request(`systemforms(${guidValue(app.remoteId)})?$select=formid,formxml`)).data);
         const attributes = await http.all(`${metadataPath(textValue(properties.tableSchemaName))}/Attributes?$select=LogicalName,AttributeType,DisplayName`);
-        const formxml = addRevealToForm(textValue(raw.formxml), spec, attributes);
-        await mutate('form-reveal', `systemforms(${guidValue(app.remoteId)})`, 'PATCH', { formxml }, { ...headers, 'If-Match': textValue(raw['@odata.etag']) }); return;
+        if(!properties.reveal&&['event','Library','customControl'].some(tag=>elements(textValue(raw.formxml),tag).length))throw Error('Form contains behavior outside the generated layout contract; update blocked');
+        if(properties.layout&&operation.before){const baseline=formXml({...spec,properties:operation.before},attributes);if(create(textValue(raw.formxml)).end({headless:true})!==create(baseline).end({headless:true}))throw Error('Structured form has XML outside its generated baseline; preserve it and review a migration before updating');}
+        const formxml = properties.reveal?addRevealToForm(textValue(raw.formxml), spec, attributes):properties.layout?formXml(spec,attributes):textValue(raw.formxml);
+        await mutate('form-update', `systemforms(${guidValue(app.remoteId)})`, 'PATCH', { formxml,name:properties.displayName }, { ...headers, 'If-Match': textValue(raw['@odata.etag']) }); return;
       }
       if (app.kind !== 'app' || app.properties.clientType !== 2 || properties.clientType !== 4 || app.properties.solutionMember !== true) throw new PowerCanvasError('PF-MDA-006', 'Only the planned owned-app Web to Unified Interface conversion is supported.', 'Regenerate a reviewed plan.');
       await mutate('client-conversion', `appmodules(${guidValue(app.remoteId)})`, 'PATCH', { clienttype: 4 }, headers); return;
@@ -98,13 +118,11 @@ export async function mutateModel(project: Project, operation: PlannedOperation,
       await mutate('create', 'roles', 'POST', { name: properties.displayName, 'businessunitid@odata.bind': `/businessunits(${guidValue(units[0]!.businessunitid)})` }, headers); return;
     }
     case 'grantRolePrivileges': {
-      const role = resolve(textValue(properties.role)); const definitions = await http.all('privileges?$select=privilegeid,name');
-      const Privileges = z.array(z.object({ privilegeName: z.string(), depth: z.enum(['Basic', 'Local', 'Deep', 'Global']) })).parse(properties.grants).map(grant => {
-        const privilege = definitions.find(item => typeof item.name === 'string' && item.name.toLowerCase() === grant.privilegeName.toLowerCase());
-        if (!privilege) throw new PowerCanvasError('PF-MDA-009', 'A required custom-table privilege is unavailable.', 'Verify the published schema; no broad substitute privileges will be granted.');
-        return { PrivilegeId: guidValue(privilege.privilegeid), Depth: grant.depth };
-      });
-      await mutate('grant', `roles(${guidValue(role.remoteId)})/Microsoft.Dynamics.CRM.AddPrivilegesRole`, 'POST', { Privileges }); return;
+      const role = resolve(textValue(properties.role));
+      const resolved = await reattestPrivileges(project, operation, observed, http);
+      const previous = z.array(z.object({ privilegeName: z.string(), depth: z.string() })).parse(operation.before?.grants ?? []);
+      const payload = rolePrivilegePayload(resolved.filter(p => !previous.some(old => old.privilegeName === p.legacyProjectionName && old.depth === p.depth)));
+      await mutate('grant', `roles(${guidValue(role.remoteId)})/Microsoft.Dynamics.CRM.AddPrivilegesRole`, 'POST', payload); return;
     }
     case 'createApp': {
       const publisher = observed.resources.find(item => item.kind === 'publisher' && item.properties.uniqueName === project.solution.publisher.uniqueName);
@@ -116,7 +134,7 @@ export async function mutateModel(project: Project, operation: PlannedOperation,
     case 'addAppComponents': {
       const app = resolve(textValue(properties.app));
       const names: Record<string, { type: string; key: string }> = { form: { type: 'systemform', key: 'formid' }, view: { type: 'savedquery', key: 'savedqueryid' }, sitemap: { type: 'sitemap', key: 'sitemapid' } };
-      const Components = await Promise.all(z.array(z.string()).parse(properties.components).map(async id => {
+      const Components = await Promise.all(z.array(z.string()).parse(properties.components).filter(id=>!(operation.before?.components as string[]|undefined)?.includes(id)).map(async id => {
         const resource = resolve(id); const shape = names[resource.kind];
         if (resource.kind === 'table') {
           // The OData type identifies the table. Using CRM.entity attaches the
@@ -132,7 +150,8 @@ export async function mutateModel(project: Project, operation: PlannedOperation,
     }
     case 'setAppAccess': {
       const app = resolve(textValue(properties.app));
-      for (const [index, id] of z.array(z.string()).parse(properties.roles).entries()) {
+      requirePublishedApp(app);
+      for (const [index, id] of z.array(z.string()).parse(properties.roles).filter(id=>!(operation.before?.roles as string[]|undefined)?.includes(id)).entries()) {
         const role = resolve(id);
         await mutate(`associate-${index}`, `appmodules(${guidValue(app.remoteId)})/appmoduleroles_association/$ref`, 'POST', { '@odata.id': `${http.base}roles(${guidValue(role.remoteId)})` });
       }

@@ -5,11 +5,22 @@ import { discoverEnvironments, EnvironmentStore, verifyTarget } from '../auth/en
 import { environmentIdSchema, targetSchema } from '../state/models.js';
 import { PowerCanvasError } from '../core/errors.js';
 import { emit } from './output.js';
+import {authDoctor} from '../auth/doctor.js';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {resolve,dirname} from 'node:path';
+import {assertAuthEvidenceSafe} from '../auth/safe-evidence.js';
+import type {TransportOptions} from '../dataverse/transport.js';
+import {DiscoveryCredentialContext} from '../auth/discovery-context.js';
+import {CredentialError,normalizeCredentialError} from '../auth/credential-audit.js';
+import {randomUUID} from 'node:crypto';
 
 export interface CliContext { json: boolean; project: string; nonInteractive?: boolean }
 export function registerIdentityCommands(program: Command, global: () => CliContext): void {
   const profiles = new ProfileStore();
   const auth = program.command('auth').description('Tenant-bound interactive Microsoft sign-in with OS-protected cache');
+  auth.command('doctor').option('--environment <alias>','PowerCanvas environment binding alias, independent of PAC profile name').option('--pac <executable>','PAC path for read-only auth list/who inventory','pac').option('--dotnet-root <directory>','Existing runtime for this PAC child process only').option('--expected-principal <guid>','Optional expected Dataverse user GUID').option('--out <file>','Save sanitized metadata evidence exclusively').description('Read-only named-profile, target, WhoAmI and solution/publisher ownership verification; never create or switch profiles').action(async(options:{environment?:string;pac:string;dotnetRoot?:string;expectedPrincipal?:string;out?:string})=>{
+    const result=await authDoctor(global().project,options);assertAuthEvidenceSafe(result);if(options.out){const path=resolve(options.out);await mkdir(dirname(path),{recursive:true});await writeFile(path,JSON.stringify(result,null,2)+'\n',{flag:'wx',mode:0o600});}emit(result,JSON.stringify(result,null,2),global().json);if(result.status!=='READY')process.exitCode=1;
+  });
   auth.command('add <alias>').requiredOption('--tenant <uuid>').requiredOption('--client-id <uuid>').option('--url <origin>', 'Also sign in for this Dataverse origin; omit for discovery-only sign-in')
     .description('Sign in through your browser; no passwords or tokens are accepted as flags')
     .action(async (alias: string, options: { tenant: string; clientId: string; url?: string }) => {
@@ -43,8 +54,25 @@ export function registerIdentityCommands(program: Command, global: () => CliCont
   env.command('show [alias]').action(async (alias?: string) => { const binding = await new EnvironmentStore(global().project).get(alias); emit({ ok: true, binding, liveVerified: false }, JSON.stringify(binding, null, 2), global().json); });
 }
 
-export async function connect(directory: string, alias?: string) {
+export async function connect(directory: string, alias?: string, transportOptions:TransportOptions={}) {
   const profiles = new ProfileStore(); const binding = await new EnvironmentStore(directory).get(alias);
-  const profile = await profiles.get(binding.authProfile); const session = await MicrosoftSession.create(profiles, profile);
-  return { binding, profile, session, ...await verifyTarget(profile, binding, session) };
+  const started=Date.now();let profileFound=false;
+  const initialize=async()=>{try{
+    const profile=await profiles.get(binding.authProfile);profileFound=true;const session=await MicrosoftSession.create(profiles,profile,transportOptions.credentials);
+    if(transportOptions.credentials){const id=randomUUID();await transportOptions.credentials.audit({eventId:id,acquisitionId:id,requestId:id,attempt:1,cycleId:transportOptions.credentials.cycleId,profile:binding.authProfile,environment:binding.alias,audience:binding.target.dataverseUrl,startedAt:new Date(started).toISOString(),finishedAt:new Date().toISOString(),elapsedMs:Date.now()-started,kind:'initialization',result:'SUCCESS',mode:'unknown',stage:'initialization',profileStoreExists:true,profileEntryExists:true});}
+    return {profile,session};
+   }catch(error){
+    if(!transportOptions.credentials)throw error;
+    const failure=normalizeCredentialError(error,'initialization'),id=randomUUID();
+    await transportOptions.credentials.audit({eventId:id,acquisitionId:id,requestId:id,attempt:1,cycleId:transportOptions.credentials.cycleId,profile:binding.authProfile,environment:binding.alias,audience:binding.target.dataverseUrl,startedAt:new Date(started).toISOString(),finishedAt:new Date().toISOString(),elapsedMs:Date.now()-started,kind:'initialization',result:'FAILED',mode:'unknown',state:failure.state,stage:'initialization',failure,...(profileFound?{profileStoreExists:true,profileEntryExists:true}:{})});
+    throw new CredentialError(failure,error instanceof PowerCanvasError?error.code:'PF-AUTH-006');
+   }};
+  const {profile,session}=await initialize();
+  const credentialContext=transportOptions.readOnly&&transportOptions.credentials?.mode==='cycle'?new DiscoveryCredentialContext(profile,binding,(origin,request,force)=>session.acquireSilentGrant(origin,request,force),transportOptions.credentials):undefined;
+  try{
+   await credentialContext?.initialize();
+   const verified=await verifyTarget(profile,binding,credentialContext??session,transportOptions);
+   credentialContext?.bindPrincipal(verified.identity.UserId);
+   return { binding, profile, session,credentialContext, ...verified };
+  }catch(error){credentialContext?.invalidate();throw error;}
 }
