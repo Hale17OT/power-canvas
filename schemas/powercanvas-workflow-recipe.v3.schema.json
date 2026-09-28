@@ -420,6 +420,41 @@
           "properties": {
             "op": {
               "type": "string",
+              "const": "sharepointResource"
+            },
+            "name": {
+              "type": "string",
+              "pattern": "^sharepoint\\.(list|library):[A-Za-z][A-Za-z0-9_]*$"
+            },
+            "path": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "siteUrl",
+                    "listId",
+                    "driveId"
+                  ]
+                }
+              ],
+              "items": false,
+              "minItems": 1,
+              "maxItems": 1
+            }
+          },
+          "required": [
+            "op",
+            "name",
+            "path"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
               "const": "literal"
             },
             "value": {

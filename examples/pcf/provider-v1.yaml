@@ -1,0 +1,127 @@
+components:
+  ColorContrastField:
+    namespace: PowerCanvas
+    constructor: ColorContrastField
+    version: 1.0.0
+    kind: field
+    implementation: standard
+    properties:
+      value:
+        type: string
+        usage: bound
+        required: true
+      theme:
+        type: string
+        usage: input
+        required: false
+      readOnly:
+        type: boolean
+        usage: input
+        required: false
+    datasets: {}
+    resources:
+      - kind: code
+        path: index.ts
+      - kind: css
+        path: style.css
+    features: []
+    targets:
+      canvas: true
+      modelDriven: true
+    designRole: Interactive color contrast measurement and preview beyond native text input
+    requirement: colorContrast
+    implementationSource:
+      kind: generated
+      template: ColorContrastField
+    externalDomains: []
+  AdvancedDataGrid:
+    namespace: PowerCanvas
+    constructor: AdvancedDataGrid
+    version: 1.0.0
+    kind: dataset
+    implementation: standard
+    properties:
+      theme:
+        type: string
+        usage: input
+        required: false
+      readOnly:
+        type: boolean
+        usage: input
+        required: false
+    datasets:
+      records:
+        columns:
+          title:
+            type: string
+            required: true
+          status:
+            type: choice
+            required: true
+        capabilities:
+          selection: true
+          sorting: true
+          filtering: false
+          paging: true
+          resize: true
+    resources:
+      - kind: code
+        path: index.ts
+      - kind: css
+        path: style.css
+    features: []
+    targets:
+      canvas: true
+      modelDriven: true
+    designRole: Column resizing with typed dataset selection, sorting and paging
+    requirement: resizableDataset
+    implementationSource:
+      kind: generated
+      template: AdvancedDataGrid
+    externalDomains: []
+  CalendarDataset:
+    namespace: PowerCanvas
+    constructor: CalendarDataset
+    version: 1.0.0
+    kind: dataset
+    implementation: standard
+    properties:
+      theme:
+        type: string
+        usage: input
+        required: false
+      readOnly:
+        type: boolean
+        usage: input
+        required: false
+    datasets:
+      records:
+        columns:
+          title:
+            type: string
+            required: true
+          date:
+            type: date
+            required: true
+        capabilities:
+          selection: true
+          sorting: false
+          filtering: false
+          paging: false
+          resize: true
+    resources:
+      - kind: code
+        path: index.ts
+      - kind: css
+        path: style.css
+    features: []
+    targets:
+      canvas: true
+      modelDriven: true
+    designRole: Date-mapped dataset with month navigation and record selection
+    requirement: calendarNavigation
+    implementationSource:
+      kind: generated
+      template: CalendarDataset
+    externalDomains: []
+bindings: {}

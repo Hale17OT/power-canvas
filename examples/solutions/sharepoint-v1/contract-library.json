@@ -1,0 +1,154 @@
+{
+  "apiVersion": "powercanvas.solution/v1",
+  "mode": "explicit",
+  "project": {
+    "apiVersion": "powercanvas.dev/v1alpha1",
+    "project": {
+      "id": "11111111-1111-4111-8111-111111111203",
+      "name": "sp-contract-library"
+    },
+    "solution": {
+      "uniqueName": "pcn_spcontractlibrary",
+      "displayName": "Sp Contract Library",
+      "version": "1.0.0.0",
+      "publisher": {
+        "uniqueName": "PowerCanvasBenchmarks",
+        "prefix": "pcn",
+        "optionValuePrefix": 74512
+      }
+    },
+    "dataverse": {
+      "tables": {}
+    },
+    "apps": {}
+  },
+  "requirements": [
+    {
+      "id": "REQ-infrastructure",
+      "statement": "Provision explicitly requested SharePoint metadata without business content.",
+      "concerns": [
+        "data",
+        "external"
+      ],
+      "resources": [
+        "sharepoint.site:operations",
+        "sharepoint.list:Suppliers",
+        "sharepoint.library:Contracts",
+        "sharepoint.column:ContractNumber",
+        "sharepoint.column:Status",
+        "sharepoint.column:Expiry",
+        "sharepoint.column:Supplier",
+        "sharepoint.contentType:Contract",
+        "sharepoint.contentTypeBinding:ContractLibrary",
+        "sharepoint.view:Active",
+        "sharepoint.folder:Archive"
+      ]
+    }
+  ],
+  "sharepoint": {
+    "sites": {
+      "operations": {
+        "binding": "OperationsSite"
+      }
+    },
+    "lists": {
+      "Suppliers": {
+        "site": "operations",
+        "displayName": "Suppliers"
+      }
+    },
+    "libraries": {
+      "Contracts": {
+        "site": "operations",
+        "displayName": "Contracts",
+        "description": "Contract infrastructure only; no files uploaded."
+      }
+    },
+    "columns": {
+      "ContractNumber": {
+        "parent": "sharepoint.site:operations",
+        "internalName": "ContractNumber",
+        "displayName": "Contract number",
+        "type": "text"
+      },
+      "Status": {
+        "parent": "sharepoint.site:operations",
+        "internalName": "Status",
+        "displayName": "Status",
+        "type": "choice",
+        "choices": [
+          "Draft",
+          "Active",
+          "Expired"
+        ]
+      },
+      "Expiry": {
+        "parent": "sharepoint.site:operations",
+        "internalName": "Expiry",
+        "displayName": "Expiry date",
+        "type": "date"
+      },
+      "Supplier": {
+        "parent": "sharepoint.library:Contracts",
+        "internalName": "Supplier",
+        "displayName": "Supplier",
+        "type": "lookup",
+        "source": {
+          "list": "sharepoint.list:Suppliers",
+          "column": "Title"
+        }
+      }
+    },
+    "contentTypes": {
+      "Contract": {
+        "site": "operations",
+        "name": "Contract",
+        "parent": "Document",
+        "columns": [
+          "ContractNumber",
+          "Status",
+          "Expiry"
+        ]
+      }
+    },
+    "contentTypeBindings": {
+      "ContractLibrary": {
+        "target": "sharepoint.library:Contracts",
+        "contentType": "Contract"
+      }
+    },
+    "views": {
+      "Active": {
+        "target": "sharepoint.library:Contracts",
+        "title": "Active contracts",
+        "fields": [
+          "Title",
+          "ContractNumber",
+          "Status",
+          "Expiry",
+          "Supplier"
+        ],
+        "filters": [
+          {
+            "field": "Status",
+            "operator": "eq",
+            "value": "Active"
+          }
+        ],
+        "sorting": [
+          {
+            "field": "Expiry",
+            "direction": "asc"
+          }
+        ],
+        "rowLimit": 100
+      }
+    },
+    "folders": {
+      "Archive": {
+        "library": "Contracts",
+        "path": "Archive"
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@
     },
     {
       "path": "powercanvas-canvas/SKILL.md",
-      "sha256": "dfc5988e6ad7858c22ea07f76b342c844f7ac250d47977f429fa466c000e5645"
+      "sha256": "66c0e05714a01885d3d727cbb0d23dc63ab358f6852c92b9f40a044bf735b2bc"
     },
     {
       "path": "powercanvas-debug/agents/openai.yaml",
@@ -40,7 +40,7 @@
     },
     {
       "path": "powercanvas-flows/SKILL.md",
-      "sha256": "2c7f5852f7a482d0cf25f7b09e4266ceed882ff5d3bde1ed0871ff0ab80ff543"
+      "sha256": "c02e1ffcea2adc08fdb64fd5e397dbe72c89797341b5a2e83b9782b5e6d7328f"
     },
     {
       "path": "powercanvas-taste/agents/openai.yaml",
@@ -64,7 +64,7 @@
     },
     {
       "path": "powercanvas/references/architecture.md",
-      "sha256": "1c344b8c675995e5efc503cd04246bfebb92ef2aeedb06959ed5559f82d6ab28"
+      "sha256": "8610e2de776c553b56ef99805070f7238443f7a36c752ab85ceae3ecb24d707c"
     },
     {
       "path": "powercanvas/references/capabilities.md",
@@ -87,6 +87,10 @@
       "sha256": "c1ac7f6c804a769238be6b7432801cf3418a05216bfec8c60217f9c64fc9561c"
     },
     {
+      "path": "powercanvas/references/sharepoint-v1.md",
+      "sha256": "133c94707857d91660eb859bebdcbfafb2ccd7b7d7e94c5d9d45032eceba82ed"
+    },
+    {
       "path": "powercanvas/references/solution-v2.md",
       "sha256": "87543555bbe6dc747253ec8853b7ce0d434649e94eba284025b8bc72300f4705"
     },
@@ -96,7 +100,7 @@
     },
     {
       "path": "powercanvas/SKILL.md",
-      "sha256": "b76df423ef189f7a4dafb2daa863900f1100b19765f869c2bdc33f3bf9c5da84"
+      "sha256": "2f475dd1c2352d6c7167865dd3f86f306d0489154cde11e9c07e7068e895775c"
     }
   ]
 }

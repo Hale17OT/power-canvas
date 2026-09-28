@@ -1,0 +1,8 @@
+.pcf-provider { box-sizing:border-box; padding:var(--pcf-space); font:var(--pcf-fontSize)/1.5 var(--pcf-font); color:var(--pcf-text); background:var(--pcf-surface); border-radius:var(--pcf-radius); overflow:hidden; }
+.pcf-provider * {box-sizing:border-box} .pcf-provider button,.pcf-provider input {font:inherit; min-height:44px; border:1px solid var(--pcf-border); border-radius:var(--pcf-radius); color:var(--pcf-text); background:var(--pcf-surface); padding:8px;max-width:100%}
+.pcf-provider button {cursor:pointer} .pcf-provider :disabled {cursor:default;opacity:.7} .pcf-provider :focus-visible {outline:3px solid var(--pcf-focus);outline-offset:2px}
+.pcf-provider label {display:flex;flex-direction:column;gap:8px} .pcf-provider .color-preview {padding:24px;margin-top:16px;border-radius:var(--pcf-radius)}
+.pcf-provider .table-scroll {overflow:auto;width:100%} .pcf-provider table {border-collapse:collapse;width:100%} .pcf-provider th,.pcf-provider td {text-align:left;padding:8px;border-bottom:1px solid var(--pcf-border)} .pcf-provider caption {text-align:left;font-weight:600}
+.pcf-provider .resize-label {font-size:14px} .pcf-provider .calendar-nav,.pcf-provider .paging {display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:space-between}
+.pcf-provider .calendar {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:0;list-style:none}.pcf-provider .calendar li {display:flex;flex-direction:column;padding:8px;border:1px solid var(--pcf-border);border-radius:var(--pcf-radius)}
+@media(prefers-reduced-motion:reduce){.pcf-provider *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

@@ -1,0 +1,24 @@
+{
+  "GET": [
+    403,
+    404,
+    429,
+    500,
+    502,
+    503,
+    504,
+    "connect-timeout"
+  ],
+  "writes": [
+    "reject-400",
+    "accepted-drop",
+    "postcondition",
+    "etag-changed"
+  ],
+  "blocked": [
+    "unmocked",
+    "DELETE",
+    "business-items",
+    "business-content"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "classification": "LIVE_OBSERVED_PUBLIC_SURFACE",
+  "surface": "SystemForm.FormXml",
+  "scope": "bounded default account/contact/task main forms",
+  "sanitization": "GUIDs consistently replaced; field renamed sample_choice; only controlDescriptions retained",
+  "controls": [
+    "MscrmControls.CardFeedContainer.CardFeedContainer",
+    "MscrmControls.OptionSet.OptionSetControl"
+  ],
+  "pcfContractVerified": false,
+  "hostReferenceResolved": false,
+  "sha256": "ebf2c495171f56d36003be35edb9d5777b9cf5358e65d9890c646706bfd555c2"
+}

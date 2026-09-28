@@ -23,5 +23,6 @@
   {"id":"mixed-hr","prompt":"Plan a Canvas employee app and a model-driven HR app.","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"},
   {"id":"role-access","prompt":"Configure security roles and model-driven app access.","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"},
   {"id":"native-data","prompt":"Add Dataverse tables and global choices.","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"},
-  {"id":"auth-recovery","prompt":"PF-AUTH-001 while running solution apply","skills":["powercanvas-debug"],"steps":["authentication-recovery","operator-boundary"],"status":"PLAN"}
+  {"id":"auth-recovery","prompt":"PF-AUTH-001 while running solution apply","skills":["powercanvas-debug"],"steps":["authentication-recovery","operator-boundary"],"status":"PLAN"},
+  {"id":"sharepoint-infrastructure","prompt":"Create a SharePoint document library with content types and folders.","skills":["powercanvas"],"steps":["unified-solution-plan","dependency-validation"],"status":"PLAN"}
 ]

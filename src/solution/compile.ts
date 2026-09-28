@@ -1,3 +1,7 @@
+import {pcfSolutionResources} from '../pcf/solution.js';
+import {planSharePoint} from '../sharepoint/plan.js';
+import {hydrateSharePointFlows,sharePointBindingContracts,canvasSharePointSources} from '../sharepoint/bindings.js';
+import {sharepointCapabilities} from '../sharepoint/capabilities.js';
 import {solutionReadiness} from './readiness.js';
 import {securityAudit} from './security.js';
 import {hashJson, type JsonInput} from '../core/json.js';
@@ -22,7 +26,7 @@ import {evidenceSchema, sharedTypes, stages, type CapabilityResolution, type Iss
 import {sharedTypeRegistry} from './types.js';
 
 export const digest=(v:unknown)=>hashJson(v as JsonInput);
-export function capabilityFingerprint(){return digest({version:VERSION,solutionContract:2,sharedTypes,sharedTypeRegistry,capabilities,actions:actionRegistry,recipes:recipeRegistry,providers,components:patternCatalog().map(p=>({name:p.name,evidence:componentEvidence(p.name)}))});}
+export function capabilityFingerprint(){return digest({version:VERSION,solutionContract:3,pcfContract:1,sharepointCapabilities,sharedTypes,sharedTypeRegistry,capabilities,actions:actionRegistry,recipes:recipeRegistry,providers,components:patternCatalog().map(p=>({name:p.name,evidence:componentEvidence(p.name)}))});}
 export function orderResources(resources:Pick<ResourceIR,'id'|'dependencies'>[]){
  const remaining=new Map(resources.map(r=>[r.id,r]));if(remaining.size!==resources.length)throw new Error('Duplicate resource identity');
  const result:string[]=[];
@@ -39,9 +43,13 @@ export function compileSolution(raw:unknown,rawEvidence:unknown={},now=new Date(
  const add=(id:string,kind:string,subsystem:ResourceIR['subsystem'],stage:Stage,definition:unknown,dependencies:string[]=[],physicalName:string|null=null,nativeId?:string)=>{
   const r:ResourceIR={id,kind,subsystem,stage,definition,definitionHash:digest(definition),physicalName,dependencies:[...new Set(dependencies)].sort(),requiredBy:requirements.filter(r=>r.resources.includes(id)).map(r=>r.id),ownership:'UNKNOWN',state:subsystem==='external'?'EXTERNAL':subsystem==='unsupported'?'UNSUPPORTED':'BLOCKED',reason:'Fresh target-bound subsystem discovery/plan required.',capability:capability(subsystem),...(nativeId?{nativeId}:{})};resources.push(r);return r;
  };
- const desired=[...desiredResources(project),...modelResources(project)];
+ const onlySharePoint=!spec.pcf&&!!resolved.sharepoint&&!Object.keys(project.dataverse.tables).length&&!Object.keys(project.apps).length&&!Object.keys(project.canvasApps??{}).length&&!Object.keys(project.resources?.flows??{}).length&&!Object.keys(project.resources?.workflowRecipes??{}).length;
+ const desired=onlySharePoint?[]:[...desiredResources(project),...modelResources(project)];
+ const sp=resolved.sharepoint?planSharePoint(resolved.sharepoint,project.project.id,evidence.sharepoint,now):undefined;
+ const spBindings=resolved.sharepoint?sharePointBindingContracts(resolved.sharepoint,evidence.sharepoint):{};
  const ids=new Map(desired.map(d=>[d.resourceId,d.kind+':'+d.resourceId.split(':').at(-1)!.replaceAll('/', '.')]));
  for(const d of desired){const r=add(ids.get(d.resourceId)!,d.kind,d.provider==='model-driven'?'model-driven':'dataverse',d.provider==='model-driven'?'MODEL_APP':'DATA',d.properties,d.dependencies.map(v=>ids.get(v)??v),d.schemaName,d.resourceId);if(d.provider==='model-driven')r.capability.limitations.push('AppModule Web API adapter; ValidateApp before explicit publish; runtime/persona access unproven.');}
+ if(sp){resources.push(...sp.resources.map(r=>({...r,requiredBy:requirements.filter(q=>q.resources.includes(r.id)).map(q=>q.id)})));issues.push(...sp.issues);}
  for(const r of resources.filter(r=>r.subsystem==='model-driven')){const app=r.id.split(':')[1]!.split('.')[0]!;if(project.apps[app])r.requiredBy=[...new Set([...r.requiredBy,...(resources.find(a=>a.id==='app:'+app)?.requiredBy??[])])];}
  for(const [key,app] of Object.entries(project.apps)){
   const access=resources.find(r=>r.id==='appAccess:'+key)!;
@@ -54,20 +62,20 @@ export function compileSolution(raw:unknown,rawEvidence:unknown={},now=new Date(
  for(const [key,p]of Object.entries(products))if(!project.canvasApps?.[key])issues.push({code:'PRODUCT_WITHOUT_APP',severity:'error',resource:'canvas:'+key,message:'Product context has no declared Canvas app: '+p.name});
  const canvasPlans:Record<string,unknown>={};
  for(const [key,app]of Object.entries(project.canvasApps??{})){
-  const sources=[...new Set(Object.values(app.screens).flatMap(s=>'source'in s?['table:'+s.source]:[]))];
-  if(spec.mode==='intent'&&spec.experiences[key])sources.push('table:'+spec.experiences[key].source);
+  const sources=[...new Set(Object.values(app.screens).flatMap(s=>'source'in s?[resolved.sharepoint?.bindings.canvas.find(b=>b.app===key&&b.alias===s.source)?.resource??'table:'+s.source]:[]))];
+  if(spec.mode==='intent'&&spec.experiences[key])sources.push(resolved.sharepoint?.bindings.canvas.find(b=>b.app===key&&b.alias===spec.experiences[key]!.source)?.resource??'table:'+spec.experiences[key].source);
   const r=add('canvas:'+key,'canvas','canvas','APPLICATION',app,['solution:solution',...sources],app.uniqueName);
   if(['AUTHORING_UNAVAILABLE','DEGRADED_READ_ONLY'].includes(evidence.authoring)){r.capability.status='EXTERNAL_BLOCKED';r.reason='Canvas source generation remains available; native authoring is externally blocked.';}
   if(app.application?.existingAppId)r.existingId=app.application.existingAppId;
   try{
    const product=products[key]??app.nativeDesign?.product;
    if(product){const decisions=planDesign(product);const composition=createCompositionIR(decisions,spec.profile);const validated=validateCompositionIR(composition,decisions);const candidate=app.nativeDesign?compileDesignCandidate(decisions,app.nativeDesign.host,app.theme.mode,composition):undefined;canvasPlans[key]={decisions,composition,resolutions:validated.resolved,sameAppDevices:product.devices,...(candidate?{candidate}:{}),sourceGeneration:'Existing taste generate / compileNativeCanvas with an explicit host and live bindings'};if(candidate?.host.fixture)r.capability.limitations.push('Fixture host: source preview only. Business save/bindings are not implemented by this fixture.');}
-   if(!app.nativeDesign)compileCanvas(project,key);
+   if(!app.nativeDesign)canvasPlans[key]=compileCanvas(project,key,resolved.sharepoint?canvasSharePointSources(resolved.sharepoint,evidence.sharepoint):{});
   }catch(error){r.capability.compile=false;r.capability.status='BLOCKED';issues.push({code:'CANVAS_VALIDATION',severity:'error',resource:r.id,message:error instanceof Error?error.message:'Canvas validation failed'});}
  }
- let compiled:ReturnType<typeof compileFlows>|undefined;
- try{compiled=compileFlows(project);}catch(error){issues.push({code:'FLOW_COMPILE',severity:'error',message:error instanceof Error?error.message:'Flow compilation failed'});}
- const flowResources=compiled?.resources??project.resources;
+ let compiled:ReturnType<typeof compileFlows>|undefined;let boundProject=project;
+ try{const bound=resolved.sharepoint?hydrateSharePointFlows(project,resolved.sharepoint,evidence.sharepoint):undefined;boundProject=bound?.project??project;compiled=compileFlows(boundProject);}catch(error){issues.push({code:'FLOW_COMPILE',severity:'error',message:error instanceof Error?error.message:'Flow compilation failed'});}
+ const flowResources=compiled?.resources??boundProject.resources;
  if(flowResources){
   for(const [key,value]of Object.entries(flowResources.connectionReferences))add('connection:'+key,'connection','configuration','CONFIGURATION',value,['solution:solution'],value.logicalName);
   for(const [key,value]of Object.entries(flowResources.environmentVariables))add('environment:'+key,'environmentVariable','configuration','CONFIGURATION',value,['solution:solution'],value.logicalName);
@@ -80,7 +88,8 @@ export function compileSolution(raw:unknown,rawEvidence:unknown={},now=new Date(
   for(const [key,value]of Object.entries(flowResources.documentTemplates??{}))add('template:'+key,'documentTemplate','external','CONFIGURATION',value);
   for(const [key,value]of Object.entries(flowResources.flowDataSources??{})){
    const table=Object.entries(project.dataverse.tables).find(([k,t])=>k===value.table||t.schemaName.toLowerCase()===(value.logicalName??value.table).toLowerCase());
-   add('metadata:'+key,'flowMetadata',table?'configuration':'external','CONFIGURATION',value,table?['table:'+table[0]]:[]);
+   const spSource=Object.values(spBindings).find(v=>v.metadata.table===key);
+   add('metadata:'+key,'flowMetadata',table||spSource?'configuration':'external','CONFIGURATION',value,table?['table:'+table[0]]:spSource?[spSource.resource]:[]);
    if(table)for(const [col,shape]of Object.entries(value.columns)){const field=Object.values(table[1].columns).find(c=>c.schemaName.toLowerCase()===col);if(field){const t=conceptualType(field);if(shape.shape.type!==t&&!(t==='decimal'&&shape.shape.type==='number')&&!(t==='choice'&&shape.shape.type==='integer'))issues.push({code:'CROSS_TYPE_MISMATCH',severity:'error',resource:'metadata:'+key,message:`${col}: Dataverse ${t} differs from flow ${shape.shape.type}`});}}
   }
   const g=dependencyGraph(flowResources);
@@ -89,6 +98,17 @@ export function compileSolution(raw:unknown,rawEvidence:unknown={},now=new Date(
   for(const edge of g.edges){const r=resources.find(r=>r.id===mapId(edge.from));if(r&&!r.dependencies.includes(mapId(edge.to)))r.dependencies.push(mapId(edge.to));}
   for(const [key,flow]of Object.entries(flowResources.flows)){const r=resources.find(r=>r.id==='flow:'+key)!;const metadata=[...flattenActions(flow.actions).flatMap(a=>a.metadata?['metadata:'+a.metadata]:[]),...(flow.trigger.type==='dataverse'?['metadata:'+flow.trigger.metadata]:[])];for(const m of metadata)if(!r.dependencies.includes(m))r.dependencies.push(m);}
   for(const b of flowResources.canvasBindings)add('binding:'+b.app+'.'+b.alias,'canvasFlowBinding','configuration','BINDINGS',b,['canvas:'+b.app,'flow:'+b.flow]);
+ }
+ if(resolved.sharepoint){
+  try{const bound=hydrateSharePointFlows(project,resolved.sharepoint,evidence.sharepoint);for(const edge of bound.edges){const consumer=resources.find(r=>r.id===edge.from);if(consumer&&!consumer.dependencies.includes(edge.to))consumer.dependencies.push(edge.to);}}catch(error){issues.push({code:'SHAREPOINT_BINDING',severity:'error',message:String(error)});}
+  for(const b of resolved.sharepoint.bindings.canvas){const contract=spBindings[b.resource];const consumer=resources.find(r=>r.id==='canvas:'+b.app);const r=add('sharepoint.canvasBinding:'+b.app+'.'+b.alias,'sharepoint.canvasBinding','configuration','BINDINGS',{alias:b.alias,resource:b.resource,contract:contract??null},['canvas:'+b.app,b.resource]);if(!contract||!consumer)issues.push({code:'SHAREPOINT_BINDING',severity:'error',resource:r.id,message:'Unresolved Canvas SharePoint resource/app'});else {consumer.dependencies.push(b.resource);canvasPlans[b.app]={...(canvasPlans[b.app] as object??{}),sharePointDataSources:resolved.sharepoint.bindings.canvas.filter(v=>v.app===b.app).map(v=>({alias:v.alias,...spBindings[v.resource]}))};r.reason=contract.resolved?'Resolved symbolic source contract; native connector registration remains unproven.':'SharePoint identity is unresolved.';}}
+  for(const b of resolved.sharepoint.bindings.flows){const consumer=resources.find(r=>r.id==='flow:'+b.flow);const flow=flowResources?.flows[b.flow];const action=flow&&flattenActions(project.resources?.flows[b.flow]?.actions??[]).find(a=>a.name===b.action);if(!consumer||!action?.use.startsWith('sharepoint.')||!spBindings[b.resource]||action.site?.op!=='sharepointResource'||action.site.name!==b.resource||action.site.path?.[0]!=='siteUrl'||action.list&&(action.list.op!=='sharepointResource'||action.list.name!==b.resource||action.list.path?.[0]!=='listId'))issues.push({code:'SHAREPOINT_BINDING',severity:'error',resource:'flow:'+b.flow,message:'Unresolved Flow action or SharePoint resource'});else consumer.dependencies.push(b.resource);}
+ }
+ if(spec.pcf){const pcf=pcfSolutionResources(spec.pcf,resources,project);resources.push(...pcf.resources.map(r=>({...r,requiredBy:requirements.filter(q=>q.resources.includes(r.id)).map(q=>q.id)})));issues.push(...pcf.issues);
+  for(const binding of Object.values(spec.pcf.bindings).filter(b=>b.target==='canvas')){const key=binding.consumer.slice('canvas:'.length);const plan=canvasPlans[key] as {decisions?:ReturnType<typeof planDesign>;composition?:ReturnType<typeof createCompositionIR>;candidate?:unknown}|undefined;
+   if(!plan?.composition||!plan.decisions){issues.push({code:'PCF_COMPOSITION',severity:'error',resource:binding.consumer,message:'PCF Canvas binding requires the existing Taste Composition IR.'});continue;}
+   try{const {hash:_hash,...body}=plan.composition;void _hash;const regions=body.regions.map(r=>r.slot===binding.slot?{...r,component:{preferred:'pcf.component:'+binding.component,variant:'standard'}}:r);const composition={...body,regions};const checked=validateCompositionIR({...composition,hash:digest(composition)},plan.decisions,undefined,spec.pcf);canvasPlans[key]={...plan,candidate:undefined,composition:checked.ir,resolutions:checked.resolved,pcfBindings:spec.pcf.bindings,nativeLowering:'UNPROVEN: source binding contract only'};}catch(error){issues.push({code:'PCF_COMPOSITION',severity:'error',resource:binding.consumer,message:String(error)});}
+  }
  }
  for(const e of spec.externalDependencies){const r=add('external:'+e.id,e.kind,'external','CONFIGURATION',e);r.requiredBy=[...e.requiredBy];r.ownership='EXTERNAL';r.reason=e.resolutionState==='verified'?'Explicit external identity/evidence; not solution-contained.':'External identity/provisioning unresolved.';if(e.resolutionState==='verified')r.capability.status='SUPPORTED_WITH_LIMITS';}
  for(const external of resources.filter(r=>r.id.startsWith('external:')))for(const consumer of resources.filter(r=>['flows','canvas'].includes(r.subsystem)&&r.requiredBy.some(id=>external.requiredBy.includes(id))))consumer.dependencies.push(external.id);
@@ -103,9 +123,11 @@ export function compileSolution(raw:unknown,rawEvidence:unknown={},now=new Date(
   const column=ref.to.column?table?.columns[ref.to.column]:undefined;
   const relationship=ref.to.column?Object.values(project.dataverse.relationships).find(v=>v.fromTable===ref.to.resource.slice(6)&&v.lookup.key===ref.to.column):undefined;
   const declared=spec.mode==='intent'&&ref.to.column?spec.entities[ref.to.resource.slice(6)]?.fields[ref.to.column]?.type:undefined;
-  const actualType=column?(declared??conceptualType(column)):relationship?'lookup':null;
+  const spColumn=resolved.sharepoint&&ref.to.column?Object.values(resolved.sharepoint.columns).find(c=>c.parent===ref.to.resource&&c.internalName===ref.to.column):undefined;
+  const spType=spColumn?({text:'string',number:'decimal',hyperlink:'string'} as Record<string,string>)[spColumn.type]??spColumn.type:ref.to.column==='Title'&&spBindings[ref.to.resource]?'string':null;
+  const actualType=column?(declared??conceptualType(column)):relationship?'lookup':spType;
   if(ref.to.column&&(!actualType||ref.to.expectedType&&actualType!==ref.to.expectedType))issues.push({code:'REFERENCE_TYPE',severity:'error',resource:ref.from,message:'Missing column or incompatible shared type: '+ref.to.resource+'.'+ref.to.column});
-  return {...ref,physicalResource:target?.physicalName??null,physicalColumn:column?.schemaName.toLowerCase()??relationship?.lookup.schemaName.toLowerCase()??null,actualType};
+  return {...ref,physicalResource:target?.physicalName??null,physicalColumn:column?.schemaName.toLowerCase()??relationship?.lookup.schemaName.toLowerCase()??spColumn?.internalName??(spType&&ref.to.column==='Title'?'Title':null),actualType};
  });
  // Trace dependency reasons to a fixed point, including solution/publisher and shared configuration.
  for(const persona of spec.personas??[])for(const id of [...persona.roles.flatMap(r=>['role:'+r,'rolePermissions:'+r]),...persona.apps,...persona.flowAccess.map(f=>'flow:'+f)]){const resource=resources.find(r=>r.id===id);if(resource)resource.requiredBy=[...new Set([...resource.requiredBy,...persona.requiredBy])];}
@@ -123,7 +145,7 @@ export function compileSolution(raw:unknown,rawEvidence:unknown={},now=new Date(
  const blockers=[...issues.filter(i=>i.severity==='error'),...resources.filter(r=>['BLOCKED','CONFLICT','UNSUPPORTED','ORPHANED'].includes(r.state)||r.capability.status==='EXTERNAL_BLOCKED').map(r=>({code:r.state,resource:r.id,message:r.reason,severity:'error' as const}))];
  const implementable=resources.filter(r=>r.capability.compile&&r.subsystem!=='external').length;
  const status=issues.some(i=>['DEPENDENCY_GRAPH','REFERENCE_TYPE','UNRESOLVED_REFERENCE'].includes(i.code))?'BLOCKED':blockers.length?implementable?'PARTIALLY_IMPLEMENTABLE':'PLAN_ONLY':resources.some(r=>r.state==='DEFERRED_REQUIRES_PUBLICATION')&&!resources.some(r=>['CREATE','UPDATE'].includes(r.state))?'PROVIDER_CONVERGED_WITH_DEFERRED_PUBLICATION':'FULLY_IMPLEMENTABLE';
- return {readiness:solutionReadiness(project,resources,evidence,blockers,now),version:1 as const,security,appDecisions:spec.mode==='intent'?Object.entries(spec.experiences).map(([key,e])=>({key,selected:project.apps[key]?'modelDriven':'canvas',workload:e.workload??'legacyCanvas',reason:e.jobBoundary??'Existing explicit Canvas intent'})):Object.entries(project.apps).map(([key])=>({key,selected:'modelDriven',workload:'explicit',reason:'Explicit model-driven application requirement'})),identity:project.project,solution:project.solution,sharedTypes:sharedTypeRegistry,processes:spec.mode==='intent'?spec.processes.map(p=>({...p,...responsibility(p.job)})):[],requirements:requirements.map(r=>({...r,resources:resources.filter(v=>v.requiredBy.includes(r.id)).map(v=>v.id)})),resources,references,dependencies:resources.flatMap(r=>r.dependencies.map(to=>({from:r.id,to}))),capabilities:resources.map(r=>({resource:r.id,...r.capability})),ownership:resources.map(r=>({resource:r.id,state:r.ownership})),deployment,deploymentOrder,validation:{issues,blockers,productionReady:false,checks:['strict solution/project schemas','existing Dataverse planner','existing Flow compiler/recipe expansion','existing Canvas semantic compiler','existing Taste decisions/composition/maturity','logical references/shared types','ownership and dependency closure'],pending:['fresh target discovery','security/persona verification','Solution Checker','unmanaged export membership','cross-environment import proof']},status,canvasPlans,workflowPlans:compiled?.recipes??{},workflowRisks:compiled?Object.fromEntries(Object.entries(compiled.flows).map(([k,f])=>[k,f.safety])):{},externalManifest:compiled?.manifest??{},storage:storageDecision(spec),responsibility:{validation:responsibility('uiValidation'),singleRecordSave:responsibility('singleRowUpdate')},project,sourceHash:digest(spec),projectHash:digest(project),capabilityHash:capabilityFingerprint(),environmentHash:digest(evidence.target??null),discoveryHash:digest(evidence),resourceHash:digest(resources.map(r=>({id:r.id,definitionHash:r.definitionHash}))),expectedMutations:mutationCounts(resources),remoteCalls:0,remoteMutations:0};
+ return {...(sp?{sharepoint:{...sp,bindings:spBindings}}:{}),readiness:solutionReadiness(project,resources,evidence,blockers,now),version:1 as const,security,appDecisions:spec.mode==='intent'?Object.entries(spec.experiences).map(([key,e])=>({key,selected:project.apps[key]?'modelDriven':'canvas',workload:e.workload??'legacyCanvas',reason:e.jobBoundary??'Existing explicit Canvas intent'})):Object.entries(project.apps).map(([key])=>({key,selected:'modelDriven',workload:'explicit',reason:'Explicit model-driven application requirement'})),identity:project.project,solution:project.solution,sharedTypes:sharedTypeRegistry,processes:spec.mode==='intent'?spec.processes.map(p=>({...p,...responsibility(p.job)})):[],requirements:requirements.map(r=>({...r,resources:resources.filter(v=>v.requiredBy.includes(r.id)).map(v=>v.id)})),resources,references,dependencies:resources.flatMap(r=>r.dependencies.map(to=>({from:r.id,to}))),capabilities:resources.map(r=>({resource:r.id,...r.capability})),ownership:resources.map(r=>({resource:r.id,state:r.ownership})),deployment,deploymentOrder,validation:{issues,blockers,productionReady:false,checks:['strict solution/project schemas','existing Dataverse planner','existing Flow compiler/recipe expansion','existing Canvas semantic compiler','existing Taste decisions/composition/maturity','logical references/shared types','ownership and dependency closure'],pending:['fresh target discovery','security/persona verification','Solution Checker','unmanaged export membership','cross-environment import proof']},status,canvasPlans,workflowPlans:compiled?.recipes??{},workflowRisks:compiled?Object.fromEntries(Object.entries(compiled.flows).map(([k,f])=>[k,f.safety])):{},externalManifest:compiled?.manifest??{},storage:storageDecision(spec),responsibility:{validation:responsibility('uiValidation'),singleRecordSave:responsibility('singleRowUpdate')},project,sourceHash:digest(spec),projectHash:digest(project),capabilityHash:capabilityFingerprint(),environmentHash:digest(evidence.target??null),discoveryHash:digest(evidence),resourceHash:digest(resources.map(r=>({id:r.id,definitionHash:r.definitionHash}))),expectedMutations:mutationCounts(resources),remoteCalls:0,remoteMutations:0};
 }
 
 function applyEvidence(resources:ResourceIR[],evidence:SolutionEvidence,project:ReturnType<typeof resolveSolution>['project'],issues:Issue[],now:Date){
@@ -157,6 +179,7 @@ function applyEvidence(resources:ResourceIR[],evidence:SolutionEvidence,project:
  }
  for(const binding of evidence.readOnlyBindings){
   const r=resources.find(v=>v.id===binding.resource);if(!r)throw new Error('Binding refers to an undeclared resource');
+  if(r.subsystem==='sharepoint'||r.subsystem==='pcf')throw new Error('SharePoint resources require provider observation and ownership');
   if(r.nativeId)throw new Error('Native Dataverse resources require the native ownership/discovery planner, not read-only bindings');
   r.ownership=binding.ownership;r.existingId=binding.remoteId;
   if(binding.definitionHash!==r.definitionHash){r.state='CONFLICT';r.reason='Bound resource definition differs; no implicit adoption/update.';}
@@ -166,7 +189,7 @@ function applyEvidence(resources:ResourceIR[],evidence:SolutionEvidence,project:
 function architectureAudit(resources:ResourceIR[],project:ReturnType<typeof resolveSolution>['project'],spec:ReturnType<typeof resolveSolution>['spec']):Issue[]{
  const issues:Issue[]=[];const warn=(code:string,message:string,resource?:string)=>issues.push({code,severity:'warning',message,...(resource?{resource}:{})});
  const groups=new Map<string,ResourceIR[]>();for(const r of resources){const key=r.kind+':'+digest(r.definition);groups.set(key,[...(groups.get(key)??[]),r]);}for(const group of groups.values())if(group.length>1)warn('DUPLICATE_CONCEPT','Identical definitions: '+group.map(r=>r.id).join(', '));
- const names=new Map<string,string>();for(const r of resources)if(r.physicalName){const key=(r.kind==='column'?r.id.split('.')[0]+':':'')+r.physicalName.toLowerCase();if(names.has(key))issues.push({code:'PHYSICAL_COLLISION',severity:'error',resource:r.id,message:'Physical identity also used by '+names.get(key)});names.set(key,r.id);}
+ const names=new Map<string,string>();for(const r of resources)if(r.physicalName&&r.subsystem!=='sharepoint'){const key=(r.kind==='column'?r.id.split('.')[0]+':':'')+r.physicalName.toLowerCase();if(names.has(key))issues.push({code:'PHYSICAL_COLLISION',severity:'error',resource:r.id,message:'Physical identity also used by '+names.get(key)});names.set(key,r.id);}
  const apps=Object.entries(project.canvasApps??{});for(let i=0;i<apps.length;i++)for(const [key,app]of apps.slice(i+1)){const other=apps[i]![1];if(digest(app.screens)===digest(other.screens))warn('DUPLICATE_APP','Same screens/jobs should be one adaptive app; device differences do not justify another application.','canvas:'+key);}
  if(spec.mode==='intent'){const experiences=Object.entries(spec.experiences);for(let i=0;i<experiences.length;i++)for(const [key,e]of experiences.slice(i+1)){const other=experiences[i]![1];if(digest(e.product.users)===digest(other.product.users)&&digest(e.product.jobs)===digest(other.product.jobs)&&e.source===other.source)issues.push({code:'DUPLICATE_APP_BOUNDARY',severity:'error',resource:'canvas:'+key,message:'Identical jobs, users and source require one adaptive application, not device-specific app declarations.'});}}
  for(const [key,f]of Object.entries(project.resources?.flows??{}))if(f.actions.every(a=>['dataverse.updateRow','powerApps.respond','data.compose'].includes(a.use)))warn('UNNECESSARY_FLOW','Single-record save/validation belongs in Power Fx unless background semantics are explicitly required.','flow:'+key);

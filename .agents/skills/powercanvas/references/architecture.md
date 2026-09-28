@@ -15,3 +15,5 @@ Resolve project intent in `powercanvas.yaml`, PRODUCT.md and DESIGN.md. Determin
 The root orchestrates bounded specialist work. When a host supports delegation, use the optional briefs in the plugin's `agents/` directory; otherwise perform those roles sequentially. Planning/review may run offline in parallel. Only one worker may operate a given live Studio session, and all workers inherit the same authorization limits.
 
 For detailed implementation, resolve repository-relative paths from the PowerCanvas checkout: `src/canvas/`, `src/flows/`, `docs/canvas/`, `docs/flows.md`, `docs/flows-v2.md` and `docs/flows-v3.md`. These are existing documentation/code, not copies embedded in every skill.
+
+SharePoint infrastructure uses the same Solution IR and dependency graph. Load [SharePoint V1](sharepoint-v1.md) for existing-site bindings, external-resource ownership, symbolic Canvas/Flow bindings and separate Graph/REST audiences. V1 CLI plans are offline; no SharePoint CLI write route or live certification is implied.

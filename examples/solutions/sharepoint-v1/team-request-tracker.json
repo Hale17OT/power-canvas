@@ -1,0 +1,284 @@
+{
+  "apiVersion": "powercanvas.solution/v1",
+  "mode": "intent",
+  "identity": {
+    "apiVersion": "powercanvas.dev/v1alpha1",
+    "project": {
+      "id": "11111111-1111-4111-8111-111111111202",
+      "name": "sp-request-tracker"
+    },
+    "solution": {
+      "uniqueName": "pcn_sprequesttracker",
+      "displayName": "Sp Request Tracker",
+      "version": "1.0.0.0",
+      "publisher": {
+        "uniqueName": "PowerCanvasBenchmarks",
+        "prefix": "pcn",
+        "optionValuePrefix": 74512
+      }
+    }
+  },
+  "requirements": [
+    {
+      "id": "REQ-data",
+      "statement": "Use SharePoint for simple team requests and category metadata.",
+      "concerns": [
+        "data"
+      ]
+    },
+    {
+      "id": "REQ-ui",
+      "statement": "Provide one adaptive request application with shared SharePoint bindings.",
+      "concerns": [
+        "ui"
+      ]
+    },
+    {
+      "id": "REQ-notify",
+      "statement": "Compile bounded request query and operator-configured email notification.",
+      "concerns": [
+        "automation"
+      ]
+    }
+  ],
+  "sharepoint": {
+    "sites": {
+      "operations": {
+        "binding": "OperationsSite"
+      }
+    },
+    "views": {
+      "Active": {
+        "target": "sharepoint.list:requests",
+        "title": "Active requests",
+        "fields": [
+          "Title",
+          "status",
+          "requester",
+          "category",
+          "Modified"
+        ],
+        "filters": [
+          {
+            "field": "status",
+            "operator": "neq",
+            "value": "Complete"
+          }
+        ],
+        "sorting": [
+          {
+            "field": "Modified",
+            "direction": "desc"
+          }
+        ],
+        "rowLimit": 100
+      }
+    }
+  },
+  "entities": {
+    "categories": {
+      "label": "Category",
+      "plural": "Categories",
+      "requiredBy": [
+        "REQ-data"
+      ],
+      "ownership": "organization",
+      "storage": "sharepoint",
+      "site": "operations",
+      "rationale": "Small site-contained reference list.",
+      "fields": {
+        "title": {
+          "type": "string",
+          "label": "Title"
+        }
+      }
+    },
+    "requests": {
+      "label": "Request",
+      "plural": "Requests",
+      "requiredBy": [
+        "REQ-data"
+      ],
+      "ownership": "organization",
+      "storage": "sharepoint",
+      "site": "operations",
+      "rationale": "Simple collaboration request tracking; no row-level security or complex business rules.",
+      "fields": {
+        "title": {
+          "type": "string",
+          "label": "Title"
+        },
+        "status": {
+          "type": "choice",
+          "label": "Status",
+          "choices": [
+            "New",
+            "In Progress",
+            "Complete"
+          ]
+        },
+        "requester": {
+          "type": "person",
+          "label": "Requester"
+        },
+        "category": {
+          "type": "lookup",
+          "label": "Category",
+          "target": "categories"
+        }
+      }
+    }
+  },
+  "experiences": {
+    "requests": {
+      "requiredBy": [
+        "REQ-ui"
+      ],
+      "product": {
+        "name": "Team Request Tracker",
+        "users": [
+          "Document reviewers"
+        ],
+        "jobs": [
+          "Review document revision and evidence"
+        ],
+        "frequency": "daily",
+        "purpose": "document-review",
+        "devices": [
+          "desktop",
+          "mobile"
+        ],
+        "criticalInformation": [
+          "title",
+          "url",
+          "revision",
+          "status"
+        ],
+        "accessibility": [
+          "Keyboard access",
+          "Visible labels and focus"
+        ],
+        "constraints": [
+          "Single adaptive application",
+          "Explicit record ownership"
+        ],
+        "context": {
+          "workflow": "reading",
+          "fieldCount": 4,
+          "actionCount": 3,
+          "destinationCount": 4,
+          "recordCount": 24,
+          "visualContent": true,
+          "persistentContext": false,
+          "overlayTask": "inspect"
+        }
+      },
+      "source": "requests",
+      "fields": [
+        "title",
+        "status"
+      ]
+    }
+  },
+  "automation": {
+    "connectionReferences": {
+      "sp": {
+        "logicalName": "pcn_SharePoint",
+        "displayName": "SharePoint",
+        "connector": "shared_sharepointonline",
+        "allowCreate": false
+      },
+      "mail": {
+        "logicalName": "pcn_Notifications",
+        "displayName": "Notifications",
+        "connector": "shared_office365",
+        "allowCreate": false
+      }
+    },
+    "environmentVariables": {
+      "recipient": {
+        "logicalName": "pcn_Recipient",
+        "displayName": "Operator recipient",
+        "type": "text",
+        "format": "email"
+      }
+    },
+    "flows": {
+      "notify": {
+        "logicalName": "pcn_RequestNotification",
+        "displayName": "Request notification",
+        "flowType": "scheduled",
+        "trigger": {
+          "type": "recurrence",
+          "frequency": "Day",
+          "interval": 1,
+          "startTime": "2030-01-01T00:00:00Z"
+        },
+        "connectionReferences": [
+          "sp",
+          "mail"
+        ],
+        "environmentVariables": [
+          "recipient"
+        ],
+        "runPolicy": {
+          "mode": "controlledWrite"
+        },
+        "activationPolicy": "manual",
+        "actions": [
+          {
+            "name": "ReadRequests",
+            "use": "sharepoint.getItems",
+            "connection": "sp",
+            "metadata": "requests",
+            "site": {
+              "op": "sharepointResource",
+              "name": "sharepoint.list:requests",
+              "path": [
+                "siteUrl"
+              ]
+            },
+            "list": {
+              "op": "sharepointResource",
+              "name": "sharepoint.list:requests",
+              "path": [
+                "listId"
+              ]
+            },
+            "top": 100
+          },
+          {
+            "name": "Notify",
+            "use": "outlook.sendEmail",
+            "connection": "mail",
+            "to": [
+              {
+                "op": "environment",
+                "name": "recipient"
+              }
+            ],
+            "subject": {
+              "op": "literal",
+              "shape": {
+                "type": "string"
+              },
+              "value": "Request review"
+            },
+            "body": {
+              "op": "literal",
+              "shape": {
+                "type": "string"
+              },
+              "value": "Review pending requests in the team application."
+            }
+          }
+        ]
+      }
+    }
+  },
+  "automationRequirements": {
+    "notify": [
+      "REQ-notify"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "classification": "LIVE_OBSERVED_PUBLIC_SURFACE",
+  "author": "Microsoft Maker designer via operator-authorized automation",
+  "compilerOwned": false,
+  "fixturePurpose": "Host resolution observation; NOT a production lowering golden",
+  "sanitization": "Retain only base host and controlDescriptions; replace GUIDs and column identity",
+  "sha256": "2eeab606827bdf6782b1f565777b01d58235b1f7cade83a89699c5e1226b50c6",
+  "uiSelection": [
+    "Web"
+  ],
+  "observedFormFactors": [
+    1,
+    0,
+    2
+  ],
+  "publicationBoundary": "UNPROVEN"
+}

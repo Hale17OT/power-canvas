@@ -1,0 +1,59 @@
+import { IInputs, IOutputs } from './generated/ManifestTypes';
+
+// Template branch is fixed by the compiler, never by business data.
+const variant = String('__COMPONENT__');
+const light = __LIGHT__;
+const dark = __DARK__;
+export class __COMPONENT__ implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+ private root!: HTMLDivElement;
+ private notify!: () => void;
+ private value = '';
+ private month = new Date(Date.UTC(new Date().getUTCFullYear(),new Date().getUTCMonth(),1));
+ private context!: ComponentFramework.Context<IInputs>;
+ private widths:Record<string,number>={};
+ public init(context:ComponentFramework.Context<IInputs>,notify:()=>void,_state:ComponentFramework.Dictionary,container:HTMLDivElement):void {
+  this.root=document.createElement('div');this.root.className='pcf-provider';container.appendChild(this.root);this.notify=notify;context.mode.trackContainerResize(true);this.updateView(context);
+ }
+ private text(tag:string,value:string,host:HTMLElement):HTMLElement {const el=document.createElement(tag);el.textContent=value;host.appendChild(el);return el;}
+ private button(label:string,host:HTMLElement,action:()=>void,disabled=false):HTMLButtonElement {const b=document.createElement('button');b.type='button';b.dataset.pcfFocus=label;b.textContent=label;b.disabled=disabled;b.onclick=action;host.appendChild(b);return b;}
+ public updateView(context:ComponentFramework.Context<IInputs>):void {
+  const active=document.activeElement as HTMLElement|null;const focus=this.root.contains(active)?active?.dataset.pcfFocus:undefined;const caret=active instanceof HTMLInputElement?active.selectionStart:null;
+  this.context=context;const params=context.parameters as unknown as Record<string,{raw:unknown}>;
+  const theme=params.theme?.raw==='dark'?dark:light;for(const [name,value]of Object.entries(theme))this.root.style.setProperty('--pcf-'+name,String(value));
+  this.root.style.width=context.mode.allocatedWidth>0?context.mode.allocatedWidth+'px':'100%';this.root.style.maxWidth='100%';this.root.replaceChildren();
+  const readOnly=context.mode.isControlDisabled||params.readOnly?.raw===true;
+  if(variant==='ColorContrastField')this.field(params,readOnly);else this.dataset(readOnly);
+  if(focus){const next=Array.from(this.root.querySelectorAll<HTMLElement>('[data-pcf-focus]')).find(el=>el.dataset.pcfFocus===focus);next?.focus();if(next instanceof HTMLInputElement&&next.type==='text'&&caret!==null)next.setSelectionRange(caret,caret);}
+ }
+ private field(params:Record<string,{raw:unknown}>,readOnly:boolean):void {
+  this.value=typeof params.value?.raw==='string'?params.value.raw:'#145C4F';
+  const label=document.createElement('label');label.textContent='Color (six-digit hex)';const input=document.createElement('input');input.type='text';input.dataset.pcfFocus='color-value';input.value=this.value;input.maxLength=7;input.disabled=readOnly;label.appendChild(input);this.root.appendChild(label);
+  const preview=this.text('div','',this.root);preview.className='color-preview';const status=this.text('p','',this.root);status.setAttribute('role','status');
+  const render=()=>{const valid=/^#[0-9a-f]{6}$/i.test(input.value);input.setAttribute('aria-invalid',String(!valid));if(!valid){status.textContent='Enter a color such as #145C4F.';preview.style.backgroundColor='transparent';return false;}
+   const rgb=[1,3,5].map(i=>parseInt(input.value.slice(i,i+2),16)/255).map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4);const lum=rgb[0]*0.2126+rgb[1]*0.7152+rgb[2]*0.0722;const white=1.05/(lum+0.05);const black=(lum+0.05)/0.05;preview.style.backgroundColor=input.value;preview.style.color=white>=black?'#ffffff':'#000000';preview.textContent='Readable foreground preview';status.textContent='Contrast '+Math.max(white,black).toFixed(2)+':1 against '+(white>=black?'white':'black');return true;};
+  input.oninput=()=>{if(render()&&!readOnly){this.value=input.value.toUpperCase();this.notify();}};render();
+ }
+ private dataset(readOnly:boolean):void {
+  const data=(this.context.parameters as unknown as {records:ComponentFramework.PropertyTypes.DataSet}).records;
+  if(data.loading){this.text('p','Loading recordsÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦',this.root).setAttribute('role','status');return;}
+  if(data.error){this.text('p','Records could not be loaded. Try again later.',this.root).setAttribute('role','alert');return;}
+  if(data.sortedRecordIds.length>200)this.text('p','Showing the first 200 loaded records. Use host paging to see more.',this.root).setAttribute('role','status');
+  const selected=new Set(data.getSelectedRecordIds());const choose=(id:string)=>{if(!readOnly){data.setSelectedRecordIds([id]);this.updateView(this.context);}};
+  if(variant==='CalendarDataset'){
+   const nav=this.text('div','',this.root);nav.className='calendar-nav';this.button('Previous month',nav,()=>{this.month=new Date(Date.UTC(this.month.getUTCFullYear(),this.month.getUTCMonth()-1,1));this.updateView(this.context);});this.text('h2',this.month.toLocaleDateString('en',{month:'long',year:'numeric',timeZone:'UTC'}),nav);this.button('Next month',nav,()=>{this.month=new Date(Date.UTC(this.month.getUTCFullYear(),this.month.getUTCMonth()+1,1));this.updateView(this.context);});
+   const list=this.text('ul','',this.root);list.className='calendar';let count=0;
+   for(const id of data.sortedRecordIds.slice(0,200)){const r=data.records[id];const date=new Date(String(r.getValue('date')));if(!Number.isFinite(date.getTime())||date.getUTCMonth()!==this.month.getUTCMonth()||date.getUTCFullYear()!==this.month.getUTCFullYear())continue;count++;const item=this.text('li','',list);this.text('time',date.toISOString().slice(0,10),item);const b=this.button(r.getFormattedValue('title'),item,()=>choose(id),readOnly);b.setAttribute('aria-pressed',String(selected.has(id)));}
+   if(!count)this.text('p','No records in this month.',this.root).setAttribute('role','status');
+  }else{
+   if(!data.sortedRecordIds.length){this.text('p','No records to display.',this.root).setAttribute('role','status');return;}
+   const scroller=this.text('div','',this.root);scroller.className='table-scroll';scroller.tabIndex=0;scroller.setAttribute('role','region');scroller.setAttribute('aria-label','Scrollable records');
+   const table=this.text('table','',scroller);this.text('caption','Records',table);const head=this.text('tr','',this.text('thead','',table));this.text('th','Select',head).setAttribute('scope','col');
+   for(const col of data.columns){const th=this.text('th','',head);th.setAttribute('scope','col');th.style.minWidth=(this.widths[col.name]??160)+'px';const order=data.sorting.find(s=>s.name===col.name)?.sortDirection;th.setAttribute('aria-sort',order===0?'ascending':order===1?'descending':'none');this.button(col.displayName,th,()=>{data.sorting.splice(0,data.sorting.length,{name:col.name,sortDirection:order===0?1:0});data.refresh();},readOnly);
+    const label=document.createElement('label');label.textContent='Width: '+col.displayName;label.className='resize-label';const slider=document.createElement('input');slider.type='range';slider.dataset.pcfFocus='width-'+col.name;slider.min='100';slider.max='400';slider.value=String(this.widths[col.name]??160);slider.oninput=()=>{this.widths[col.name]=Number(slider.value);th.style.minWidth=slider.value+'px';};label.appendChild(slider);th.appendChild(label);}
+   const body=this.text('tbody','',table);for(const id of data.sortedRecordIds.slice(0,200)){const record=data.records[id];const row=this.text('tr','',body);const cell=this.text('td','',row);const b=this.button('Select '+record.getFormattedValue(data.columns[0].name),cell,()=>choose(id),readOnly);b.setAttribute('aria-pressed',String(selected.has(id)));for(const col of data.columns)this.text('td',record.getFormattedValue(col.name),row);}
+   const nav=this.text('div','',this.root);nav.className='paging';this.button('Previous page',nav,()=>data.paging.loadPreviousPage(),readOnly||!data.paging.hasPreviousPage);this.button('Next page',nav,()=>data.paging.loadNextPage(),readOnly||!data.paging.hasNextPage);
+  }
+ }
+ public getOutputs():IOutputs{return (variant==='ColorContrastField'?{value:this.value}:{}) as IOutputs;}
+ public destroy():void {this.root.remove();}
+}

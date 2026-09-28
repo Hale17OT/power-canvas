@@ -8,8 +8,9 @@ export type ValueShape = { type: ValueType; fields?: Record<string, ValueShape> 
 export const shapeSchema: z.ZodType<ValueShape> = z.lazy(()=>z.strictObject({type:z.enum(valueTypes),fields:z.record(identifier,shapeSchema).optional(),items:shapeSchema.optional()}).superRefine((s,c)=>{
   if((s.type==='array')!==!!s.items || (s.type==='object')!==!!s.fields) c.addIssue({code:'custom',message:'Array requires items; object requires fields; other types cannot declare them.'});
 }));
-export type Expr = { op:'literal'|'input'|'output'|'trigger'|'variable'|'environment'|'item'|'concat'|'coalesce'|'equals'|'not'|'and'|'or'|'empty'|'length'|'first'|'last'|'newGuid'|'utcNow'|'runId'; value?: JsonValue; shape?:ValueShape; name?:string; path?:string[]; args?:Expr[]; intentionalConstant?:string | undefined }
+export type Expr = { op:'sharepointResource'|'literal'|'input'|'output'|'trigger'|'variable'|'environment'|'item'|'concat'|'coalesce'|'equals'|'not'|'and'|'or'|'empty'|'length'|'first'|'last'|'newGuid'|'utcNow'|'runId'; value?: JsonValue; shape?:ValueShape; name?:string; path?:string[]; args?:Expr[]; intentionalConstant?:string | undefined }
 export const expressionSchema: z.ZodType<Expr> = z.lazy(()=>z.discriminatedUnion('op',[
+  z.strictObject({op:z.literal('sharepointResource'),name:z.string().regex(/^sharepoint\.(list|library):[A-Za-z][A-Za-z0-9_]*$/),path:z.tuple([z.enum(['siteUrl','listId','driveId'])])}),
   z.strictObject({op:z.literal('literal'),value:z.json(),shape:shapeSchema,intentionalConstant:z.string().min(10).optional()}),
   ...(['newGuid','utcNow','runId'] as const).map(op=>z.strictObject({op:z.literal(op)})),
   ...(['input','output','variable','environment'] as const).map(op=>z.strictObject({op:z.literal(op),name:identifier,path:z.array(identifier).default([])})),

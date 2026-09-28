@@ -1,0 +1,5 @@
+import {patternCatalog} from '../patterns.js';
+import type {PCFComponentIR} from '../../pcf/schema.js';
+const native:Record<string,string>={status:'StatusBadge',button:'Button',textInput:'TextInput',form:'TaskForm',card:'KpiCard',styling:'native theme tokens',layout:'responsive containers'};
+const gaps:Record<string,string>={resizableDataset:'Accepted DataTable does not expose host dataset column resizing and paging APIs.',calendarNavigation:'No date-mapped interactive calendar factory exists in the native registry.',colorContrast:'No interactive color contrast measurement/preview field exists in the native registry.'};
+export function evaluatePCFNeed(c:PCFComponentIR){const sufficient=native[c.requirement];return {requirement:c.requirement,nativeFamiliesEvaluated:patternCatalog().map(p=>p.name),nativeCapability:sufficient?'SUFFICIENT':'INSUFFICIENT',selected:sufficient?'native':'pcf',candidate:sufficient??c.constructor,reason:sufficient?'Accepted native component meets this requirement: '+sufficient:gaps[c.requirement]!,runtimeVerified:false};}

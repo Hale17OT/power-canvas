@@ -1,0 +1,10 @@
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {createHash} from 'node:crypto';
+import {hashJson} from '../core/json.js';
+export const pcfEvidenceSources=['src/pcf/schema.ts','src/pcf/compile.ts','src/pcf/build.ts','src/pcf/inspection.ts','src/pcf/representatives.ts','src/pcf/solution.ts','src/pcf/capabilities.ts','src/canvas/taste/pcf.ts','src/canvas/composition-ir.ts','src/canvas/registry.ts','src/canvas/tokens.ts','src/solution/compile.ts','src/solution/schema.ts','src/solution/alm.ts','pcf/provider-v1/templates/control.ts.txt','pcf/provider-v1/templates/style.css','pcf/Timeline/package.json','pcf/Timeline/package-lock.json','scripts/pcf-certify.mjs','scripts/pcf-harness.mjs','tests/pcf.test.ts'];
+export function pcfSourceHashes(root=process.cwd()){return Object.fromEntries(pcfEvidenceSources.map(p=>[p,createHash('sha256').update(readFileSync(resolve(root,p))).digest('hex')]));}
+export function pcfEvidence(root=process.cwd()){
+ try{const proof=JSON.parse(readFileSync(resolve(root,'tests/pcf/certification.json'),'utf8')) as {sourceHashes:Record<string,string>;integrityHash:string;dimensions:Record<string,boolean>};const {integrityHash,...body}=proof;if(hashJson(body)!==integrityHash||hashJson(proof.sourceHashes)!==hashJson(pcfSourceHashes(root)))return {status:'STALE',dimensions:{} as Record<string,boolean>};return {status:'VERIFIED',dimensions:proof.dimensions};}catch{return {status:'UNRECORDED',dimensions:{} as Record<string,boolean>};}
+}
+export function pcfCapabilities(){const proof=pcfEvidence();return {evidence:proof.status,tenantWriteCli:false,capabilities:['component.schema','component.compile','component.manifest','component.build','component.package','field','dataset','modelDriven.fieldBinding','modelDriven.datasetBinding','canvas.binding','localHarness','liveImport','powerAppsRuntime','react'].map(name=>({name:'pcf.'+name,status:proof.dimensions[name]?'VERIFIED':'UNPROVEN',live:false})),limits:['Dataset host paging/delegation/performance and all live bindings remain unproven.','React/platform libraries are rejected in this bounded implementation.']};}

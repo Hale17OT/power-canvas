@@ -29,7 +29,11 @@
     "agent:eval": "npm run build && node scripts/package-agent-plugin.mjs --check && node scripts/agent-eval.mjs",
     "agent:package": "node scripts/package-agent-plugin.mjs",
     "solution:benchmarks": "npm run build && node scripts/solution-benchmarks.mjs",
-    "solution:v2": "npm run build && node scripts/solution-v2-benchmarks.mjs"
+    "solution:v2": "npm run build && node scripts/solution-v2-benchmarks.mjs",
+    "solution:sharepoint": "npm run build && node scripts/sharepoint-benchmarks.mjs",
+    "sharepoint:simulate": "npm run build && node scripts/sharepoint-simulate.mjs",
+    "pcf:certify": "npm run build && node scripts/pcf-certify.mjs",
+    "pcf:binding:certify": "npm run build && node scripts/pcf-binding-certify.mjs"
   },
   "dependencies": {
     "@azure/msal-node": "6.0.1",

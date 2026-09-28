@@ -59,3 +59,9 @@ Public examples use synthetic tenant/app identities. See [public repository hygi
 ## License
 
 This repository currently has no `LICENSE` file. Add an explicit license before publishing or distributing it.
+
+SharePoint Provider V1 adds existing-site bindings, typed external infrastructure, and shared Canvas/Flow resource references to the Unified Solution Compiler. See [the support matrix and boundaries](docs/sharepoint-provider-v1.md). `npm run solution:sharepoint` produces three offline benchmark plans; it makes no remote calls.
+
+[SharePoint V1.1S contract simulation](docs/sharepoint-simulation-v11s.md) exercises real provider HTTP requests through Microsoft Dev Proxy and isolated stateful fixtures. Run `npm run sharepoint:simulate`; live tenant certification remains separate.
+
+PCF provider V1 now has typed solution resources, native-first selection and a local build/package/runtime benchmark. Its current acceptance is partial: model-driven binding lowering remains unverified. See [the PCF provider report](docs/pcf-provider-v1.md) and [the three representative contracts](examples/pcf/provider-v1.yaml). No tenant import is included.

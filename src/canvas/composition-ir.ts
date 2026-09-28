@@ -5,6 +5,8 @@ import { patternCatalog } from './patterns.js';
 import { componentEvidence } from './taste/catalog.js';
 import { PowerCanvasError } from '../core/errors.js';
 import { productionVariant, type CertifiedSelection } from './certified-selection.js';
+import type {PCFSource} from '../pcf/schema.js';
+import {evaluatePCFNeed} from './taste/pcf.js';
 
 export const semanticSlots=['page.header','page.navigation','page.primaryContent','page.secondaryContent','record.identity','record.metadata','record.actions','record.activity','data.search','data.filters','data.commands','data.view','data.selectionActions','form.header','form.fields','form.review','form.actions','page.feedback','document.preview'] as const;
 export const componentReferenceSchema=z.strictObject({preferred:z.string().min(1),fallback:z.string().min(1).optional(),variant:z.string().default('standard')});
@@ -37,7 +39,7 @@ export function createCompositionIR(plan:DesignPlan,stability:'experimental'|'pr
   const body={version:'4.1' as const,screen:'Screen1',planHash:plan.hash,archetype:plan.archetype,family:plan.composition,stability,shell:plan.archetype==='focused-task'?'focused' as const:'contextual' as const,regions,responsive:(['desktop','tablet','mobile'] as const).map(device=>({device,navigation:{preferred:planDesign(plan.productContext,{device,design:{...plan.design,direction:plan.direction}}).decisions.find(d=>d.decision==='navigation')!.selected,variant:'standard'}})),bindings:['records','selection','commands','fields','validation','commit','feedback']};
   return compositionIRSchema.parse({...body,hash:hashJson(body)});
 }
-export function validateCompositionIR(raw:unknown,plan:DesignPlan,certifications?:CertifiedSelection) {
+export function validateCompositionIR(raw:unknown,plan:DesignPlan,certifications?:CertifiedSelection,pcf?:PCFSource) {
   const ir=compositionIRSchema.parse(raw);const {hash,...body}=ir;
   if(hashJson(body)!==hash||ir.planHash!==plan.hash)throw new Error('Composition or design hash changed');
   if(new Set(ir.regions.map(r=>r.id)).size!==ir.regions.length||new Set(ir.regions.map(r=>r.slot)).size!==ir.regions.length)throw new Error('Duplicate composition identity or slot');
@@ -47,8 +49,16 @@ export function validateCompositionIR(raw:unknown,plan:DesignPlan,certifications
   const layouts:Record<string,string>={'page.header':'stack','data.commands':'row','data.view':'flow','form.fields':'stack','form.review':'overlay','page.feedback':'stack'};
   for(const r of ir.regions)if(layouts[r.slot]!==r.layout)throw new Error('Unsupported region/slot layout: '+r.slot);
   for(const slot of Object.keys(slotComponents))if(!ir.regions.some(r=>r.slot===slot))throw new Error('Missing required semantic slot: '+slot);
-  const resolved=ir.regions.map(r=>({slot:r.slot,...resolveCompositionComponent(r.component,ir.stability,undefined,certifications)}));
-  for(const r of resolved)if(slotComponents[r.slot]&&!slotComponents[r.slot]!.includes(r.selected))throw new Error('Component incompatible with semantic slot: '+r.slot+' / '+r.selected);
+  const resolved=ir.regions.map(r=>{
+    if(r.component.preferred.startsWith('pcf.component:')){
+      const c=pcf?.components[r.component.preferred.slice('pcf.component:'.length)];
+      if(!c||!c.targets.canvas||ir.stability==='production'||evaluatePCFNeed(c).selected!=='pcf'||r.component.variant!=='standard')throw Error('PCF composition requires a justified declared Canvas component and experimental profile.');
+      if(r.slot!==(c.kind==='dataset'?'data.view':'form.fields'))throw Error('PCF kind/semantic slot mismatch');
+      return {slot:r.slot,requested:r.component.preferred,selected:r.component.preferred,variant:'standard',maturity:'OFFLINE_BINDING_VERIFIED',fallbackUsed:false,rejected:[]};
+    }
+    return {slot:r.slot,...resolveCompositionComponent(r.component,ir.stability,undefined,certifications)};
+  });
+  for(const r of resolved)if(!r.selected.startsWith('pcf.component:')&&slotComponents[r.slot]&&!slotComponents[r.slot]!.includes(r.selected))throw new Error('Component incompatible with semantic slot: '+r.slot+' / '+r.selected);
   const navigation=ir.shell==='focused'?[]:ir.responsive.map(r=>({device:r.device,...resolveCompositionComponent(r.navigation,ir.stability,undefined,certifications)}));
   for(const n of navigation)if(!['TopNavigation','BottomNavigation','NavigationDrawer','CompactSidebar','Tabs'].includes(n.selected))throw new Error('Component incompatible with navigation slot');
   return {ir,resolved,navigation};

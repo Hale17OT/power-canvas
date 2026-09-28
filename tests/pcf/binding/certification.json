@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "grammar": "MICROSOFT_MAKER_ORACLE_V10C",
+  "sourceHashes": {
+    "src/pcf/host-lowering.ts": "597364476a513c617a8574341c045800974d0441fc16c7f9892908bd4a30141a",
+    "src/pcf/solution.ts": "958658e1efafbdaab950a0f613d24396a3af03b47e16841ac70121b4f8a7b90b",
+    "src/pcf/schema.ts": "7eb031de2194f5cb4b2f8149b3c3d4ba5cd521995370f7ac63e28182c0ed0dc6",
+    "src/pcf/representatives.ts": "d4788f559467b658158c931cdd5cad9f6b68efc16de14c15537116edb2afbe57",
+    "src/pcf/binding-parser.ts": "0ce6884b9bfe6a261fd9d30377d9ede7bb2ce1520f165129316e68ad9616d57e",
+    "src/pcf/binding-oracle.ts": "97217cce313f40255f053c88c822b7bec8dc6778c8c59260dec773e9122ca378",
+    "src/pcf/field-binding.ts": "c8568431362ca66b49243fd6a8a0c2a906cdacc11db3987e7381135789999f47",
+    "src/pcf/dataset-binding.ts": "256af84f7fa6b50c11936c8f67185ec63e51371a4fa508b3555bb22ee8bf0c5e",
+    "src/pcf/binding-capabilities.ts": "e9513eed211a0294085d7c98c7d3628ae729098fdb37baa70e58196f8ba38458",
+    "scripts/pcf-binding-certify.mjs": "a9c3bbe89a7cff5bda32447328bc04248ab9bf9cd80f6c93780a53f8f49ac23c",
+    "tests/pcf-field-binding.test.ts": "2d787f25e55a19e14d4f229ba977c06b2b49d684f05276409773a06ef764695d",
+    "tests/pcf-dataset-binding.test.ts": "9002d5f9a067a471cb8bc0eb8885d55f00c8a89a2274105b6f3f79b2615816b7",
+    "tests/pcf-binding-oracle.test.ts": "ecf52e3640fb065555245bb760f8958f869627a61130130bad3b7cf8416169a8",
+    "tests/pcf/binding/field-final-v10c.xml": "3f029a20ded8f7de44d98c537b75dcc35364c103c918613e6abab87e0c9d6d3e",
+    "tests/pcf/binding/state-A-v10c.xml": "3f029a20ded8f7de44d98c537b75dcc35364c103c918613e6abab87e0c9d6d3e",
+    "tests/pcf/binding/state-B-v10c.xml": "a0c567d7c6ed1ce740c8111e2ffd6561dc5f91859df1dd2d23b936cdaea3d68a",
+    "tests/pcf/binding/state-C-v10c.xml": "69b2f954458524662ae0a519c3f9d9e3250b757bb313947c3cdab33f81846fba",
+    "tests/pcf/binding/dataset-v10c.xml": "7d70a529ac7631110966bc26ef11381536609f834ca88be7dbde86a3ae84d3c5",
+    "tests/pcf/binding/v10c-provenance.json": "af7ffd5c0278b07bf4a0ebb23811872f581e5a26cbaf1e574b5dd102465af799"
+  },
+  "toolchain": {
+    "node": "v22.18.0",
+    "pac": "2.12.2"
+  },
+  "results": [
+    {
+      "kind": "field",
+      "roundtrip": true,
+      "noOp": true,
+      "update": true,
+      "packageRoundtrip": true,
+      "fixtureHash": "3f029a20ded8f7de44d98c537b75dcc35364c103c918613e6abab87e0c9d6d3e",
+      "packages": [
+        {
+          "archive": "first.zip",
+          "sha256": "02f7e4b00da871899d140f0d7ec7871f497666ab75d4b4b4892aa32ef1dcec60"
+        },
+        {
+          "archive": "second.zip",
+          "sha256": "860e861c4a87444528fcfd0535cda952f72e5f9da47a95555baeb5df700ad20b"
+        }
+      ],
+      "hostRuntime": false
+    },
+    {
+      "kind": "dataset",
+      "roundtrip": true,
+      "noOp": true,
+      "update": true,
+      "packageRoundtrip": true,
+      "fixtureHash": "7d70a529ac7631110966bc26ef11381536609f834ca88be7dbde86a3ae84d3c5",
+      "packages": [
+        {
+          "archive": "first.zip",
+          "sha256": "5c677f6aa0dd894102bf1dce9669df59ac279530d3fa5b2aa868e3e719cc4858"
+        },
+        {
+          "archive": "second.zip",
+          "sha256": "68b509c3216dbce6368eff588fa828d73e273bc79258343edc9f905396786c11"
+        }
+      ],
+      "hostRuntime": false
+    }
+  ],
+  "dimensions": {
+    "modelDriven.fieldBinding.compile": true,
+    "modelDriven.datasetBinding.compile": true,
+    "liveBindingApply": false,
+    "publishedHostRuntime": false
+  },
+  "provenance": "Sanitized live Microsoft Maker oracles; static input and host surface bounded",
+  "tenantMutations": 0,
+  "integrityHash": "e5ad176a8933988413679c6333c212ebac8b38e93cc28066f76c3b27d6e51cd8"
+}

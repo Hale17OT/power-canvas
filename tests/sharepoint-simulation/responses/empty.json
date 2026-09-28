@@ -1,0 +1,25 @@
+{
+  "profile": "empty",
+  "lists": [],
+  "columns": [],
+  "contentTypes": [
+    {
+      "id": "0x01",
+      "name": "Item",
+      "parentId": "0x",
+      "group": "List Content Types",
+      "isBuiltIn": true,
+      "isPublished": false,
+      "columns": []
+    },
+    {
+      "id": "0x0101",
+      "name": "Document",
+      "parentId": "0x01",
+      "group": "Document Content Types",
+      "isBuiltIn": true,
+      "isPublished": false,
+      "columns": []
+    }
+  ]
+}

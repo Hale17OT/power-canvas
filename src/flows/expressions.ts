@@ -24,6 +24,7 @@ export function assertNonsecret(v:unknown,endpoints=false):void {
   if(v&&typeof v==='object')for(const [key,value] of Object.entries(v)){if(/^(?:password|client_?secret|access_?token|refresh_?token|api_?key|authorization)$/i.test(key))fail('Credential fields are forbidden in flow configuration.');assertNonsecret(value,endpoints);}
 }
 export function expression(e:Expr,c:ExpressionContext):{code:string;shape:ValueShape} {
+  if(e.op==='sharepointResource')fail('SharePoint resource identity requires fresh Unified Solution binding resolution.');
   if(e.op==='newGuid')return {code:'guid()',shape:{type:'guid'}};
   if(e.op==='utcNow')return {code:'utcNow()',shape:{type:'datetime'}};
   if(e.op==='runId')return {code:"workflow()['run']['name']",shape:{type:'string'}};

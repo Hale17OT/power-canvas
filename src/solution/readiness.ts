@@ -30,7 +30,9 @@ export function solutionReadiness(project: Project, resources: ResourceIR[], evi
     validation.every(v => v.passed) && (native!.plan.deferred?.length??0) === acceptedDeferrals.length && roots.every(r => r.state === 'NO_OP' && r.ownership === 'POWERCANVAS_OWNED' || acceptedDeferrals.includes(r));
   const published = apps.every(app => native?.observation.resources.find(r => r.resourceId === app.nativeId)?.properties.lifecycle === 'PUBLISHED');
   const deployment = converged && !deferred.length && published && evidence.deploymentChecks?.configurationResolved === true && evidence.deploymentChecks.checksComplete;
+  const sp=resources.filter(r=>r.subsystem==='sharepoint');
   return {
+    sharepoint:{status:sp.length?'OFFLINE_PROVIDER_IMPLEMENTED':'NOT_REQUESTED',resources:sp.length,converged:sp.length>0&&!!evidence.sharepoint?.observation?.complete&&sp.every(r=>r.state==='NO_OP'||r.state==='EXTERNAL'&&r.capability.status==='SUPPORTED_WITH_LIMITS'),deployment:'EXTERNAL_DEPLOYMENT_RESOURCES',liveProof:false},
     provider: { status: converged ? deferred.length ? 'PROVIDER_CONVERGED_WITH_DEFERRED_PUBLICATION' : 'PROVIDER_CONVERGED' : 'PROVIDER_NOT_CONVERGED', converged,
       scope: 'Dataverse / model-driven / security roots only', fresh, roots: roots.length, noOp: roots.filter(r => r.state === 'NO_OP').length,
       acceptedDeferrals: acceptedDeferrals.map(r => r.id), rejectedDeferrals: deferred.filter(r => !acceptedDeferrals.includes(r)).map(r => r.id),

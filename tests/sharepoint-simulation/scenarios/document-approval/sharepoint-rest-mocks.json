@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v3.3.1/mockresponseplugin.mocksfile.schema.json",
+  "mocks": [
+    {
+      "request": {
+        "url": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab/_api/web?$select=Id,Url",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "odata.metadata": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab/_api/$metadata#SP.Web",
+          "Id": "22222222-2222-4222-8222-000000000002",
+          "Url": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab"
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab/_api/site?$select=Id",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "Id": "22222222-2222-4222-8222-000000000001"
+        }
+      }
+    }
+  ]
+}

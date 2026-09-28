@@ -1,3 +1,5 @@
+import {canvasSharePointSources} from '../sharepoint/bindings.js';
+import {sharepointSchema,spColumnSchema,type SPColumn} from '../sharepoint/schema.js';
 import {projectSchema, type Project, type Column} from '../ir/schema.js';
 import {validateSemantics} from '../ir/validate.js';
 import {solutionSpecSchema, type SolutionSpec, type SharedType, type Issue} from './schema.js';
@@ -8,6 +10,7 @@ export function experienceDelivery(e:{delivery?:string|undefined;workload?:strin
 export function conceptualType(column:Column):SharedType{return ({text:'string',multilineText:'multiline',dateTime:column.type==='dateTime'&&column.behavior==='dateOnly'?'date':'datetime'} as Record<string,SharedType>)[column.type]??column.type as SharedType;}
 export function resolveSolution(raw:unknown){
  const spec=solutionSpecSchema.parse(raw);const issues:Issue[]=[];
+ const sharepoint=spec.sharepoint?sharepointSchema.parse(spec.sharepoint):undefined;
  const requirements=structuredClone(spec.requirements);const products:Record<string,import('../canvas/taste/memory.js').ProductContext>={};
  const bind=(resource:string,requiredBy:string[])=>{for(const id of requiredBy){const r=requirements.find(v=>v.id===id);if(!r)throw new Error('Unknown requirement: '+id);if(!r.resources.includes(resource))r.resources.push(resource);}};
  let project:Project;
@@ -15,6 +18,20 @@ export function resolveSolution(raw:unknown){
  else{
   const prefix=spec.identity.solution.publisher.prefix;const tables:Project['dataverse']['tables']={};const relationships:Project['dataverse']['relationships']={};const keys:NonNullable<Project['dataverse']['keys']>={};
   for(const [key,e]of Object.entries(spec.entities)){
+   if(e.storage==='sharepoint'&&sharepoint&&e.site){
+    if(!sharepoint.sites[e.site])throw Error('SharePoint intent requires a declared site alias');
+    if(sharepoint.lists[key])throw Error('Duplicate explicit/intent SharePoint list '+key);
+    sharepoint.lists[key]={site:e.site,displayName:e.plural,template:'genericList',title:{mode:'used'}};bind('sharepoint.list:'+key,e.requiredBy);
+    for(const [name,f]of Object.entries(e.fields)){
+     if(name.toLowerCase()==='title'){if(f.type!=='string')throw Error('Platform Title requires string');continue;}
+     const type=({string:'text',integer:'number',decimal:'number',email:'text'} as Record<string,string>)[f.type]??f.type;
+     const value={parent:'sharepoint.list:'+key,internalName:name,displayName:f.label,required:f.required,type,...(f.choices?{choices:f.choices}:{}),...(type==='lookup'?{source:{list:'sharepoint.list:'+f.target,column:'Title'}}:{})};
+     const parsed=spColumnSchema.safeParse(value);
+     if(!parsed.success){issues.push({code:'SHAREPOINT_INTENT_FIELD',severity:'error',resource:'sharepoint.list:'+key,message:'Explicit column configuration required for '+name});continue;}
+     sharepoint.columns[key+'_'+name]=parsed.data as SPColumn;
+    }
+    continue;
+   }
    bind('table:'+key,e.requiredBy);
    if(e.storage==='sharepoint'){issues.push({code:'EXTERNAL_PROVISIONING',severity:'error',resource:'table:'+key,message:'SharePoint list provisioning is external; supply explicit identity and metadata.'});continue;}
    const columns:Record<string,Column>={};
@@ -47,6 +64,7 @@ export function resolveSolution(raw:unknown){
    }
    bind('canvas:'+key,e.requiredBy);products[key]=e.product;
    apps[key]={type:'canvas',uniqueName:prefix+'_'+key,displayName:e.product.name,componentPolicy:'experimental',theme:{mode:'light',density:'comfortable',brand:{primary:'#145C4F'},font:'Segoe UI',radius:'soft'},shell:{pattern:'sidebar',navigation:[{screen:'workspace',label:e.product.name}]},screens:{workspace:{pattern:'masterDetail',title:e.product.name,source:e.source,columns:e.fields.slice(0,6),pageSize:25,detail:{fields:e.fields,revealFields:[]}}}};
+   if(sharepoint&&spec.entities[e.source]?.storage==='sharepoint'&&spec.entities[e.source]?.site){sharepoint.bindings.canvas.push({app:key,alias:e.source,resource:'sharepoint.list:'+e.source});}
    if(e.host){apps[key]!.screens={};apps[key]!.nativeDesign={product:e.product,host:e.host,stability:spec.profile};}
    if(e.jobBoundary)apps[key]!.application={requiresNewApplication:true,requirement:{kind:'explicit-application',statement:e.jobBoundary}};
   }
@@ -62,7 +80,7 @@ export function resolveSolution(raw:unknown){
   project=projectSchema.parse({...spec.identity,dataverse:{tables,relationships,...(spec.choices?{choices:spec.choices}:{}),...(Object.keys(keys).length?{keys}:{})},apps:modelApps,canvasApps:apps,resources:spec.automation,...(spec.securityModel?{security:spec.securityModel}:{})});
  }
  const seen=new Set<string>();for(const r of requirements){if(seen.has(r.id))throw new Error('Duplicate requirement ID: '+r.id);seen.add(r.id);}
- for(const d of validateSemantics(project))issues.push({code:d.code,severity:'error',message:d.message});
- return {spec,project,requirements,products,issues};
+ for(const d of validateSemantics(project,sharepoint?canvasSharePointSources(sharepoint):{},!sharepoint).filter(d=>!(sharepoint&&Object.keys(sharepoint.sites).length&&d.path==='dataverse.tables'&&d.message==='Declare at least one table or flow.')))issues.push({code:d.code,severity:'error',message:d.message});
+ return {spec,project,requirements,products,issues,sharepoint};
 }
-export function storageDecision(spec:SolutionSpec){return spec.mode==='intent'?Object.entries(spec.entities).map(([entity,v])=>({entity,selected:v.storage,reason:v.rationale,provisioning:v.storage==='dataverse'?'existing Dataverse adapter':'EXTERNAL',criteria:['relationships','record ownership/security','auditing','scale/delegation','business rules','document orientation','licensing','integration'],ownership:v.ownership,auditing:v.auditing})):[];}
+export function storageDecision(spec:SolutionSpec){return spec.mode==='intent'?Object.entries(spec.entities).map(([entity,v])=>({entity,selected:v.storage,reason:v.rationale,provisioning:v.storage==='dataverse'?'existing Dataverse adapter':v.site&&spec.sharepoint?.sites[v.site]?'SharePoint provider; external deployment resource':'EXTERNAL',criteria:['relationships','record ownership/security','auditing','scale/delegation','business rules','document orientation','licensing','integration'],ownership:v.ownership,auditing:v.auditing})):[];}

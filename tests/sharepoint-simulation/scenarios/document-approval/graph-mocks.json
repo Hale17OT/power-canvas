@@ -1,0 +1,659 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v3.3.1/mockresponseplugin.mocksfile.schema.json",
+  "mocks": [
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com:/sites/PowerCanvasProviderLab",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "id": "powercanvas-simulation.sharepoint.com,22222222-2222-4222-8222-000000000001,22222222-2222-4222-8222-000000000002",
+          "name": "PowerCanvasProviderLab",
+          "displayName": "PowerCanvas Provider Lab",
+          "webUrl": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab",
+          "siteCollection": {
+            "hostname": "powercanvas-simulation.sharepoint.com"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists?$select=id,name,displayName,description,webUrl,list,eTag,sharepointIds,system",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites/lists",
+          "value": [
+            {
+              "id": "22222222-2222-4222-8222-000000000050",
+              "name": "Suppliers",
+              "displayName": "Suppliers",
+              "description": "",
+              "webUrl": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab/Lists/Suppliers",
+              "eTag": "\"22222222-2222-4222-8222-000000000050,1\"",
+              "list": {
+                "template": "genericList",
+                "hidden": false,
+                "contentTypesEnabled": false
+              },
+              "sharepointIds": {
+                "listId": "22222222-2222-4222-8222-000000000050",
+                "siteId": "22222222-2222-4222-8222-000000000001",
+                "webId": "22222222-2222-4222-8222-000000000002"
+              }
+            }
+          ],
+          "@odata.nextLink": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists?$skiptoken=page2"
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists?$skiptoken=page2",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites/lists",
+          "value": [
+            {
+              "id": "22222222-2222-4222-8222-000000000051",
+              "name": "Contracts",
+              "displayName": "Contracts",
+              "description": "Contract infrastructure only; no files uploaded.",
+              "webUrl": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab/Shared%20Documents/Contracts",
+              "eTag": "\"22222222-2222-4222-8222-000000000051,1\"",
+              "list": {
+                "template": "documentLibrary",
+                "hidden": false,
+                "contentTypesEnabled": true
+              },
+              "sharepointIds": {
+                "listId": "22222222-2222-4222-8222-000000000051",
+                "siteId": "22222222-2222-4222-8222-000000000001",
+                "webId": "22222222-2222-4222-8222-000000000002"
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000052",
+              "name": "ReviewDocuments",
+              "displayName": "Review Documents",
+              "description": "",
+              "webUrl": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab/Shared%20Documents/Review%20Documents",
+              "eTag": "\"22222222-2222-4222-8222-000000000052,1\"",
+              "list": {
+                "template": "documentLibrary",
+                "hidden": false,
+                "contentTypesEnabled": true
+              },
+              "sharepointIds": {
+                "listId": "22222222-2222-4222-8222-000000000052",
+                "siteId": "22222222-2222-4222-8222-000000000001",
+                "webId": "22222222-2222-4222-8222-000000000002"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists/22222222-2222-4222-8222-000000000052/drive",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "id": "b!lab52",
+          "driveType": "documentLibrary",
+          "webUrl": "https://powercanvas-simulation.sharepoint.com/sites/PowerCanvasProviderLab/Review%20Documents",
+          "sharepointIds": {
+            "listId": "22222222-2222-4222-8222-000000000052",
+            "siteId": "22222222-2222-4222-8222-000000000001",
+            "webId": "22222222-2222-4222-8222-000000000002"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists/22222222-2222-4222-8222-000000000052/columns?$select=id,name,displayName,description,required,hidden,indexed,enforceUniqueValues,readOnly,text,number,currency,boolean,dateTime,choice,lookup,personOrGroup,hyperlinkOrPicture",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#list/columns",
+          "value": [
+            {
+              "id": "22222222-2222-4222-8222-000000000090",
+              "name": "Title",
+              "displayName": "Title",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "text": {
+                "allowMultipleLines": false,
+                "maxLength": 255
+              }
+            }
+          ],
+          "@odata.nextLink": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists/22222222-2222-4222-8222-000000000052/columns?$skiptoken=page2"
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists/22222222-2222-4222-8222-000000000052/columns?$skiptoken=page2",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#list/columns",
+          "value": [
+            {
+              "id": "22222222-2222-4222-8222-000000000091",
+              "name": "ID",
+              "displayName": "ID",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "number": {
+                "decimalPlaces": "none"
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000092",
+              "name": "Created",
+              "displayName": "Created",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "dateTime": {
+                "format": "dateOnly",
+                "displayAs": "default"
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000093",
+              "name": "Modified",
+              "displayName": "Modified",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "dateTime": {
+                "format": "dateOnly",
+                "displayAs": "default"
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000094",
+              "name": "Author",
+              "displayName": "Created By",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "personOrGroup": {
+                "allowMultipleSelection": false,
+                "chooseFromType": "peopleOnly",
+                "displayAs": "name"
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000095",
+              "name": "Editor",
+              "displayName": "Modified By",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "personOrGroup": {
+                "allowMultipleSelection": false,
+                "chooseFromType": "peopleOnly",
+                "displayAs": "name"
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000043",
+              "name": "ReviewStatus",
+              "displayName": "Review status",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "choice": {
+                "choices": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ],
+                "displayAs": "dropDownMenu",
+                "allowTextEntry": false
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/columns?$select=id,name,displayName,description,required,hidden,indexed,enforceUniqueValues,text,number,currency,boolean,dateTime,choice,lookup,personOrGroup,hyperlinkOrPicture",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites/columns",
+          "value": [
+            {
+              "id": "22222222-2222-4222-8222-000000000040",
+              "name": "ContractNumber",
+              "displayName": "Contract number",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "text": {
+                "allowMultipleLines": false,
+                "maxLength": 255
+              }
+            }
+          ],
+          "@odata.nextLink": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/columns?$skiptoken=page2"
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/columns?$skiptoken=page2",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites/columns",
+          "value": [
+            {
+              "id": "22222222-2222-4222-8222-000000000041",
+              "name": "Status",
+              "displayName": "Status",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "choice": {
+                "choices": [
+                  "Draft",
+                  "Active",
+                  "Expired"
+                ],
+                "displayAs": "dropDownMenu",
+                "allowTextEntry": false
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000042",
+              "name": "Expiry",
+              "displayName": "Expiry date",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "dateTime": {
+                "format": "dateOnly",
+                "displayAs": "default"
+              }
+            },
+            {
+              "id": "22222222-2222-4222-8222-000000000043",
+              "name": "ReviewStatus",
+              "displayName": "Review status",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "choice": {
+                "choices": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ],
+                "displayAs": "dropDownMenu",
+                "allowTextEntry": false
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/contentTypes/0x0101",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "id": "0x0101",
+          "name": "Document",
+          "parentId": "0x01",
+          "group": "Document Content Types",
+          "isBuiltIn": true,
+          "isPublished": false
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/contentTypes?$expand=base",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites/contentTypes",
+          "value": [
+            {
+              "id": "0x01",
+              "name": "Item",
+              "parentId": "0x",
+              "group": "List Content Types",
+              "isBuiltIn": true,
+              "isPublished": false
+            }
+          ],
+          "@odata.nextLink": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/contentTypes?$skiptoken=page2"
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/contentTypes?$skiptoken=page2",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites/contentTypes",
+          "value": [
+            {
+              "id": "0x0101",
+              "name": "Document",
+              "parentId": "0x01",
+              "group": "Document Content Types",
+              "isBuiltIn": true,
+              "isPublished": false
+            },
+            {
+              "id": "0x010100AB",
+              "name": "Contract",
+              "parentId": "0x0101",
+              "base": {
+                "id": "0x0101"
+              },
+              "group": "PowerCanvas",
+              "isBuiltIn": false
+            },
+            {
+              "id": "0x010100CD",
+              "name": "Review document",
+              "parentId": "0x0101",
+              "base": {
+                "id": "0x0101"
+              },
+              "group": "PowerCanvas"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/drives/b!lab52/root?$select=id",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "id": "root-22222222-2222-4222-8222-000000000052",
+          "folder": {
+            "childCount": 3
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/drives/b!lab52/root:/Approved?$select=id,name,folder,parentReference,eTag",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "id": "folder-22222222-2222-4222-8222-000000000052-Approved",
+          "name": "Approved",
+          "folder": {
+            "childCount": 0
+          },
+          "parentReference": {
+            "id": "root-22222222-2222-4222-8222-000000000052",
+            "driveId": "b!lab52"
+          },
+          "eTag": "\"1\""
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/drives/b!lab52/root:/Incoming?$select=id,name,folder,parentReference,eTag",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "id": "folder-22222222-2222-4222-8222-000000000052-Incoming",
+          "name": "Incoming",
+          "folder": {
+            "childCount": 0
+          },
+          "parentReference": {
+            "id": "root-22222222-2222-4222-8222-000000000052",
+            "driveId": "b!lab52"
+          },
+          "eTag": "\"1\""
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/contentTypes/0x010100CD/columns?$select=id,name,displayName,description,required,hidden,indexed,enforceUniqueValues,text,number,currency,boolean,dateTime,choice,lookup,personOrGroup,hyperlinkOrPicture",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#columns",
+          "value": [
+            {
+              "id": "22222222-2222-4222-8222-000000000043",
+              "name": "ReviewStatus",
+              "displayName": "Review status",
+              "description": "Fictional metadata fixture",
+              "required": false,
+              "hidden": false,
+              "indexed": false,
+              "enforceUniqueValues": false,
+              "readOnly": false,
+              "choice": {
+                "choices": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ],
+                "displayAs": "dropDownMenu",
+                "allowTextEntry": false
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "url": "https://graph.microsoft.com/v1.0/sites/powercanvas-simulation.sharepoint.com%2C22222222-2222-4222-8222-000000000001%2C22222222-2222-4222-8222-000000000002/lists/22222222-2222-4222-8222-000000000052/contentTypes?$expand=base",
+        "method": "GET"
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": [
+          {
+            "name": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#list/contentTypes",
+          "value": [
+            {
+              "id": "0x010100CD00EF",
+              "name": "Review document",
+              "parentId": "0x0101",
+              "base": {
+                "id": "0x0101"
+              },
+              "group": "PowerCanvas",
+              "inheritedFrom": {
+                "id": "0x010100CD",
+                "siteId": "powercanvas-simulation.sharepoint.com,22222222-2222-4222-8222-000000000001,22222222-2222-4222-8222-000000000002"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "apiVersion": "powercanvas.solution/v1",
+  "mode": "explicit",
+  "project": {
+    "apiVersion": "powercanvas.dev/v1alpha1",
+    "project": {
+      "id": "11111111-1111-4111-8111-111111111201",
+      "name": "sp-document-approval"
+    },
+    "solution": {
+      "uniqueName": "pcn_spdocumentapproval",
+      "displayName": "Sp Document Approval",
+      "version": "1.0.0.0",
+      "publisher": {
+        "uniqueName": "PowerCanvasBenchmarks",
+        "prefix": "pcn",
+        "optionValuePrefix": 74512
+      }
+    },
+    "dataverse": {
+      "tables": {}
+    },
+    "apps": {},
+    "resources": {
+      "connectionReferences": {
+        "approvals": {
+          "logicalName": "pcn_Approvals",
+          "displayName": "Approvals",
+          "connector": "shared_approvals",
+          "allowCreate": false
+        },
+        "mail": {
+          "logicalName": "pcn_Mail",
+          "displayName": "Mail",
+          "connector": "shared_office365",
+          "allowCreate": false
+        }
+      },
+      "environmentVariables": {
+        "approver": {
+          "logicalName": "pcn_Approver",
+          "displayName": "Approved reviewer",
+          "type": "text",
+          "format": "email"
+        }
+      },
+      "workflowRecipes": {
+        "approval": {
+          "purpose": "Request explicit reviewer approval and notify on confirmed approval.",
+          "flow": {
+            "logicalName": "pcn_Review",
+            "displayName": "Document Approval review",
+            "flowType": "instant",
+            "trigger": {
+              "type": "powerAppsV2"
+            },
+            "inputs": [
+              {
+                "name": "title",
+                "shape": {
+                  "type": "string"
+                }
+              }
+            ],
+            "outputs": [],
+            "connectionReferences": [
+              "approvals",
+              "mail"
+            ],
+            "environmentVariables": [
+              "approver"
+            ],
+            "runPolicy": {
+              "mode": "controlledWrite"
+            },
+            "activationPolicy": "manual"
+          },
+          "steps": [
+            {
+              "recipe": "approval",
+              "name": "Review",
+              "mode": "startAndWait",
+              "timeoutHours": 24,
+              "request": {
+                "name": "Request",
+                "use": "approvals.startAndWait",
+                "connection": "approvals",
+                "approvalType": "firstToRespond",
+                "assignedTo": [
+                  {
+                    "op": "environment",
+                    "name": "approver"
+                  }
+                ],
+                "title": {
+                  "op": "input",
+                  "name": "title"
+                },
+                "enableNotifications": true,
+                "timeoutHours": 24
+              },
+              "onApproved": [
+                {
+                  "recipe": "notification",
+                  "name": "Notify",
+                  "send": {
+                    "name": "Notify",
+                    "use": "outlook.sendEmail",
+                    "connection": "mail",
+                    "to": [
+                      {
+                        "op": "environment",
+                        "name": "approver"
+                      }
+                    ],
+                    "subject": {
+                      "op": "literal",
+                      "value": "Document Approval approved",
+                      "shape": {
+                        "type": "string"
+                      }
+                    },
+                    "body": {
+                      "op": "literal",
+                      "value": "Review the approved record in the app.",
+                      "shape": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "errorBehavior": "stop",
+                  "idempotencyIntent": "Operator reconciliation before any uncertain external retry."
+                }
+              ],
+              "onRejected": [],
+              "onUnknown": []
+            }
+          ],
+          "idempotency": {
+            "mode": "operatorReviewed",
+            "rationale": "Compile-only benchmark; no approver authorization or runtime activation."
+          },
+          "response": {}
+        }
+      }
+    }
+  },
+  "requirements": [
+    {
+      "id": "REQ-infrastructure",
+      "statement": "Provision explicitly requested SharePoint metadata without business content.",
+      "concerns": [
+        "data",
+        "external"
+      ],
+      "resources": [
+        "sharepoint.site:operations",
+        "sharepoint.library:Contracts",
+        "sharepoint.column:ReviewStatus",
+        "sharepoint.contentType:ReviewDocument",
+        "sharepoint.contentTypeBinding:ReviewLibrary",
+        "sharepoint.folder:Incoming",
+        "sharepoint.folder:Approved"
+      ]
+    },
+    {
+      "id": "REQ-approval",
+      "statement": "Compile document approval and notification without activating or executing.",
+      "concerns": [
+        "automation"
+      ],
+      "resources": [
+        "flow:approval"
+      ]
+    }
+  ],
+  "sharepoint": {
+    "sites": {
+      "operations": {
+        "binding": "OperationsSite"
+      }
+    },
+    "libraries": {
+      "Contracts": {
+        "site": "operations",
+        "displayName": "Review Documents"
+      }
+    },
+    "columns": {
+      "ReviewStatus": {
+        "parent": "sharepoint.site:operations",
+        "internalName": "ReviewStatus",
+        "displayName": "Review status",
+        "type": "choice",
+        "choices": [
+          "Pending",
+          "Approved",
+          "Rejected"
+        ]
+      }
+    },
+    "contentTypes": {
+      "ReviewDocument": {
+        "site": "operations",
+        "name": "Review document",
+        "parent": "Document",
+        "columns": [
+          "ReviewStatus"
+        ]
+      }
+    },
+    "contentTypeBindings": {
+      "ReviewLibrary": {
+        "target": "sharepoint.library:Contracts",
+        "contentType": "ReviewDocument"
+      }
+    },
+    "folders": {
+      "Incoming": {
+        "library": "Contracts",
+        "path": "Incoming"
+      },
+      "Approved": {
+        "library": "Contracts",
+        "path": "Approved"
+      }
+    }
+  },
+  "references": [
+    {
+      "from": "flow:approval",
+      "to": {
+        "resource": "sharepoint.library:Contracts"
+      }
+    }
+  ],
+  "unsupportedNeeds": [
+    {
+      "id": "generatedPdf",
+      "requiredBy": [
+        "REQ-approval"
+      ],
+      "capability": "generatedDocxToPdf",
+      "reason": "Generated DOCX to PDF chain remains blocked until connector-compatible persisted identity is verified."
+    }
+  ]
+}

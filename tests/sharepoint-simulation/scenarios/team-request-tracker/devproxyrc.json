@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v3.3.1/rc.schema.json",
+  "asSystemProxy": false,
+  "ipAddress": "127.0.0.1",
+  "newVersionNotification": "none",
+  "logLevel": "warning",
+  "urlsToWatch": [
+    "*"
+  ],
+  "plugins": [
+    {
+      "name": "GraphMockResponsePlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
+      "configSection": "graphMocks",
+      "urlsToWatch": [
+        "https://graph.microsoft.com/*"
+      ]
+    },
+    {
+      "name": "MockResponsePlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
+      "configSection": "restMocks",
+      "urlsToWatch": [
+        "https://powercanvas-simulation.sharepoint.com/*"
+      ]
+    }
+  ],
+  "graphMocks": {
+    "mocksFile": "graph-mocks.json",
+    "blockUnmockedRequests": true
+  },
+  "restMocks": {
+    "mocksFile": "sharepoint-rest-mocks.json",
+    "blockUnmockedRequests": true
+  },
+  "installCert": false
+}

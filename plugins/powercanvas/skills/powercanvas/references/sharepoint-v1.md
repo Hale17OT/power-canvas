@@ -1,0 +1,15 @@
+# SharePoint solution provider V1
+
+Use `solution plan` / inspect / graph / audit / critique with a `powercanvas.solution/v1` spec. The optional `sharepoint` section is shared by explicit and intent modes. Intent SharePoint entities require a `site` alias to generate infrastructure; absent site configuration remains an external prerequisite. See repository `docs/sharepoint-provider-v1.md`, generated `schemas/powercanvas-sharepoint-*.v1.schema.json`, and `examples/solutions/sharepoint-v1/`.
+
+Bind only explicitly configured existing sites. Never discover arbitrary tenant sites or infer ownership from a display name. Libraries need both list and drive identities. Platform fields and built-in content types are dependencies, not newly owned resources. Prefer Dataverse for complex relationships, record security and transactional business requirements; prefer SharePoint for document collaboration or bounded simple trackers. Ask about licensing, scale, delegation and permissions before treating that advice as an architecture decision.
+
+Graph v1.0 provides metadata operations. REST is bounded to typed views and classic permission observation; there is no automatic fallback. Graph application grants are not classic SharePoint role assignments. Schema support for unique permissions does not permit breaking inheritance or assigning roles.
+
+Inspect `capabilities --json` and the plan's SharePoint capability/ownership/dependency states. V1 has offline-tested adapters, no CLI SharePoint write route, and no live-provider proof. Exact-plan authorization, fresh complete metadata and source-bound receipts are mandatory for the internal adapter. Deletes, adoption, uncertain-write retries and site creation remain blocked. Do not change authentication profiles or request consent merely to plan.
+
+Canvas bindings reference `sharepoint.list:key` or `sharepoint.library:key`; Flow expressions use `sharepointResource` with siteUrl/listId/driveId. Both resolve from the same target-bound contract. Unresolved identities remain blockers. Native Canvas registration and persona/runtime access are unproven. Do not manually substitute tenant IDs to conceal missing infrastructure.
+
+SharePoint assets are EXTERNAL_DEPLOYMENT_RESOURCE entries, never claims about Dataverse ZIP contents. Retain document-generation/PDF blockers when the actual pipeline is unsupported. Report schema, compilation, adapter tests, live deployment/readback and runtime separately; infrastructure planning must not read or mutate business rows/files.
+
+V1.1S adds contract simulation through real provider HTTP code, Microsoft Dev Proxy and a stateful loopback service. See repository `docs/sharepoint-simulation-v11s.md`. `npm run sharepoint:simulate` is test-only, with fake identities isolated under SHAREPOINT_SIMULATION and unmatched requests blocked. Treat SIMULATED_READ/WRITE/NOOP evidence separately from live maturity; live access remains EXTERNAL_ACCOUNT_BLOCKED. Never route an account blocker to consent recovery, provisioning or a new tenant. Capability simulation dimensions are source-hash bound; stale certificates require offline recertification.

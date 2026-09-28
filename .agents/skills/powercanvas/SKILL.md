@@ -21,6 +21,7 @@ Route using this precedence; combine specialists for mixed work:
 | Canvas screens, forms, fields, Power Fx, source/migration | [Canvas](../powercanvas-canvas/SKILL.md) |
 | Approval, notification, document, reminder, child flow | [Flows](../powercanvas-flows/SKILL.md) |
 | Broad business app or multi-resource system/solution | [Architecture](references/architecture.md): core `solution plan`, inspect, graph, audit and critique before supported specialists |
+| SharePoint lists, libraries, metadata, views, content types or folders | [SharePoint solution provider](references/sharepoint-v1.md), through the Unified Solution Compiler |
 | Model-driven administration, Dataverse schema, roles or app access | [Native solution delivery](references/solution-v2.md), through the same architecture compiler; do not route model-driven forms/navigation into Canvas |
 
 `agent route "<request>" --powercanvas-context --json` provides bounded routing hints for a confirmed PowerCanvas project. It does not execute or authorize a workflow. Use context to resolve ambiguous generic words; unrelated requests stay outside PowerCanvas.

@@ -1,3 +1,4 @@
+import {registerPCFCommands} from './pcf-commands.js';
 import { Command } from 'commander';
 import { resolve } from 'node:path';
 import { initProject } from '../config/init.js';
@@ -32,6 +33,7 @@ const globalOptions = (): { json: boolean; project: string; nonInteractive: bool
   return { json: opts.json ?? false, project: resolve(opts.project), nonInteractive: opts.nonInteractive ?? false };
 };
 const logger = new Logger(line => process.stderr.write(line));
+registerPCFCommands(program,globalOptions);
 registerTasteCommands(program, globalOptions);
 registerFlowCommands(program, globalOptions);
 registerSolutionCommands(program, globalOptions);

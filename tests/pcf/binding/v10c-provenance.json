@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "provenance": "LIVE_OBSERVED_PUBLIC_SURFACE",
+  "author": "Microsoft Power Apps Maker designer",
+  "date": "2026-09-26",
+  "publicContract": "https://learn.microsoft.com/power-apps/maker/model-driven-apps/create-and-edit-forms",
+  "publication": {
+    "makerAction": "SAVE_ONLY",
+    "publicationAction": "NONE_OBSERVED",
+    "runtimeVisibility": "UNPROVEN",
+    "componentState": "DIAGNOSTIC_ONLY"
+  },
+  "formFactors": {
+    "Web": "2",
+    "Phone": "0",
+    "Tablet": "1"
+  },
+  "fixtures": [
+    {
+      "path": "tests/pcf/binding/state-A-v10c.xml",
+      "sha256": "3f029a20ded8f7de44d98c537b75dcc35364c103c918613e6abab87e0c9d6d3e",
+      "sourceCaptureHash": "d67e3923314b41782ec729d6abc7b65ea011563226863fd0133fc21dd575a026",
+      "client": "Web",
+      "factor": "2"
+    },
+    {
+      "path": "tests/pcf/binding/state-B-v10c.xml",
+      "sha256": "a0c567d7c6ed1ce740c8111e2ffd6561dc5f91859df1dd2d23b936cdaea3d68a",
+      "sourceCaptureHash": "aa07a9996984d458fd5f3f74782e59e60878ad55a8b33da093b45122845b1bf1",
+      "client": "Phone",
+      "factor": "0"
+    },
+    {
+      "path": "tests/pcf/binding/state-C-v10c.xml",
+      "sha256": "69b2f954458524662ae0a519c3f9d9e3250b757bb313947c3cdab33f81846fba",
+      "sourceCaptureHash": "d034687ccbb09ae055f3447a981f56c7c3f5583d5ff442665c2ecbdd37f5c96f",
+      "client": "Tablet",
+      "factor": "1"
+    },
+    {
+      "path": "tests/pcf/binding/field-final-v10c.xml",
+      "sha256": "3f029a20ded8f7de44d98c537b75dcc35364c103c918613e6abab87e0c9d6d3e",
+      "sourceCaptureHash": "31eabc8024634e56b02245af256a34bc487c96e3c8cc31b083f58e378eaae626",
+      "client": "Web",
+      "factor": "2"
+    },
+    {
+      "path": "tests/pcf/binding/dataset-v10c.xml",
+      "sha256": "7d70a529ac7631110966bc26ef11381536609f834ca88be7dbde86a3ae84d3c5",
+      "sourceCaptureHash": "5ad47d866cb170da6b1505ef0569d26b31aff89de4737a58b5b4381ecad7cdf1",
+      "client": "all",
+      "factor": "0,1,2"
+    }
+  ],
+  "sanitization": "Only tenant-specific host GUIDs, table/column names, relationship names and view GUIDs replaced. Structure, installed component names and platform control class IDs retained.",
+  "ownership": {
+    "source": "POWERCANVAS_OWNED",
+    "bindings": "MAKER_AUTHORED_ORACLE",
+    "liveCompilerApply": false
+  },
+  "unproven": [
+    "non-text field parameter host serialization",
+    "dataset client subsets",
+    "live generated apply",
+    "published host runtime"
+  ]
+}

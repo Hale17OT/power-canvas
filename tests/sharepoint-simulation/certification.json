@@ -1,0 +1,293 @@
+{
+  "mode": "SHAREPOINT_SIMULATION",
+  "status": "SIMULATED_CONTRACT_CERTIFIED",
+  "liveRead": false,
+  "liveWrite": false,
+  "engine": "Microsoft Dev Proxy 3.3.1 + stateful loopback HTTP",
+  "cases": [
+    "canvas-binding",
+    "flow-binding",
+    "person-single",
+    "lookup-identity",
+    "inherited-permissions",
+    "team-request-tracker-platform-fields",
+    "team-request-tracker-pagination",
+    "team-request-tracker-three-cycles",
+    "document-pdf-blocker-preserved",
+    "document-approval-platform-fields",
+    "document-approval-pagination",
+    "document-approval-three-cycles",
+    "library-dual-identity",
+    "content-type-links",
+    "content-type-attachment",
+    "internal-display-name",
+    "library-flow-reference",
+    "contract-library-platform-fields",
+    "contract-library-pagination",
+    "contract-library-three-cycles",
+    "edge-three-cycles",
+    "system-list-classification",
+    "person-multiple-groups",
+    "ordered-multichoice",
+    "distinct-permissions-private",
+    "duplicate-name-conflict",
+    "permission-writes-blocked",
+    "caml-equivalence-and-drift",
+    "wrong-site",
+    "wrong-drive",
+    "missing-lookup",
+    "missing-attachment",
+    "wrong-attachment",
+    "missing-binding",
+    "page-failure",
+    "GET-403",
+    "GET-404",
+    "GET-429",
+    "GET-500",
+    "GET-502",
+    "GET-503",
+    "GET-504",
+    "GET-socket-drop",
+    "synthetic-evidence-production-blocked",
+    "create-readback-noop",
+    "etag-attestation-blocks",
+    "accepted-drop",
+    "reject-400",
+    "postcondition",
+    "unmocked-blocked",
+    "delete-never-dispatched",
+    "patch-no-retry",
+    "business-content-blocked",
+    "simulation-config-isolated",
+    "simulation-transport-isolated",
+    "GET-connect-timeout",
+    "retry-after-wall-clock",
+    "no-live-traffic"
+  ],
+  "sourceHashes": [
+    {
+      "file": "scripts/sharepoint-simulate.mjs",
+      "sha256": "ee77142d3134a0ef17b3c1601754574fb19c28d57767c0f8776fcf13abd7abbb"
+    },
+    {
+      "file": "src/sharepoint/bindings.ts",
+      "sha256": "154b8a4aa4503521fda8f35b1b79c528a6008003bad853d51692fc4feb0cdf89"
+    },
+    {
+      "file": "src/sharepoint/capabilities.ts",
+      "sha256": "c922f20db4b7fb8b5b2b872a82d568d924b8c56ec82e3cf1d9c00f1483e8675e"
+    },
+    {
+      "file": "src/sharepoint/compile.ts",
+      "sha256": "925e199a76a577a771aeffbef11a21035f4d88b6c086a74307499181abe581d5"
+    },
+    {
+      "file": "src/sharepoint/discovery.ts",
+      "sha256": "ab94fcd6dd0315f0348476b9eda6bb5c992589c5f4af0f350bf76fd4f9ffe88f"
+    },
+    {
+      "file": "src/sharepoint/execution.ts",
+      "sha256": "6e1c3364710338222c0ae3b17c59826e49f63462c1c8b57d4c4e17565148d388"
+    },
+    {
+      "file": "src/sharepoint/http.ts",
+      "sha256": "2f8e5436606c5ac1aba0e77b6a7f0af76b86b91876311c795686362892aa64a1"
+    },
+    {
+      "file": "src/sharepoint/plan.ts",
+      "sha256": "e4fc66f31c26f72e3f41fea5840d03fd9166a6bca6da7a9cc21b2c8e859cc4b7"
+    },
+    {
+      "file": "src/sharepoint/provider.ts",
+      "sha256": "959c304340c5a272df1d619744fb4ff06f7bfc258c99bf4936fbdb159631023d"
+    },
+    {
+      "file": "src/sharepoint/schema.ts",
+      "sha256": "2784ecccae913de21171cff81300225cce0ec761fe1943b55df3bfd282a7129d"
+    },
+    {
+      "file": "src/sharepoint/simulation-evidence.ts",
+      "sha256": "a09134eb7575932a0434e328bb3e74fe9bee140e9664ff1371d08ae3706f6a20"
+    },
+    {
+      "file": "tests/sharepoint-simulation/certify.mjs",
+      "sha256": "7634aaeddefcfe7a26e480050c7f11530f03551523670018d6c71770497fc671"
+    },
+    {
+      "file": "tests/sharepoint-simulation/responses/documents.json",
+      "sha256": "3e2fb131235708865537c308eb1d105f6ceb6f06d6954c742af054909e630549"
+    },
+    {
+      "file": "tests/sharepoint-simulation/responses/edge.json",
+      "sha256": "5e99abf356c40e4e52c123a0f17e8c9570a6bd21b1932a49ca485dac314e1431"
+    },
+    {
+      "file": "tests/sharepoint-simulation/responses/empty.json",
+      "sha256": "442fc49037cfe5f419620c04c0e8fbdc903fb60cc0a9b7ab03689d46d0576a31"
+    },
+    {
+      "file": "tests/sharepoint-simulation/responses/site.json",
+      "sha256": "5f0986e1fa9c86bd6e8147c2d0926f7faba36f728d86a98e6fdd785fdaae1f4a"
+    },
+    {
+      "file": "tests/sharepoint-simulation/responses/team.json",
+      "sha256": "4f72bece4f34bfa1c0fe4be96f20b55cc6ab01f7edbe6b92c75368357cd322f4"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/contract-library/devproxyrc.json",
+      "sha256": "c6f62233a864fa3022ee4f397e08a6a63f7b5f715a3e49d0d63de945078349b0"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/contract-library/graph-mocks.json",
+      "sha256": "e4d687ec75d69a58a4da54c9c73d9ffde03601059d5443d31319c776452c7eea"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/contract-library/sharepoint-rest-mocks.json",
+      "sha256": "c3dcf41276b775928be1fb4fa5be7d3c39fc3e75a1e3877c93a0853814ea9391"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/document-approval/devproxyrc.json",
+      "sha256": "c6f62233a864fa3022ee4f397e08a6a63f7b5f715a3e49d0d63de945078349b0"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/document-approval/graph-mocks.json",
+      "sha256": "8d5c59ebdb86f37a1c092ba5506d2afebc60529734519a99795eb955d7797450"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/document-approval/sharepoint-rest-mocks.json",
+      "sha256": "18929e907be2eab01b898864f61c4e69bd901f2384b56fa75e0af21093e11038"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/failures.json",
+      "sha256": "26ac30642d5477d77fb7f9faa7361a697cd02295fcc871191a505beb259b21bd"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/team-request-tracker/devproxyrc.json",
+      "sha256": "c6f62233a864fa3022ee4f397e08a6a63f7b5f715a3e49d0d63de945078349b0"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/team-request-tracker/graph-mocks.json",
+      "sha256": "4fbd4084515a5bc8cd657f0156f479cd32ef18857522a937ebabfa16e46b04bf"
+    },
+    {
+      "file": "tests/sharepoint-simulation/scenarios/team-request-tracker/sharepoint-rest-mocks.json",
+      "sha256": "2ee465bc37333c15f95c97184a8d4da6090a2dc93254d6b91b24a3a0036338db"
+    },
+    {
+      "file": "tests/sharepoint-simulation/service.mjs",
+      "sha256": "4285db14599a5e806cdbb0ed31bc9a65e9f896849aa0002454d5de75a9f78b28"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "sharepoint.site.bind",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.contentTypeBase.bind",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.list.discover",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.library.discover",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.column.discover",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.contentType.discover",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.folder.discover",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.view.discover",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.permission.discover",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.permission.read",
+      "dimensions": [
+        "SIMULATED_READ_VERIFIED"
+      ],
+      "contract": "Fictional scoped Graph/REST metadata; no live access or provisioning proof"
+    },
+    {
+      "id": "sharepoint.list.create",
+      "dimensions": [
+        "SIMULATED_WRITE_VERIFIED",
+        "SIMULATED_NOOP_VERIFIED"
+      ],
+      "contract": "One generic list and text/choice/date columns only; stateful HTTP create, provider readback, fresh discovery and NO_OP"
+    },
+    {
+      "id": "sharepoint.column.create",
+      "dimensions": [
+        "SIMULATED_WRITE_VERIFIED",
+        "SIMULATED_NOOP_VERIFIED"
+      ],
+      "contract": "One generic list and text/choice/date columns only; stateful HTTP create, provider readback, fresh discovery and NO_OP"
+    },
+    {
+      "id": "sharepoint.choice.create",
+      "dimensions": [
+        "SIMULATED_WRITE_VERIFIED",
+        "SIMULATED_NOOP_VERIFIED"
+      ],
+      "contract": "One generic list and text/choice/date columns only; stateful HTTP create, provider readback, fresh discovery and NO_OP"
+    },
+    {
+      "id": "sharepoint.canvasBinding.resolve",
+      "dimensions": [
+        "SIMULATED_BINDING_RESOLUTION_VERIFIED"
+      ],
+      "contract": "Local symbolic contract resolution only; no native registration, deployment or runtime"
+    },
+    {
+      "id": "sharepoint.flowBinding.resolve",
+      "dimensions": [
+        "SIMULATED_BINDING_RESOLUTION_VERIFIED"
+      ],
+      "contract": "Local symbolic contract resolution only; no native registration, deployment or runtime"
+    }
+  ],
+  "evidenceArchive": "output/sharepoint-v11s/run-2026-09-26T11-27-06.188Z",
+  "integrityAuditSha256": "667807d2885d6fa9f44869e4ffdb191796dd8bc5d614f5d112409983f9d49a04"
+}

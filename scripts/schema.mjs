@@ -1,3 +1,4 @@
+import {pcfSchema} from '../dist/pcf/schema.js';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { URL } from 'node:url';
 import { z } from 'zod';
@@ -30,7 +31,10 @@ import {solutionSpecSchema} from '../dist/solution/schema.js';
 import {certificationManifestSchema} from '../dist/state/models.js';
 import {executionManifestSchema,executionReceiptSchema} from '../dist/execution/certification.js';
 
+import {sharepointSchema,sharepointEvidenceSchema,spTargetSchema} from '../dist/sharepoint/schema.js';
+
 await mkdir(new URL('../schemas/', import.meta.url), { recursive: true });
+for(const [name,schema]of [['source',sharepointSchema],['evidence',sharepointEvidenceSchema],['target',spTargetSchema]])await writeFile(new URL(`../schemas/powercanvas-sharepoint-${name}.v1.schema.json`,import.meta.url),JSON.stringify(z.toJSONSchema(schema,{io:'input',reused:'ref'}),null,2)+'\n');
 for(const [name,schema]of [['execution',executionManifestSchema],['authorization',executionReceiptSchema]])await writeFile(new URL(`../schemas/powercanvas-provider-certification-${name}.v1.schema.json`,import.meta.url),JSON.stringify(z.toJSONSchema(schema,{io:'input'}),null,2)+'\n');
 await writeFile(new URL('../schemas/powercanvas-provider-certification.v1.schema.json',import.meta.url),JSON.stringify(z.toJSONSchema(certificationManifestSchema,{io:'input'}),null,2)+'\n');
 await writeFile(new URL('../schemas/powercanvas-solution.v1.schema.json',import.meta.url),JSON.stringify(z.toJSONSchema(solutionSpecSchema,{io:'input',reused:'ref'}),null,2)+'\n');
@@ -58,3 +62,5 @@ await writeFile(new URL('../schemas/powerapps-taste.v1.schema.json', import.meta
 await writeFile(new URL('../schemas/powerapps-taste-recipe.v1.schema.json', import.meta.url), JSON.stringify(z.toJSONSchema(recipeSchema, { io: 'input' }), null, 2) + '\n');
 await writeFile(new URL('../schemas/powerapps-taste-recipes.v1.json', import.meta.url), JSON.stringify(recipes(), null, 2) + '\n');
 await writeFile(new URL('../schemas/powerapps-taste-compositions.v1.json', import.meta.url), JSON.stringify(compositions(), null, 2) + '\n');
+
+await writeFile(new URL('../schemas/powercanvas-pcf.v1.schema.json',import.meta.url),JSON.stringify(z.toJSONSchema(pcfSchema,{io:'input'}),null,2)+'\n');

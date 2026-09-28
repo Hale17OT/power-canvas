@@ -1,0 +1,479 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "$ref": "#/$defs/__schema0"
+        },
+        "tenantId": {
+          "$ref": "#/$defs/__schema1"
+        },
+        "environment": {
+          "$ref": "#/$defs/__schema2"
+        },
+        "sites": {
+          "$ref": "#/$defs/__schema3"
+        },
+        "resources": {
+          "$ref": "#/$defs/__schema7"
+        }
+      },
+      "required": [
+        "tenantId",
+        "environment",
+        "sites"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "targetHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "details": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/__schema8"
+          }
+        },
+        "sites": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/__schema4"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "hostname": {
+                "$ref": "#/$defs/__schema2"
+              },
+              "path": {
+                "type": "string"
+              },
+              "siteCollectionId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+              },
+              "webId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+              },
+              "webUrl": {
+                "$ref": "#/$defs/__schema5"
+              },
+              "name": {
+                "type": "string"
+              },
+              "displayName": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "hostname",
+              "path",
+              "siteCollectionId",
+              "webId",
+              "webUrl",
+              "displayName"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "coverage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema9"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "resource": {
+                "$ref": "#/$defs/__schema9"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "site",
+                  "list",
+                  "library",
+                  "column",
+                  "contentTypeBase",
+                  "contentType",
+                  "contentTypeColumn",
+                  "contentTypeBinding",
+                  "view",
+                  "folder",
+                  "permissionBoundary"
+                ]
+              },
+              "id": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "siteId": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "parentId": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "properties": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/__schema10"
+                }
+              },
+              "etag": {
+                "type": "string"
+              },
+              "driveId": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "driveListId": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "webUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "internalName": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind",
+              "id",
+              "siteId",
+              "parentId",
+              "properties"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "auth": {
+          "type": "object",
+          "properties": {
+            "graph": {
+              "type": "string",
+              "enum": [
+                "HEALTHY",
+                "MISSING",
+                "FAILED"
+              ]
+            },
+            "rest": {
+              "type": "string",
+              "enum": [
+                "HEALTHY",
+                "MISSING",
+                "FAILED"
+              ]
+            }
+          },
+          "required": [
+            "graph",
+            "rest"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "targetHash",
+        "observedAt",
+        "complete",
+        "sites",
+        "coverage",
+        "resources",
+        "auth"
+      ],
+      "additionalProperties": false
+    },
+    "ownership": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+        },
+        "targetHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "receipts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "resource": {
+                "$ref": "#/$defs/__schema9"
+              },
+              "id": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "siteId": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "parentId": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "sourceHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "operationId": {
+                "$ref": "#/$defs/__schema6"
+              },
+              "revision": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "baseline": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/__schema11"
+                }
+              },
+              "readbackHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "etag": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "resource",
+              "id",
+              "siteId",
+              "parentId",
+              "sourceHash",
+              "operationId",
+              "revision",
+              "baseline",
+              "readbackHash"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "projectId",
+        "targetHash",
+        "revision",
+        "receipts"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "configuration"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "__schema0": {
+      "type": "string",
+      "const": "SHAREPOINT_SIMULATION"
+    },
+    "__schema1": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+    },
+    "__schema2": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "__schema3": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/__schema4"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "$ref": "#/$defs/__schema5"
+          },
+          "expectedSiteId": {
+            "$ref": "#/$defs/__schema6"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "__schema4": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+    },
+    "__schema5": {
+      "type": "string",
+      "format": "uri"
+    },
+    "__schema6": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "__schema7": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/__schema4"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "site": {
+            "$ref": "#/$defs/__schema4"
+          },
+          "id": {
+            "$ref": "#/$defs/__schema6"
+          }
+        },
+        "required": [
+          "site",
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "__schema8": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema8"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/__schema8"
+          }
+        }
+      ]
+    },
+    "__schema9": {
+      "type": "string",
+      "pattern": "^sharepoint\\.(site|list|library|column|contentTypeBase|contentType|contentTypeColumn|contentTypeBinding|view|folder|permissionBoundary):[A-Za-z][A-Za-z0-9_.]*$"
+    },
+    "__schema10": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema10"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/__schema10"
+          }
+        }
+      ]
+    },
+    "__schema11": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema11"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/__schema11"
+          }
+        }
+      ]
+    }
+  }
+}

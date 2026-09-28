@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "sourceHashes": {
+    "src/pcf/schema.ts": "7eb031de2194f5cb4b2f8149b3c3d4ba5cd521995370f7ac63e28182c0ed0dc6",
+    "src/pcf/compile.ts": "2f995de8fb3afe92cc45af325451b87ffdfac2c5b51356c56f1d449533ab8f4a",
+    "src/pcf/build.ts": "ea565c279e98259bbfda0140bd661980497261ab19bf2e4e10ae8b1774756740",
+    "src/pcf/inspection.ts": "f728cc1ee451a4d01fea7ad05c90cba2219752534726204e892f1fcef7596f62",
+    "src/pcf/representatives.ts": "d4788f559467b658158c931cdd5cad9f6b68efc16de14c15537116edb2afbe57",
+    "src/pcf/solution.ts": "958658e1efafbdaab950a0f613d24396a3af03b47e16841ac70121b4f8a7b90b",
+    "src/pcf/capabilities.ts": "4a66936e3f4b8664161eda1dee00694debdc39845ac67dcffe8f3db160c0ea7d",
+    "src/canvas/taste/pcf.ts": "901eba0ae05a9b638d0ea6fa9b81ee84662e117e0eeb7ac153b3b38c1fef37bd",
+    "src/canvas/composition-ir.ts": "6f4789eee26109f21c629cb2e32a0f7b7142bcd8b12bfbfedb91e2c7eb63d6d6",
+    "src/canvas/registry.ts": "640cbba78493e01710d16830b68d984edecb02d400bc66cecd911636de61ea3f",
+    "src/canvas/tokens.ts": "e7b34d8f3dc8b1fcf83551d03b9596308c93456def44e213d61853b0cb116e74",
+    "src/solution/compile.ts": "bd397b93a6e71bedae756149e679e20f7a24f24df77ea7785eb686dbe670afae",
+    "src/solution/schema.ts": "aca4314d360d2010d7115ddcc8e710b9b28e7f8781aac4387d90a2524114a941",
+    "src/solution/alm.ts": "73e4762926dbe853acd148106efa6e8a7112424091cbdd2091ff1fd7b4c5a918",
+    "pcf/provider-v1/templates/control.ts.txt": "2371dfcb53758f710a5224d06abb3e873c6402362ee568777bdb9aa00553f917",
+    "pcf/provider-v1/templates/style.css": "d4dc993ee7b5f220cf3e71a77a58806fce34dfa4dd9f123075ca0d5e4433fb3c",
+    "pcf/Timeline/package.json": "c62b65f9e4f2a5eb6118207be6364cd36071563580e63b66e4d44d00322a9bab",
+    "pcf/Timeline/package-lock.json": "40b1c4cdf163207fa36e6e6cb41630b23dba162f636e9968c1a3f246881a8d28",
+    "scripts/pcf-certify.mjs": "939fa0dce4205244a3a17fc063c143e1bba1f043e64dca80bd9d05b14b703bf6",
+    "scripts/pcf-harness.mjs": "1a8b6092906bda11c23161ea8f5add15ea980891a779e631a642e948f42c4ae1",
+    "tests/pcf.test.ts": "2b24e993bed745a4b11954a7d18e78a30a33deec61f9ac76ef695590198c1f63"
+  },
+  "toolchain": {
+    "node": "22.18.0",
+    "pcfScripts": "1.51.1",
+    "typescript": "5.9.3",
+    "frameworkTypes": "1.3.18",
+    "pcfProjectMsbuild": "1.52.1",
+    "implementation": "standard",
+    "actualNode": "v22.18.0",
+    "npm": "10.9.3",
+    "pac": "2.12.2"
+  },
+  "identities": [
+    {
+      "identity": "PowerCanvas.ColorContrastField",
+      "version": "1.0.0",
+      "manifestHash": "ae479fe21579bd948e62b58028de1ce2edaed33f16c8e964c6eb11e4e872b0bf",
+      "sourceHash": "867672291777c1fcad58aac5e4bc6d36195f7e795d7bb097b258d5a090c11927"
+    },
+    {
+      "identity": "PowerCanvas.AdvancedDataGrid",
+      "version": "1.0.0",
+      "manifestHash": "5c87ec228d346b63735abbb6cd2a26aad52e922ff43d4522e396b9cf027c537f",
+      "sourceHash": "cbe04baf68e410e7869e41bdc14227746f5c22e70867675e9121d7f98c24be5c"
+    },
+    {
+      "identity": "PowerCanvas.CalendarDataset",
+      "version": "1.0.0",
+      "manifestHash": "a01db7ba86c05667785f61a90c648d8596df2e0c4b938d6870902a78820f9036",
+      "sourceHash": "c2c82e183d026bf965320cee571a19ac34e1ffa530573a4da336d94b265b3844"
+    }
+  ],
+  "dimensions": {
+    "component.schema": true,
+    "component.compile": true,
+    "component.manifest": true,
+    "component.build": true,
+    "component.package": true,
+    "field": true,
+    "dataset": true,
+    "localHarness": true,
+    "modelDriven.fieldBinding": false,
+    "modelDriven.datasetBinding": false,
+    "canvas.binding": true,
+    "liveImport": false,
+    "powerAppsRuntime": false,
+    "react": false
+  },
+  "evidenceIntegrity": "f7babadf1506f7ae31802f6e01013eded270764a5dcc787a46b6230b33fbe1ed",
+  "packageHash": "d25075c56cc675d52f98ab220bb8999e88c1bd9c01379998d89def8ac7f41d0a",
+  "integrityHash": "7f8dbd6c9cc4712b0a9e872268d5f42286ae00ee57de5e81a49e48ddbfa4fa36"
+}

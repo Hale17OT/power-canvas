@@ -1,3 +1,4 @@
+import {ownedComparison} from './three-way.js';
 import { evaluateAppValidation } from '../model-driven/validation.js';
 import { appPublicationId } from '../model-driven/lifecycle.js';
 import { resolveObservedPrivileges, roleRequirements } from '../model-driven/table-privileges.js';
@@ -133,7 +134,7 @@ export function createPlan(project: Project, observation: Observation, ownership
     if ((desired.kind === 'key' ? current.properties.isManaged !== false : current.properties.isManaged === true || current.properties.customizable === false)) { block('PF-SAFETY-003', 'Managed or noncustomizable resources cannot be changed through this development adapter.', 'destructiveBlock', desired.resourceId); continue; }
     if (!owned) { block('PF-PLAN-005', 'A matching unowned resource already exists. Implicit adoption is not allowed.', 'manualPrerequisite', desired.resourceId); continue; }
     if (owned.remoteId !== current.remoteId) { block('PF-PLAN-006', 'The observed remote identity differs from the owned identity.', 'manualPrerequisite', desired.resourceId); continue; }
-    if (hashJson(projection(current, owned.baseline)) !== hashJson(owned.baseline)) { block('PF-PLAN-007', 'Observed owned properties changed outside the last verified baseline. Resolve drift explicitly.', 'manualPrerequisite', desired.resourceId); continue; }
+    if (ownedComparison(desired.properties, owned.baseline, projection(current, owned.baseline), projection(current, desired.properties)).drift) { block('PF-PLAN-007', 'Observed owned properties changed outside the last verified baseline. Resolve drift explicitly.', 'manualPrerequisite', desired.resourceId); continue; }
     const before = projection(current, desired.properties);
     if (hashJson(before) === hashJson(desired.properties)) continue;
     if(certification){block('PF-CERT-002','Certification is additive-only; existing resource updates require a separate reviewed task.','destructiveBlock',desired.resourceId);continue;}

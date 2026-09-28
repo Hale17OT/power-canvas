@@ -17,3 +17,5 @@ Desktop/tablet/mobile are normally compositions in the same app, with one busine
 Resolve components and typed fields through existing registries, host adapters and maturity checks. For redesign load Taste first. Do not manually implement an uncertified requested pattern to evade a production gate. Local HTML rendering is not native Canvas proof.
 
 If MCP is SESSION_REJECTED, AUTHORING_UNAVAILABLE, RECOVERY_REQUIRED, or stability is unproven, preserve artifacts and do offline work. PAC is a saved-source witness only. Route diagnosis to Debug without starting a reconnect loop. `compile_canvas` can mutate the draft; obey root [safety](../powercanvas/references/safety.md).
+
+For SharePoint-backed solutions, load [SharePoint infrastructure](../powercanvas/references/sharepoint-v1.md). Use the unified symbolic identity and field contract; unresolved IDs, native registration and live access remain explicit prerequisites. Do not provision infrastructure through business-row/file actions.

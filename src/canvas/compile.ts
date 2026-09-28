@@ -12,6 +12,14 @@ import {planDesign} from './taste/decisions.js';
 import {compileDesignCandidate} from './taste/generation.js';
 import {createCompositionIR} from './composition-ir.js';
 
+export interface CanvasExternalSource {provider:'sharepoint';resource:string;dataSourceName:string;primaryName:string;columns:Record<string,{name:string;type:string;required:boolean}>;resolved:boolean}
+export type CanvasSourceContracts=Record<string,Record<string,CanvasExternalSource>>;
+function canvasTable(project:Project,key:string,external:Record<string,CanvasExternalSource>={}){
+ if(project.dataverse.tables[key]&&external[key])throw Error('Ambiguous Canvas data-source alias shared by Dataverse and SharePoint');
+ const table=project.dataverse.tables[key];if(table)return {name:table.schemaName.toLowerCase(),primaryName:table.primaryName,provider:'dataverse',columns:Object.fromEntries(Object.entries(table.columns).map(([k,c])=>[k,{name:c.schemaName.toLowerCase(),type:c.type,required:c.required}]))};
+ const source=external[key];if(!source)return undefined;
+ return {name:source.dataSourceName,primaryName:source.primaryName,provider:'sharepoint',columns:Object.fromEntries(Object.entries(source.columns).map(([k,c])=>[k,{name:c.name,type:c.type,required:c.required?'application':'none'}]))};
+}
 const node = (key: string, component: ComponentName, props: ComponentNode['props'], children: ComponentNode[] = []): ComponentNode => ({ key, component, version: '0.1.0', props, children });
 export function expandPatterns(app: CanvasApp): ComponentNode {
   return node('shell', 'AppShell', { title: app.displayName }, [node('navigation', 'Sidebar', { items: app.shell.navigation }),
@@ -26,11 +34,11 @@ export function expandPatterns(app: CanvasApp): ComponentNode {
     ])),
   ]);
 }
-function checkTree(project: Project, app: CanvasApp, root: ComponentNode): Diagnostic[] {
+function checkTree(project: Project, app: CanvasApp, root: ComponentNode, external:Record<string,CanvasExternalSource>={}): Diagnostic[] {
   const diagnostics: Diagnostic[] = []; let count = 0; const searchBindings = new Set<string>();
   const fail = (path: string, message: string) => diagnostics.push({ code: 'PF-CANVAS-003', severity: 'error', path, message });
   const navigate = (target: unknown, path: string) => { if (typeof target !== 'string' || !app.screens[target]) fail(path, 'Navigation target does not exist.'); };
-  const source = (target: unknown, path: string) => { if (typeof target !== 'string' || !project.dataverse.tables[target]) fail(path, 'Data source does not exist in the project.'); };
+  const source = (target: unknown, path: string) => { if (typeof target !== 'string' || !canvasTable(project,target,external)) fail(path, 'Data source does not exist in the project.'); };
   const visit = (item: ComponentNode, path: string, depth: number) => {
     if (++count > 500 || depth > 20) { fail(path, 'Component tree exceeds the 500-node or 20-level limit.'); return; }
     const contract = registry[item.component];
@@ -49,7 +57,7 @@ function checkTree(project: Project, app: CanvasApp, root: ComponentNode): Diagn
     if (item.component === 'Dropdown' && parsed.success && item.props.default !== undefined && !(item.props.options as string[]).includes(item.props.default as string)) fail(path, 'Dropdown default must be one of its options.');
     if (item.component === 'TextInput' || item.component === 'SimpleList' || item.component === 'RecordForm') {
       if (item.component === 'TextInput') { const binding = `${path.split('/')[1]}/${String(item.props.source)}`; if (searchBindings.has(binding)) fail(path, 'Only one search input per screen/source is supported.'); searchBindings.add(binding); }
-      source(item.props.source, path); const table = project.dataverse.tables[String(item.props.source)];
+      source(item.props.source, path); const table = canvasTable(project,String(item.props.source),external);
       const columns = item.component === 'TextInput' ? [item.props.field] : item.component === 'RecordForm' ? item.props.fields as string[] : Array.isArray(item.props.columns) ? item.props.columns : [];
       if (item.component === 'RecordForm') {
         if (item.props.reasonField && (!columns.includes(item.props.reasonField) || table?.columns[String(item.props.reasonField)]?.type !== 'multilineText')) fail(path, 'Change reasons require an explicitly bound multiline form field.');
@@ -70,7 +78,7 @@ function checkTree(project: Project, app: CanvasApp, root: ComponentNode): Diagn
   for (const key of Object.keys(app.screens)) if (!targets.includes(key)) fail(`screens.${key}`, 'Every DS1 screen must be reachable from navigation.');
   visit(root, 'shell', 0); return diagnostics;
 }
-export function canvasDiagnostics(project: Project): Diagnostic[] {
+export function canvasDiagnostics(project: Project, sources:CanvasSourceContracts={}): Diagnostic[] {
   const names = Object.values(project.canvasApps ?? {}).map(app => app.uniqueName.toLowerCase());
   return Object.entries(project.canvasApps ?? {}).flatMap(([key, app]) => {
     const diagnostics:Diagnostic[] = [];
@@ -80,7 +88,7 @@ export function canvasDiagnostics(project: Project): Diagnostic[] {
         const plan=planDesign(app.nativeDesign.product,{...(app.taste?.design?.v4?{design:app.taste.design.v4}:{})});
         compileDesignCandidate(plan,app.nativeDesign.host,app.theme.mode,createCompositionIR(plan,app.nativeDesign.stability));
       }catch(error){diagnostics.push({code:'PF-CANVAS-003',severity:'error',path:'nativeDesign',message:error instanceof Error?error.message:'Native design validation failed.'});}
-    }else diagnostics.push(...checkTree(project, app, expandPatterns(app)));
+    }else diagnostics.push(...checkTree(project, app, expandPatterns(app),sources[key]));
     const siblings = Object.values(project.canvasApps ?? {});
     if (siblings.length > 1 && !app.application?.existingAppId && !app.application?.requiresNewApplication) diagnostics.push({code:'PF-CANVAS-003',severity:'error',path:'application',message:'Multiple Canvas Apps require independently pinned existing IDs or explicit application-level requirements; device and benchmark variants are not app boundaries.'});
     if (app.application?.existingAppId && siblings.filter(s => s.application?.existingAppId === app.application!.existingAppId).length > 1) diagnostics.push({code:'PF-CANVAS-003',severity:'error',path:'application.existingAppId',message:'Device variations must be screens/compositions of one app declaration, not duplicate declarations for the same app ID.'});
@@ -92,10 +100,10 @@ export function canvasDiagnostics(project: Project): Diagnostic[] {
 export interface CompiledNode extends Omit<ComponentNode, 'children'> { id: string; controlName: string; children: CompiledNode[] }
 const fxString = (value: string) => `"${value.replace(/"/g, '""')}"`;
 const fxIdentifier = (value: string) => `'${value.replace(/'/g, "''")}'`;
-export function compileCanvas(project: Project, appKey: string) {
+export function compileCanvas(project: Project, appKey: string, sources:CanvasSourceContracts={}) {
   const raw = project.canvasApps?.[appKey]; if (!raw) throw new PowerCanvasError('PF-CANVAS-004', 'Canvas app does not exist.', 'Select a canvasApps key.');
   if(raw.nativeDesign)throw new PowerCanvasError('PF-CANVAS-004','Native design uses the existing native candidate compiler.','Use taste generate or canvas native with explicit host and bindings.');
-  const app = canvasAppSchema.parse(raw); const root = expandPatterns(app); const diagnostics = canvasDiagnostics(project);
+  const app = canvasAppSchema.parse(raw); const root = expandPatterns(app); const diagnostics = canvasDiagnostics(project,sources);
   if (diagnostics.length) throw new PowerCanvasError('PF-CANVAS-003', 'Canvas semantics are invalid.', 'Resolve component and data-source diagnostics.', diagnostics);
   const required = new Set<string>(); const queries: { componentId: string; source: string; formula: string; maxVisible: number; delegation: string; states: string[] }[] = [];
   const formulas: Record<string, string> = {}; const theme = resolveTheme(app.theme);
@@ -107,16 +115,16 @@ export function compileCanvas(project: Project, appKey: string) {
     const id = hashJson([project.project.id, appKey, path]).slice(0, 20); const controlName = `pf_${item.component}_${id.slice(0, 12)}`;
     const props = contract.props.parse(item.props) as ComponentNode['props'];
     const screen = item.component === 'Page' ? item.key : screenKey;
-    if (item.component === 'Button') { const action = props.onSelect as { type: string; screen?: string; source?: string }; formulas[`${controlName}.OnSelect`] = action.type === 'navigate' ? `Navigate(pf_screen_${action.screen}, ScreenTransition.None)` : `Refresh(${fxIdentifier(project.dataverse.tables[action.source!]!.schemaName.toLowerCase())})`; }
+    if (item.component === 'Button') { const action = props.onSelect as { type: string; screen?: string; source?: string }; formulas[`${controlName}.OnSelect`] = action.type === 'navigate' ? `Navigate(pf_screen_${action.screen}, ScreenTransition.None)` : `Refresh(${fxIdentifier(canvasTable(project,action.source!,sources[appKey])!.name)})`; }
     if (item.component === 'TextInput') formulas[`${controlName}.OnChange`] = `Set(pf_search_${screen}_${props.source}, Self.Value)`;
     if (item.component === 'Dropdown') formulas[`${controlName}.OnChange`] = `Set(pf_selection_${id}, Self.Selected.Value)`;
     if (item.component === 'SimpleList') {
-      const table = project.dataverse.tables[String(props.source)]!; const search = searches.get(`${screen}/${props.source}`);
-      const tableName = fxIdentifier(table.schemaName.toLowerCase()); const column = search ? table.columns[search]! : undefined;
+      const table = canvasTable(project,String(props.source),sources[appKey])!; const search = searches.get(`${screen}/${props.source}`);
+      const tableName = fxIdentifier(table.name); const column = search ? table.columns[search]! : undefined;
       const stateKey = `${screen}_${props.source}`;
-      const filter = column ? `Filter(${tableName}, StartsWith(${fxIdentifier(column.schemaName.toLowerCase())}, pf_search_${stateKey}))` : tableName;
-      const formula = `SortByColumns(${filter}, ${fxString(table.columns[table.primaryName]!.schemaName.toLowerCase())}, SortOrder.Ascending)`;
-      queries.push({ componentId: id, source: String(props.source), formula, maxVisible: Number(props.maxVisible), delegation: 'Dataverse candidate; verify field capabilities, Studio delegation warnings and results above 2000 rows before certification. No ClearCollect/FirstN or total-count claim.', states: ['loading', 'loaded', 'empty', 'error', 'forbidden'] });
+      const filter = column ? `Filter(${tableName}, StartsWith(${fxIdentifier(column.name)}, pf_search_${stateKey}))` : tableName;
+      const formula = `SortByColumns(${filter}, ${fxString(table.columns[table.primaryName]!.name)}, SortOrder.Ascending)`;
+      queries.push({ componentId: id, source: String(props.source), formula, maxVisible: Number(props.maxVisible), delegation: table.provider+' candidate; verify field capabilities, Studio delegation warnings and results above 2000 rows before certification. No ClearCollect/FirstN or total-count claim.', states: ['loading', 'loaded', 'empty', 'error', 'forbidden'] });
       formulas[`${controlName}.Items`] = formula;
       const onVisible = `Set(pf_search_${stateKey}, ""); Set(pf_state_${stateKey}, "loading"); IfError(Refresh(${tableName}), Set(pf_state_${stateKey}, "error"), Set(pf_state_${stateKey}, "loaded"))`;
       const existing = formulas[`pf_screen_${screen}.OnVisible`];
@@ -128,7 +136,7 @@ export function compileCanvas(project: Project, appKey: string) {
   return { apiVersion: 'powercanvas.canvas-ir/v1alpha1', compilerVersion: '0.1.0', scope: 'semantic-canvas-ir', appKey, uniqueName: app.uniqueName, applicationBoundary: planApplicationOperation(app.application), sourceHash: hashJson(project), tree, theme,
     responsive: [390, 768, 1440].map(width => ({ width, ...responsiveLayout(width) })),
     formulas: { named: Object.fromEntries([...Object.entries(theme.colors).map(([key, value]) => [`PF_${key}`, `ColorValue(${fxString(value)})`]), ...Object.entries(theme.spacing).map(([key, value]) => [`PF_spacing_${key}`, String(value)]), ['PF_controlHeight', String(theme.controlHeight)], ['PF_radius', String(theme.radiusPx)], ['PF_fontBody', String(theme.typography.body)], ['PF_breakpointMedium', '600'], ['PF_breakpointWide', '1024']]), controls: formulas, status: 'typed intent templates; adapter must bind actual control versions, data-source identifiers and error kinds' },
-    queries, requiredControls: [...required].sort(), authoring: { executable: false, nativeYamlEmitted: false, requires: ['Saved app in the dedicated solution', 'Open coauthoring Studio session', 'Prepared Dataverse sources', '.NET SDK 10+', 'Microsoft Canvas authoring MCP and live control discovery'] },
+    dataSources:sources[appKey]??{},queries, requiredControls: [...required].sort(), authoring: { executable: false, nativeYamlEmitted: false, requires: ['Saved app in the dedicated solution', 'Open coauthoring Studio session', 'Prepared Dataverse sources', '.NET SDK 10+', 'Microsoft Canvas authoring MCP and live control discovery'] },
     diagnostics: [{ severity: 'warning', message: 'PFDS 0.1 components are experimental. HTML showcase and semantic tests do not certify Canvas rendering, delegation or accessibility.' }] };
 }
 export type CompiledCanvas = ReturnType<typeof compileCanvas>;

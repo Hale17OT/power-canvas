@@ -34,3 +34,8 @@ export const registry = Object.fromEntries(componentNames.map(name => [name, {
   capabilities: { compact: true, dark: true, multiSelect: false, requiresModernControls: modern.has(name), arbitraryPositioning: false },
 }])) as Record<ComponentName, { name: ComponentName; version: string; maturity: 'experimental'; introducedInPowerCanvas: string; description: string; props: z.ZodType; children: boolean; nativeControl: string; events: string[]; states: string[]; capabilities: { compact: boolean; dark: boolean; multiSelect: boolean; requiresModernControls: boolean; arbitraryPositioning: boolean } }>;
 export function componentCatalog() { return componentNames.map(name => { const { props: schema, ...contract } = registry[name]; return { ...contract, propsSchema: z.toJSONSchema(schema, { io: 'input' }) }; }); }
+
+// PCF entries extend the catalog; native factories and their accepted contracts remain authoritative.
+export function implementationCatalog(pcf:Record<string,import('../pcf/schema.js').PCFComponentIR>={}) {
+ return [...componentCatalog().map(c=>({...c,implementation:'native',targets:['canvas']})),...Object.entries(pcf).map(([key,c])=>({name:'pcf.component:'+key,implementation:'pcf',identity:c.namespace+'.'+c.constructor,version:c.version,kind:c.kind,targets:Object.entries(c.targets).filter(([,enabled])=>enabled).map(([target])=>target),designRole:c.designRole,maturity:'SOURCE_COMPILE_ONLY',runtimeEvidence:false}))];
+}

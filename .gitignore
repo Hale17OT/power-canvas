@@ -4,6 +4,11 @@ pcf/*/node_modules/
 dist/
 pcf/*/out/
 pcf/*/obj/
+# PCF projects may be nested inside provider/component directories.
+pcf/**/out/
+pcf/**/obj/
+pcf/**/bin/
+pcf/**/generated/
 coverage/
 *.tsbuildinfo
 
@@ -27,6 +32,10 @@ playwright/.auth/
 .auth/
 .pac/
 .powerplatform/
+# Local registry credentials and development proxy certificates/state.
+.npmrc
+.yarnrc.yml
+.devproxy/
 *.local.json
 *.local.yaml
 *.local.yml
@@ -52,6 +61,12 @@ pnpm-debug.log*
 test-results/
 playwright-report/
 blob-report/
+*.binlog
+# Checker/security reports can contain local paths and tenant resource details.
+*.sarif
+*.sarif.json
+!tests/fixtures/**/*.sarif
+!tests/fixtures/**/*.sarif.json
 
 # Reproducible generated output
 output/
@@ -75,6 +90,9 @@ experiments/*/
 Thumbs.db
 Desktop.ini
 .idea/
+.vs/
+*.suo
+*.user
 .vscode/*
 !.vscode/extensions.json
 
@@ -111,3 +129,6 @@ Desktop.ini
 
 # Machine-specific research rendering helper (the report remains public).
 /research/build-report.mjs
+
+# Generated report-validation result; keep the checker and research sources.
+/research/report-quality-check.json

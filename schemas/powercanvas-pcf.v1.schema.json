@@ -1,0 +1,658 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "components": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 80,
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z][A-Za-z0-9_]*)*$"
+          },
+          "constructor": {
+            "type": "string",
+            "maxLength": 80,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+\\.\\d+$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "field",
+              "dataset"
+            ]
+          },
+          "implementation": {
+            "default": "standard",
+            "type": "string",
+            "enum": [
+              "standard",
+              "react"
+            ]
+          },
+          "properties": {
+            "default": {},
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "maxLength": 80,
+              "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "string",
+                    "multiline",
+                    "integer",
+                    "decimal",
+                    "currency",
+                    "boolean",
+                    "date",
+                    "datetime",
+                    "choice",
+                    "lookup"
+                  ]
+                },
+                "usage": {
+                  "type": "string",
+                  "enum": [
+                    "bound",
+                    "input",
+                    "output"
+                  ]
+                },
+                "required": {
+                  "default": false,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "usage"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "datasets": {
+            "default": {},
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "maxLength": 80,
+              "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "columns": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string",
+                    "maxLength": 80,
+                    "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+                  },
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "string",
+                          "multiline",
+                          "integer",
+                          "decimal",
+                          "currency",
+                          "boolean",
+                          "date",
+                          "datetime",
+                          "choice",
+                          "lookup"
+                        ]
+                      },
+                      "required": {
+                        "default": false,
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "capabilities": {
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "type": "boolean"
+                    },
+                    "sorting": {
+                      "type": "boolean"
+                    },
+                    "filtering": {
+                      "type": "boolean"
+                    },
+                    "paging": {
+                      "type": "boolean"
+                    },
+                    "resize": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "selection",
+                    "sorting",
+                    "filtering",
+                    "paging",
+                    "resize"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "columns",
+                "capabilities"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "resources": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "code",
+                    "css",
+                    "resx"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "pattern": "^(?!.*\\.\\.)(?![/\\\\])[A-Za-z0-9_./-]+$"
+                }
+              },
+              "required": [
+                "kind",
+                "path"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "features": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "enum": [
+                    "WebAPI",
+                    "Utility",
+                    "Device.captureAudio",
+                    "Device.captureImage",
+                    "Device.captureVideo",
+                    "Device.getBarcodeValue",
+                    "Device.getCurrentPosition",
+                    "Device.pickFile"
+                  ]
+                },
+                "required": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "required"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "targets": {
+            "type": "object",
+            "properties": {
+              "canvas": {
+                "type": "boolean"
+              },
+              "modelDriven": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "canvas",
+              "modelDriven"
+            ],
+            "additionalProperties": false
+          },
+          "designRole": {
+            "type": "string",
+            "minLength": 5
+          },
+          "requirement": {
+            "type": "string",
+            "enum": [
+              "status",
+              "button",
+              "textInput",
+              "form",
+              "card",
+              "styling",
+              "layout",
+              "resizableDataset",
+              "calendarNavigation",
+              "colorContrast"
+            ]
+          },
+          "implementationSource": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "generated"
+                  },
+                  "template": {
+                    "type": "string",
+                    "enum": [
+                      "ColorContrastField",
+                      "AdvancedDataGrid",
+                      "CalendarDataset"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "template"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "external"
+                  },
+                  "directory": {
+                    "type": "string",
+                    "pattern": "^(?!.*\\.\\.)(?![/\\\\])[A-Za-z0-9_./-]+$"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "directory"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "externalDomains": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)+$"
+            }
+          }
+        },
+        "required": [
+          "namespace",
+          "constructor",
+          "version",
+          "kind",
+          "resources",
+          "targets",
+          "designRole",
+          "requirement",
+          "implementationSource"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "bindings": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 80,
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string",
+            "maxLength": 80,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "target": {
+            "type": "string",
+            "enum": [
+              "canvas",
+              "modelDriven"
+            ]
+          },
+          "surface": {
+            "type": "string",
+            "enum": [
+              "field",
+              "subgrid",
+              "composition"
+            ]
+          },
+          "consumer": {
+            "type": "string",
+            "pattern": "^(canvas|form):[A-Za-z][\\w.]*$"
+          },
+          "properties": {
+            "default": {},
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "maxLength": 80,
+              "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "resource": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "column": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "string",
+                    "multiline",
+                    "integer",
+                    "decimal",
+                    "currency",
+                    "boolean",
+                    "date",
+                    "datetime",
+                    "choice",
+                    "lookup"
+                  ]
+                }
+              },
+              "required": [
+                "resource",
+                "column",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "dataset": {
+            "type": "object",
+            "properties": {
+              "resource": {
+                "type": "string",
+                "minLength": 1
+              },
+              "columns": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+                },
+                "additionalProperties": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+                }
+              }
+            },
+            "required": [
+              "resource",
+              "columns"
+            ],
+            "additionalProperties": false
+          },
+          "slot": {
+            "type": "string",
+            "enum": [
+              "data.view",
+              "form.fields"
+            ]
+          },
+          "modelDrivenHost": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "component": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "form": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "host": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "column": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "boundProperty": {
+                    "type": "string",
+                    "const": "value"
+                  },
+                  "staticInputs": {
+                    "type": "object",
+                    "properties": {
+                      "theme": {
+                        "type": "string",
+                        "enum": [
+                          "light",
+                          "dark"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "theme"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "selections": {
+                    "type": "object",
+                    "properties": {
+                      "Phone": {
+                        "type": "string",
+                        "enum": [
+                          "native",
+                          "pcf"
+                        ]
+                      },
+                      "Tablet": {
+                        "type": "string",
+                        "enum": [
+                          "native",
+                          "pcf"
+                        ]
+                      },
+                      "Web": {
+                        "type": "string",
+                        "enum": [
+                          "native",
+                          "pcf"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "Phone",
+                      "Tablet",
+                      "Web"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "kind": {
+                    "type": "string",
+                    "const": "field"
+                  }
+                },
+                "required": [
+                  "component",
+                  "form",
+                  "host",
+                  "column",
+                  "boundProperty",
+                  "staticInputs",
+                  "selections",
+                  "kind"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "component": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "form": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "host": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "table": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "view": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "relationship": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][\\w.]*$"
+                  },
+                  "dataset": {
+                    "type": "string",
+                    "const": "records"
+                  },
+                  "propertySets": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z][\\w.]*$"
+                      },
+                      "title": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z][\\w.]*$"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "title"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "staticInputs": {
+                    "type": "object",
+                    "properties": {
+                      "theme": {
+                        "type": "string",
+                        "enum": [
+                          "light",
+                          "dark"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "theme"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "selections": {
+                    "type": "object",
+                    "properties": {
+                      "Phone": {
+                        "type": "string",
+                        "const": "pcf"
+                      },
+                      "Tablet": {
+                        "type": "string",
+                        "const": "pcf"
+                      },
+                      "Web": {
+                        "type": "string",
+                        "const": "pcf"
+                      }
+                    },
+                    "required": [
+                      "Phone",
+                      "Tablet",
+                      "Web"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "kind": {
+                    "type": "string",
+                    "const": "dataset"
+                  }
+                },
+                "required": [
+                  "component",
+                  "form",
+                  "host",
+                  "table",
+                  "view",
+                  "relationship",
+                  "dataset",
+                  "propertySets",
+                  "staticInputs",
+                  "selections",
+                  "kind"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "component",
+          "target",
+          "surface",
+          "consumer"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "components"
+  ],
+  "additionalProperties": false
+}

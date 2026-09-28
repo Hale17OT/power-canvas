@@ -1,13 +1,13 @@
 import type { Diagnostic } from '../core/errors.js';
 import type { Project } from './schema.js';
-import { canvasDiagnostics } from '../canvas/compile.js';
+import { canvasDiagnostics,type CanvasSourceContracts } from '../canvas/compile.js';
 import { compileFlows } from '../flows/compile.js';
 
 export const SYSTEM_VIEW_COLUMNS = new Set(['createdon', 'modifiedon', 'ownerid', 'statecode', 'statuscode']);
 
-export function validateSemantics(project: Project): Diagnostic[] {
-  const diagnostics: Diagnostic[] = canvasDiagnostics(project);
-  if(project.resources)try{compileFlows(project);}catch(error){diagnostics.push({code:'PF-FLOW-001',severity:'error',path:'resources',message:error instanceof Error?error.message:'Invalid flow resources.'});}
+export function validateSemantics(project: Project,canvasSources:CanvasSourceContracts={},validateFlowResources=true): Diagnostic[] {
+  const diagnostics: Diagnostic[] = canvasDiagnostics(project,canvasSources);
+  if(project.resources&&validateFlowResources)try{compileFlows(project);}catch(error){diagnostics.push({code:'PF-FLOW-001',severity:'error',path:'resources',message:error instanceof Error?error.message:'Invalid flow resources.'});}
   const fail = (path: string, message: string): void => {
     diagnostics.push({ code: 'PF-VALIDATION-002', severity: 'error', path, message });
   };
